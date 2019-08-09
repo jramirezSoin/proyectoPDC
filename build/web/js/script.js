@@ -30,6 +30,7 @@ function eliminar(path, id){
 
 
 function hacerlist(path){
+       
        $('#Infomessage').text("Aloha");
        $.get(path,function(responseText) {
         $('#Lista').html(responseText);

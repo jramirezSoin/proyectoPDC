@@ -15,6 +15,11 @@
 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/impactCategories','-4')">delete</button>
 <hr>
 <dl class="row">
-  <dt class="col-sm-3">Description</dt><dd class="col-sm-9"><%= impactCategory.getDescription()%></dd><dt class="col-sm-3">Internal Id</dt><dd class="col-sm-9"><%= impactCategory.getInternalId()%></dd><dt class="col-sm-3">PriceList Name</dt><dd class="col-sm-9"><%= impactCategory.getPriceListName()%></dd><dt class="col-sm-3">Obsolete</dt><dd class="col-sm-9"><%= impactCategory.isObsolete()%></dd><dt class="col-sm-3">Result</dt><dd class="col-sm-9"><%= impactCategory.getResult()%></dd><dt class="col-sm-3">Result Type</dt><dd class="col-sm-9"><%= impactCategory.getResultType()%></dd>
+  <dt class="col-sm-3">Description</dt><dd class="col-sm-9"><%= impactCategory.getDescription()%></dd>
+  <dt class="col-sm-3">Internal Id</dt><dd class="col-sm-9"><%= impactCategory.getInternalId()%></dd>
+  <dt class="col-sm-3">PriceList Name</dt><dd class="col-sm-9"><%= impactCategory.getPriceListName()%></dd>
+  <dt class="col-sm-3">Obsolete</dt><dd class="col-sm-9"><%= impactCategory.isObsolete()%></dd>
+  <dt class="col-sm-3">Result</dt><dd class="col-sm-9"><%= impactCategory.getResult()%></dd>
+  <dt class="col-sm-3">Result Type</dt><dd class="col-sm-9"><%= impactCategory.getResultType()%></dd>
 </dl>
 <hr>
