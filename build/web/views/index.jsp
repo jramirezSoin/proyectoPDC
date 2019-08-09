@@ -55,7 +55,7 @@
   <div class="row">
     <div class="row">
   		<div class="col-xs-12 col-md-8" id="Principal"></div>
-  		<div class="col-xs-6 col-md-4" id="Lista"></div>
+  		<div class="col-xs-6 col-md-4" id="Lista" style="height: 80vh; overflow-y: auto;"></div>
 	</div>
   </div>
 </div>

@@ -23,7 +23,14 @@ public class ControlPath {
     public static String impactCategoriesForm= "/views/impactCategoryForm.jsp";
     public static Object impactCategoriesClick= "/impactCategories";
     
-    public static String listView= "/views/list.jsp";    
+    public static String triggerSpecPath="C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_TRIGGER_SPEC_pricing.xml";
+    public static String triggerSpecPointer="triggerSpec";
+    public static Object triggerSpecClick="/triggerSpec";
+    public static String triggerSpecView="/views/triggerSpecView.jsp";
+    
+    public static String listView= "/views/list.jsp";
+    
+    
     
     
 }
