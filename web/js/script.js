@@ -5,6 +5,16 @@ function limpiar(){
     $('#addModalLabel').html("");
 }
 
+function getChecks(){
+    var checks="";
+    var elements= document.getElementsByClassName("listChecks");
+    for(var i=0; i< elements.length; i++){
+        if(elements[i].checked)
+            checks+=","+(elements[i].id.split("-"))[1];
+    }
+    return checks;
+}
+
 function modificar(path, title, id){
         limpiar();
        $.post(path,{"id":id, "title": title},function(responseText) {
@@ -20,27 +30,38 @@ function agregar(path, id){
         $('#addModalLabel').html(title);
         });
 }
-
+var del="0";
 function eliminar(path, id){
         limpiar();
+        if(id.includes(",")){
+            del="1"
+        }else{
+            del="0"
+        }
+        if(id=="-6")
+            id=id+getChecks();
         $.post(path,{"id": id , "title": "del"},function(responseText) {
         });
 }
 
-
-
 function hacerlist(path){
-       
-       $('#Infomessage').text("Aloha");
+       $('#InfoMessage').text('Loading...');
        $.get(path,function(responseText) {
         $('#Lista').html(responseText);
+        $('#InfoMessage').text('');
         });
       }
-      
-function hacerClick(path,id){
+
+var clicking= true;
+function hacerClick(element,path,id){
+       if(clicking){
+       $('#InfoMessage').text('Loading...');
        $.get(path,{"id":id},function(responseText) {
         $('#Principal').html(responseText);
-        });
+        $('#InfoMessage').text('');
+        });}else{
+            clicking=true;
+        }
       }
       
 function buscar(id, tipo){
@@ -96,22 +117,32 @@ function recorrer(){
 }
 
 function update(){
+    $('#InfoMessage').text('Updating...');
     var response= recorrer();
          $.get('/modificar',{"Documento":response},function(responseText) {
         $('#Principal').html(responseText);
+        $('#InfoMessage').text('');
         });
 }
 
 function add(){
+    $('#InfoMessage').text('Adding...');
     var response= recorrer();
          $.get('/guardar',{"Documento":response},function(responseText) {
         $('#Lista').html(responseText);
+        $('#InfoMessage').text('');
         });
 }
 
 function remove(){
-    
+    $('#InfoMessage').text('Deleting...');
     $.get('/eliminar',function(responseText) {
-        $('#Principal').html(responseText);
+        if(del=="0"){
+            $('#Lista').html(responseText);
+            $('#Principal').html("");}
+        else{
+            $('#Principal').html(responseText);
+        }
+        $('#InfoMessage').text('');
         });
 }

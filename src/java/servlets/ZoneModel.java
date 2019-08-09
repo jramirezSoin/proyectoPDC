@@ -123,6 +123,13 @@ public class ZoneModel extends HttpServlet {
                 request.getRequestDispatcher(ControlPath.zoneItemForm).forward(request, response);
             }else if(index.get(0)==-4){
                 request.getSession().setAttribute("del", index);
+            }else if(index.get(0)==-6){
+                request.getSession().setAttribute("del", index);
+            }else if(index.get(0)==-5){
+                ZoneModelT zoneModelT = new ZoneModelT(0);
+                request.getSession().setAttribute("index", index);
+                request.getSession().setAttribute("add", zoneModelT);
+                request.getRequestDispatcher(ControlPath.zoneModelForm).forward(request, response);
             }
         }
     }

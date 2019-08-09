@@ -55,7 +55,7 @@
                 <tr><th>Zone Item Name</th></tr>
                 <tr><td><%= item.getZoneResult().getZoneName()%></td></tr>
             </table></td>
-        <td><a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/zoneModels','Zone Item',<%=item.getId()%>);"><i class="glyphicon glyphicon-pencil"></i></a>
+        <td><a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/zoneModels','Zone Item',<%=item.getId()%>);"><i class="glyphicon glyphicon-pencil"></i></a></td><td>
         <a data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/zoneModels','-4,<%=item.getId()%>')"><i class="glyphicon glyphicon-trash"></i></a></td>
         </tr>
         <%}%>

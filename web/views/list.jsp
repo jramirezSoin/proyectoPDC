@@ -9,6 +9,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div style="padding: 20px;">
+    <i class="glyphicon glyphicon-minus" onclick="$('#hamburguer').toggle(); $('#Lista').toggle();"></i>
               <form class="navbar-form navbar-left">
         <div class="form-group">
           <input type="text" class="form-control" id="Buscador" placeholder="Search">
@@ -17,8 +18,8 @@
       </form>
         <div class="btn-group btn-group-sm" role="group" aria-label="...">   
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>', -2);">add</button>
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>', -2);">edit</button>
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>', -2);">delete</button>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="modificar('<%=request.getSession().getAttribute("click")%>','','-5');">edit</button>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('<%=request.getSession().getAttribute("click")%>', '-6');">delete</button>
         </div>
         
         <% ArrayList<Nodo> zoneModels = (ArrayList<Nodo>) request.getSession().getAttribute("lista"); %>
@@ -26,7 +27,15 @@
         <ul class="list-group">
         <% for(int i=0; i<zoneModels.size(); i++){%>
         <%if(zoneModels.get(i).visibilidad){%>
-        <a class="list-group-item" onclick="hacerClick('<%=request.getSession().getAttribute("click")%>',<%= ((ListaT)zoneModels.get(i)).id%>)"><%= ((ListaT)zoneModels.get(i)).valor.replaceAll("_"," ")%></a>
+        <a class="list-group-item" onclick="hacerClick(this,'<%=request.getSession().getAttribute("click")%>',<%= ((ListaT)zoneModels.get(i)).id%>)"><input type="checkbox" class="form-check-input listChecks" id="exampleCheck-<%= ((ListaT)zoneModels.get(i)).id%>"> <%= ((ListaT)zoneModels.get(i)).valor.replaceAll("_"," ")%></a>
         <%}}%>
         </ul>
+
+        <script type="text/javascript">
+            $(".form-check-input").on("click",function(ev){
+                if(ev.target == this)clicking=false;
+                else clicking=true;
+                return true;
+            });
+        </script>
 </div>

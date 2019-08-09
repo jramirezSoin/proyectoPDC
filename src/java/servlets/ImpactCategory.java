@@ -105,6 +105,15 @@ public class ImpactCategory extends HttpServlet {
             ArrayList<Integer> indexs = new ArrayList<>();
             indexs.add(-4);
             request.getSession().setAttribute("del", indexs);
+        }else{
+            ArrayList<Integer> index= new ArrayList<>();
+            String[] arrOfStr = id.split(",");
+            for (String a : arrOfStr){
+                 index.add(Integer.parseInt(a));}
+            if(index.get(0)==-6){
+                request.getSession().setAttribute("del", index);
+            }
+            
         }
         
     }

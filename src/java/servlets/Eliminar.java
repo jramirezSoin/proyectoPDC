@@ -56,21 +56,30 @@ public class Eliminar extends HttpServlet {
         String path=(String) request.getSession().getAttribute("actualPath");
         String pointer=(String) request.getSession().getAttribute("actualPoint");
         request.getSession().setAttribute("del",null);
-        if(index==null || index.size()==1){
+        if(index==null || (index.size()==1 && index.get(0)==-4)){
             Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
             XmlParser.Eliminar(path, path, pointer, nodo.id);
             request.getSession().setAttribute("principal",null);
             ArrayList<String> impactCategories = XmlParser.Leer(new File(path) , pointer);
-            ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(impactCategories);             
-            request.getSession().setAttribute("lista", zoneModelsId);
+            ArrayList<ListaT> lista = ControlFunctions.ListS2ListT(impactCategories);             
+            request.getSession().setAttribute("lista", lista);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
-            index.remove(0);
-            nodo.eliminar(index);
-            request.getSession().setAttribute("principal", nodo);
-            XmlParser.Modificar(path, path, nodo.toString(), pointer, nodo.id);
-            request.getRequestDispatcher((String) request.getSession().getAttribute("actualView")).forward(request, response);
+            if(index.get(0)==-4){
+                Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
+                index.remove(0);
+                nodo.eliminar(index);
+                request.getSession().setAttribute("principal", nodo);
+                XmlParser.Modificar(path, path, nodo.toString(), pointer, nodo.id);
+                request.getRequestDispatcher((String) request.getSession().getAttribute("actualView")).forward(request, response);}
+            else if(index.get(0)==-6){
+                index.remove(0);
+                XmlParser.EliminarMasivo(path, path, pointer, index);
+                ArrayList<String> impactCategories = XmlParser.Leer(new File(path) , pointer);
+                ArrayList<ListaT> lista = ControlFunctions.ListS2ListT(impactCategories);             
+                request.getSession().setAttribute("lista", lista);
+                request.getRequestDispatcher(ControlPath.listView).forward(request, response);
+            }
         }
         
     }

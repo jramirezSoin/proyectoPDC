@@ -197,8 +197,7 @@ public class XmlParser {
             // 1. cargar el XML original
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(new File(archivoViejo));
-            
+            Document doc = builder.parse(new File(archivoViejo));           
             // 2. buscar y eliminar el elemento <enfermera id="3"> de entre
             //    muchos elementos <enfermera> ubicados en cualquier posicion del documento
             NodeList items = doc.getElementsByTagName(tag);
@@ -255,4 +254,39 @@ public class XmlParser {
             Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+        public static void EliminarMasivo(String archivoViejo, String archivoNuevo, String tag, ArrayList<Integer> index) {
+         System.out.println("ENTRA");
+            try {
+            // 1. cargar el XML original
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new File(archivoViejo));
+            // 2. buscar y eliminar el elemento <enfermera id="3"> de entre
+            //    muchos elementos <enfermera> ubicados en cualquier posicion del documento
+            NodeList items = doc.getElementsByTagName(tag);
+            Node parent= items.item(0).getParentNode();
+            int cont=0;
+            for(int i: index){
+                   parent.removeChild(items.item(i-cont));
+                   cont++;
+            }
+            // 3. Exportar nuevamente el XML
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            Result output = new StreamResult(new File(archivoNuevo));
+            Source input = new DOMSource(doc);
+            transformer.transform(input, output);
+        } catch (SAXException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerConfigurationException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }
