@@ -92,7 +92,21 @@ public class ImpactCategory extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         request.getSession().setAttribute("index", null);
-        request.getRequestDispatcher(ControlPath.impactCategoriesForm).forward(request, response);
+        String id= request.getParameter("id");
+        if(id==null || id.equals("-1")){
+            request.getSession().setAttribute("add",null);
+            request.getRequestDispatcher(ControlPath.impactCategoriesForm).forward(request, response);}
+        else if(id.equals("-2")){
+            ImpactCategoryT impactCategoryT= new ImpactCategoryT(0);
+            request.getSession().setAttribute("add", impactCategoryT);
+            request.getSession().setAttribute("addView",ControlPath.impactCategoriesView);
+            request.getRequestDispatcher(ControlPath.impactCategoriesForm).forward(request, response);
+        }else if(id.equals("-4")){
+            ArrayList<Integer> indexs = new ArrayList<>();
+            indexs.add(-4);
+            request.getSession().setAttribute("del", indexs);
+        }
+        
     }
 
     /**

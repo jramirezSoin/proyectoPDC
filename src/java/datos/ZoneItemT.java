@@ -12,12 +12,12 @@ import java.util.ArrayList;
  * @author Joseph Ramírez
  */
 public class ZoneItemT extends Nodo{
-    private String productName;
-    private String originPrefix;
-    private String destinationPrefix;
-    private String validFrom;
-    private String validTo;
-    private ZoneResult zoneResult;
+    private String productName="";
+    private String originPrefix="";
+    private String destinationPrefix="";
+    private String validFrom="";
+    private String validTo="";
+    private ZoneResult zoneResult= new ZoneResult();
 
     public ZoneItemT(int id, String productName, String originPrefix, String destinationPrefix, String validFrom, String validTo, String zoneName) {
         this.id = id;
@@ -29,7 +29,7 @@ public class ZoneItemT extends Nodo{
         this.zoneResult = new ZoneResult(zoneName);
     }
 
-    ZoneItemT(int id) {
+    public ZoneItemT(int id) {
         this.id=id;
     }
 
@@ -142,7 +142,7 @@ public class ZoneItemT extends Nodo{
     
     
     public class ZoneResult extends Nodo{
-        private String ZoneName;
+        private String ZoneName="";
 
         public ZoneResult(String ZoneName) {
             this.ZoneName = ZoneName;

@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,6 +30,18 @@ public class Login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        session.setAttribute("index", null);
+        session.setAttribute("add", null);
+        session.setAttribute("addView", null);
+        session.setAttribute("principal", null);
+        session.setAttribute("lista", null);
+        session.setAttribute("actual", null);
+        session.setAttribute("actualView", null);
+        session.setAttribute("actualPath", null);
+        session.setAttribute("actualPoint", null);
+        session.setAttribute("titulo", null);
+        session.setAttribute("click", null);
         
         
     }

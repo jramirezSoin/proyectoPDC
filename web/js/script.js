@@ -1,11 +1,36 @@
+function limpiar(){
+    $('#ModalBody').html("");
+    $('#exampleModalLabel').html("");
+    $('#addModalBody').html("");
+    $('#addModalLabel').html("");
+}
+
 function modificar(path, title, id){
+        limpiar();
        $.post(path,{"id":id, "title": title},function(responseText) {
         $('#ModalBody').html(responseText);
         $('#exampleModalLabel').html(title);
         });
 }
 
+function agregar(path, id){
+        limpiar();
+        $.post(path,{"id": id , "title": "add"},function(responseText) {
+        $('#addModalBody').html(responseText);
+        $('#addModalLabel').html(title);
+        });
+}
+
+function eliminar(path, id){
+        limpiar();
+        $.post(path,{"id": id , "title": "del"},function(responseText) {
+        });
+}
+
+
+
 function hacerlist(path){
+       $('#Infomessage').text("Aloha");
        $.get(path,function(responseText) {
         $('#Lista').html(responseText);
         });
@@ -65,19 +90,27 @@ function recorrer(){
         }
     }
     console.log(response);
-     $.get('/modificar',{"Documento":response},function(responseText) {
-        $('#Principal').html(responseText);
-        });
+    return response;
     
 }
 
-function eliminar(){
-    $.get('/eliminar',function(responseText) {
-        $('#Lista').html(responseText);
-        $('#Principal').html("");
+function update(){
+    var response= recorrer();
+         $.get('/modificar',{"Documento":response},function(responseText) {
+        $('#Principal').html(responseText);
         });
 }
-      
-      
 
+function add(){
+    var response= recorrer();
+         $.get('/guardar',{"Documento":response},function(responseText) {
+        $('#Lista').html(responseText);
+        });
+}
 
+function remove(){
+    
+    $.get('/eliminar',function(responseText) {
+        $('#Principal').html(responseText);
+        });
+}

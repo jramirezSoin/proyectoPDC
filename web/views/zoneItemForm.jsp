@@ -5,7 +5,8 @@
 <%@page import="datos.ZoneModelT"%>
 <%@page import="datos.ZoneItemT"%>
 <%int index= ((ArrayList<Integer>)request.getSession().getAttribute("index")).get(0);%>
-<% ZoneItemT zoneItem = ((ZoneModelT)request.getSession().getAttribute("principal")).getZoneItems().get(index);%>
+<% ZoneItemT zoneItem = (ZoneItemT) request.getSession().getAttribute("add");%>
+<%if(zoneItem==null){zoneItem = ((ZoneModelT)request.getSession().getAttribute("principal")).getZoneItems().get(index);}%>
 <form style="margin: 20px;" id="formulaire">
 <div class="form-group row">
 <label for="productName">Product Name</label>

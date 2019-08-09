@@ -1,9 +1,10 @@
 <%@page import="datos.ZoneModelT"%>
-<% ZoneModelT zoneModel = (ZoneModelT) request.getSession().getAttribute("principal");%>
+<% ZoneModelT zoneModel = (ZoneModelT) request.getSession().getAttribute("add");%>
+<% if(zoneModel==null){zoneModel = (ZoneModelT) request.getSession().getAttribute("principal");}%>
 <form style="margin: 20px;" id="formulaire">
 <div class="form-group row">
 <label for="name">name</label>
-<input readonly class="form-control" type="text" id="-name" placeholder="name" value="<%=zoneModel.getName()%>"/>
+<input <%=(!zoneModel.getName().equals(""))?"readonly":""%> class="form-control" type="text" id="-name" placeholder="name" value="<%=zoneModel.getName()%>"/>
 </div>
 <div class="form-group row">
 <label for="description">Description</label>
@@ -11,7 +12,7 @@
 </div>
 <div class="form-group row">
 <label for="internalId">Internal Id</label>
-<input readonly class="form-control" type="text" id="-internalId" placeholder="Internal Id" value="<%=zoneModel.getInternalId()%>"/>
+<input <%=(!zoneModel.getInternalId().equals(""))?"readonly":""%> class="form-control" type="text" id="-internalId" placeholder="Internal Id" value="<%=zoneModel.getInternalId()%>"/>
 </div>
 <div class="form-group row">
 <label for="priceListName">PriceList Name</label>

@@ -89,9 +89,6 @@ public class XmlParser {
                   if(eElement.hasChildNodes()) {
                     NodeList nl = node.getChildNodes();
                     if(nl.getLength()>1){
-                       for(int j=0; j<level; j++)
-                         System.out.print("  ");
-                       System.out.println(((Element)nl).getNodeName());
                        
                        Element element2 = doc.createElement(((Element)nl).getNodeName());
                        NamedNodeMap  namedNodeMap = eElement.getAttributes();
@@ -112,18 +109,12 @@ public class XmlParser {
                       }
                   }else{
                      Element eElement2 = (Element) nl;
-                     for(int j=0; j<level; j++)
-                         System.out.print("  ");
-                     System.out.println(eElement2.getNodeName()+": "+eElement2.getTextContent());
                      Element element2 = doc.createElement(eElement2.getNodeName());
                      element2.appendChild(doc.createTextNode(eElement2.getTextContent()));
                      element.appendChild(element2);
                   }
                     
                     }else{
-                     for(int j=0; j<level; j++)
-                         System.out.print("  ");
-                     System.out.println(eElement.getNodeName()+": "+eElement.getTextContent());
                      Element element2 = doc.createElement(eElement.getNodeName());
                      element2.appendChild(doc.createTextNode(eElement.getTextContent()));
                      element.appendChild(element2);
@@ -139,7 +130,6 @@ public class XmlParser {
             Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getChildNodes().item(0).getChildNodes();
-            System.out.println("cant: "+nList.getLength());
             lista.clear();
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
@@ -159,7 +149,6 @@ public class XmlParser {
             Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getChildNodes().item(0).getChildNodes();
-            System.out.println("cant: "+nList.getLength());
             Node node = nList.item(index);
             mainRSeleccionado(node, 0);
             return lista;
@@ -214,6 +203,41 @@ public class XmlParser {
             //    muchos elementos <enfermera> ubicados en cualquier posicion del documento
             NodeList items = doc.getElementsByTagName(tag);
             items.item(id).getParentNode().removeChild(items.item(id));
+            // 3. Exportar nuevamente el XML
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            Result output = new StreamResult(new File(archivoNuevo));
+            Source input = new DOMSource(doc);
+            transformer.transform(input, output);
+        } catch (SAXException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerConfigurationException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public static void Agregar(String archivoViejo, String archivoNuevo, String contenido, String tag){
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc1 = db.parse(new ByteArrayInputStream(contenido.getBytes("UTF-8")));
+            Node element = doc1.getElementsByTagName(tag).item(0);
+            // 1. cargar el XML original
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new File(archivoViejo));
+            
+            // 2. buscar y eliminar el elemento <enfermera id="3"> de entre
+            //    muchos elementos <enfermera> ubicados en cualquier posicion del documento
+            NodeList items = doc.getElementsByTagName(tag);
+            element = doc.importNode(element, true);
+            items.item(0).getParentNode().appendChild(element);
+            
+            
             // 3. Exportar nuevamente el XML
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             Result output = new StreamResult(new File(archivoNuevo));

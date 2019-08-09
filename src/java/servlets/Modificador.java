@@ -56,12 +56,16 @@ public class Modificador extends HttpServlet {
         Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
         if(indexs==null || indexs.size()==0)
             nodo.procesar(lista, 0);
-        else
+        else if(indexs.get(0)>=0)
             nodo.procesarI(lista,0,indexs);
+        else if(indexs.get(0)==-3){
+            Nodo nodoI = (Nodo) request.getSession().getAttribute("add");
+            nodoI.procesar(lista, 0);
+            nodo.agregar(nodoI, indexs);
+        }
         request.getSession().setAttribute("principal", nodo);
         String path=(String) request.getSession().getAttribute("actualPath");
         String pointer=(String) request.getSession().getAttribute("actualPoint");
-        System.out.println(nodo.toString());
         XmlParser.Modificar(path, path, nodo.toString(), pointer, nodo.id);
         request.getRequestDispatcher((String) request.getSession().getAttribute("actualView")).forward(request, response);
     }

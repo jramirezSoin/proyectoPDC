@@ -12,13 +12,13 @@ import java.util.ArrayList;
  * @author Joseph Ramírez
  */
 public class ImpactCategoryT extends Nodo{
-    private String name;
-    private String description;
-    private String internalId;
-    private String priceListName;
-    private boolean obsolete;
-    private String result;
-    private String resultType;
+    private String name="";
+    private String description="";
+    private String internalId="";
+    private String priceListName="";
+    private boolean obsolete=false;
+    private String result="";
+    private String resultType="";
     
     public ImpactCategoryT(int id){
         this.id= id;
@@ -111,7 +111,6 @@ public class ImpactCategoryT extends Nodo{
 
     @Override
     public int procesar(ArrayList<String> impactCategories, int index) {
-        System.out.println("Entra al procesador"+impactCategories.get(0));
         for(int i=index; i<impactCategories.size();i++) {
             
             if(impactCategories.get(i).matches("name: (.*)")) this.name= impactCategories.get(i).substring(6);
@@ -129,7 +128,6 @@ public class ImpactCategoryT extends Nodo{
     
     @Override
     public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
-        System.out.println("Entra al procesadorI"+lista.get(0));
         if(indexs.size()==0)
             index= this.procesar(lista, index);
         return index;

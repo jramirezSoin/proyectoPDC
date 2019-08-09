@@ -52,16 +52,26 @@ public class Eliminar extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
+        ArrayList<Integer> index= (ArrayList<Integer>) request.getSession().getAttribute("del");
         String path=(String) request.getSession().getAttribute("actualPath");
         String pointer=(String) request.getSession().getAttribute("actualPoint");
-        XmlParser.Eliminar(path, path, pointer, nodo.id);
-        request.getSession().setAttribute("principal",null);
-        
-        ArrayList<String> impactCategories = XmlParser.Leer(new File(path) , pointer);
-        ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(impactCategories);             
-        request.getSession().setAttribute("lista", zoneModelsId);
-        request.getRequestDispatcher(ControlPath.listView).forward(request, response);   
+        request.getSession().setAttribute("del",null);
+        if(index==null || index.size()==1){
+            Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
+            XmlParser.Eliminar(path, path, pointer, nodo.id);
+            request.getSession().setAttribute("principal",null);
+            ArrayList<String> impactCategories = XmlParser.Leer(new File(path) , pointer);
+            ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(impactCategories);             
+            request.getSession().setAttribute("lista", zoneModelsId);
+            request.getRequestDispatcher(ControlPath.listView).forward(request, response);
+        }else{
+            Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
+            index.remove(0);
+            nodo.eliminar(index);
+            request.getSession().setAttribute("principal", nodo);
+            XmlParser.Modificar(path, path, nodo.toString(), pointer, nodo.id);
+            request.getRequestDispatcher((String) request.getSession().getAttribute("actualView")).forward(request, response);
+        }
         
     }
 

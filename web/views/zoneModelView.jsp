@@ -9,8 +9,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% ZoneModelT zoneModel = (ZoneModelT) request.getSession().getAttribute("principal");%>
 <h1>Zone Model <%= zoneModel.getName()%></h1>
-<a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/zoneModels','Zone Model',-1);">edit</a>
-<a data-toggle="modal" data-target="#eliminarModal">delete</a>
+<a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/zoneModels','Zone Model','-1');">edit</a>
+<a data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/zoneModels','-4')">delete</a>
 <p>Description: <%= zoneModel.getDescription()%></p>
 <p>Internal Id: <%= zoneModel.getInternalId()%></p>
 <p>PriceList Name: <%= zoneModel.getPriceListName()%></p>
@@ -20,6 +20,7 @@
             <input type="search" id="BuscaZoneItem" placeholder="Buscar"/>
             <input type="button" onclick="buscar('BuscaZoneItem','Principal')" value="Buscar">
         </form>
+<a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/zoneModels','Zone Item','-3');">add</a>
 <table>
     <tr>
         <th>Product Name</th>
@@ -43,7 +44,8 @@
                 <tr><th>Zone Item Name</th></tr>
                 <tr><td><%= item.getZoneResult().getZoneName()%></td></tr>
             </table></td>
-        <td><a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/zoneModels','Zone Item',<%=item.getId()%>);">edit</a></td>
+        <td><a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/zoneModels','Zone Item',<%=item.getId()%>);">edit</a>
+        <a data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/zoneModels','-4,<%=item.getId()%>')">delete</a></td>
         </tr>
         <%}%>
     <%}%>

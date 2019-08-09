@@ -26,5 +26,13 @@ public class Nodo {
     public int procesarI(ArrayList<String> lista, int i, ArrayList<Integer> indexs) {
         return 0;
     }
+
+    public void agregar(Nodo nodo, ArrayList<Integer> index) {
+        
+    }
+
+    public void eliminar(ArrayList<Integer> index) {
+        
+    }
     
 }

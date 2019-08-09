@@ -51,14 +51,11 @@ public class Buscador extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        System.out.println("Entra al buscador");
         if(((String)request.getParameter("tipo")).equals("Lista")){
-            System.out.println("Busca una lista");
             ArrayList<Nodo> lista= buscarLista(request.getParameter("buscar"),(ArrayList<Nodo>) request.getSession().getAttribute("lista")); 
             request.getSession().setAttribute("lista", lista);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);}
         else{
-            System.out.println("Busca un nodo");
             Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
             nodo.buscar(request.getParameter("buscar"));
             request.getSession().setAttribute("principal", nodo);
@@ -91,6 +88,7 @@ public class Buscador extends HttpServlet {
     }// </editor-fold>
     
     public ArrayList<Nodo> buscarLista(String buscar, ArrayList<Nodo> lista){
+        buscar= buscar.replaceAll(" ", "_");
         for(Nodo nodo : lista ){
             nodo.buscar(buscar);
         }

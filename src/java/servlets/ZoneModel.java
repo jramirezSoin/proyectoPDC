@@ -8,6 +8,7 @@ package servlets;
 import control.ControlFunctions;
 import control.ControlPath;
 import datos.ListaT;
+import datos.ZoneItemT;
 import datos.ZoneModelT;
 import java.io.File;
 import java.io.IOException;
@@ -93,13 +94,36 @@ public class ZoneModel extends HttpServlet {
         processRequest(request, response);
         String id = request.getParameter("id");
         
-        if(id==null || id.equals("-1"))
+        if(id==null || id.equals("-1")){
+            request.getSession().setAttribute("add",null);
+            request.getSession().setAttribute("index",null);
+            request.getRequestDispatcher(ControlPath.zoneModelForm).forward(request, response);}
+        else if(id.equals("-2")){
+            ZoneModelT zoneModelT= new ZoneModelT(0);
+            request.getSession().setAttribute("index",null);
+            request.getSession().setAttribute("add", zoneModelT);
+            request.getSession().setAttribute("addView",ControlPath.zoneModelsView);
             request.getRequestDispatcher(ControlPath.zoneModelForm).forward(request, response);
-        else{
+        }
+        else {
             ArrayList<Integer> index= new ArrayList<>();
-            index.add(Integer.parseInt(id));
-            request.getSession().setAttribute("index", index);
-            request.getRequestDispatcher(ControlPath.zoneItemForm).forward(request, response);
+            String[] arrOfStr = id.split(",");
+            for (String a : arrOfStr){
+                 index.add(Integer.parseInt(a));}
+            if(index.get(0)>=0){
+                request.getSession().setAttribute("add",null);
+                request.getSession().setAttribute("index", index);
+                request.getRequestDispatcher(ControlPath.zoneItemForm).forward(request, response);}
+            else if(index.get(0)==-3){
+                ZoneModelT zoneModel = (ZoneModelT) request.getSession().getAttribute("principal");
+                ZoneItemT zoneItemT = new ZoneItemT(zoneModel.getZoneItems().size());
+                request.getSession().setAttribute("index", index);
+                request.getSession().setAttribute("add", zoneItemT);
+                request.getSession().setAttribute("addView",ControlPath.zoneModelsView);
+                request.getRequestDispatcher(ControlPath.zoneItemForm).forward(request, response);
+            }else if(index.get(0)==-4){
+                request.getSession().setAttribute("del", index);
+            }
         }
     }
 

@@ -12,11 +12,11 @@ import java.util.ArrayList;
  * @author Joseph Ramírez
  */
 public class ZoneModelT extends Nodo{
-    private String name;
-    private String description;
-    private String internalId;
-    private String priceListName;
-    private boolean obsolete;
+    private String name="";
+    private String description="";
+    private String internalId="";
+    private String priceListName="";
+    private boolean obsolete=false;
     private ArrayList<ZoneItemT> zoneItems;
     
     public ZoneModelT(int id){
@@ -149,6 +149,21 @@ public class ZoneModelT extends Nodo{
         }else{
             this.visibilidad=false;
             return false;
+        }
+    }
+    
+    
+    @Override
+    public void agregar(Nodo nodo, ArrayList<Integer> index) {
+        this.zoneItems.add((ZoneItemT) nodo);
+    }
+    
+    @Override   
+    public void eliminar(ArrayList<Integer> index) {
+
+        this.zoneItems.remove(((int) index.get(0)));
+        for(int i=index.get(0); i<this.zoneItems.size();i++){
+            this.zoneItems.get(i).id--;
         }
     }
     

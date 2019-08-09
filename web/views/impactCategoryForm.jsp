@@ -5,11 +5,12 @@
 --%>
 
 <%@page import="datos.ImpactCategoryT"%>
-<% ImpactCategoryT impactCategory = (ImpactCategoryT) request.getSession().getAttribute("principal");%>
+<% ImpactCategoryT impactCategory = (ImpactCategoryT) request.getSession().getAttribute("add");%>
+<% if(impactCategory==null){impactCategory = (ImpactCategoryT) request.getSession().getAttribute("principal");}%>
 <form style="margin: 20px;" id="formulaire">
 <div class="form-group row">
 <label for="-name">name</label>
-<input readonly class="form-control" type="text" id="-name" placeholder="name" value="<%=impactCategory.getName()%>"/>
+<input <%=(!impactCategory.getName().equals(""))?"readonly":""%> class="form-control" type="text" id="-name" placeholder="name" value="<%=impactCategory.getName()%>"/>
 </div>
 <div class="form-group row">
 <label for="-description">Description</label>
@@ -17,7 +18,7 @@
 </div>
 <div class="form-group row">
 <label for="-internalId">Internal Id</label>
-<input readonly class="form-control" type="text" id="-internalId" placeholder="Internal Id" value="<%=impactCategory.getInternalId()%>"/>
+<input <%=(!impactCategory.getInternalId().equals(""))?"readonly":""%> class="form-control" type="text" id="-internalId" placeholder="Internal Id" value="<%=impactCategory.getInternalId()%>"/>
 </div>
 <div class="form-group row">
 <label for="-priceListName">PriceList Name</label>
@@ -31,7 +32,7 @@
 </div>
 <div class="form-group row">
 <label for="-result">Result</label>
-<input readonly class="form-control" type="text" id="-result" placeholder="Result" value="<%=impactCategory.getResult()%>"/>
+<input <%=(!impactCategory.getResult().equals(""))?"readonly":""%> class="form-control" type="text" id="-result" placeholder="Result" value="<%=impactCategory.getResult()%>"/>
 </div>
 <div class="form-group row">
 <label for="-resultType">PriceList Name</label>

@@ -9,7 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% ImpactCategoryT impactCategory = (ImpactCategoryT) request.getSession().getAttribute("principal");%>
 <h1>Impact Category <%= impactCategory.getName()%></h1>
-<a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/impactCategories','Impact Category',0);">edit</a>
+<a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/impactCategories','Impact Category',-1);">edit</a>
 <a data-toggle="modal" data-target="#eliminarModal">delete</a>
 <p>Description: <%= impactCategory.getDescription()%></p>
 <p>Internal Id: <%= impactCategory.getInternalId()%></p>

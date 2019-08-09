@@ -5,7 +5,11 @@
  */
 package servlets;
 
+import control.ControlFunctions;
+import control.ControlPath;
+import datos.ListaT;
 import datos.Nodo;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -13,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import xml.XmlParser;
 
 /**
  *
@@ -48,14 +53,27 @@ public class Guardar extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        ArrayList<Nodo> nodos = (ArrayList<Nodo>) request.getSession().getAttribute("guardados");
-        if(nodos!=null)
-            nodos.add((Nodo) request.getSession().getAttribute("principal"));
-        else{
-            nodos = new ArrayList<>();
-            nodos.add((Nodo) request.getSession().getAttribute("principal"));
-        }
-        request.getSession().setAttribute("guardados", nodos);
+        ArrayList<String> lista = new ArrayList<>();
+        String[] arrOfStr = ((String)request.getParameter("Documento")).split("\n"); 
+        for (String a : arrOfStr) 
+            lista.add(a);
+        Nodo nodo = (Nodo) request.getSession().getAttribute("add");
+        nodo.procesar(lista, 0);
+        String view= (String) request.getSession().getAttribute("addView");
+        request.getSession().setAttribute("actualView", view);
+        request.getSession().setAttribute("principal", nodo);
+        request.getSession().setAttribute("add", null);
+        String path=(String) request.getSession().getAttribute("actualPath");
+        String pointer=(String) request.getSession().getAttribute("actualPoint");
+        XmlParser.Agregar(path, path, nodo.toString(), pointer);
+        ArrayList<String> impactCategories = XmlParser.Leer(new File(path) , pointer);
+        ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(impactCategories);             
+        request.getSession().setAttribute("lista", zoneModelsId);
+        request.getRequestDispatcher(ControlPath.listView).forward(request, response);  
+        
+       
+        
+
     }
 
     /**
