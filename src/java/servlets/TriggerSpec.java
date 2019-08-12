@@ -7,6 +7,7 @@ package servlets;
 
 import control.ControlFunctions;
 import control.ControlPath;
+import datos.ExpressionT;
 import datos.ListaT;
 import datos.TriggerSpecT;
 import java.io.File;
@@ -57,7 +58,7 @@ public class TriggerSpec extends HttpServlet {
         ArrayList<String> triggerSpecs;
         HttpSession session = request.getSession();
         if(id==null){
-            triggerSpecs = XmlParser.Leer(new File(ControlPath.triggerSpecPath) , ControlPath.triggerSpecPointer);
+            triggerSpecs = XmlParser.Leer2(new File(ControlPath.triggerSpecPath) , ControlPath.triggerSpecPointer);
             ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(triggerSpecs);
              session.setAttribute("click", ControlPath.triggerSpecClick);           
             session.setAttribute("lista", zoneModelsId);
@@ -90,6 +91,47 @@ public class TriggerSpec extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String id = request.getParameter("id");
+        
+        if(id==null || id.equals("-1")){
+            
+            request.getSession().setAttribute("add",null);
+            request.getSession().setAttribute("index",null);
+            request.getRequestDispatcher(ControlPath.triggerSpecForm).forward(request, response);}
+        else if(id.equals("-2")){
+            TriggerSpecT triggerSpecT= new TriggerSpecT(0);
+            request.getSession().setAttribute("index",null);
+            request.getSession().setAttribute("add", triggerSpecT);
+            request.getSession().setAttribute("addView",ControlPath.triggerSpecView);
+            request.getRequestDispatcher(ControlPath.triggerSpecForm).forward(request, response);
+        }
+        else {
+            ArrayList<Integer> index= new ArrayList<>();
+            String[] arrOfStr = id.split(",");
+            for (String a : arrOfStr){
+                 index.add(Integer.parseInt(a));}
+            if(index.get(0)>=0){
+                request.getSession().setAttribute("add",null);
+                request.getSession().setAttribute("index", index);
+                request.getRequestDispatcher(ControlPath.expressionForm).forward(request, response);}
+            else if(index.get(0)==-3){
+                TriggerSpecT triggerSpec = (TriggerSpecT) request.getSession().getAttribute("principal");
+                ExpressionT expression = new ExpressionT(triggerSpec.getExpressions().size());
+                request.getSession().setAttribute("index", index);
+                request.getSession().setAttribute("add", expression);
+                request.getSession().setAttribute("addView",ControlPath.triggerSpecView);
+                request.getRequestDispatcher(ControlPath.expressionForm).forward(request, response);
+            }else if(index.get(0)==-4){
+                request.getSession().setAttribute("del", index);
+            }else if(index.get(0)==-6){
+                request.getSession().setAttribute("del", index);
+            }else if(index.get(0)==-5){
+                TriggerSpecT triggerSpecT = new TriggerSpecT(0);
+                request.getSession().setAttribute("index", index);
+                request.getSession().setAttribute("add", triggerSpecT);
+                request.getRequestDispatcher(ControlPath.triggerSpecForm).forward(request, response);
+            }
+        }
     }
 
     /**

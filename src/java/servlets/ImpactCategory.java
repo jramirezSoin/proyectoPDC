@@ -58,7 +58,7 @@ public class ImpactCategory extends HttpServlet {
         ArrayList<String> impactCategories;
         HttpSession session = request.getSession();
         if(id==null){
-            impactCategories = XmlParser.Leer(new File(ControlPath.impactCategoriesPath) , ControlPath.impactCategoriesPointer);
+            impactCategories = XmlParser.Leer2(new File(ControlPath.impactCategoriesPath) , ControlPath.impactCategoriesPointer);
             ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(impactCategories);
              session.setAttribute("click", ControlPath.impactCategoriesClick);           
             session.setAttribute("lista", zoneModelsId);

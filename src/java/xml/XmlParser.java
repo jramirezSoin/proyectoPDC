@@ -55,7 +55,9 @@ public class XmlParser {
                      Element eElement2 = (Element) nl;
                     if(eElement2.getNodeName().equals("name")){
                         if(node.getParentNode().getNodeName().equals(indicador)){
-                            lista.add(eElement2.getTextContent());}
+                            lista.add(eElement2.getTextContent());
+                            return;
+                        }
                        }
                   }
                 }
@@ -121,6 +123,29 @@ public class XmlParser {
                   }
                 }
         return doc;
+    }
+    
+    public static ArrayList<String> Leer2(File file, String indicador){
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName(indicador);
+            lista.clear();
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node node = nList.item(i);
+                for(int j=0; j< node.getChildNodes().getLength(); j++){
+                    if(node.getChildNodes().item(j).getNodeName().equals("name")){
+                        lista.add(node.getChildNodes().item(j).getTextContent());
+                        j= node.getChildNodes().getLength();
+                    }
+                }
+            }
+            return lista;
+        } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
+            return null;
+        }
     }
     
     public static ArrayList<String> Leer(File file, String indicador){
@@ -256,7 +281,7 @@ public class XmlParser {
     }
 
         public static void EliminarMasivo(String archivoViejo, String archivoNuevo, String tag, ArrayList<Integer> index) {
-         System.out.println("ENTRA");
+         
             try {
             // 1. cargar el XML original
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

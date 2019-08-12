@@ -7,14 +7,15 @@ package servlets;
 
 import control.ControlFunctions;
 import control.ControlPath;
+import datos.BalanceElementT;
 import datos.ListaT;
-import datos.ZoneItemT;
-import datos.ZoneModelT;
+import datos.RoundingRuleT;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +26,9 @@ import xml.XmlParser;
  *
  * @author Joseph Ramírez
  */
-public class ZoneModel extends HttpServlet {
-   
+@WebServlet(name = "BalanceElement", urlPatterns = {"/balanceElement"})
+public class BalanceElement extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,7 +40,6 @@ public class ZoneModel extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -55,29 +56,28 @@ public class ZoneModel extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         String id = request.getParameter("id");
-        ArrayList<String> zoneModels;
+        ArrayList<String> balances;
         HttpSession session = request.getSession();
         if(id==null){
-            zoneModels = XmlParser.Leer2(new File(ControlPath.zoneModelsPath) , ControlPath.zoneModelsPointer);
-            ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(zoneModels);
-             session.setAttribute("click", ControlPath.zoneModelsClick);           
-            session.setAttribute("lista", zoneModelsId);
-            session.setAttribute("titulo", "Zone Models");
+            balances = XmlParser.Leer2(new File(ControlPath.balanceElementPath) , ControlPath.balanceElementPointer);
+            ArrayList<ListaT> balancesId = ControlFunctions.ListS2ListT(balances);
+             session.setAttribute("click", ControlPath.balanceElementClick);           
+            session.setAttribute("lista", balancesId);
+            session.setAttribute("titulo", "Balance Elements");
             session.setAttribute("actual", "lista");
-            session.setAttribute("actualPath", ControlPath.zoneModelsPath);
-            session.setAttribute("actualPoint", ControlPath.zoneModelsPointer);
+            session.setAttribute("actualPath", ControlPath.balanceElementPath);
+            session.setAttribute("actualPoint", ControlPath.balanceElementPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            zoneModels= XmlParser.LeerSeleccionado(new File(ControlPath.zoneModelsPath) , Integer.parseInt(id));
-            ZoneModelT zoneModel = new ZoneModelT(Integer.parseInt(id));
-            zoneModel.procesar(zoneModels, 1);
-            session.setAttribute("principal", zoneModel);
+            balances= XmlParser.LeerSeleccionado(new File(ControlPath.balanceElementPath) , Integer.parseInt(id));
+            BalanceElementT balance = new BalanceElementT(Integer.parseInt(id));
+            balance.procesar(balances, 1);
+            session.setAttribute("principal", balance);
             session.setAttribute("actual", "zoneModel");
-            session.setAttribute("actualView", ControlPath.zoneModelsView);
-            request.getRequestDispatcher(ControlPath.zoneModelsView).forward(request, response);
+            session.setAttribute("actualView", ControlPath.balanceElementView);
+            request.getRequestDispatcher(ControlPath.balanceElementView).forward(request, response);
             
         }
-       
     }
 
     /**
@@ -97,13 +97,13 @@ public class ZoneModel extends HttpServlet {
         if(id==null || id.equals("-1")){
             request.getSession().setAttribute("add",null);
             request.getSession().setAttribute("index",null);
-            request.getRequestDispatcher(ControlPath.zoneModelForm).forward(request, response);}
+            request.getRequestDispatcher(ControlPath.balanceElementForm).forward(request, response);}
         else if(id.equals("-2")){
-            ZoneModelT zoneModelT= new ZoneModelT(0);
+            BalanceElementT balance= new BalanceElementT(0);
             request.getSession().setAttribute("index",null);
-            request.getSession().setAttribute("add", zoneModelT);
-            request.getSession().setAttribute("addView",ControlPath.zoneModelsView);
-            request.getRequestDispatcher(ControlPath.zoneModelForm).forward(request, response);
+            request.getSession().setAttribute("add", balance);
+            request.getSession().setAttribute("addView",ControlPath.balanceElementView);
+            request.getRequestDispatcher(ControlPath.balanceElementForm).forward(request, response);
         }
         else {
             ArrayList<Integer> index= new ArrayList<>();
@@ -113,23 +113,23 @@ public class ZoneModel extends HttpServlet {
             if(index.get(0)>=0){
                 request.getSession().setAttribute("add",null);
                 request.getSession().setAttribute("index", index);
-                request.getRequestDispatcher(ControlPath.zoneItemForm).forward(request, response);}
+                request.getRequestDispatcher(ControlPath.roundingRuleForm).forward(request, response);}
             else if(index.get(0)==-3){
-                ZoneModelT zoneModel = (ZoneModelT) request.getSession().getAttribute("principal");
-                ZoneItemT zoneItemT = new ZoneItemT(zoneModel.getZoneItems().size());
+                BalanceElementT balance = (BalanceElementT) request.getSession().getAttribute("principal");
+                RoundingRuleT rule = new RoundingRuleT(balance.getRoundingRules().size());
                 request.getSession().setAttribute("index", index);
-                request.getSession().setAttribute("add", zoneItemT);
-                request.getSession().setAttribute("addView",ControlPath.zoneModelsView);
-                request.getRequestDispatcher(ControlPath.zoneItemForm).forward(request, response);
+                request.getSession().setAttribute("add", rule);
+                request.getSession().setAttribute("addView",ControlPath.balanceElementView);
+                request.getRequestDispatcher(ControlPath.roundingRuleForm).forward(request, response);
             }else if(index.get(0)==-4){
                 request.getSession().setAttribute("del", index);
             }else if(index.get(0)==-6){
                 request.getSession().setAttribute("del", index);
             }else if(index.get(0)==-5){
-                ZoneModelT zoneModelT = new ZoneModelT(0);
+                BalanceElementT balance = new BalanceElementT(0);
                 request.getSession().setAttribute("index", index);
-                request.getSession().setAttribute("add", zoneModelT);
-                request.getRequestDispatcher(ControlPath.zoneModelForm).forward(request, response);
+                request.getSession().setAttribute("add", balance);
+                request.getRequestDispatcher(ControlPath.balanceElementForm).forward(request, response);
             }
         }
     }
@@ -143,7 +143,5 @@ public class ZoneModel extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    
 
 }

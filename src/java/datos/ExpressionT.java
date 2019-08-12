@@ -23,6 +23,10 @@ public class ExpressionT extends Nodo{
         this.tipo=tipo;
     }
     
+    public ExpressionT(int id) {
+        this.id=id;
+    }
+    
     public int getId() {
         return id;
     }
@@ -75,12 +79,13 @@ public class ExpressionT extends Nodo{
         @Override
     public int procesar(ArrayList<String> triggerSpecs, int index) {
         for(int i=index; i<triggerSpecs.size();i++) {
-            System.out.println(triggerSpecs.get(i));
+            
             if(triggerSpecs.get(i).matches("operator: (.*)")) this.operator= triggerSpecs.get(i).substring(10);
+            else if(triggerSpecs.get(i).matches("type: (.*)")) this.tipo= triggerSpecs.get(i).substring(6);
             else if(triggerSpecs.get(i).matches("value: (.*)")) this.value= triggerSpecs.get(i).substring(7);
-            else if(triggerSpecs.get(i).matches("balanceElementNumCode: (.*)")) this.balanceElementNumCode= triggerSpecs.get(i).substring(22);
+            else if(triggerSpecs.get(i).matches("balanceElementNumCode: (.*)")) this.balanceElementNumCode= triggerSpecs.get(i).substring(23);
             else if(triggerSpecs.get(i).matches("binaryOperator: (.*)")) this.binaryOperator= triggerSpecs.get(i).substring(16);
-            else if(("leftOperand rightOperand binaryExpression chargeExpression balanceExpression").contains(triggerSpecs.get(i))){
+            else if(("leftOperand rightOperand binaryExpression chargeExpression: balanceExpression").contains(triggerSpecs.get(i))){
                 
             }
             else return i;
@@ -105,6 +110,25 @@ public class ExpressionT extends Nodo{
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        String s="<"+tipo+">\n    <operator>"+operator+"</operator>\n    <value>"+value+"</value>\n";
+        if(tipo.equals("balanceTriggerExpression")){
+            s+="    <balanceElementNumCode>"+balanceElementNumCode+"</balanceElementNumCode>\n";
+        }
+        if(tipo.equals("complexTriggerExpression")){
+            s+="    <binaryExpression>\n        <leftOperand>\n            <balanceExpression>\n"
+                    +"                <balanceElementNumCode>"+balanceElementNumCode+"</balanceElementNumCode>\n"
+                    +"            </balanceExpression>\n        </leftOperand>\n        <rightOperand>\n"
+                    +"            <chargeExpression/>\n        </rightOperand>\n        <binaryOperator>"
+                    +binaryOperator+"</binaryOperator>\n    </binaryExpression>\n";
+                    
+        }
+        return s+"</"+tipo+">";
+    }
+    
+    
     
     
 }

@@ -10,7 +10,7 @@
 <% TriggerSpecT triggerSpec = (TriggerSpecT) request.getSession().getAttribute("principal");%>
 <h1>Trigger Spec <small><%= triggerSpec.getName()%></small></h1>
 <div class="btn-group btn-group-sm" role="group" aria-label="..."> 
-    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/triggerSpec','Zone Model','-1');">edit</button>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/triggerSpec','Trigger Spec','-1');">edit</button>
     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/triggerSpec','-4')">delete</button>
 </div>
 <hr>
@@ -25,9 +25,9 @@
 <h1><small>Expressions</small></h1>
     <form class="navbar-form navbar-left">
         <div class="form-group">
-          <input type="text" class="form-control" id="BuscaZoneItem" placeholder="Search">
+          <input type="text" class="form-control" id="BuscaExpression" placeholder="Search">
         </div>
-        <button type="button" onclick="buscar('BuscaZoneItem','Principal')" class="btn btn-default">Search</button>
+        <button type="button" onclick="buscar('BuscaExpression','Principal')" class="btn btn-default">Search</button>
     </form>
 <div class="btn-group btn-group-sm" role="group" aria-label="..."> 
 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/triggerSpec','Trigger Spec','-3');">add</a>
@@ -58,17 +58,17 @@
         <tbody>
         <tr>
             <td><%= item.getTipo()%></td>
-        <td><%= item.getOperator()%></td>
-        <td><%= item.getValue()%></td>
+        <td><%=item.getOperator()%></td>
+        <td><%=item.getValue()%></td>
         <% if(item.getTipo().equals("balanceTriggerExpression")){%>
-        <td><%= item.getBalanceElementNumCode()%></td>
+        <td><%=item.getBalanceElementNumCode()%></td>
         <%}else if(item.getTipo().equals("complexTriggerExpression")){%>
-        <td><%= item.getBalanceElementNumCode()%></td>
+        <td><%=item.getBalanceElementNumCode()%></td>
         <td>Charge Expression</td>
-        <td><%= item.getBinaryOperator()%></td>
+        <td><%=item.getBinaryOperator()%></td>
         <%}%>
-        <td><a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/zoneModels','Zone Item',<%=item.getId()%>);"><i class="glyphicon glyphicon-pencil"></i></a></td><td>
-        <a data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/zoneModels','-4,<%=item.getId()%>')"><i class="glyphicon glyphicon-trash"></i></a></td>
+        <td><a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/triggerSpec','Expression',<%=item.getId()%>);"><i class="glyphicon glyphicon-pencil"></i></a></td><td>
+        <a data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/triggerSpec','-4,<%=item.getId()%>')"><i class="glyphicon glyphicon-trash"></i></a></td>
         <%}%>
         </tr>
         </tbody>

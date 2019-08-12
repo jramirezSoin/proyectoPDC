@@ -27,6 +27,8 @@
           		<ul class="dropdown-menu">
             		<li><a onclick="hacerlist('/zoneModels')">Zone Models</a></li>
             		<li><a onclick="hacerlist('/impactCategories')">Impact Categories</a></li>
+                        <li><a onclick="hacerlist('/rumConfig')">RUMs</a></li>
+                        <li><a onclick="hacerlist('/balanceElement')">Balance Element</a></li>
           		</ul>
         	</li>
           <li class="dropdown">
@@ -55,7 +57,7 @@
   <div class="row">
     <div class="row">
   		<div class="col-xs-12 col-md-8" id="Principal"></div>
-  		<div class="col-xs-6 col-md-4" id="Lista" style="height: 80vh; overflow-y: auto;"></div>
+  		<div class="col-xs-6 col-md-4" id="Lista" style="position: fixed; right: 0; height: 80vh; overflow-y: auto;"></div>
 	</div>
   </div>
 </div>

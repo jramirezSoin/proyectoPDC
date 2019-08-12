@@ -8,8 +8,7 @@ package servlets;
 import control.ControlFunctions;
 import control.ControlPath;
 import datos.ListaT;
-import datos.ZoneItemT;
-import datos.ZoneModelT;
+import datos.RumT;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,8 +24,8 @@ import xml.XmlParser;
  *
  * @author Joseph Ramírez
  */
-public class ZoneModel extends HttpServlet {
-   
+public class RumConfiguration extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -55,29 +54,28 @@ public class ZoneModel extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         String id = request.getParameter("id");
-        ArrayList<String> zoneModels;
+        ArrayList<String> rums;
         HttpSession session = request.getSession();
         if(id==null){
-            zoneModels = XmlParser.Leer2(new File(ControlPath.zoneModelsPath) , ControlPath.zoneModelsPointer);
-            ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(zoneModels);
-             session.setAttribute("click", ControlPath.zoneModelsClick);           
+            rums = XmlParser.Leer2(new File(ControlPath.rumConfigPath) , ControlPath.rumConfigPointer);
+            ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(rums);
+             session.setAttribute("click", ControlPath.rumConfigClick);           
             session.setAttribute("lista", zoneModelsId);
-            session.setAttribute("titulo", "Zone Models");
+            session.setAttribute("titulo", "Rum Configuration");
             session.setAttribute("actual", "lista");
-            session.setAttribute("actualPath", ControlPath.zoneModelsPath);
-            session.setAttribute("actualPoint", ControlPath.zoneModelsPointer);
+            session.setAttribute("actualPath", ControlPath.rumConfigPath);
+            session.setAttribute("actualPoint", ControlPath.rumConfigPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            zoneModels= XmlParser.LeerSeleccionado(new File(ControlPath.zoneModelsPath) , Integer.parseInt(id));
-            ZoneModelT zoneModel = new ZoneModelT(Integer.parseInt(id));
-            zoneModel.procesar(zoneModels, 1);
-            session.setAttribute("principal", zoneModel);
-            session.setAttribute("actual", "zoneModel");
-            session.setAttribute("actualView", ControlPath.zoneModelsView);
-            request.getRequestDispatcher(ControlPath.zoneModelsView).forward(request, response);
+            rums= XmlParser.LeerSeleccionado(new File(ControlPath.rumConfigPath) , Integer.parseInt(id));
+            RumT rumConfig = new RumT(Integer.parseInt(id));
+            rumConfig.procesar(rums, 1);
+            session.setAttribute("principal", rumConfig);
+            session.setAttribute("actual", "rumConfig");
+            session.setAttribute("actualView", ControlPath.rumConfigView);
+            request.getRequestDispatcher(ControlPath.rumConfigView).forward(request, response);
             
         }
-       
     }
 
     /**
@@ -92,45 +90,29 @@ public class ZoneModel extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        String id = request.getParameter("id");
-        
+        request.getSession().setAttribute("index", null);
+        String id= request.getParameter("id");
         if(id==null || id.equals("-1")){
             request.getSession().setAttribute("add",null);
-            request.getSession().setAttribute("index",null);
-            request.getRequestDispatcher(ControlPath.zoneModelForm).forward(request, response);}
+            request.getRequestDispatcher(ControlPath.rumConfigForm).forward(request, response);}
         else if(id.equals("-2")){
-            ZoneModelT zoneModelT= new ZoneModelT(0);
-            request.getSession().setAttribute("index",null);
-            request.getSession().setAttribute("add", zoneModelT);
-            request.getSession().setAttribute("addView",ControlPath.zoneModelsView);
-            request.getRequestDispatcher(ControlPath.zoneModelForm).forward(request, response);
-        }
-        else {
+            RumT rumConfigT= new RumT(0);
+            request.getSession().setAttribute("add", rumConfigT);
+            request.getSession().setAttribute("addView",ControlPath.rumConfigView);
+            request.getRequestDispatcher(ControlPath.rumConfigForm).forward(request, response);
+        }else if(id.equals("-4")){
+            ArrayList<Integer> indexs = new ArrayList<>();
+            indexs.add(-4);
+            request.getSession().setAttribute("del", indexs);
+        }else{
             ArrayList<Integer> index= new ArrayList<>();
             String[] arrOfStr = id.split(",");
             for (String a : arrOfStr){
                  index.add(Integer.parseInt(a));}
-            if(index.get(0)>=0){
-                request.getSession().setAttribute("add",null);
-                request.getSession().setAttribute("index", index);
-                request.getRequestDispatcher(ControlPath.zoneItemForm).forward(request, response);}
-            else if(index.get(0)==-3){
-                ZoneModelT zoneModel = (ZoneModelT) request.getSession().getAttribute("principal");
-                ZoneItemT zoneItemT = new ZoneItemT(zoneModel.getZoneItems().size());
-                request.getSession().setAttribute("index", index);
-                request.getSession().setAttribute("add", zoneItemT);
-                request.getSession().setAttribute("addView",ControlPath.zoneModelsView);
-                request.getRequestDispatcher(ControlPath.zoneItemForm).forward(request, response);
-            }else if(index.get(0)==-4){
+            if(index.get(0)==-6){
                 request.getSession().setAttribute("del", index);
-            }else if(index.get(0)==-6){
-                request.getSession().setAttribute("del", index);
-            }else if(index.get(0)==-5){
-                ZoneModelT zoneModelT = new ZoneModelT(0);
-                request.getSession().setAttribute("index", index);
-                request.getSession().setAttribute("add", zoneModelT);
-                request.getRequestDispatcher(ControlPath.zoneModelForm).forward(request, response);
             }
+            
         }
     }
 
@@ -143,7 +125,5 @@ public class ZoneModel extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    
 
 }

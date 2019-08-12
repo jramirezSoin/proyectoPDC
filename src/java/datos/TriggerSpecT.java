@@ -20,7 +20,7 @@ public class TriggerSpecT extends Nodo{
     private String priceListName="";
     private ArrayList<ExpressionT> expressions;
     
-    public TriggerSpecT(int parseInt) {
+    public TriggerSpecT(int id) {
         this.id= id;
         this.expressions = new ArrayList<>();
     }
