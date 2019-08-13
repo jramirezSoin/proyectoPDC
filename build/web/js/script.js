@@ -17,6 +17,8 @@ function getChecks(){
 
 function modificar(path, title, id){
         limpiar();
+        if(id=="-6")
+            id=id+getChecks();
        $.post(path,{"id":id, "title": title},function(responseText) {
         $('#ModalBody').html(responseText);
         $('#exampleModalLabel').html(title);

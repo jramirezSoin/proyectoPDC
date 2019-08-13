@@ -12,12 +12,12 @@ import java.util.ArrayList;
  * @author Joseph Ramírez
  */
 public class RoundingRuleT extends Nodo{
-    private String precision;
-    private String toleranceMin;
-    private String toleranceMax;
-    private String tolerancePercentage;
-    private String roundingMode;
-    private String processingStage;
+    private String precision="";
+    private String toleranceMin="";
+    private String toleranceMax="";
+    private String tolerancePercentage="";
+    private String roundingMode="";
+    private String processingStage="";
     
     public RoundingRuleT(int id) {
         this.id=id;
@@ -104,6 +104,17 @@ public class RoundingRuleT extends Nodo{
         }
         return zoneModels.size();
     }
+
+    @Override
+    public String toString() {
+        return "    <roundingRules>\n        <precision>" + precision + "</precision>\n        <toleranceMin>" 
+                + toleranceMin + "</toleranceMin>\n        <toleranceMax>" + toleranceMax + "</toleranceMax>\n"
+                +"        <tolerancePercentage>" + tolerancePercentage + "</tolerancePercentage>\n        <roundingMode>" 
+                + roundingMode + "</roundingMode>\n        <processingStage>" + processingStage + "</processingStage>\n"
+                +"</roundingRules>";
+    }
+    
+    
     
     @Override
     public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {

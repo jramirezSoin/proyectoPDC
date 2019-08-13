@@ -35,7 +35,7 @@
 <input <%=(!impactCategory.getResult().equals(""))?"readonly":""%> class="form-control" type="text" id="-result" placeholder="Result" value="<%=impactCategory.getResult()%>"/>
 </div>
 <div class="form-group row">
-<label for="-resultType">PriceList Name</label>
+<label for="-resultType">Result Type</label>
 <input class="form-control" type="text" id="-resultType" placeholder="ResultType" value="<%=impactCategory.getResultType()%>"/>
 </div>
 </form>

@@ -26,8 +26,8 @@
 </div>
 <div class="form-group row">
 <label>Obsolete<select class="form-control" id="-obsolete">
-        <option <%=(balance.isObsolete())?"Selected":""%>>true</option>
-        <option <%=(!balance.isObsolete())?"Selected":""%>>false</option>
+        <option <%=(balance.isObsolete())?"Selected":""%> value="true">true</option>
+        <option <%=(!balance.isObsolete())?"Selected":""%> value="false">false</option>
 </select></label>
 </div>
 <div class="form-group row">
@@ -44,20 +44,20 @@
 </div>
 <div class="form-group row">
 <label>Transient Element<select class="form-control" id="-transientElement">
-        <option <%=(balance.getTransientElement())?"Selected":""%>>true</option>
-        <option <%=(!balance.getTransientElement())?"Selected":""%>>false</option>
+        <option <%=(balance.getTransientElement())?"Selected":""%> value="true">true</option>
+        <option <%=(!balance.getTransientElement())?"Selected":""%> value="false">false</option>
 </select></label>
 </div>
 <div class="form-group row">
-<label>Foldable<select class="form-control" id="-counter">
-        <option <%=(balance.isObsolete())?"Selected":""%>>true</option>
-        <option <%=(!balance.isObsolete())?"Selected":""%>>false</option>
+<label>Foldable<select class="form-control" id="-foldable">
+        <option <%=(balance.isFoldable())?"Selected":""%> value="true">true</option>
+        <option <%=(!balance.isFoldable())?"Selected":""%> value="false">false</option>
 </select></label>
 </div>
 <div class="form-group row">
 <label>Counter<select class="form-control" id="-counter">
-        <option <%=(balance.isObsolete())?"Selected":""%>>true</option>
-        <option <%=(!balance.isObsolete())?"Selected":""%>>false</option>
+        <option <%=(balance.isCounter())?"Selected":""%> value="true">true</option>
+        <option <%=(!balance.isCounter())?"Selected":""%> value="false">false</option>
 </select></label>
 </div>
 <div class="form-group row">

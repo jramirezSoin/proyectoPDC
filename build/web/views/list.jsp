@@ -9,7 +9,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div style="padding: 20px;">
-    <i class="glyphicon glyphicon-minus" onclick="$('#hamburguer').toggle(); $('#Lista').toggle();"></i>
               <form class="navbar-form navbar-left">
         <div class="form-group">
           <input type="text" class="form-control" id="Buscador" placeholder="Search">
@@ -21,7 +20,7 @@
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="modificar('<%=request.getSession().getAttribute("click")%>','','-5');">edit</button>
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('<%=request.getSession().getAttribute("click")%>', '-6');">delete</button>
         </div>
-        
+        <div style=" height: 80vh; overflow-y: auto;">
         <% ArrayList<Nodo> zoneModels = (ArrayList<Nodo>) request.getSession().getAttribute("lista"); %>
         <h1><small><%= request.getSession().getAttribute("titulo")%></small></h1>
         <ul class="list-group">
@@ -30,6 +29,7 @@
         <a class="list-group-item" onclick="hacerClick(this,'<%=request.getSession().getAttribute("click")%>',<%= ((ListaT)zoneModels.get(i)).id%>)"><input type="checkbox" class="form-check-input listChecks" id="exampleCheck-<%= ((ListaT)zoneModels.get(i)).id%>"> <%= ((ListaT)zoneModels.get(i)).valor.replaceAll("_"," ")%></a>
         <%}}%>
         </ul>
+        </div>
 
         <script type="text/javascript">
             $(".form-check-input").on("click",function(ev){

@@ -35,6 +35,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pricing<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a onclick="hacerlist('/triggerSpec')">Trigger Spec</a></li>
+                <li><a onclick="hacerlist('/rollover')">Rollover</a></li>
               </ul>
           </li>
     	</ul>
@@ -42,7 +43,7 @@
               <li class="nav-item">
         <a class="nav-link disabled" tabindex="-1" aria-disabled="true" id="InfoMessage"></a>
       </li>
-      <li class="nav-item"><a class="navbar-brand"><i style="display: none;" class="glyphicon glyphicon-option-vertical" id="hamburguer" onclick="$('#Lista').toggle(); $('#hamburguer').toggle();"></i></a>
+      <li class="nav-item"><a class="navbar-brand"><i class="glyphicon glyphicon-chevron-down" id="hamburguer" onclick="$('#Lista').slideToggle(); $('#Principal').toggleClass('col-md-12 col-md-8'); $('#hamburguer').toggleClass('glyphicon-chevron-down glyphicon-chevron-up');"></i></a>
       </li>    
       <li class="nav-item"><a class="navbar-brand" href="/">
                 <img src="/images/logo.png" width="30" height="30" alt="">
@@ -57,7 +58,7 @@
   <div class="row">
     <div class="row">
   		<div class="col-xs-12 col-md-8" id="Principal"></div>
-  		<div class="col-xs-6 col-md-4" id="Lista" style="position: fixed; right: 0; height: 80vh; overflow-y: auto;"></div>
+                <div class="col-xs-6 col-md-4" id="Lista" style="position: fixed; right: 0;"></div>
 	</div>
   </div>
 </div>

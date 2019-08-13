@@ -32,6 +32,10 @@
         <servlet-name>BalanceElement</servlet-name>
         <servlet-class>servlets.BalanceElement</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Rollover</servlet-name>
+        <servlet-class>servlets.Rollover</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>BalanceElement</servlet-name>
         <url-pattern>/balanceElement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Rollover</servlet-name>
+        <url-pattern>/rollover</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
