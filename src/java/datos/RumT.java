@@ -136,15 +136,15 @@ public class RumT extends Nodo{
     public int procesar(ArrayList<String> rums, int index) {
         for(int i=index; i<rums.size();i++) {
             
-            if(rums.get(i).matches("name: (.*)")) this.name= rums.get(i).substring(6);
-            else if(rums.get(i).matches("description: (.*)")) this.description= rums.get(i).substring(13);
-            else if(rums.get(i).matches("internalId: (.*)")) this.internalId= rums.get(i).substring(12);
-            else if(rums.get(i).matches("priceListName: (.*)")) this.priceListName= rums.get(i).substring(15);
-            else if(rums.get(i).matches("obsolete: (.*)")) this.obsolete= Boolean.valueOf(rums.get(i).substring(10));
-            else if(rums.get(i).matches("rumType: (.*)")) this.rumType= rums.get(i).substring(9);
-            else if(rums.get(i).matches("rumRounding: (.*)")) this.rumRounding= rums.get(i).substring(13);
-            else if(rums.get(i).matches("rumCode: (.*)")) this.rumCode= rums.get(i).substring(9);
-            else if(rums.get(i).matches("unit: (.*)")) this.unit= rums.get(i).substring(6);
+            if(rums.get(i).matches("(?s)name: (.*)")) this.name= rums.get(i).substring(6);
+            else if(rums.get(i).matches("(?s)description: (.*)")) this.description= rums.get(i).substring(13);
+            else if(rums.get(i).matches("(?s)internalId: (.*)")) this.internalId= rums.get(i).substring(12);
+            else if(rums.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= rums.get(i).substring(15);
+            else if(rums.get(i).matches("(?s)obsolete: (.*)")) this.obsolete= Boolean.valueOf(rums.get(i).substring(10));
+            else if(rums.get(i).matches("(?s)rumType: (.*)")) this.rumType= rums.get(i).substring(9);
+            else if(rums.get(i).matches("(?s)rumRounding: (.*)")) this.rumRounding= rums.get(i).substring(13);
+            else if(rums.get(i).matches("(?s)rumCode: (.*)")) this.rumCode= rums.get(i).substring(9);
+            else if(rums.get(i).matches("(?s)unit: (.*)")) this.unit= rums.get(i).substring(6);
             else return i;
         }
         return rums.size();
@@ -160,7 +160,7 @@ public class RumT extends Nodo{
     
     @Override
     public boolean buscar(String buscar) {
-        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+obsolete+"/"+rumType+"/"+rumCode+"/"+rumRounding).toLowerCase().contains(buscar.toLowerCase())){
+        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+obsolete+"/"+rumType+"/"+rumCode+"/"+rumRounding).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }else{

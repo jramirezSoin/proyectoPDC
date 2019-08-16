@@ -19,7 +19,7 @@ public class ListaT extends Nodo{
     
     @Override
     public boolean buscar(String buscar) {   
-        if(this.valor.toLowerCase().contains(buscar.toLowerCase())){
+        if(this.valor.replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }

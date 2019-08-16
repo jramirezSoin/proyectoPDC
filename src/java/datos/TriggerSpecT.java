@@ -96,11 +96,11 @@ public class TriggerSpecT extends Nodo{
         int itemCount = 0;
         for(int i=index; i<triggerSpecs.size();i++) {
             
-            if(triggerSpecs.get(i).matches("name: (.*)")) this.name= triggerSpecs.get(i).substring(6);
-            else if(triggerSpecs.get(i).matches("description: (.*)")) this.description= triggerSpecs.get(i).substring(13);
-            else if(triggerSpecs.get(i).matches("internalId: (.*)")) this.internalId= triggerSpecs.get(i).substring(12);
-            else if(triggerSpecs.get(i).matches("priceListName: (.*)")) this.priceListName= triggerSpecs.get(i).substring(15);
-            else if(triggerSpecs.get(i).matches("pricingProfileName: (.*)")) this.pricingProfileName= triggerSpecs.get(i).substring(20);
+            if(triggerSpecs.get(i).matches("(?s)name: (.*)")) this.name= triggerSpecs.get(i).substring(6);
+            else if(triggerSpecs.get(i).matches("(?s)description: (.*)")) this.description= triggerSpecs.get(i).substring(13);
+            else if(triggerSpecs.get(i).matches("(?s)internalId: (.*)")) this.internalId= triggerSpecs.get(i).substring(12);
+            else if(triggerSpecs.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= triggerSpecs.get(i).substring(15);
+            else if(triggerSpecs.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= triggerSpecs.get(i).substring(20);
             else if(("chargeTriggerExpression complexTriggerExpression quantityTriggerExpression balanceTriggerExpression").contains(triggerSpecs.get(i))){     
                 ExpressionT expression = new ExpressionT(itemCount,triggerSpecs.get(i));
                 itemCount++;
@@ -141,7 +141,7 @@ public class TriggerSpecT extends Nodo{
         for(ExpressionT item: this.expressions){
             item.buscar(buscar);
         }
-        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+pricingProfileName).toLowerCase().contains(buscar.toLowerCase())){
+        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+pricingProfileName).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }else{

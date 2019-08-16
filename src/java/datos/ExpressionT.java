@@ -80,11 +80,11 @@ public class ExpressionT extends Nodo{
     public int procesar(ArrayList<String> triggerSpecs, int index) {
         for(int i=index; i<triggerSpecs.size();i++) {
             
-            if(triggerSpecs.get(i).matches("operator: (.*)")) this.operator= triggerSpecs.get(i).substring(10);
-            else if(triggerSpecs.get(i).matches("type: (.*)")) this.tipo= triggerSpecs.get(i).substring(6);
-            else if(triggerSpecs.get(i).matches("value: (.*)")) this.value= triggerSpecs.get(i).substring(7);
-            else if(triggerSpecs.get(i).matches("balanceElementNumCode: (.*)")) this.balanceElementNumCode= triggerSpecs.get(i).substring(23);
-            else if(triggerSpecs.get(i).matches("binaryOperator: (.*)")) this.binaryOperator= triggerSpecs.get(i).substring(16);
+            if(triggerSpecs.get(i).matches("(?s)operator: (.*)")) this.operator= triggerSpecs.get(i).substring(10);
+            else if(triggerSpecs.get(i).matches("(?s)type: (.*)")) this.tipo= triggerSpecs.get(i).substring(6);
+            else if(triggerSpecs.get(i).matches("(?s)value: (.*)")) this.value= triggerSpecs.get(i).substring(7);
+            else if(triggerSpecs.get(i).matches("(?s)balanceElementNumCode: (.*)")) this.balanceElementNumCode= triggerSpecs.get(i).substring(23);
+            else if(triggerSpecs.get(i).matches("(?s)binaryOperator: (.*)")) this.binaryOperator= triggerSpecs.get(i).substring(16);
             else if(("leftOperand rightOperand binaryExpression chargeExpression: balanceExpression").contains(triggerSpecs.get(i))){
                 
             }
@@ -102,7 +102,7 @@ public class ExpressionT extends Nodo{
     
             @Override
     public boolean buscar(String buscar) {
-        if((tipo+"/"+operator+"/"+binaryOperator+"/"+value+"/"+balanceElementNumCode).toLowerCase().contains(buscar.toLowerCase())){
+        if((tipo+"/"+operator+"/"+binaryOperator+"/"+value+"/"+balanceElementNumCode).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }else{

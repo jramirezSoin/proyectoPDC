@@ -148,18 +148,18 @@ public class RolloverT extends Nodo{
     public int procesar(ArrayList<String> rollovers, int index) {
         for(int i=index; i<rollovers.size();i++) {
             
-           if(rollovers.get(i).matches("name: (.*)")) this.name= rollovers.get(i).substring(6);
-           else if(rollovers.get(i).matches("internalId: (.*)")) this.internalId= rollovers.get(i).substring(12);
-           else if(rollovers.get(i).matches("priceListName: (.*)")) this.priceListName= rollovers.get(i).substring(15);
-           else if(rollovers.get(i).matches("pricingProfileName: (.*)")) this.pricingProfileName= rollovers.get(i).substring(20);
-           else if(rollovers.get(i).matches("startDate: (.*)")) this.startDate= rollovers.get(i).substring(11);
-           else if(rollovers.get(i).matches("endDate: (.*)")) this.endDate= rollovers.get(i).substring(9);
-           else if(rollovers.get(i).matches("glid: (.*)")) this.glid= rollovers.get(i).substring(6);
-           else if(rollovers.get(i).matches("unitOfMeasure: (.*)")) this.unitOfMeasure= rollovers.get(i).substring(15);
-           else if(rollovers.get(i).matches("balanceElementNumCode: (.*)")) this.balanceElementNumCode= rollovers.get(i).substring(23);
-           else if(rollovers.get(i).matches("rolloverUnits: (.*)")) this.rolloverUnits= rollovers.get(i).substring(15);
-           else if(rollovers.get(i).matches("rolloverMaxUnits: (.*)")) this.rolloverMaxUnits= rollovers.get(i).substring(18);
-           else if(rollovers.get(i).matches("rolloverCount: (.*)")) this.rolloverCount= rollovers.get(i).substring(15);
+           if(rollovers.get(i).matches("(?s)name: (.*)")) this.name= rollovers.get(i).substring(6);
+           else if(rollovers.get(i).matches("(?s)internalId: (.*)")) this.internalId= rollovers.get(i).substring(12);
+           else if(rollovers.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= rollovers.get(i).substring(15);
+           else if(rollovers.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= rollovers.get(i).substring(20);
+           else if(rollovers.get(i).matches("(?s)startDate: (.*)")) this.startDate= rollovers.get(i).substring(11);
+           else if(rollovers.get(i).matches("(?s)endDate: (.*)")) this.endDate= rollovers.get(i).substring(9);
+           else if(rollovers.get(i).matches("(?s)glid: (.*)")) this.glid= rollovers.get(i).substring(6);
+           else if(rollovers.get(i).matches("(?s)unitOfMeasure: (.*)")) this.unitOfMeasure= rollovers.get(i).substring(15);
+           else if(rollovers.get(i).matches("(?s)balanceElementNumCode: (.*)")) this.balanceElementNumCode= rollovers.get(i).substring(23);
+           else if(rollovers.get(i).matches("(?s)rolloverUnits: (.*)")) this.rolloverUnits= rollovers.get(i).substring(15);
+           else if(rollovers.get(i).matches("(?s)rolloverMaxUnits: (.*)")) this.rolloverMaxUnits= rollovers.get(i).substring(18);
+           else if(rollovers.get(i).matches("(?s)rolloverCount: (.*)")) this.rolloverCount= rollovers.get(i).substring(15);
            else if(("dateRange rolloverPopModel rolloverCharge").contains(rollovers.get(i))){
                 
             }
@@ -178,7 +178,7 @@ public class RolloverT extends Nodo{
     
     @Override
     public boolean buscar(String buscar) {
-        if((name+"/"+startDate+"/"+internalId+"/"+priceListName+"/"+pricingProfileName+"/"+endDate+"/"+glid+"/"+unitOfMeasure+"/"+balanceElementNumCode+"/"+rolloverUnits+"/"+rolloverMaxUnits+"/"+rolloverCount).toLowerCase().contains(buscar.toLowerCase())){
+        if((name+"/"+startDate+"/"+internalId+"/"+priceListName+"/"+pricingProfileName+"/"+endDate+"/"+glid+"/"+unitOfMeasure+"/"+balanceElementNumCode+"/"+rolloverUnits+"/"+rolloverMaxUnits+"/"+rolloverCount).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }else{

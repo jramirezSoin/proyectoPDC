@@ -192,19 +192,19 @@ public class BalanceElementT extends Nodo{
         int itemCount = 0;
         for(int i=index; i<balances.size();i++) {
             
-            if(balances.get(i).matches("name: (.*)")) this.name= balances.get(i).substring(6);
-            else if(balances.get(i).matches("description: (.*)")) this.description= balances.get(i).substring(13);
-            else if(balances.get(i).matches("internalId: (.*)")) this.internalId= balances.get(i).substring(12);
-            else if(balances.get(i).matches("priceListName: (.*)")) this.priceListName= balances.get(i).substring(15);
-            else if(balances.get(i).matches("numericCode: (.*)")) this.numCode= balances.get(i).substring(13);
-            else if(balances.get(i).matches("code: (.*)")) this.code= balances.get(i).substring(6);
-            else if(balances.get(i).matches("symbol: (.*)")) this.symbol= balances.get(i).substring(8);
-            else if(balances.get(i).matches("transientElement: (.*)")) this.transientElement= Boolean.valueOf(balances.get(i).substring(18));
-            else if(balances.get(i).matches("consumptionRule: (.*)")) this.consumptionRule= balances.get(i).substring(17);
-            else if(balances.get(i).matches("obsolete: (.*)")) this.obsolete= Boolean.valueOf(balances.get(i).substring(10));
-            else if(balances.get(i).matches("foldable: (.*)")) this.foldable= Boolean.valueOf(balances.get(i).substring(10));
-            else if(balances.get(i).matches("counter: (.*)")) this.counter= Boolean.valueOf(balances.get(i).substring(9));
-            else if(balances.get(i).matches("roundingRules")){ 
+            if(balances.get(i).matches("(?s)name: (.*)")) this.name= balances.get(i).substring(6);
+            else if(balances.get(i).matches("(?s)description: (.*)")) this.description= balances.get(i).substring(13);
+            else if(balances.get(i).matches("(?s)internalId: (.*)")) this.internalId= balances.get(i).substring(12);
+            else if(balances.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= balances.get(i).substring(15);
+            else if(balances.get(i).matches("(?s)numericCode: (.*)")) this.numCode= balances.get(i).substring(13);
+            else if(balances.get(i).matches("(?s)code: (.*)")) this.code= balances.get(i).substring(6);
+            else if(balances.get(i).matches("(?s)symbol: (.*)")) this.symbol= balances.get(i).substring(8);
+            else if(balances.get(i).matches("(?s)transientElement: (.*)")) this.transientElement= Boolean.valueOf(balances.get(i).substring(18));
+            else if(balances.get(i).matches("(?s)consumptionRule: (.*)")) this.consumptionRule= balances.get(i).substring(17);
+            else if(balances.get(i).matches("(?s)obsolete: (.*)")) this.obsolete= Boolean.valueOf(balances.get(i).substring(10));
+            else if(balances.get(i).matches("(?s)foldable: (.*)")) this.foldable= Boolean.valueOf(balances.get(i).substring(10));
+            else if(balances.get(i).matches("(?s)counter: (.*)")) this.counter= Boolean.valueOf(balances.get(i).substring(9));
+            else if(balances.get(i).matches("(?s)roundingRules")){ 
                 
                 RoundingRuleT roundingRule = new RoundingRuleT(itemCount);
                 itemCount++;
@@ -234,7 +234,7 @@ public class BalanceElementT extends Nodo{
         for(RoundingRuleT item: this.roundingRules){
             item.buscar(buscar);
         }
-        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+obsolete+"/"+code+"/"+numCode+"/"+symbol+"/"+transientElement+"/"+foldable+"/"+counter+"/"+consumptionRule).toLowerCase().contains(buscar.toLowerCase())){
+        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+obsolete+"/"+code+"/"+numCode+"/"+symbol+"/"+transientElement+"/"+foldable+"/"+counter+"/"+consumptionRule).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }else{

@@ -34,10 +34,11 @@
 </div>
 <hr>
 <ul class="list-group">
-    <li class="list-group-item">
+    
         <% for(int i=0; i<triggerSpec.getExpressions().size();i++){%>
         <% ExpressionT item = triggerSpec.getExpressions().get(i);%>
         <%if(item.visibilidad){%>
+        <li class="list-group-item">
         <table class="table">
         <thead>
             <tr>
@@ -73,7 +74,7 @@
         </tr>
         </tbody>
         </table>
+        </li>
         <%}%>
-    </li>
 
 </ul>

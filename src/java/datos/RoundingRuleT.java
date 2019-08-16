@@ -94,12 +94,12 @@ public class RoundingRuleT extends Nodo{
         
         for(int i=index; i<zoneModels.size();i++) {
             
-            if(zoneModels.get(i).matches("precision: (.*)")) this.precision= zoneModels.get(i).substring(11);
-            else if(zoneModels.get(i).matches("toleranceMin: (.*)")) this.toleranceMin= zoneModels.get(i).substring(14);
-            else if(zoneModels.get(i).matches("toleranceMax: (.*)")) this.toleranceMax= zoneModels.get(i).substring(14);
-            else if(zoneModels.get(i).matches("tolerancePercentage: (.*)")) this.tolerancePercentage= zoneModels.get(i).substring(21);
-            else if(zoneModels.get(i).matches("roundingMode: (.*)")) this.roundingMode= zoneModels.get(i).substring(14);
-            else if(zoneModels.get(i).matches("processingStage: (.*)")) this.processingStage= zoneModels.get(i).substring(17);
+            if(zoneModels.get(i).matches("(?s)precision: (.*)")) this.precision= zoneModels.get(i).substring(11);
+            else if(zoneModels.get(i).matches("(?s)toleranceMin: (.*)")) this.toleranceMin= zoneModels.get(i).substring(14);
+            else if(zoneModels.get(i).matches("(?s)toleranceMax: (.*)")) this.toleranceMax= zoneModels.get(i).substring(14);
+            else if(zoneModels.get(i).matches("(?s)tolerancePercentage: (.*)")) this.tolerancePercentage= zoneModels.get(i).substring(21);
+            else if(zoneModels.get(i).matches("(?s)roundingMode: (.*)")) this.roundingMode= zoneModels.get(i).substring(14);
+            else if(zoneModels.get(i).matches("(?s)processingStage: (.*)")) this.processingStage= zoneModels.get(i).substring(17);
             else return i;
         }
         return zoneModels.size();
@@ -125,7 +125,7 @@ public class RoundingRuleT extends Nodo{
     
     @Override
     public boolean buscar(String buscar) {
-        if((precision+"/"+toleranceMin+"/"+toleranceMax+"/"+tolerancePercentage+"/"+roundingMode+"/"+processingStage).toLowerCase().contains(buscar.toLowerCase())){
+        if((precision+"/"+toleranceMin+"/"+toleranceMax+"/"+tolerancePercentage+"/"+roundingMode+"/"+processingStage).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }else{

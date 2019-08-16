@@ -75,11 +75,11 @@ public class XmlParser {
                       mainRSeleccionado(nd, level+1);
                       }}
                   else{
-                     Element eElement2 = (Element) nl;                    
+                     Element eElement2 = (Element) nl;
                      lista.add(eElement2.getNodeName()+": "+eElement2.getTextContent());
                   }
                     
-                    }else{                    
+                    }else{
                      lista.add(eElement.getNodeName()+": "+eElement.getTextContent());
                   }
                 }

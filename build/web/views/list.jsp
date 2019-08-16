@@ -16,11 +16,11 @@
         <button type="button" onclick="buscar('Buscador','Lista')" class="btn btn-default">Search</button>
       </form>
         <div class="btn-group btn-group-sm" role="group" aria-label="...">   
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>', -2);">add</button>
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="modificar('<%=request.getSession().getAttribute("click")%>','','-5');">edit</button>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>', '-2');">add</button>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>','-5');">edit</button>
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('<%=request.getSession().getAttribute("click")%>', '-6');">delete</button>
         </div>
-        <div style=" height: 80vh; overflow-y: auto;">
+        <div style=" height: 70vh; overflow-y: auto;">
         <% ArrayList<Nodo> zoneModels = (ArrayList<Nodo>) request.getSession().getAttribute("lista"); %>
         <h1><small><%= request.getSession().getAttribute("titulo")%></small></h1>
         <ul class="list-group">

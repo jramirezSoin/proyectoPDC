@@ -5,9 +5,9 @@ function limpiar(){
     $('#addModalLabel').html("");
 }
 
-function getChecks(){
+function getChecks(id){
     var checks="";
-    var elements= document.getElementsByClassName("listChecks");
+    var elements= document.getElementsByClassName(id);
     for(var i=0; i< elements.length; i++){
         if(elements[i].checked)
             checks+=","+(elements[i].id.split("-"))[1];
@@ -17,8 +17,8 @@ function getChecks(){
 
 function modificar(path, title, id){
         limpiar();
-        if(id=="-6")
-            id=id+getChecks();
+        if(id=="-5")
+            id=id+getChecks("itemChecks");
        $.post(path,{"id":id, "title": title},function(responseText) {
         $('#ModalBody').html(responseText);
         $('#exampleModalLabel').html(title);
@@ -41,7 +41,7 @@ function eliminar(path, id){
             del="0"
         }
         if(id=="-6")
-            id=id+getChecks();
+            id=id+getChecks("listChecks");
         $.post(path,{"id": id , "title": "del"},function(responseText) {
         });
 }
@@ -51,6 +51,12 @@ function hacerlist(path){
        $.get(path,function(responseText) {
         $('#Lista').html(responseText);
         $('#InfoMessage').text('');
+        $('#Lista').show();
+        $('#Principal').removeClass('col-md-12');
+        $('#Principal').addClass('col-md-8');
+        $('#hamburguer').removeClass('glyphicon-chevron-up');
+        $('#hamburguer').addClass('glyphicon-chevron-down');
+        
         });
       }
 
@@ -61,6 +67,7 @@ function hacerClick(element,path,id){
        $.get(path,{"id":id},function(responseText) {
         $('#Principal').html(responseText);
         $('#InfoMessage').text('');
+        $('#Lista').slideToggle(); $('#Principal').toggleClass('col-md-12 col-md-8'); $('#hamburguer').toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
         });}else{
             clicking=true;
         }

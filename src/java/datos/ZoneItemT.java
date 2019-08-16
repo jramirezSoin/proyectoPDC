@@ -107,12 +107,12 @@ public class ZoneItemT extends Nodo{
         
         for(int i=index; i<zoneModels.size();i++) {
             
-            if(zoneModels.get(i).matches("destinationPrefix: (.*)")) this.destinationPrefix= zoneModels.get(i).substring(19);
-            else if(zoneModels.get(i).matches("originPrefix: (.*)")) this.originPrefix= zoneModels.get(i).substring(14);
-            else if(zoneModels.get(i).matches("productName: (.*)")) this.productName= zoneModels.get(i).substring(13);
-            else if(zoneModels.get(i).matches("validFrom: (.*)")) this.validFrom= zoneModels.get(i).substring(11);
-            else if(zoneModels.get(i).matches("validTo: (.*)")) this.validTo= zoneModels.get(i).substring(9);
-            else if(zoneModels.get(i).matches("zoneResult")){ 
+            if(zoneModels.get(i).matches("(?s)destinationPrefix: (.*)")) this.destinationPrefix= zoneModels.get(i).substring(19);
+            else if(zoneModels.get(i).matches("(?s)originPrefix: (.*)")) this.originPrefix= zoneModels.get(i).substring(14);
+            else if(zoneModels.get(i).matches("(?s)productName: (.*)")) this.productName= zoneModels.get(i).substring(13);
+            else if(zoneModels.get(i).matches("(?s)validFrom: (.*)")) this.validFrom= zoneModels.get(i).substring(11);
+            else if(zoneModels.get(i).matches("(?s)validTo: (.*)")) this.validTo= zoneModels.get(i).substring(9);
+            else if(zoneModels.get(i).matches("(?s)zoneResult")){ 
                 ZoneResult zoneResult = new ZoneResult();
                 i= zoneResult.procesar(zoneModels, i+1);
                 i--;
@@ -131,13 +131,19 @@ public class ZoneItemT extends Nodo{
     
     @Override
     public boolean buscar(String buscar) {
-        if((destinationPrefix+"/"+originPrefix+"/"+productName+"/"+validFrom+"/"+validTo).toLowerCase().contains(buscar.toLowerCase()) || zoneResult.buscar(buscar)){
+        if((destinationPrefix+"/"+originPrefix+"/"+productName+"/"+validFrom+"/"+validTo).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase()) || zoneResult.buscar(buscar)){
             this.visibilidad=true;
             return true;
         }else{
             this.visibilidad=false;
             return false;
         }
+    }
+
+    @Override
+    public void merge(Nodo nodo) {
+        ZoneItemT zoneItemT= (ZoneItemT) nodo;
+        
     }
     
     
@@ -171,7 +177,7 @@ public class ZoneItemT extends Nodo{
             
             for(int i=index; i<zoneModels.size();i++) {
                 
-                if(zoneModels.get(i).matches("zoneName: (.*)")) this.ZoneName= zoneModels.get(i).substring(10);
+                if(zoneModels.get(i).matches("(?s)zoneName: (.*)")) this.ZoneName= zoneModels.get(i).substring(10);
                 else return i;
             }
             return zoneModels.size();
@@ -180,7 +186,7 @@ public class ZoneItemT extends Nodo{
         
         @Override
         public boolean buscar(String buscar){
-             if(ZoneName.toLowerCase().contains(buscar.toLowerCase())){
+             if(ZoneName.replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
                    this.visibilidad=true;
                    return true;
              }else{

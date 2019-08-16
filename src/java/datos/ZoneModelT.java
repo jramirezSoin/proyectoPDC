@@ -108,12 +108,12 @@ public class ZoneModelT extends Nodo{
         int itemCount = 0;
         for(int i=index; i<zoneModels.size();i++) {
             
-            if(zoneModels.get(i).matches("name: (.*)")) this.name= zoneModels.get(i).substring(6);
-            else if(zoneModels.get(i).matches("description: (.*)")) this.description= zoneModels.get(i).substring(13);
-            else if(zoneModels.get(i).matches("internalId: (.*)")) this.internalId= zoneModels.get(i).substring(12);
-            else if(zoneModels.get(i).matches("priceListName: (.*)")) this.priceListName= zoneModels.get(i).substring(15);
-            else if(zoneModels.get(i).matches("obsolete: (.*)")) this.obsolete= Boolean.valueOf(zoneModels.get(i).substring(10));
-            else if(zoneModels.get(i).matches("zoneItem")){ 
+            if(zoneModels.get(i).matches("(?s)name: (.*)")) this.name= zoneModels.get(i).substring(6);
+            else if(zoneModels.get(i).matches("(?s)description: (.*)")) this.description= zoneModels.get(i).substring(13);
+            else if(zoneModels.get(i).matches("(?s)internalId: (.*)")) this.internalId= zoneModels.get(i).substring(12);
+            else if(zoneModels.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= zoneModels.get(i).substring(15);
+            else if(zoneModels.get(i).matches("(?s)obsolete: (.*)")) this.obsolete= Boolean.valueOf(zoneModels.get(i).substring(10));
+            else if(zoneModels.get(i).matches("(?s)zoneItem")){ 
                 
                 ZoneItemT zoneItem = new ZoneItemT(itemCount);
                 itemCount++;
@@ -143,7 +143,7 @@ public class ZoneModelT extends Nodo{
         for(ZoneItemT item: this.zoneItems){
             item.buscar(buscar);
         }
-        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+obsolete).toLowerCase().contains(buscar.toLowerCase())){
+        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+obsolete).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }else{
@@ -164,6 +164,12 @@ public class ZoneModelT extends Nodo{
         this.zoneItems.remove(((int) index.get(0)));
         for(int i=index.get(0); i<this.zoneItems.size();i++){
             this.zoneItems.get(i).id--;
+        }
+    }
+    
+    public void modificarMasivo(Nodo nodoI, ArrayList<Integer> indexs) {
+        for(int i: indexs){
+            this.zoneItems.get(i).merge(nodoI);
         }
     }
     

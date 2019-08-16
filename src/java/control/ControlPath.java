@@ -49,6 +49,13 @@ public class ControlPath {
     public static String rolloverForm= "/views/rolloverForm.jsp";
     public static String rolloverClick= "/rollover";
     
+    public static String timeModelsPath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_TIME_MODEL_pricing.xml";
+    public static String timeModelsPointer = "timeModel";
+    public static String timeModelsView = "/views/timeModelView.jsp";
+    public static String timeModelForm= "/views/timeModelForm.jsp";
+    public static String timeModelTagForm= "/views/timeModelTagForm.jsp";
+    public static String timeModelsClick= "/timeModel";
+    
     public static String listView= "/views/list.jsp";
     
     

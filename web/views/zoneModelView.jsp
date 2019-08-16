@@ -27,11 +27,13 @@
         <button type="button" onclick="buscar('BuscaZoneItem','Principal')" class="btn btn-default">Search</button>
     </form>
 <div class="btn-group btn-group-sm" role="group" aria-label="..."> 
-<button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/zoneModels','Zone Item','-3');">add</a>
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/zoneModels','Zone Item','-3');">add</button>
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/zoneModels','Zone Item','-5');">edit</button>
 </div>
 <table class="table table-striped">
     <thead>
     <tr>
+        <th></th>
         <th>Product Name</th>
         <th>Origin Prefix</th>
         <th>Destination Prefix</th>
@@ -46,6 +48,7 @@
         <% ZoneItemT item = zoneModel.getZoneItems().get(i);%>
         <%if(item.visibilidad){%>
         <tr>
+        <td><input type="checkbox" class="form-check-input itemChecks" id="itemCheck-<%=item.getId()%>"></td>
         <td><%= item.getProductName()%></td>
         <td><%= item.getOriginPrefix()%></td>
         <td><%= item.getDestinationPrefix()%></td>

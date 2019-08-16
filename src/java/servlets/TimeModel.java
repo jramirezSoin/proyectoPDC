@@ -8,8 +8,8 @@ package servlets;
 import control.ControlFunctions;
 import control.ControlPath;
 import datos.ListaT;
-import datos.ZoneItemT;
-import datos.ZoneModelT;
+import datos.TimeModelT;
+import datos.TimeModelTagT;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,8 +25,8 @@ import xml.XmlParser;
  *
  * @author Joseph Ramírez
  */
-public class ZoneModel extends HttpServlet {
-   
+public class TimeModel extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,7 +38,7 @@ public class ZoneModel extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+       
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -55,26 +55,26 @@ public class ZoneModel extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         String id = request.getParameter("id");
-        ArrayList<String> zoneModels;
+        ArrayList<String> timeModels;
         HttpSession session = request.getSession();
         if(id==null){
-            zoneModels = XmlParser.Leer2(new File(ControlPath.zoneModelsPath) , ControlPath.zoneModelsPointer);
-            ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(zoneModels);
-             session.setAttribute("click", ControlPath.zoneModelsClick);           
-            session.setAttribute("lista", zoneModelsId);
-            session.setAttribute("titulo", "Zone Models");
+            timeModels = XmlParser.Leer2(new File(ControlPath.timeModelsPath) , ControlPath.timeModelsPointer);
+            ArrayList<ListaT> timeModelsId = ControlFunctions.ListS2ListT(timeModels);
+             session.setAttribute("click", ControlPath.timeModelsClick);           
+            session.setAttribute("lista", timeModelsId);
+            session.setAttribute("titulo", "Time Models");
             session.setAttribute("actual", "lista");
-            session.setAttribute("actualPath", ControlPath.zoneModelsPath);
-            session.setAttribute("actualPoint", ControlPath.zoneModelsPointer);
+            session.setAttribute("actualPath", ControlPath.timeModelsPath);
+            session.setAttribute("actualPoint", ControlPath.timeModelsPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            zoneModels= XmlParser.LeerSeleccionado(new File(ControlPath.zoneModelsPath) , Integer.parseInt(id));
-            ZoneModelT zoneModel = new ZoneModelT(Integer.parseInt(id));
-            zoneModel.procesar(zoneModels, 1);
-            session.setAttribute("principal", zoneModel);
-            session.setAttribute("actual", "zoneModel");
-            session.setAttribute("actualView", ControlPath.zoneModelsView);
-            request.getRequestDispatcher(ControlPath.zoneModelsView).forward(request, response);
+            timeModels= XmlParser.LeerSeleccionado(new File(ControlPath.timeModelsPath) , Integer.parseInt(id));
+            TimeModelT timeModel = new TimeModelT(Integer.parseInt(id));
+            timeModel.procesar(timeModels, 1);
+            session.setAttribute("principal", timeModel);
+            session.setAttribute("actual", "timeModel");
+            session.setAttribute("actualView", ControlPath.timeModelsView);
+            request.getRequestDispatcher(ControlPath.timeModelsView).forward(request, response);
             
         }
        
@@ -97,13 +97,13 @@ public class ZoneModel extends HttpServlet {
         if(id==null || id.equals("-1")){
             request.getSession().setAttribute("add",null);
             request.getSession().setAttribute("index",null);
-            request.getRequestDispatcher(ControlPath.zoneModelForm).forward(request, response);}
+            request.getRequestDispatcher(ControlPath.timeModelForm).forward(request, response);}
         else if(id.equals("-2")){
-            ZoneModelT zoneModelT= new ZoneModelT(0);
+            TimeModelT timeModelT= new TimeModelT(0);
             request.getSession().setAttribute("index",null);
-            request.getSession().setAttribute("add", zoneModelT);
-            request.getSession().setAttribute("addView",ControlPath.zoneModelsView);
-            request.getRequestDispatcher(ControlPath.zoneModelForm).forward(request, response);
+            request.getSession().setAttribute("add", timeModelT);
+            request.getSession().setAttribute("addView",ControlPath.timeModelsView);
+            request.getRequestDispatcher(ControlPath.timeModelForm).forward(request, response);
         }
         else {
             ArrayList<Integer> index= new ArrayList<>();
@@ -113,24 +113,24 @@ public class ZoneModel extends HttpServlet {
             if(index.get(0)>=0){
                 request.getSession().setAttribute("add",null);
                 request.getSession().setAttribute("index", index);
-                request.getRequestDispatcher(ControlPath.zoneItemForm).forward(request, response);}
+                request.getRequestDispatcher(ControlPath.timeModelTagForm).forward(request, response);}
             else if(index.get(0)==-3){
-                ZoneModelT zoneModel = (ZoneModelT) request.getSession().getAttribute("principal");
-                ZoneItemT zoneItemT = new ZoneItemT(zoneModel.getZoneItems().size());
+                TimeModelT timeModel = (TimeModelT) request.getSession().getAttribute("principal");
+                TimeModelTagT TimeModelTagT = new TimeModelTagT(timeModel.getTimeModelTags().size());
                 request.getSession().setAttribute("index", index);
-                request.getSession().setAttribute("add", zoneItemT);
-                request.getSession().setAttribute("addView",ControlPath.zoneModelsView);
-                request.getRequestDispatcher(ControlPath.zoneItemForm).forward(request, response);
+                request.getSession().setAttribute("add", TimeModelTagT);
+                request.getSession().setAttribute("addView",ControlPath.timeModelsView);
+                request.getRequestDispatcher(ControlPath.timeModelTagForm).forward(request, response);
             }else if(index.get(0)==-4){
                 request.getSession().setAttribute("del", index);
             }else if(index.get(0)==-6){
                 request.getSession().setAttribute("del", index);
             }else if(index.get(0)==-5){
-                ZoneItemT zoneItemT = new ZoneItemT(0);
-                zoneItemT.masivo();
+                TimeModelTagT TimeModelTagT = new TimeModelTagT(0);
+                TimeModelTagT.masivo();
                 request.getSession().setAttribute("index", index);
-                request.getSession().setAttribute("add", zoneItemT);
-                request.getRequestDispatcher(ControlPath.zoneItemForm).forward(request, response);
+                request.getSession().setAttribute("add", TimeModelTagT);
+                request.getRequestDispatcher(ControlPath.timeModelTagForm).forward(request, response);
             }
         }
     }
@@ -144,7 +144,5 @@ public class ZoneModel extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    
 
 }

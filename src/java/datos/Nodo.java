@@ -14,6 +14,15 @@ import java.util.ArrayList;
 public class Nodo {
     public boolean visibilidad= true;
     public int id;
+    public boolean masivo=false;
+    
+    public int getId(){
+        return id;
+    }
+    
+    public void setId(int id){
+        this.id=id;
+    }
 
     public boolean buscar(String buscar) {     
         return true;
@@ -32,6 +41,18 @@ public class Nodo {
     }
 
     public void eliminar(ArrayList<Integer> index) {
+        
+    }
+    
+    public void masivo(){
+        this.masivo=true;
+    }
+
+    public void modificarMasivo(Nodo nodoI, ArrayList<Integer> indexs) {
+        
+    }
+    
+    public void merge(Nodo nodo) {
         
     }
     

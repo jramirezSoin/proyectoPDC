@@ -63,6 +63,12 @@ public class Modificador extends HttpServlet {
             nodoI.procesar(lista, 0);
             nodo.agregar(nodoI, indexs);
         }
+        else if(indexs.get(0)==-5){
+            Nodo nodoI = (Nodo) request.getSession().getAttribute("add");
+            nodoI.procesar(lista, 0);
+            indexs.remove(0);
+            nodo.modificarMasivo(nodoI, indexs);
+        }
         request.getSession().setAttribute("principal", nodo);
         String path=(String) request.getSession().getAttribute("actualPath");
         String pointer=(String) request.getSession().getAttribute("actualPoint");

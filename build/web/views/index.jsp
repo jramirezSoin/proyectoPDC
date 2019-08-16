@@ -36,6 +36,7 @@
               <ul class="dropdown-menu">
                 <li><a onclick="hacerlist('/triggerSpec')">Trigger Spec</a></li>
                 <li><a onclick="hacerlist('/rollover')">Rollover</a></li>
+                <li><a onclick="hacerlist('/timeModel')">Time Model</a></li>
               </ul>
           </li>
     	</ul>

@@ -113,13 +113,13 @@ public class ImpactCategoryT extends Nodo{
     public int procesar(ArrayList<String> impactCategories, int index) {
         for(int i=index; i<impactCategories.size();i++) {
             
-            if(impactCategories.get(i).matches("name: (.*)")) this.name= impactCategories.get(i).substring(6);
-            else if(impactCategories.get(i).matches("description: (.*)")) this.description= impactCategories.get(i).substring(13);
-            else if(impactCategories.get(i).matches("internalId: (.*)")) this.internalId= impactCategories.get(i).substring(12);
-            else if(impactCategories.get(i).matches("priceListName: (.*)")) this.priceListName= impactCategories.get(i).substring(15);
-            else if(impactCategories.get(i).matches("obsolete: (.*)")) this.obsolete= Boolean.valueOf(impactCategories.get(i).substring(10));
-            else if(impactCategories.get(i).matches("resultType: (.*)")) this.resultType= impactCategories.get(i).substring(12);
-            else if(impactCategories.get(i).matches("result: (.*)")) this.result= impactCategories.get(i).substring(8);
+            if(impactCategories.get(i).matches("(?s)name: (.*)")) this.name= impactCategories.get(i).substring(6);
+            else if(impactCategories.get(i).matches("(?s)description: (.*)")) this.description= impactCategories.get(i).substring(13);
+            else if(impactCategories.get(i).matches("(?s)internalId: (.*)")) this.internalId= impactCategories.get(i).substring(12);
+            else if(impactCategories.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= impactCategories.get(i).substring(15);
+            else if(impactCategories.get(i).matches("(?s)obsolete: (.*)")) this.obsolete= Boolean.valueOf(impactCategories.get(i).substring(10));
+            else if(impactCategories.get(i).matches("(?s)resultType: (.*)")) this.resultType= impactCategories.get(i).substring(12);
+            else if(impactCategories.get(i).matches("(?s)result: (.*)")) this.result= impactCategories.get(i).substring(8);
             else return i;
         }
         return impactCategories.size();
@@ -135,7 +135,7 @@ public class ImpactCategoryT extends Nodo{
     
     @Override
     public boolean buscar(String buscar) {
-        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+obsolete+"/"+result+"/"+resultType).toLowerCase().contains(buscar.toLowerCase())){
+        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+obsolete+"/"+result+"/"+resultType).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }else{
