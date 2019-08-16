@@ -93,11 +93,11 @@ function recorrerR(documento){
                 response+=childs[i].id.substr(1)+"\n";
                 recorrerR(childs[i]);
             }else if(childs[i].nodeName=="LI"){
-                response+=childs[i].id.substr(1)+": "+childs[i].textContent+"\n";
+                response+=childs[i].id.substr(1)+": "+childs[i].textContent.replace(/\n/g,"/n")+"\n";
                 recorrerR(childs[i]);
             }
             else{ 
-                response+=childs[i].id.substr(1)+": "+childs[i].value+"\n";
+                response+=childs[i].id.substr(1)+": "+childs[i].value.replace(/\n/g,"/n")+"\n";
                 recorrerR(childs[i]);
             }}else{
                 recorrerR(childs[i]);
@@ -117,11 +117,11 @@ function recorrer(){
                 response+=childs[i].id.substr(1)+"\n";
                 recorrerR(childs[i]);
             }else if(childs[i].nodeName=="LI"){
-                response+=childs[i].id.substr(1)+": "+childs[i].textContent+"\n";
+                response+=childs[i].id.substr(1)+": "+childs[i].textContent.replace(/\n/g,"/n")+"\n";
                 recorrerR(childs[i]);
             }
             else{ 
-                response+=childs[i].id.substr(1)+": "+childs[i].value+"\n";
+                response+=childs[i].id.substr(1)+": "+childs[i].value.replace(/\n/g,"/n")+"\n";
                 recorrerR(childs[i]);
             }}else{
                 recorrerR(childs[i]);

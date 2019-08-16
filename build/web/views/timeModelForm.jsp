@@ -14,7 +14,7 @@
 </div>
 <div class="form-group row">
 <label for="description">Description</label>
-<input class="form-control" type="text" id="-description" placeholder="Description" value="<%=timeModel.getDescription()%>"/>
+<textarea class="form-control noresize" id="-description"><%=timeModel.getDescription()%></textarea>
 </div>
 <div class="form-group row">
 <label for="internalId">Internal Id</label>

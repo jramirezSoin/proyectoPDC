@@ -27,3 +27,11 @@ and open the template in the editor.
 .panel{
     padding: 5px;
 }
+
+textarea {
+  min-height:110px;
+}
+
+.noresize {
+  resize: none; 
+}

@@ -112,7 +112,7 @@ public class TimeModelT extends Nodo{
         for(int i=index; i<timeModels.size();i++) {
             
             if(timeModels.get(i).matches("name: (.*)")) this.name= timeModels.get(i).substring(6);
-            else if(timeModels.get(i).matches("(?s)description: (.*)")) this.description= timeModels.get(i).substring(13);
+            else if(timeModels.get(i).matches("(?s)description: (.*)")) this.description= timeModels.get(i).substring(13).replaceAll("/n","\n");
             else if(timeModels.get(i).matches("(?s)internalId: (.*)")) this.internalId= timeModels.get(i).substring(12);
             else if(timeModels.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= timeModels.get(i).substring(15);
             else if(timeModels.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= timeModels.get(i).substring(20);

@@ -56,6 +56,13 @@ public class ControlPath {
     public static String timeModelTagForm= "/views/timeModelTagForm.jsp";
     public static String timeModelsClick= "/timeModel";
     
+    public static String bundledPath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_BUNDLED_PRODUCT_OFFERING_pricing.xml";
+    public static String bundledPointer = "bundledProductOffering";
+    public static String bundledView = "/views/bundledView.jsp";
+    public static String bundledForm= "/views/bundledForm.jsp";
+    public static String bundledItemForm= "/views/bundledItemForm.jsp";
+    public static String bundledClick= "/bundled";
+    
     public static String listView= "/views/list.jsp";
     
     

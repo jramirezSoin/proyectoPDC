@@ -16,6 +16,9 @@ public class ListaT extends Nodo{
         this.valor = valor;
         this.id = id;
     }
+
+    ListaT() {
+    }
     
     @Override
     public boolean buscar(String buscar) {   

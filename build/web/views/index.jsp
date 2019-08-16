@@ -37,6 +37,7 @@
                 <li><a onclick="hacerlist('/triggerSpec')">Trigger Spec</a></li>
                 <li><a onclick="hacerlist('/rollover')">Rollover</a></li>
                 <li><a onclick="hacerlist('/timeModel')">Time Model</a></li>
+                <li><a onclick="hacerlist('/bundled')">Bundle Offerings</a></li>
               </ul>
           </li>
     	</ul>
