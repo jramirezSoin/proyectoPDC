@@ -19,9 +19,9 @@
 <div id="timeEspecifications">
 <%for(int i=0;i<timeModelTag.getTimeSpecs().size();i++){%>
     <%TimeSpecT timeSpec = timeModelTag.getTimeSpecs().get(i);%>
-    <div id="-timeSpecification">
-        <h2><small>Time Specification</small><span onclick="$(this).parent().parent().children('#colapse').toggle();" class="badge badge-pill badge-secondary"><i class="glyphicon glyphicon-chevron-down"></i></span><span onclick="$(this).parent().parent().remove();" class="badge badge-pill badge-danger"><i class="glyphicon glyphicon-remove"></i></span></h2>
-        <div id="colapse">
+    <div class="panel panel-default" id="-timeSpecification">
+        <div class="panel-heading">Time Specification<span onclick="$(this).parent().parent().children('#colapse').toggle();" class="badge badge-pill badge-secondary"><i class="glyphicon glyphicon-chevron-down"></i></span><span onclick="$(this).parent().parent().remove();" class="badge badge-pill badge-danger"><i class="glyphicon glyphicon-remove"></i></span></div>
+        <div class="panel-body" id="colapse">
         <div class="form-group row">
             <label for="-name">Name</label>
             <input class="form-control" type="text" id="-name" placeholder="Name" value="<%=timeSpec.getName()%>"/>
@@ -42,18 +42,33 @@
             <label for="-daysOfMonth">Days Of Month</label>
             <input class="form-control" type="text" id="-daysOfMonth" placeholder="Days Of Month" value="<%=timeSpec.getDaysOfMonth()%>"/>
         </div>
-        <div class="container">
-            <h3><small>Days</small></h3>
-        <%for(int j=0;j<timeSpec.getDaysOfWeek().size();j++){%>
-            <div class="col-sm-1 panel panel-default"><%=timeSpec.getDaysOfWeek().get(j).valor%></div>
-        <%}%>
-        </div>
-        <div class="container">
-            <h3><small>Months</small></h3>
         <div class="row">
-        <%for(int j=0;j<timeSpec.getMonthsOfYear().size();j++){%>
-        <div class="col-sm-1 panel panel-default" style="border-style: solid;"><%=timeSpec.getMonthsOfYear().get(j).valor%></div>
+        <div class="col-sm-6 mb-3 mb-md-0">    
+        <div class="card" id="-daysOfWeek">
+            <div class="card-header">
+                Days
+            </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><input class="form-control" type="text" 
+                                               onkeypress="taginputs(this,'day');"></li>    
+        <%for(int j=0;j<timeSpec.getDaysOfWeek().size();j++){%>
+            <li class="list-group-item" id="-day"><%=timeSpec.getDaysOfWeek().get(j).valor%><span onclick="$(this).parent().remove();" class="badge badge-primary badge-pill"><i class="glyphicon glyphicon-remove"></i></span></li>
         <%}%>
+        </ul>
+        </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card" id="-monthsOfYear">
+            <div class="card-header">
+                Months
+            </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><input class="form-control" type="text" 
+                                               onkeypress="taginputs(this,'month');"></li>   
+        <%for(int j=0;j<timeSpec.getMonthsOfYear().size();j++){%>
+        <li class="list-group-item" id="-month"><%=timeSpec.getMonthsOfYear().get(j).valor%><span onclick="$(this).parent().remove();" class="badge badge-primary badge-pill"><i class="glyphicon glyphicon-remove"></i></span></li>
+        <%}%>
+        </ul></div>
         </div>
         </div>
         </div>
@@ -63,9 +78,9 @@
 </form>
 <div style='display: none'>
 <div id="plantilla">
-    <div id="-timeSpecification">
-        <h2><small>Time Specification</small><span onclick="$(this).parent().parent().children('#colapse').toggle();" class="badge badge-pill badge-primary"><i class="glyphicon glyphicon-chevron-down"></i></span><span onclick="$(this).parent().parent().remove();" class="badge badge-pill badge-danger"><i class="glyphicon glyphicon-remove"></i></span></h2>
-        <div id="colapse">
+        <div class="panel panel-default" id="-timeSpecification">
+        <div class="panel-heading">Time Specification<span onclick="$(this).parent().parent().children('#colapse').toggle();" class="badge badge-pill badge-secondary"><i class="glyphicon glyphicon-chevron-down"></i></span><span onclick="$(this).parent().parent().remove();" class="badge badge-pill badge-danger"><i class="glyphicon glyphicon-remove"></i></span></div>
+        <div class="panel-body" id="colapse">
         <div class="form-group row">
             <label for="-name">Name</label>
             <input class="form-control" type="text" id="-name" placeholder="Name" value=""/>
@@ -86,7 +101,38 @@
             <label for="-daysOfMonth">Days Of Month</label>
             <input class="form-control" type="text" id="-daysOfMonth" placeholder="Days Of Month" value=""/>
         </div>
+        <div class="row">
+        <div class="col-sm-6 mb-3 mb-md-0">    
+        <div class="card" id="-daysOfWeek">
+            <div class="card-header">
+                Days
+            </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><input class="form-control" type="text" 
+                                               onkeypress="taginputs(this, 'day');"></li>    
+        </ul>
+        </div>
+        </div>
+        <div class="col-sm-6">
+        <div class="card" id="-monthsOfYear">
+            <div class="card-header">
+                Months
+            </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><input class="form-control" type="text" 
+                                               onkeypress="taginputs(this,'month');"></li>   
+        </ul></div>
+        </div>
+        </div>
         </div>
     </div>
 </div>
 </div>
+<script>
+    function taginputs(id,tipo){
+        if(event.keyCode === 13 && id.value!=""){
+            $(id).parent().parent().append("<li class='list-group-item' id='-"+tipo+"'>"+id.value+"<span onclick='$(this).parent().remove();' class='badge badge-primary badge-pill'><i class='glyphicon glyphicon-remove'></i></span></li>");
+            id.value="";
+        }} 
+    
+</script>

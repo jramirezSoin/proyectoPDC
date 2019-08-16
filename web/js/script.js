@@ -92,7 +92,11 @@ function recorrerR(documento){
             if(childs[i].nodeName=="DIV"){
                 response+=childs[i].id.substr(1)+"\n";
                 recorrerR(childs[i]);
-            }else{ 
+            }else if(childs[i].nodeName=="LI"){
+                response+=childs[i].id.substr(1)+": "+childs[i].textContent+"\n";
+                recorrerR(childs[i]);
+            }
+            else{ 
                 response+=childs[i].id.substr(1)+": "+childs[i].value+"\n";
                 recorrerR(childs[i]);
             }}else{
@@ -112,7 +116,11 @@ function recorrer(){
             if(childs[i].nodeName=="DIV"){
                 response+=childs[i].id.substr(1)+"\n";
                 recorrerR(childs[i]);
-            }else{ 
+            }else if(childs[i].nodeName=="LI"){
+                response+=childs[i].id.substr(1)+": "+childs[i].textContent+"\n";
+                recorrerR(childs[i]);
+            }
+            else{ 
                 response+=childs[i].id.substr(1)+": "+childs[i].value+"\n";
                 recorrerR(childs[i]);
             }}else{
@@ -120,7 +128,6 @@ function recorrer(){
             }
         }
     }
-    console.log(response);
     return response;
     
 }
