@@ -10,7 +10,8 @@ package datos;
  * @author Joseph Ramírez
  */
 public class ListaT extends Nodo{
-    public String valor;
+    public String valor="";
+    public String unit="";
 
     public ListaT(String valor, int id) {
         this.valor = valor;
@@ -22,7 +23,7 @@ public class ListaT extends Nodo{
     
     @Override
     public boolean buscar(String buscar) {   
-        if(this.valor.replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
+        if((this.valor+"/"+this.unit).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }

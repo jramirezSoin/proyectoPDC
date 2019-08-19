@@ -49,9 +49,6 @@
         <th>Purchase</th>
         <th>Usage</th>
         <th>Cycle</th>
-        <th>Purchase Adjust</th>
-        <th>Usage Adjust</th>
-        <th>Cycle Adjust</th>
         <th></th>
     </tr>
     </thead>
@@ -61,7 +58,7 @@
         <%if(item.visibilidad){%>
         <tr>
         <td><input type="checkbox" class="form-check-input itemChecks" id="itemCheck-<%=item.getId()%>"></td>
-        <td><%= (item.getChargeOfferingName().equals(""))?item.getAlterationOfferingName():item.getChargeOfferingName()%></td>
+        <td><%= (item.getChargeOfferingName().equals(""))?item.getAlterationOfferingName().replaceAll("_", " "):item.getChargeOfferingName().replaceAll("_", " ")%></td>
         <td><%= item.getStatus()%></td>
         <td><%= item.getStatusCode()%></td>
         <td><%= item.getQuantity()%></td>
@@ -70,9 +67,15 @@
             <tr><th colspan="2">Start</th></tr>
             <tr><th>Offset</th><td><%=item.getPurchaseStart().id%></td></tr>
             <tr><th>Mode</th><td><%=item.getPurchaseStart().valor%></td></tr>
+            <%if(!item.getPurchaseStart().unit.equals("")){%>
+            <tr><th>Unit</th><td><%=item.getPurchaseStart().unit%></td></tr>
+            <%}%>
             <tr><th colspan="2">End</th></tr>
             <tr><th>Offset</th><td><%=item.getPurchaseEnd().id%></td></tr>
             <tr><th>Mode</th><td><%=item.getPurchaseEnd().valor%></td></tr>
+            <%if(!item.getPurchaseEnd().unit.equals("")){%>
+            <tr><th>Unit</th><td><%=item.getPurchaseEnd().unit%></td></tr>
+            <%}%>
             <tr><th colspan="2">Adjustment</th></tr>
             <tr><td colspan="2"><%= item.getPurchaseChargeAdjustment()%></td></tr>
             </table>
@@ -82,9 +85,15 @@
             <tr><th colspan="2">Start</th></tr>
             <tr><th>Offset</th><td><%=item.getUsageStart().id%></td></tr>
             <tr><th>Mode</th><td><%=item.getUsageStart().valor%></td></tr>
+            <%if(!item.getUsageStart().unit.equals("")){%>
+            <tr><th>Unit</th><td><%=item.getUsageStart().unit%></td></tr>
+            <%}%>
             <tr><th colspan="2">End</th></tr>
             <tr><th>Offset</th><td><%=item.getUsageEnd().id%></td></tr>
             <tr><th>Mode</th><td><%=item.getUsageEnd().valor%></td></tr>
+            <%if(!item.getUsageEnd().unit.equals("")){%>
+            <tr><th>Unit</th><td><%=item.getUsageEnd().unit%></td></tr>
+            <%}%>
             <tr><th colspan="2">Adjustment</th></tr>
             <tr><td colspan="2"><%= item.getUsageChargeAdjustment()%></td></tr>
             </table>
@@ -94,9 +103,15 @@
             <tr><th colspan="2">Start</th></tr>
             <tr><th>Offset</th><td><%=item.getCycleStart().id%></td></tr>
             <tr><th>Mode</th><td><%=item.getCycleStart().valor%></td></tr>
+            <%if(!item.getCycleStart().unit.equals("")){%>
+            <tr><th>Unit</th><td><%=item.getCycleStart().unit%></td></tr>
+            <%}%>
             <tr><th colspan="2">End</th></tr>
             <tr><th>Offset</th><td><%=item.getCycleEnd().id%></td></tr>
             <tr><th>Mode</th><td><%=item.getCycleEnd().valor%></td></tr>
+            <%if(!item.getCycleEnd().unit.equals("")){%>
+            <tr><th>Unit</th><td><%=item.getCycleEnd().unit%></td></tr>
+            <%}%>
             <tr><th colspan="2">Adjustment</th></tr>
             <tr><td colspan="2"><%= item.getCycleChargeAdjustment()%></td></tr>
             </table>

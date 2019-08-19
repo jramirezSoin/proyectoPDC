@@ -125,6 +125,24 @@ public class BundledT extends Nodo{
     public void setBundledItems(ArrayList<BundledItemT> bundledItems) {
         this.bundledItems = bundledItems;
     }
+
+    @Override
+    public String toString() {
+        String bundleItems="";
+        for(int i=0;i<this.bundledItems.size();i++){
+            bundleItems+=this.bundledItems.get(i).toString()+"\n";
+        }
+        return "<bundledProductOffering xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"
+                +"    <name>" + name + "</name>\n    <description>" + description 
+                + "</description>\n    <internalId>" + internalId + "</internalId>\n    <pricingProfileName>" 
+                + pricingProfileName + "</pricingProfileName>\n    <priceListName>" + priceListName + "</priceListName>\n    <timeRange>" 
+                + timeRange + "</timeRange>\n    "
+                +((customerSpecName.equals(""))?"<productSpecName>" + productSpecName + "</productSpecName>":"<customerSpecName>" + customerSpecName + "</customerSpecName>")
+                +"\n    <billOnPurchase>" + billOnPurchase + "</billOnPurchase>\n    <customize>" + customize + "</customize>\n    <groupBalanceElements>" 
+                + groupBalanceElements + "</groupBalanceElements>\n"+ bundleItems +"</bundledProductOffering>";
+    }
+    
+    
     
     @Override
     public int procesar(ArrayList<String> zoneModels, int index) {
@@ -142,7 +160,10 @@ public class BundledT extends Nodo{
             else if(zoneModels.get(i).matches("(?s)billOnPurchase: (.*)")) this.billOnPurchase= Boolean.valueOf(zoneModels.get(i).substring(16));
             else if(zoneModels.get(i).matches("(?s)customize: (.*)")) this.customize= zoneModels.get(i).substring(11);
             else if(zoneModels.get(i).matches("(?s)groupBalanceElements: (.*)")) this.groupBalanceElements= Boolean.valueOf(zoneModels.get(i).substring(22));
-            
+            else if(zoneModels.get(i).matches("(?s)aplicable: (.*)")){
+                if(zoneModels.get(i).substring(11).equals("Account")){this.customerSpecName="Account"; this.productSpecName="";}
+                else{this.productSpecName=zoneModels.get(i).substring(11); this.customerSpecName="";}
+            }
             else if(zoneModels.get(i).matches("(?s)bundledProductOfferingItem")){ 
                 
                 BundledItemT zoneItem = new BundledItemT(itemCount);

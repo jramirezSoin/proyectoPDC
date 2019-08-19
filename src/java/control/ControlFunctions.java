@@ -41,10 +41,23 @@ public class ControlFunctions {
         String[] controls= new String[2];
         if(tipo.equals(ControlPath.zoneModelsClick)){
                 controls[0]= ControlPath.zoneModelsPath;
-                controls[1]= ControlPath.zoneModelsPointer;}
+                controls[1]= ControlPath.zoneModelsPointer;
+        }
         else if(tipo.equals(ControlPath.impactCategoriesClick)){
                 controls[0]= ControlPath.impactCategoriesPath;
                 controls[1]= ControlPath.impactCategoriesPointer;            
+        }
+        else if(tipo.equals(ControlPath.attributeSpecMapClick)){
+                controls[0]= ControlPath.attributeSpecMapPath;
+                controls[1]= ControlPath.attributeSpecMapPointer;            
+        }
+        else if(tipo.equals(ControlPath.chargeOfferingClick)){
+                controls[0]= ControlPath.chargeOfferingPath;
+                controls[1]= ControlPath.chargeOfferingPointer;            
+        }
+        else if(tipo.equals(ControlPath.alterationOfferingClick)){
+                controls[0]= ControlPath.alterationOfferingPath;
+                controls[1]= ControlPath.alterationOfferingPointer;            
         }
         return controls;
     }

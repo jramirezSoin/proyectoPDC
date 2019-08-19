@@ -65,6 +65,24 @@ public class ControlPath {
     
     public static String listView= "/views/list.jsp";
     
+    public static String attributeSpecMapPath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_ATTRIBUTE_SPEC_MAP_config.xml";
+    public static String attributeSpecMapPointer = "attributeSpecMaps";
+    public static String attributeSpecMapView = "/views/attributeSpecMapView.jsp";
+    public static String attributeSpecMapForm= "/views/attributeSpecMapForm.jsp";
+    public static String attributeSpecMapItemForm= "/views/attributeSpecMapItemForm.jsp";
+    public static String attributeSpecMapClick= "/attributeSpecMap";
+    
+    public static String chargeOfferingPath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_CHARGE_OFFERING_pricing.xml";
+    public static String chargeOfferingPointer = "chargeOffering";
+    public static String chargeOfferingView = "/views/chargeOfferingView.jsp";
+    public static String chargeOfferingForm= "/views/chargeOfferingForm.jsp";
+    public static String chargeOfferingClick= "/chargeOffering";
+    
+    public static String alterationOfferingPath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_ALTERATION_OFFERING_pricing.xml";
+    public static String alterationOfferingPointer = "alterationOffering";
+    public static String alterationOfferingView = "/views/alterationOfferingView.jsp";
+    public static String alterationOfferingForm= "/views/alterationOfferingForm.jsp";
+    public static String alterationOfferingClick= "/alterationOffering";
     
     
     

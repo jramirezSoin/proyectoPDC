@@ -143,6 +143,23 @@ public class BundledItemT extends Nodo{
     public void setAlterationOfferingName(String alterationOfferingName) {
         this.alterationOfferingName = alterationOfferingName;
     }
+
+    @Override
+    public String toString() {
+        return "    <bundledProductOfferingItem>\n" + "        <purchaseStart>" + separar(purchaseStart) + "        </purchaseStart>\n        <purchaseEnd>" 
+                + separar(purchaseEnd) + "</purchaseEnd>\n        <usageStart>" + separar(usageStart) + "        </usageStart>\n        <usageEnd>" 
+                + separar(usageEnd) + "        </usageEnd>        <cycleStart>" + separar(cycleStart) + "        </cycleStart>        <cycleEnd>" 
+                + separar(cycleEnd) + "        </cycleEnd>\n        <status>" + status + "</status>\n        <statusCode>" + statusCode 
+                + "</statusCode>\n        <quantity>" + quantity + "</quantity>\n        <purchaseChargeAdjustment>" 
+                + purchaseChargeAdjustment + "</purchaseChargeAdjustment>\n    <usageChargeAdjustment>" + usageChargeAdjustment 
+                + "</usageChargeAdjustment>\n        <cycleChargeAdjustment>" + cycleChargeAdjustment + "</cycleChargeAdjustment>\n        <chargeOfferingName>" 
+                + chargeOfferingName + "</chargeOfferingName>\n        <alterationOfferingName>" + alterationOfferingName + "</alterationOfferingName>\n    </bundledProductOfferingItem>";
+        
+    }
+    
+    private String separar(ListaT lista){
+       return "            <offset>"+lista.id+"</offset>\n"+((lista.unit.equals(""))?"":"            <unit>"+lista.unit+"</unit>\n")+"            <mode>"+lista.valor+"</mode>\n";
+    }
     
     public int procesar(ArrayList<String> zoneModels, int index) {
         
@@ -158,64 +175,94 @@ public class BundledItemT extends Nodo{
             else if(zoneModels.get(i).matches("(?s)chargeOfferingName: (.*)")) this.chargeOfferingName= zoneModels.get(i).substring(20);
             else if(zoneModels.get(i).matches("(?s)alterationOfferingName: (.*)")) this.alterationOfferingName= zoneModels.get(i).substring(24);
             else if(zoneModels.get(i).matches("(?s)purchaseStart")){
+                int k=i;
                 i++;
                 if(zoneModels.get(i).matches("(?s)offset: (.*)")){
                     this.purchaseStart.id= Integer.parseInt(zoneModels.get(i).substring(8));
                     i++;
+                    if(zoneModels.get(i).matches("(?s)unit: (.*)")){
+                        this.purchaseStart.unit= zoneModels.get(i).substring(6);
+                        i++;
+                    }       
                     if(zoneModels.get(i).matches("(?s)mode: (.*)"))
-                    this.purchaseStart.valor= zoneModels.get(i).substring(8);
-                    else return i-=2;
-                        }else{ return i--; }
+                        this.purchaseStart.valor= zoneModels.get(i).substring(6);
+                    else return k;
+                        }else{ return k;}
             }
             else if(zoneModels.get(i).matches("(?s)purchaseEnd")){
+                int k=i;
                 i++;
                 if(zoneModels.get(i).matches("(?s)offset: (.*)")){
                     this.purchaseEnd.id= Integer.parseInt(zoneModels.get(i).substring(8));
                     i++;
+                    if(zoneModels.get(i).matches("(?s)unit: (.*)")){
+                        this.purchaseEnd.unit= zoneModels.get(i).substring(6);
+                        i++;
+                    }
                     if(zoneModels.get(i).matches("(?s)mode: (.*)"))
-                    this.purchaseEnd.valor= zoneModels.get(i).substring(8);
-                    else return i-=2;
-                        }else{ return i--; }
+                    this.purchaseEnd.valor= zoneModels.get(i).substring(6);
+                    else return k;
+                        }else{ return k; }
             }
             else if(zoneModels.get(i).matches("(?s)usageStart")){
+                int k=i;
                 i++;
                 if(zoneModels.get(i).matches("(?s)offset: (.*)")){
                     this.usageStart.id= Integer.parseInt(zoneModels.get(i).substring(8));
                     i++;
+                    if(zoneModels.get(i).matches("(?s)unit: (.*)")){
+                        this.usageStart.unit= zoneModels.get(i).substring(6);
+                        i++;
+                    }
                     if(zoneModels.get(i).matches("(?s)mode: (.*)"))
-                    this.usageStart.valor= zoneModels.get(i).substring(8);
-                    else return i-=2;
-                        }else{ return i--; }
+                    this.usageStart.valor= zoneModels.get(i).substring(6);
+                    else return k;
+                        }else{ return k; }
             }
             else if(zoneModels.get(i).matches("(?s)usageEnd")){
+                int k=i;
                 i++;
                 if(zoneModels.get(i).matches("(?s)offset: (.*)")){
                     this.usageEnd.id= Integer.parseInt(zoneModels.get(i).substring(8));
                     i++;
+                    if(zoneModels.get(i).matches("(?s)unit: (.*)")){
+                        this.usageEnd.unit= zoneModels.get(i).substring(6);
+                        i++;
+                    }
                     if(zoneModels.get(i).matches("(?s)mode: (.*)"))
-                    this.usageEnd.valor= zoneModels.get(i).substring(8);
-                    else return i-=2;
-                        }else{ return i--; }
+                    this.usageEnd.valor= zoneModels.get(i).substring(6);
+                    else return k;
+                        }else{ return k; }
             }
             else if(zoneModels.get(i).matches("(?s)cycleStart")){
+                int k=i;
                 i++;
                 if(zoneModels.get(i).matches("(?s)offset: (.*)")){
                     this.cycleStart.id= Integer.parseInt(zoneModels.get(i).substring(8));
                     i++;
+                    if(zoneModels.get(i).matches("(?s)unit: (.*)")){
+                        this.cycleStart.unit= zoneModels.get(i).substring(6);
+                        i++;
+                    }
                     if(zoneModels.get(i).matches("(?s)mode: (.*)"))
-                    this.cycleStart.valor= zoneModels.get(i).substring(8);
-                    else return i-=2;
-                        }else{ return i--; }
+                    this.cycleStart.valor= zoneModels.get(i).substring(6);
+                    else return k;
+                        }else{ return k; }
             }
             else if(zoneModels.get(i).matches("(?s)cycleEnd")){
+                int k=i;
                 i++;
                 if(zoneModels.get(i).matches("(?s)offset: (.*)")){
                     this.cycleEnd.id= Integer.parseInt(zoneModels.get(i).substring(8));
                     i++;
+                    if(zoneModels.get(i).matches("(?s)unit: (.*)")){
+                        this.cycleEnd.unit= zoneModels.get(i).substring(6);
+                        i++;
+                    }
                     if(zoneModels.get(i).matches("(?s)mode: (.*)"))
-                    this.cycleEnd.valor= zoneModels.get(i).substring(8);
-                    else return i-=2;
-                        }else{ return i--; }
+                    this.cycleEnd.valor= zoneModels.get(i).substring(6);
+                    else return k;
+                        }else{ return k; }
             }
             else return i;
         }
@@ -233,6 +280,8 @@ public class BundledItemT extends Nodo{
     public boolean buscar(String buscar) {
         if((purchaseStart.valor+"/"+purchaseEnd.valor+"/"+usageStart.valor+"/"+
                 usageEnd.valor+"/"+cycleStart.valor+"/"+cycleEnd.valor+"/"+
+                purchaseStart.unit+"/"+purchaseEnd.unit+"/"+usageStart.unit+"/"+
+                usageEnd.unit+"/"+cycleStart.unit+"/"+cycleEnd.unit+"/"+
                 status+"/"+statusCode+"/"+quantity+"/"+purchaseChargeAdjustment+"/"+
                 usageChargeAdjustment+"/"+cycleChargeAdjustment+"/"+chargeOfferingName+"/"+
                 alterationOfferingName).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
