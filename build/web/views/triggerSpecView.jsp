@@ -8,73 +8,109 @@
 <%@page import="datos.ExpressionT"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% TriggerSpecT triggerSpec = (TriggerSpecT) request.getSession().getAttribute("principal");%>
-<h1>Trigger Spec <small><%= triggerSpec.getName()%></small></h1>
-<div class="btn-group btn-group-sm" role="group" aria-label="..."> 
-    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/triggerSpec','Trigger Spec','-1');">edit</button>
-    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/triggerSpec','-4')">delete</button>
-</div>
-<hr>
-<dl class="row">
-  <dt class="col-sm-3">Description</dt><dd class="col-sm-9"><%= triggerSpec.getDescription()%></dd>
-  <dt class="col-sm-3">Internal Id</dt><dd class="col-sm-9"><%= triggerSpec.getInternalId()%></dd>
-  <dt class="col-sm-3">Price List Name</dt><dd class="col-sm-9"><%= triggerSpec.getPriceListName()%></dd>
-  <dt class="col-sm-3">Pricing Profile Name</dt><dd class="col-sm-9"><%= triggerSpec.getPricingProfileName()%></dd>
-
-</dl>
-<hr>
-<h1><small>Expressions</small></h1>
-    <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input type="text" class="form-control" id="BuscaExpression" placeholder="Search">
+<div class="page-title-area">
+    <div class="row align-items-center">
+        <div class="col-sm-6">
+            <div class="breadcrumbs-area clearfix">
+                <h4 class="page-title pull-left" id="bread1"><%= triggerSpec.getName()%></h4>
+                <ul class="breadcrumbs pull-left">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="#" onclick="hacerlist('/triggerSpec', 'Trigger')">Trigger</a></li>
+                    <li><span><%= triggerSpec.getName()%></span></li>
+                </ul>
+            </div>
         </div>
-        <button type="button" onclick="buscar('BuscaExpression','Principal')" class="btn btn-default">Search</button>
-    </form>
-<div class="btn-group btn-group-sm" role="group" aria-label="..."> 
-<button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/triggerSpec','Trigger Spec','-3');">add</a>
+    </div>
 </div>
-<hr>
-<ul class="list-group">
-    
-        <% for(int i=0; i<triggerSpec.getExpressions().size();i++){%>
-        <% ExpressionT item = triggerSpec.getExpressions().get(i);%>
-        <%if(item.visibilidad){%>
-        <li class="list-group-item">
-        <table class="table">
-        <thead>
-            <tr>
-                <td></td>
-                <td>Operator</td>
-                <td>Value</td>
-                <% if(item.getTipo().equals("balanceTriggerExpression")){%>
-                <td>Balance Element NumCode</td>
-                <%}else if(item.getTipo().equals("complexTriggerExpression")){%>
-                <td>Left Operand</td>
-                <td>Right Operand</td>
-                <td>Binary Operator</td>
-                <%}%>
-                <td></td>
-                <td></td>
-            </tr>        
-        </thead>
-        <tbody>
-        <tr>
-            <td><%= item.getTipo()%></td>
-        <td><%=item.getOperator()%></td>
-        <td><%=item.getValue()%></td>
-        <% if(item.getTipo().equals("balanceTriggerExpression")){%>
-        <td><%=item.getBalanceElementNumCode()%></td>
-        <%}else if(item.getTipo().equals("complexTriggerExpression")){%>
-        <td><%=item.getBalanceElementNumCode()%></td>
-        <td>Charge Expression</td>
-        <td><%=item.getBinaryOperator()%></td>
-        <%}%>
-        <td><a data-toggle="modal" data-target="#exampleModal" onclick="modificar('/triggerSpec','Expression',<%=item.getId()%>);"><i class="glyphicon glyphicon-pencil"></i></a></td><td>
-        <a data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/triggerSpec','-4,<%=item.getId()%>')"><i class="glyphicon glyphicon-trash"></i></a></td>
-        <%}%>
-        </tr>
-        </tbody>
-        </table>
-        </li>
-        <%}%>
+            <!-- page title area end -->
+<div class="main-content-inner">
+        <div class="row">
+            <div class="col-xs-12 col-md-8">
 
-</ul>
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-5">
+                            <h4 class="header-title mb-0">Trigger Information</h4>
+                            <div class="btn-group mb-xl-3" role="group" aria-label="Basic example"> 
+                                <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/triggerSpec','Trigger','-1');">edit</button>
+                                <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/triggerSpec','-4')">delete</button>
+                            </div>
+                        </div>
+                        <div>
+                            <dl class="row">
+                                  <dt class="col-sm-3">Description</dt><dd class="col-sm-9"><%= triggerSpec.getDescription()%></dd>
+                                  <dt class="col-sm-3">Internal Id</dt><dd class="col-sm-9"><%= triggerSpec.getInternalId()%></dd>
+                                  <dt class="col-sm-3">Price List Name</dt><dd class="col-sm-9"><%= triggerSpec.getPriceListName()%></dd>
+                                  <dt class="col-sm-3">Pricing Profile Name</dt><dd class="col-sm-9"><%= triggerSpec.getPricingProfileName()%></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            <div class="col-12 mt-5">                                        
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-5">
+                            <h4 class="header-title mb-0">Expressions</h4>
+                            <div class="search-box">
+                             <input type="text" name="search" id="BuscaExpression" placeholder="Search..." onkeypress=" if(event.keyCode===13){buscar('BuscaExpression','Principal');}" required>
+                             <i class="ti-close" onclick="$('#BuscaZoneItem').val(''); buscar('BuscaZoneItem','Principal');"></i>
+                            </div>  
+                        </div>    
+                        <div class="btn-group mb-xl-3" role="group" aria-label="Basic example"> 
+                            <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/triggerSpec','Expression','-3');">Add</button>
+                            <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/triggerSpec','Expression','-5');">Edit</button>
+                        </div>
+                        <div class="single-table">
+                            <div class="table-responsive">
+                                <table class="table text-center">
+                                    <thead class="text-uppercase">
+                                    <tr>
+                                        <th></th>
+                                        <th>Tipo</th>
+                                        <th>Operator</th>
+                                        <th>Value</th>
+                                        <th>Balance Element NumCode</th>
+                                        <th>Right Operand</th>
+                                        <th>Binary Operator</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <% for(int i=0; i<triggerSpec.getExpressions().size();i++){%>
+                                        <% ExpressionT item = triggerSpec.getExpressions().get(i);%>
+                                        <%if(item.visibilidad){%>
+                                        <tr>
+                                        <td><div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck-<%=item.getId()%>">
+                                                <label class="custom-control-label" for="customCheck-<%=item.getId()%>"></label>
+                                            </div></td>
+                                        <td><%= item.getTipo()%></td>
+                                        <td><%=item.getOperator()%></td>
+                                        <td><%=item.getValue()%></td>
+                                        <td><%=item.getBalanceElementNumCode()%></td>                                        
+                                        <td><%=((item.getTipo().equals("complexTriggerExpression"))?"Charge Expression":"")%></td>
+                                        <td><%=item.getBinaryOperator()%></td>
+                                        <td><ul class="d-flex justify-content-center">
+                                                <li class="mr-3"><a href="#" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/triggerSpec','Expression',<%=item.getId()%>);" class="text-secondary"><i class="fa fa-edit"></i></a></li>
+                                                <li><a href="#" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/triggerSpec','-4,<%=item.getId()%>')" class="text-danger"><i class="ti-trash"></i></a></li>
+                                            </ul></td>
+                                        </tr>
+                                        <%}%>
+                                        <%}%>
+                                </tbody>
+                            </table>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>                                                               
+</div>
+
+
+
+
+
+
+

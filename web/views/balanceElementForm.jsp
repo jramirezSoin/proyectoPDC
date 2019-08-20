@@ -36,7 +36,7 @@
 </div>
 <div class="form-group row">
 <label for="-numericCode">Numeric Code</label>
-<input class="form-control" type="text" id="-numericCode" placeholder="Numeric Code" value="<%=balance.getNumCode()%>"/>
+<input class="form-control" type="number" id="-numericCode" placeholder="Numeric Code" value="<%=balance.getNumCode()%>"/>
 </div>
 <div class="form-group row">
 <label for="-symbol">Symbol</label>

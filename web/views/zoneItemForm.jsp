@@ -14,11 +14,11 @@
 </div>
 <div class="form-group row">
 <label for="originPrefix">Origin Prefix</label>
-<input class="form-control" type="text" id="-originPrefix" placeholder="Origin Prefix" value="<%=zoneItem.getOriginPrefix()%>"/>
+<input class="form-control" type="number" id="-originPrefix" placeholder="Origin Prefix" value="<%=zoneItem.getOriginPrefix()%>"/>
 </div>
 <div class="form-group row">
 <label for="destinationPrefix">Destination Prefix</label>
-<input class="form-control" type="text" id="-destinationPrefix" placeholder="Destination Prefix" value="<%=zoneItem.getDestinationPrefix()%>"/>
+<input class="form-control" type="number" id="-destinationPrefix" placeholder="Destination Prefix" value="<%=zoneItem.getDestinationPrefix()%>"/>
 </div>
 <div class="form-group row">
 <label for="validFrom">Valid From</label>

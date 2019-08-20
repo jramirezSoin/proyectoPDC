@@ -52,7 +52,7 @@
 <%if(expression.getTipo().equals("balanceTriggerExpression")){%>
 <div class="form-group row">
 <label for="-balanceElementNumCode">Balance Element Num Code</label>
-<input class="form-control" type="text" id="-balanceElementNumCode" placeholder="Balance Element Num Code" value="<%=expression.getBalanceElementNumCode()%>"/>
+<input class="form-control" type="number" id="-balanceElementNumCode" placeholder="Balance Element Num Code" value="<%=expression.getBalanceElementNumCode()%>"/>
 </div>
 <%} else if(expression.getTipo().equals("complexTriggerExpression")){%>
 <div id="-binaryExpression">

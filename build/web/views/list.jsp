@@ -8,34 +8,46 @@
 <%@page import="datos.ListaT"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<div style="padding: 20px;">
-              <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input type="text" class="form-control" id="Buscador" placeholder="Search">
+        <div class="timeline-task">
+        <div class="search-box">
+         <input type="text" name="search" id="Buscador" placeholder="Search..." onkeypress=" if(event.keyCode===13){buscar('Buscador','Lista');}" required>
+         <i class="ti-close" onclick="$('#Buscador').val(''); buscar('Buscador','Lista');"></i>
         </div>
-        <button type="button" onclick="buscar('Buscador','Lista')" class="btn btn-default">Search</button>
-      </form>
-        <div class="btn-group btn-group-sm" role="group" aria-label="...">   
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>', '-2');">add</button>
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>','-5');">edit</button>
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('<%=request.getSession().getAttribute("click")%>', '-6');">delete</button>
         </div>
-        <div style=" height: 70vh; overflow-y: auto;">
+        <br>
+        <div class="timeline-task">
+            <div class="btn-group mb-xl-3" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>', '-2');">Add</button>
+                <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>','-5');">Edit</button>
+                <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('<%=request.getSession().getAttribute("click")%>', '-6');">Delete</button>
+            </div>
+        </div>    
+        <br>
         <% ArrayList<Nodo> zoneModels = (ArrayList<Nodo>) request.getSession().getAttribute("lista"); %>
-        <h1><small><%= request.getSession().getAttribute("titulo")%></small></h1>
-        <ul class="list-group">
         <% for(int i=0; i<zoneModels.size(); i++){%>
         <%if(zoneModels.get(i).visibilidad){%>
-        <a class="list-group-item" onclick="hacerClick(this,'<%=request.getSession().getAttribute("click")%>',<%= ((ListaT)zoneModels.get(i)).id%>)"><input type="checkbox" class="form-check-input listChecks" id="exampleCheck-<%= ((ListaT)zoneModels.get(i)).id%>"> <%= ((ListaT)zoneModels.get(i)).valor.replaceAll("_"," ")%></a>
-        <%}}%>
-        </ul>
+        <div class="timeline-task" onclick="hacerClick(this,'<%=request.getSession().getAttribute("click")%>',<%= ((ListaT)zoneModels.get(i)).id%>)">
+            <div class="icon bg1">
+                <i class="fa"></i>
+                <input hidden type="checkbox" class="form-check-input listChecks" id="exampleCheck-<%= ((ListaT)zoneModels.get(i)).id%>">
+            </div>
+            <div class="tm-title">
+                <h4><%= ((ListaT)zoneModels.get(i)).valor.replaceAll("_"," ")%></h4>
+            </div>
         </div>
+        <%}}%>
 
         <script type="text/javascript">
-            $(".form-check-input").on("click",function(ev){
-                if(ev.target == this)clicking=false;
+            $(".icon").on("click",function(ev){
+                if(ev.target == this || $(this).children(ev.target)){clicking=false;
+                $(this).toggleClass('bg1 bg2');
+                $(this).children('.fa').toggleClass('fa-check');
+                if($(this).children(".listChecks").prop('checked')==true){
+                    $(this).children(".listChecks").prop('checked',false);}
+                else{
+                    $(this).children(".listChecks").prop('checked',true);}
+                }
                 else clicking=true;
                 return true;
             });
         </script>
-</div>

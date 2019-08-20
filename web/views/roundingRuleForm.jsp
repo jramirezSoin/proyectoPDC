@@ -13,7 +13,7 @@
 <form style="margin: 20px;" id="formulaire">
 <div class="form-group row">
 <label for="-precision">Precision</label>
-<input class="form-control" type="text" id="-precision" placeholder="Precision" value="<%=rule.getPrecision()%>"/>
+<input class="form-control" type="number" id="-precision" placeholder="Precision" value="<%=rule.getPrecision()%>"/>
 </div>
 <div class="form-group row">
 <label for="toleranceMin">Tolerance Min</label>

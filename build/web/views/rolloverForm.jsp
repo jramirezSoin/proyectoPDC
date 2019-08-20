@@ -45,7 +45,7 @@
 </div>
 <div class="form-group row">
 <label for="-balanceElementNumCode">Balance Element Num Code</label>
-<input class="form-control" type="text" id="-balanceElementNumCode" placeholder="Balance Element Num Code" value="<%=rollover.getBalanceElementNumCode()%>"/>
+<input class="form-control" type="number" id="-balanceElementNumCode" placeholder="Balance Element Num Code" value="<%=rollover.getBalanceElementNumCode()%>"/>
 </div>
 <div class="form-group row">
 <label for="-rolloverUnits">Rollover Units</label>
@@ -57,7 +57,7 @@
 </div>
 <div class="form-group row">
 <label for="-rolloverCount">Rollover Count</label>
-<input class="form-control" type="text" id="-rolloverCount" placeholder="rolloverCount" value="<%=rollover.getRolloverCount()%>"/>
+<input class="form-control" type="number" id="-rolloverCount" placeholder="rolloverCount" value="<%=rollover.getRolloverCount()%>"/>
 </div>
     </div>    
 </div>
