@@ -84,7 +84,12 @@ public class ControlPath {
     public static String alterationOfferingForm= "/views/alterationOfferingForm.jsp";
     public static String alterationOfferingClick= "/alterationOffering";
     
-    
+    public static String holidayPath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_HOLIDAY_CALENDAR_config.xml";
+    public static String holidayPointer = "holidayCalendar";
+    public static String holidayView = "/views/holidayView.jsp";
+    public static String holidayForm= "/views/holidayForm.jsp";
+    public static String holidayClick= "/holiday";
+    public static String holidayItemForm= "/views/holidayItemForm.jsp";
     
     
     

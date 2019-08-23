@@ -119,6 +119,12 @@ public class Bundled extends HttpServlet {
             else if(index.get(0)==-3){
                 BundledT zoneModel = (BundledT) request.getSession().getAttribute("principal");
                 BundledItemT bundledItemT = new BundledItemT(zoneModel.getBundledItems().size());
+                ArrayList<ListaT> buscar= new ArrayList<>();
+                if(zoneModel.getCustomerSpecName().equals(""))
+                    buscar.add(new ListaT("productSpecName",zoneModel.getProductSpecName()));
+                else
+                    buscar.add(new ListaT("customerSpecName",zoneModel.getCustomerSpecName()));
+                request.getSession().setAttribute("buscar",buscar);
                 request.getSession().setAttribute("index", index);
                 request.getSession().setAttribute("add", bundledItemT);
                 request.getSession().setAttribute("addView",ControlPath.bundledView);

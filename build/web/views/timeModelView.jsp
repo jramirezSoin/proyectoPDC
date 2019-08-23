@@ -41,8 +41,6 @@
                         <div>
                             <dl class="row">
                                   <dt class="col-sm-3">Description</dt><dd class="col-sm-9"><%= timeModel.getDescription()%></dd>
-                                  <dt class="col-sm-3">Internal Id</dt><dd class="col-sm-9"><%= timeModel.getInternalId()%></dd>
-                                  <dt class="col-sm-3">PriceList Name</dt><dd class="col-sm-9"><%= timeModel.getPriceListName()%></dd>
                                   <dt class="col-sm-3">Pricing Profile Name</dt><dd class="col-sm-9"><%= timeModel.getPricingProfileName()%></dd>
                                   <dt class="col-sm-3">Holiday Calendar Name</dt><dd class="col-sm-9"><%= timeModel.getHolidayCalendarName()%></dd>
                             </dl>

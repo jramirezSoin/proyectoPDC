@@ -36,8 +36,6 @@
                         </div>
                         <div>
                             <dl class="row">
-                                <dt class="col-sm-4">Internal Id</dt><dd class="col-sm-8"><%= rollover.getInternalId()%></dd>
-                                <dt class="col-sm-4">PriceList Name</dt><dd class="col-sm-8"><%= rollover.getPriceListName()%></dd>
                                 <dt class="col-sm-4">Pricing Profile Name</dt><dd class="col-sm-8"><%= rollover.getPricingProfileName()%></dd>
                             </dl>
                         </div>
@@ -71,7 +69,7 @@
                             <dl class="row">
                                       <dt class="col-sm-4">Glid</dt><dd class="col-sm-8"><%= rollover.getGlid()%></dd>
                                       <dt class="col-sm-4">Unit Of Measure</dt><dd class="col-sm-8"><%= rollover.getUnitOfMeasure()%></dd>
-                                      <dt class="col-sm-4">Balance Element Num Code</dt><dd class="col-sm-8"><%= rollover.getBalanceElementNumCode()%></dd>
+                                      <dt class="col-sm-4">Balance Element</dt><dd class="col-sm-8"><%= rollover.getBalanceElementName()%></dd>
                                       <dt class="col-sm-4">Rollover Units</dt><dd class="col-sm-8"><%= rollover.getRolloverUnits()%></dd>
                                       <dt class="col-sm-4">Rollover Max Units</dt><dd class="col-sm-8"><%= rollover.getRolloverMaxUnits()%></dd>
                                       <dt class="col-sm-4">Rollover Count</dt><dd class="col-sm-8"><%= rollover.getRolloverCount()%></dd>

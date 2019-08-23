@@ -15,10 +15,10 @@ public class ImpactCategoryT extends Nodo{
     private String name="";
     private String description="";
     private String internalId="";
-    private String priceListName="";
+    private String priceListName="Default";
     private boolean obsolete=false;
     private String result="";
-    private String resultType="";
+    private String resultType="BASE_RESULT";
     
     public ImpactCategoryT(int id){
         this.id= id;
@@ -104,8 +104,7 @@ public class ImpactCategoryT extends Nodo{
         return "<zoneResultConfiguration xmlns:mtd=\"http://xmlns.oracle.com/communications/platform/model/Metadata\" xmlns:cim=\"http://xmlns.oracle.com/communications/platform/model/Config\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" 
                 +"    <name>" + name + "</name>\n    <description>" + description + "</description>\n    <internalId>" 
                 + internalId + "</internalId>\n    <priceListName>" + priceListName + "</priceListName>\n    <obsolete>" 
-                + obsolete + "</obsolete>\n    <result>" + result + "</result>\n    <resultType>"  
-                + resultType + "</resultType>\n</zoneResultConfiguration>";
+                + obsolete + "</obsolete>\n    <result>" + result + "</result>\n    <resultType>"+resultType+"</resultType>\n</zoneResultConfiguration>";
     }
     
 
@@ -113,7 +112,7 @@ public class ImpactCategoryT extends Nodo{
     public int procesar(ArrayList<String> impactCategories, int index) {
         for(int i=index; i<impactCategories.size();i++) {
             
-            if(impactCategories.get(i).matches("(?s)name: (.*)")) this.name= impactCategories.get(i).substring(6);
+            if(impactCategories.get(i).matches("(?s)name: (.*)")){ this.name= impactCategories.get(i).substring(6); this.result= impactCategories.get(i).substring(6);}
             else if(impactCategories.get(i).matches("(?s)description: (.*)")) this.description= impactCategories.get(i).substring(13);
             else if(impactCategories.get(i).matches("(?s)internalId: (.*)")) this.internalId= impactCategories.get(i).substring(12);
             else if(impactCategories.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= impactCategories.get(i).substring(15);

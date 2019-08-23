@@ -20,14 +20,6 @@
 <input class="form-control" type="text" id="-description" placeholder="Description" value="<%=bundled.getDescription()%>"/>
 </div>
 <div class="form-group row">
-<label for="internalId">Internal Id</label>
-<input <%=(!bundled.getInternalId().equals(""))?"readonly":""%> class="form-control" type="text" id="-internalId" placeholder="Internal Id" value="<%=bundled.getInternalId()%>"/>
-</div>
-<div class="form-group row">
-<label for="priceListName">PriceList Name</label>
-<input class="form-control" type="text" id="-priceListName" placeholder="PriceList Name" value="<%=bundled.getPriceListName()%>"/>
-</div>
-<div class="form-group row">
 <label for="-pricingProfileName">Pricing Profile Name</label>
 <input class="form-control" type="text" id="-pricingProfileName" placeholder="Pricing Profile Name" value="<%=bundled.getPricingProfileName()%>"/>
 </div>
@@ -51,15 +43,15 @@
         <option <%=(!bundled.getGroupBalanceElements())?"Selected":""%> value="false">false</option>
 </select></label>
 </div>
-<div class="form-group row">
+<%if(bundled.getProductSpecName().equals("") && bundled.getCustomerSpecName().equals("")){%>
 <% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick);%>
-
+<div class="form-group row">
 <label>Aplicable to<select class="form-control" id="-aplicable">
         <%for(int j=0;j<products.size();j++){%>
         <%products.get(j).valor= products.get(j).valor.replaceAll("_ASM","");%>
         <option <%=(products.get(j).valor.equals(bundled.getCustomerSpecName()) || products.get(j).valor.equals(bundled.getProductSpecName()))?"Selected":""%> value="<%=products.get(j).valor%>"><%=products.get(j).valor%></option>
         <%}%>
 </select></label>
-
-</div>
+</div>        
+<%}%>
 </form>

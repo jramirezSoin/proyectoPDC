@@ -8,9 +8,16 @@
 <% ZoneItemT zoneItem = (ZoneItemT) request.getSession().getAttribute("add");%>
 <%if(zoneItem==null){zoneItem = ((ZoneModelT)request.getSession().getAttribute("principal")).getZoneItems().get(index);}%>
 <form style="margin: 20px;" id="formulaire">
+<% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick);%>
 <div class="form-group row">
-<label for="productName">Product Name</label>
-<input class="form-control" type="text" id="-productName" placeholder="Product Name" value="<%=zoneItem.getProductName()%>"/>
+<label>Product Name<select class="form-control" id="-productName">
+        <%for(int j=0;j<products.size();j++){%>
+        <%products.get(j).valor= products.get(j).valor.replaceAll("_ASM","");%>
+        <%if(!products.get(j).valor.equals("Account")){%>
+        <option <%=(products.get(j).valor.equals(zoneItem.getProductName()))?"Selected":""%> value="<%=products.get(j).valor%>"><%=products.get(j).valor%></option>
+        <%}%>
+        <%}%>
+</select></label>
 </div>
 <div class="form-group row">
 <label for="originPrefix">Origin Prefix</label>
@@ -32,7 +39,7 @@
 <div class="form-group row">
 <% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.impactCategoriesClick);%>
 
-<label>Zone Name<select class="form-control" id="-zoneName">
+<label>Impact Category<select id="-zoneName">
         <%for(int j=0;j<impactCategories.size();j++){%>
         <option <%=(impactCategories.get(j).valor.equals(zoneItem.getZoneResult().getZoneName()))?"Selected":""%> value="<%=impactCategories.get(j).valor%>"><%=impactCategories.get(j).valor%></option>
         <%}%>

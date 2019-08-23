@@ -4,6 +4,9 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="control.ControlFunctions"%>
+<%@page import="control.ControlPath"%>
+<%@page import="datos.ListaT"%>
 <%@page import="datos.TriggerSpecT"%>
 <%@page import="datos.ExpressionT"%>
 <%@page import="java.util.ArrayList"%>
@@ -24,6 +27,7 @@
             $("#-type").val(radioValue);
             if(radioValue=="quantityTriggerExpression" || radioValue=="chargeTriggerExpression"){
                 $("#balance").hide();
+                $('#-balanceElementName option[value=""]').prop("selected",true);
                 $("#binary").hide();
             }else if(radioValue=="balanceTriggerExpression"){
                 $("#balance").show();
@@ -49,21 +53,18 @@
 <label for="-value">Value</label>
 <input class="form-control" type="text" id="-value" placeholder="Value" value="<%=expression.getValue()%>"/>
 </div>
-<%if(expression.getTipo().equals("balanceTriggerExpression")){%>
+<%if(expression.getTipo().equals("balanceTriggerExpression") || expression.getTipo().equals("complexTriggerExpression")){%>
 <div class="form-group row">
-<label for="-balanceElementNumCode">Balance Element Num Code</label>
-<input class="form-control" type="number" id="-balanceElementNumCode" placeholder="Balance Element Num Code" value="<%=expression.getBalanceElementNumCode()%>"/>
+<% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick);%>
+    <label>Balance Element<select class="form-control" id="-balanceElementName">
+        <option value=""></option>
+    <%for(int j=0;j<impactCategories.size();j++){%>
+    <option <%=(impactCategories.get(j).valor.equals(expression.getBalanceElementName()))?"selected":""%> value="<%=impactCategories.get(j).valor%>"><%=impactCategories.get(j).valor%></option>
+    <%}%>
+    </select></label>
 </div>
 <%} else if(expression.getTipo().equals("complexTriggerExpression")){%>
 <div id="-binaryExpression">
-    <div id="-leftOperand">
-        <div id="-balanceExpression">
-            <div class="form-group row">
-            <label for="-balanceElementNumCode">Balance Element Num Code</label>
-            <input class="form-control" type="text" id="-balanceElementNumCode" placeholder="Balance Element Num Code" value="<%=expression.getBalanceElementNumCode()%>"/>
-            </div>
-        </div>
-    </div>
 <div class="form-group row">
 <label for="-binaryOperator">Binary Operator</label>
 <input class="form-control" type="text" id="-binaryOperator" placeholder="Binary Operator" value="<%=expression.getBinaryOperator()%>"/>
@@ -75,8 +76,13 @@
     <div id="-leftOperand">
         <div id="-balanceExpression">
             <div class="form-group row">
-            <label for="-balanceElementNumCode">Balance Element Num Code</label>
-            <input class="form-control" type="text" id="-balanceElementNumCode" placeholder="Balance Element Num Code" value="<%=expression.getBalanceElementNumCode()%>"/>
+            <% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick);%>
+                <label>Balance Element<select class="form-control" id="-balanceElementName">
+                    <option value=""></option>
+                <%for(int j=0;j<impactCategories.size();j++){%>
+                    <option value="<%=impactCategories.get(j).valor%>"><%=impactCategories.get(j).valor%></option>
+                <%}%>
+                </select></label>
             </div>
         </div>
     </div>

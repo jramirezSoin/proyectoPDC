@@ -17,20 +17,6 @@
 <input class="form-control" type="text" id="-description" placeholder="Description" value="<%=balance.getDescription()%>"/>
 </div>
 <div class="form-group row">
-<label for="internalId">Internal Id</label>
-<input <%=(!balance.getInternalId().equals(""))?"readonly":""%> class="form-control" type="text" id="-internalId" placeholder="Internal Id" value="<%=balance.getInternalId()%>"/>
-</div>
-<div class="form-group row">
-<label for="priceListName">PriceList Name</label>
-<input class="form-control" type="text" id="-priceListName" placeholder="PriceList Name" value="<%=balance.getPriceListName()%>"/>
-</div>
-<div class="form-group row">
-<label>Obsolete<select class="form-control" id="-obsolete">
-        <option <%=(balance.isObsolete())?"Selected":""%> value="true">true</option>
-        <option <%=(!balance.isObsolete())?"Selected":""%> value="false">false</option>
-</select></label>
-</div>
-<div class="form-group row">
 <label for="-code">Code</label>
 <input class="form-control" type="text" id="-code" placeholder="Code" value="<%=balance.getCode()%>"/>
 </div>
@@ -59,9 +45,5 @@
         <option <%=(balance.isCounter())?"Selected":""%> value="true">true</option>
         <option <%=(!balance.isCounter())?"Selected":""%> value="false">false</option>
 </select></label>
-</div>
-<div class="form-group row">
-<label for="-consumptionRule">Consumption Rule</label>
-<input class="form-control" type="text" id="-consumptionRule" placeholder="Consumption Rule" value="<%=balance.getConsumptionRule()%>"/>
 </div>
 </form>

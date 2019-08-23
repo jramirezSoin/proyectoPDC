@@ -5,6 +5,8 @@
  */
 package datos;
 
+import control.ControlFunctions;
+import control.ControlPath;
 import java.util.ArrayList;
 
 /**
@@ -15,6 +17,7 @@ public class ExpressionT extends Nodo{
     private String operator="";
     private String value="";
     private String balanceElementNumCode="";
+    private String balanceElementName="";
     private String binaryOperator="";
     private String tipo="";
 
@@ -75,16 +78,28 @@ public class ExpressionT extends Nodo{
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
+    public String getBalanceElementName() {
+        return balanceElementName;
+    }
+
+    public void setBalanceElementName(String balanceElementName) {
+        this.balanceElementName = balanceElementName;
+    }
+    
+    
     
         @Override
-    public int procesar(ArrayList<String> triggerSpecs, int index) {
+    public int procesar(ArrayList<String> triggerSpecs2, int index) {
+        ArrayList<String> triggerSpecs= (ArrayList<String>) triggerSpecs2.clone();
         for(int i=index; i<triggerSpecs.size();i++) {
             
             if(triggerSpecs.get(i).matches("(?s)operator: (.*)")) this.operator= triggerSpecs.get(i).substring(10);
             else if(triggerSpecs.get(i).matches("(?s)type: (.*)")) this.tipo= triggerSpecs.get(i).substring(6);
             else if(triggerSpecs.get(i).matches("(?s)value: (.*)")) this.value= triggerSpecs.get(i).substring(7);
-            else if(triggerSpecs.get(i).matches("(?s)balanceElementNumCode: (.*)")) this.balanceElementNumCode= triggerSpecs.get(i).substring(23);
             else if(triggerSpecs.get(i).matches("(?s)binaryOperator: (.*)")) this.binaryOperator= triggerSpecs.get(i).substring(16);
+            else if(triggerSpecs.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= triggerSpecs.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode",triggerSpecs.get(i).substring(23)),"name");}
+            else if(triggerSpecs.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= triggerSpecs.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",triggerSpecs.get(i).substring(20)),"numericCode");}
             else if(("leftOperand rightOperand binaryExpression chargeExpression: balanceExpression").contains(triggerSpecs.get(i))){
                 
             }

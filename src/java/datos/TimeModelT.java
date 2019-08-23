@@ -17,7 +17,7 @@ public class TimeModelT extends Nodo{
     private String description="";
     private String internalId="";
     private String pricingProfileName="";
-    private String priceListName="";
+    private String priceListName="Default";
     private String holidayCalendarName="";
     private ArrayList<TimeModelTagT> timeModelTags;
     private String validFrom="";

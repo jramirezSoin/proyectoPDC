@@ -38,9 +38,6 @@
                         <div>
                             <dl class="row">
                                   <dt class="col-sm-3">Description</dt><dd class="col-sm-9"><%= balance.getDescription()%></dd>
-                                  <dt class="col-sm-3">Internal Id</dt><dd class="col-sm-9"><%= balance.getInternalId()%></dd>
-                                  <dt class="col-sm-3">PriceList Name</dt><dd class="col-sm-9"><%= balance.getPriceListName()%></dd>
-                                  <dt class="col-sm-3">Obsolete</dt><dd class="col-sm-9"><%= balance.isObsolete()%></dd>
                                   <dt class="col-sm-3">Code</dt><dd class="col-sm-9"><%= balance.getCode()%></dd>
                                   <dt class="col-sm-3">Num Code</dt><dd class="col-sm-9"><%= balance.getNumCode()%></dd>
                                   <dt class="col-sm-3">Symbol</dt><dd class="col-sm-9"><%= balance.getSymbol()%></dd>

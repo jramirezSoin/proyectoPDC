@@ -39,8 +39,6 @@
                         <div>
                             <dl class="row">
                                   <dt class="col-sm-3">Description</dt><dd class="col-sm-9"><%= triggerSpec.getDescription()%></dd>
-                                  <dt class="col-sm-3">Internal Id</dt><dd class="col-sm-9"><%= triggerSpec.getInternalId()%></dd>
-                                  <dt class="col-sm-3">Price List Name</dt><dd class="col-sm-9"><%= triggerSpec.getPriceListName()%></dd>
                                   <dt class="col-sm-3">Pricing Profile Name</dt><dd class="col-sm-9"><%= triggerSpec.getPricingProfileName()%></dd>
                             </dl>
                         </div>
@@ -70,7 +68,7 @@
                                         <th>Tipo</th>
                                         <th>Operator</th>
                                         <th>Value</th>
-                                        <th>Balance Element NumCode</th>
+                                        <th>Balance Element</th>
                                         <th>Right Operand</th>
                                         <th>Binary Operator</th>
                                         <th></th>
@@ -88,7 +86,7 @@
                                         <td><%= item.getTipo()%></td>
                                         <td><%=item.getOperator()%></td>
                                         <td><%=item.getValue()%></td>
-                                        <td><%=item.getBalanceElementNumCode()%></td>                                        
+                                        <td><%=item.getBalanceElementName()%></td>                                        
                                         <td><%=((item.getTipo().equals("complexTriggerExpression"))?"Charge Expression":"")%></td>
                                         <td><%=item.getBinaryOperator()%></td>
                                         <td><ul class="d-flex justify-content-center">

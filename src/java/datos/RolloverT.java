@@ -5,6 +5,8 @@
  */
 package datos;
 
+import control.ControlFunctions;
+import control.ControlPath;
 import java.util.ArrayList;
 
 /**
@@ -15,12 +17,13 @@ public class RolloverT extends Nodo{
     private String name="";
     private String internalId="";
     private String pricingProfileName="";
-    private String priceListName="";
+    private String priceListName="Default";
     private String startDate="";
     private String endDate="";
     private String glid="";
     private String unitOfMeasure="";
     private String balanceElementNumCode="";
+    private String balanceElementName="";
     private String rolloverUnits="";
     private String rolloverMaxUnits="";
     private String rolloverCount="";
@@ -128,6 +131,16 @@ public class RolloverT extends Nodo{
         this.rolloverCount = rolloverCount;
     }
 
+    public String getBalanceElementName() {
+        return balanceElementName;
+    }
+
+    public void setBalanceElementName(String balanceElementName) {
+        this.balanceElementName = balanceElementName;
+    }
+    
+    
+
     @Override
     public String toString() {
         return "<rolloverRatePlan xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">"
@@ -146,26 +159,28 @@ public class RolloverT extends Nodo{
     
     @Override
     public int procesar(ArrayList<String> rollovers, int index) {
-        for(int i=index; i<rollovers.size();i++) {
-            
-           if(rollovers.get(i).matches("(?s)name: (.*)")) this.name= rollovers.get(i).substring(6);
-           else if(rollovers.get(i).matches("(?s)internalId: (.*)")) this.internalId= rollovers.get(i).substring(12);
-           else if(rollovers.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= rollovers.get(i).substring(15);
-           else if(rollovers.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= rollovers.get(i).substring(20);
-           else if(rollovers.get(i).matches("(?s)startDate: (.*)")) this.startDate= rollovers.get(i).substring(11);
-           else if(rollovers.get(i).matches("(?s)endDate: (.*)")) this.endDate= rollovers.get(i).substring(9);
-           else if(rollovers.get(i).matches("(?s)glid: (.*)")) this.glid= rollovers.get(i).substring(6);
-           else if(rollovers.get(i).matches("(?s)unitOfMeasure: (.*)")) this.unitOfMeasure= rollovers.get(i).substring(15);
-           else if(rollovers.get(i).matches("(?s)balanceElementNumCode: (.*)")) this.balanceElementNumCode= rollovers.get(i).substring(23);
-           else if(rollovers.get(i).matches("(?s)rolloverUnits: (.*)")) this.rolloverUnits= rollovers.get(i).substring(15);
-           else if(rollovers.get(i).matches("(?s)rolloverMaxUnits: (.*)")) this.rolloverMaxUnits= rollovers.get(i).substring(18);
-           else if(rollovers.get(i).matches("(?s)rolloverCount: (.*)")) this.rolloverCount= rollovers.get(i).substring(15);
-           else if(("dateRange rolloverPopModel rolloverCharge").contains(rollovers.get(i))){
+        ArrayList<String> rollovers2= (ArrayList<String>)rollovers.clone();
+        for(int i=index; i<rollovers2.size();i++) {
+           System.out.println(rollovers2.get(i)); 
+           if(rollovers2.get(i).matches("(?s)name: (.*)")) this.name= rollovers2.get(i).substring(6);
+           else if(rollovers2.get(i).matches("(?s)internalId: (.*)")) this.internalId= rollovers2.get(i).substring(12);
+           else if(rollovers2.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= rollovers2.get(i).substring(15);
+           else if(rollovers2.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= rollovers2.get(i).substring(20);
+           else if(rollovers2.get(i).matches("(?s)startDate: (.*)")) this.startDate= rollovers2.get(i).substring(11);
+           else if(rollovers2.get(i).matches("(?s)endDate: (.*)")) this.endDate= rollovers2.get(i).substring(9);
+           else if(rollovers2.get(i).matches("(?s)glid: (.*)")) this.glid= rollovers2.get(i).substring(6);
+           else if(rollovers2.get(i).matches("(?s)unitOfMeasure: (.*)")) this.unitOfMeasure= rollovers2.get(i).substring(15);
+           else if(rollovers2.get(i).matches("(?s)rolloverUnits: (.*)")) this.rolloverUnits= rollovers2.get(i).substring(15);
+           else if(rollovers2.get(i).matches("(?s)rolloverMaxUnits: (.*)")) this.rolloverMaxUnits= rollovers2.get(i).substring(18);
+           else if(rollovers2.get(i).matches("(?s)rolloverCount: (.*)")) this.rolloverCount= rollovers2.get(i).substring(15);
+           else if(rollovers2.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= rollovers2.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode",rollovers2.get(i).substring(23)),"name");}
+           else if(rollovers2.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= rollovers2.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",rollovers2.get(i).substring(20)),"numericCode");}
+           else if(("dateRange rolloverPopModel rolloverCharge").contains(rollovers2.get(i))){
                 
-            }
-            else return i;
+           }
+           else return i;
         }
-        return rollovers.size();
+        return rollovers2.size();
     }
     
     

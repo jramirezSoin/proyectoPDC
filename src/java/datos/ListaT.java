@@ -18,7 +18,12 @@ public class ListaT extends Nodo{
         this.id = id;
     }
 
-    ListaT() {
+    public ListaT() {
+    }
+    
+    public ListaT(String unit, String valor){
+        this.valor = valor;
+        this.unit = unit;
     }
     
     @Override

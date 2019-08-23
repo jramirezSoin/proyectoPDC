@@ -39,9 +39,6 @@
                         <div>
                             <dl class="row">
                                 <dt class="col-sm-3">Description</dt><dd class="col-sm-9"><%= zoneModel.getDescription()%></dd>
-                                <dt class="col-sm-3">Internal Id</dt><dd class="col-sm-9"><%= zoneModel.getInternalId()%></dd>
-                                <dt class="col-sm-3">PriceList Name</dt><dd class="col-sm-9"><%= zoneModel.getPriceListName()%></dd>
-                                <dt class="col-sm-3">Obsolete</dt><dd class="col-sm-9"><%= zoneModel.isObsolete()%></dd>
                             </dl>
                         </div>
                     </div>

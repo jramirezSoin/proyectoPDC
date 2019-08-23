@@ -60,7 +60,7 @@ public class Eliminar extends HttpServlet {
             Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
             XmlParser.Eliminar(path, path, pointer, nodo.id);
             request.getSession().setAttribute("principal",null);
-            ArrayList<String> impactCategories = XmlParser.Leer(new File(path) , pointer);
+            ArrayList<String> impactCategories = XmlParser.Leer2(new File(path) , pointer);
             ArrayList<ListaT> lista = ControlFunctions.ListS2ListT(impactCategories);             
             request.getSession().setAttribute("lista", lista);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
@@ -75,7 +75,7 @@ public class Eliminar extends HttpServlet {
             else if(index.get(0)==-6){
                 index.remove(0);
                 XmlParser.EliminarMasivo(path, path, pointer, index);
-                ArrayList<String> impactCategories = XmlParser.Leer(new File(path) , pointer);
+                ArrayList<String> impactCategories = XmlParser.Leer2(new File(path) , pointer);
                 ArrayList<ListaT> lista = ControlFunctions.ListS2ListT(impactCategories);             
                 request.getSession().setAttribute("lista", lista);
                 request.getRequestDispatcher(ControlPath.listView).forward(request, response);

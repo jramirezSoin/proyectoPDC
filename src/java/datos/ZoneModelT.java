@@ -15,7 +15,7 @@ public class ZoneModelT extends Nodo{
     private String name="";
     private String description="";
     private String internalId="";
-    private String priceListName="";
+    private String priceListName="Default";
     private boolean obsolete=false;
     private ArrayList<ZoneItemT> zoneItems;
     

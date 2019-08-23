@@ -17,14 +17,6 @@
 <textarea class="form-control noresize" id="-description"><%=timeModel.getDescription()%></textarea>
 </div>
 <div class="form-group row">
-<label for="internalId">Internal Id</label>
-<input <%=(!timeModel.getInternalId().equals(""))?"readonly":""%> class="form-control" type="text" id="-internalId" placeholder="Internal Id" value="<%=timeModel.getInternalId()%>"/>
-</div>
-<div class="form-group row">
-<label for="priceListName">PriceList Name</label>
-<input class="form-control" type="text" id="-priceListName" placeholder="PriceList Name" value="<%=timeModel.getPriceListName()%>"/>
-</div>
-<div class="form-group row">
 <label for="pricingProfileName">Pricing Profile Name</label>
 <input class="form-control" type="text" id="-pricingProfileName" placeholder="Pricing Profile Name" value="<%=timeModel.getPricingProfileName()%>"/>
 </div>

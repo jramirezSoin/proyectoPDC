@@ -32,7 +32,14 @@ public class ControlFunctions {
     
     public static ArrayList<ListaT> getLista(String tipo){
         String[] controls = getPathPointer(tipo);
-        ArrayList<String> nodos = XmlParser.Leer(new File(controls[0]) , controls[1]);
+        ArrayList<String> nodos = XmlParser.Leer2(new File(controls[0]) , controls[1]);
+        ArrayList<ListaT> nodosId = ListS2ListT(nodos);
+        return nodosId;
+    }
+    
+    public static ArrayList<ListaT> getListaFiltro(String tipo, ArrayList<ListaT> buscar){
+        String[] controls = getPathPointer(tipo);
+        ArrayList<String> nodos = XmlParser.Buscar(new File(controls[0]) , controls[1],buscar);
         ArrayList<ListaT> nodosId = ListS2ListT(nodos);
         return nodosId;
     }
@@ -59,7 +66,16 @@ public class ControlFunctions {
                 controls[0]= ControlPath.alterationOfferingPath;
                 controls[1]= ControlPath.alterationOfferingPointer;            
         }
+        else if(tipo.equals(ControlPath.balanceElementClick)){
+                controls[0]= ControlPath.balanceElementPath;
+                controls[1]= ControlPath.balanceElementPointer;            
+        }
         return controls;
+    }
+
+    public static String Buscar(String tipo, ListaT buscar, String retorna) {
+        String[] controls = getPathPointer(tipo);
+        return XmlParser.BuscarUno(new File(controls[0]) , controls[1],buscar,retorna);
     }
     
 }

@@ -17,20 +17,6 @@
 <input class="form-control" type="text" id="-description" placeholder="Description" value="<%=rum.getDescription()%>"/>
 </div>
 <div class="form-group row">
-<label for="-internalId">Internal Id</label>
-<input <%=(!rum.getInternalId().equals(""))?"readonly":""%> class="form-control" type="text" id="-internalId" placeholder="Internal Id" value="<%=rum.getInternalId()%>"/>
-</div>
-<div class="form-group row">
-<label for="-priceListName">PriceList Name</label>
-<input class="form-control" type="text" id="-priceListName" placeholder="PriceList Name" value="<%=rum.getPriceListName()%>"/>
-</div>
-<div class="form-group row">
-<label>Obsolete<select class="form-control" id="-obsolete">
-        <option <%=(rum.isObsolete())?"Selected":""%> value="true">true</option>
-        <option <%=(!rum.isObsolete())?"Selected":""%> value="false">false</option>
-</select></label>
-</div>
-<div class="form-group row">
 <label for="-unit">Unit</label>
 <input class="form-control" type="text" id="-unit" placeholder="Unit" value="<%=rum.getUnit()%>"/>
 </div>

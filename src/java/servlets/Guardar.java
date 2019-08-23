@@ -66,7 +66,7 @@ public class Guardar extends HttpServlet {
         String path=(String) request.getSession().getAttribute("actualPath");
         String pointer=(String) request.getSession().getAttribute("actualPoint");
         XmlParser.Agregar(path, path, nodo.toString(), pointer);
-        ArrayList<String> impactCategories = XmlParser.Leer(new File(path) , pointer);
+        ArrayList<String> impactCategories = XmlParser.Leer2(new File(path) , pointer);
         ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(impactCategories);             
         request.getSession().setAttribute("lista", zoneModelsId);
         request.getRequestDispatcher(ControlPath.listView).forward(request, response);  

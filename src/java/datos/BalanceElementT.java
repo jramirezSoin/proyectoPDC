@@ -15,7 +15,7 @@ public class BalanceElementT extends Nodo{
     private String name="";
     private String description="";
     private String internalId="";
-    private String priceListName="";
+    private String priceListName="Default";
     private boolean obsolete=false;
     private String code="";
     private String numCode="";
@@ -24,7 +24,7 @@ public class BalanceElementT extends Nodo{
     private boolean foldable=false;
     private boolean counter=false;
     private ArrayList<RoundingRuleT> roundingRules;
-    private String consumptionRule="";
+    private String consumptionRule="NONE";
     
     public BalanceElementT(int id){
         this.id= id;

@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="/assets/css/default-css.css">
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
     <!-- modernizr css -->
     <script src="/assets/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
@@ -48,9 +49,9 @@
                             <li>
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-panel"></i><span>Pricing</span></a>
                                 <ul class="collapse">
-                                    <li><a href="#" onclick="hacerlist('/triggerSpec', 'Trigger')">Trigger Spec</a></li>
-                                    <li><a href="#" onclick="hacerlist('/rollover', 'Rollover')">Rollover</a></li>
-                                    <li><a href="#" onclick="hacerlist('/timeModel','Time Model')">Time Model</a></li>
+                                    <li><a href="#" onclick="hacerlist('/triggerSpec', 'Trigger')">Trigger Specs</a></li>
+                                    <li><a href="#" onclick="hacerlist('/rollover', 'Rollover')">Rollovers</a></li>
+                                    <li><a href="#" onclick="hacerlist('/timeModel','Time Model')">Time Models</a></li>
                                     <li><a href="#" onclick="hacerlist('/bundled', 'Bundle')">Bundle Offerings</a></li>
                                 </ul>
                             </li>
@@ -61,7 +62,8 @@
                                     <li><a href="#" onclick="hacerlist('/zoneModels', 'Zone Model')">Zone Models</a></li>
                                     <li><a href="#" onclick="hacerlist('/impactCategories', 'Impact Category')">Impact Categories</a></li>
                                     <li><a href="#" onclick="hacerlist('/rumConfig','RUM')">RUMs</a></li>
-                                    <li><a href="#" onclick="hacerlist('/balanceElement', 'Balance Element')">Balance Element</a></li>
+                                    <li><a href="#" onclick="hacerlist('/balanceElement', 'Balance Element')">Balance Elements</a></li>
+                                    <li><a href="#" onclick="hacerlist('/holiday', 'Holiday Calendar')">Holiday Calendars</a></li>
                                 </ul>
                             </li>
                             
@@ -98,8 +100,11 @@
                 </div>
             </div>
             <!-- header area end -->
-            <!-- page title area start -->
-            <div id="Principal" style="position: fixed; height: 90vh; overflow-y: auto;"></div>
+            <!-- page title area start style="position: fixed; height: 90vh; overflow-y: auto;"-->
+            <button onclick="topFunction()" class="btn btn-sm btn-primary bg5" id="myGoUpBtn" title="Go to top">
+                <i class="ti-angle-up"></i>
+            </button>
+            <div id="Principal" ></div>
         </div>
         <!-- main content area end -->
         <!-- footer area start-->
@@ -188,6 +193,7 @@
     <!-- offset area end -->
     <!-- jquery latest version -->
     <script src="/assets/js/vendor/jquery-2.2.4.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
     <!-- bootstrap 4 js -->
     <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>

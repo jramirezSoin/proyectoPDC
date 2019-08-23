@@ -16,7 +16,7 @@ public class BundledT extends Nodo{
     private String description="";
     private String internalId="";
     private String pricingProfileName="";
-    private String priceListName="";
+    private String priceListName="Default";
     private String timeRange="";
     private String productSpecName="";
     private String customerSpecName="";

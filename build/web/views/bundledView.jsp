@@ -39,8 +39,6 @@
                         <div>
                             <dl class="row">
                               <dt class="col-sm-3">Description</dt><dd class="col-sm-9"><%= bundled.getDescription()%></dd>
-                              <dt class="col-sm-3">Internal Id</dt><dd class="col-sm-9"><%= bundled.getInternalId()%></dd>
-                              <dt class="col-sm-3">PriceList Name</dt><dd class="col-sm-9"><%= bundled.getPriceListName()%></dd>
                               <dt class="col-sm-3">Pricing Profile Name</dt><dd class="col-sm-9"><%= bundled.getPricingProfileName()%></dd>
                               <dt class="col-sm-3">Time Range</dt><dd class="col-sm-9"><%= bundled.getTimeRange()%></dd>
                               <dt class="col-sm-3"><%= (bundled.getCustomerSpecName().equals(""))?"Product":"Customer"%> Spec Name</dt><dd class="col-sm-9"><%= (bundled.getCustomerSpecName().equals(""))?bundled.getProductSpecName():bundled.getCustomerSpecName()%></dd>

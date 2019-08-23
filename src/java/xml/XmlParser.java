@@ -6,6 +6,7 @@
 package xml;
 
 import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
+import datos.ListaT;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -40,28 +41,6 @@ import org.xml.sax.SAXException;
 public class XmlParser {
     
     private static ArrayList<String> lista = new ArrayList<>();
-    
-    public static void mainR(Node node, int level, String indicador){
-        if (node.getNodeType() == Node.ELEMENT_NODE) {
-                  Element eElement = (Element) node;
-                  if(eElement.hasChildNodes()) {
-                    NodeList nl = node.getChildNodes();
-                    if(nl.getLength()>1){
-                        for(int j=0; j<nl.getLength(); j++) {
-                            Node nd = nl.item(j);
-                            mainR(nd, level+1, indicador);
-                        }}
-                  else{
-                     Element eElement2 = (Element) nl;
-                    if(eElement2.getNodeName().equals("name")){
-                        if(node.getParentNode().getNodeName().equals(indicador)){
-                            lista.add(eElement2.getTextContent());
-                            return;
-                        }
-                       }
-                  }
-                }
-    }}
     
     public static void mainRSeleccionado(Node node, int level){
         if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -135,30 +114,7 @@ public class XmlParser {
             lista.clear();
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
-                for(int j=0; j< node.getChildNodes().getLength(); j++){
-                    if(node.getChildNodes().item(j).getNodeName().equals("name")){
-                        lista.add(node.getChildNodes().item(j).getTextContent());
-                        j= node.getChildNodes().getLength();
-                    }
-                }
-            }
-            return lista;
-        } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
-            return null;
-        }
-    }
-    
-    public static ArrayList<String> Leer(File file, String indicador){
-        try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(file);
-            doc.getDocumentElement().normalize();
-            NodeList nList = doc.getChildNodes().item(0).getChildNodes();
-            lista.clear();
-            for (int i = 0; i < nList.getLength(); i++) {
-                Node node = nList.item(i);
-                mainR(node, 0, indicador);                
+                lista.add(((Element)node).getElementsByTagName("name").item(0).getTextContent());
             }
             return lista;
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
@@ -280,7 +236,7 @@ public class XmlParser {
         }
     }
 
-        public static void EliminarMasivo(String archivoViejo, String archivoNuevo, String tag, ArrayList<Integer> index) {
+    public static void EliminarMasivo(String archivoViejo, String archivoNuevo, String tag, ArrayList<Integer> index) {
          
             try {
             // 1. cargar el XML original
@@ -314,4 +270,56 @@ public class XmlParser {
         }
     }
     
+    public static ArrayList<String> Buscar(File file, String indicador, ArrayList<ListaT> buscar){
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName(indicador);
+            lista.clear();
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node node = nList.item(i);
+                int cont=0;
+                int ap=0;
+                for(int j=0; j< node.getChildNodes().getLength(); j++){
+                    for(int k=0; k< buscar.size();k++){
+                    if(node.getChildNodes().item(j).getNodeName().equals(buscar.get(k).unit)){
+                        ap++;
+                        if(!node.getChildNodes().item(j).getTextContent().equals(buscar.get(k).valor)){
+                            cont++;
+                            k=buscar.size();
+                            j= node.getChildNodes().getLength();
+                        }
+                    }
+                    }
+                }
+                if(ap!=buscar.size()) cont++;
+                if(cont==0) lista.add(((Element)node).getElementsByTagName("name").item(0).getTextContent());
+            }
+            return lista;
+        } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
+            return null;
+        }
+    }
+    
+    public static String BuscarUno(File file, String indicador, ListaT buscar, String retorna){
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName(indicador);
+            lista.clear();
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node node = nList.item(i);
+                if(((Element)node).getElementsByTagName(buscar.unit).item(0).getTextContent().equals(buscar.valor)){
+                    return ((Element)node).getElementsByTagName(retorna).item(0).getTextContent();
+                }
+            }
+            return "null";
+        } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
+            return null;
+        }
+    }
 }

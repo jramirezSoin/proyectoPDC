@@ -4,6 +4,10 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="control.ControlFunctions"%>
+<%@page import="control.ControlPath"%>
+<%@page import="datos.ListaT"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="datos.RolloverT"%>
 <% RolloverT rollover = (RolloverT) request.getSession().getAttribute("add");%>
 <% if(rollover==null){rollover = (RolloverT) request.getSession().getAttribute("principal");}%>
@@ -11,14 +15,6 @@
 <div class="form-group row">
 <label for="name">name</label>
 <input <%=(!rollover.getName().equals(""))?"readonly":""%> class="form-control" type="text" id="-name" placeholder="name" value="<%=rollover.getName()%>"/>
-</div>
-<div class="form-group row">
-<label for="internalId">Internal Id</label>
-<input <%=(!rollover.getInternalId().equals(""))?"readonly":""%> class="form-control" type="text" id="-internalId" placeholder="Internal Id" value="<%=rollover.getInternalId()%>"/>
-</div>
-<div class="form-group row">
-<label for="priceListName">PriceList Name</label>
-<input class="form-control" type="text" id="-priceListName" placeholder="PriceList Name" value="<%=rollover.getPriceListName()%>"/>
 </div>
 <div class="form-group row">
 <label for="pricingProfileName">Pricing Profile Name</label>
@@ -44,8 +40,12 @@
 <input class="form-control" type="text" id="-unitOfMeasure" placeholder="Unit of Measure" value="<%=rollover.getUnitOfMeasure()%>"/>
 </div>
 <div class="form-group row">
-<label for="-balanceElementNumCode">Balance Element Num Code</label>
-<input class="form-control" type="number" id="-balanceElementNumCode" placeholder="Balance Element Num Code" value="<%=rollover.getBalanceElementNumCode()%>"/>
+<% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick);%>
+    <label>Balance Element<select class="form-control" id="-balanceElementName">
+    <%for(int j=0;j<impactCategories.size();j++){%>
+    <option <%=(impactCategories.get(j).valor.equals(rollover.getBalanceElementName()))?"selected":""%> value="<%=impactCategories.get(j).valor%>"><%=impactCategories.get(j).valor%></option>
+    <%}%>
+    </select></label>
 </div>
 <div class="form-group row">
 <label for="-rolloverUnits">Rollover Units</label>

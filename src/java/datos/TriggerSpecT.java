@@ -17,7 +17,7 @@ public class TriggerSpecT extends Nodo{
     private String description="";
     private String internalId="";
     private String pricingProfileName="";
-    private String priceListName="";
+    private String priceListName="Default";
     private ArrayList<ExpressionT> expressions;
     
     public TriggerSpecT(int id) {
@@ -92,7 +92,8 @@ public class TriggerSpecT extends Nodo{
     }
     
         @Override
-    public int procesar(ArrayList<String> triggerSpecs, int index) {
+    public int procesar(ArrayList<String> triggerSpecs2, int index) {
+        ArrayList<String> triggerSpecs= (ArrayList<String>)triggerSpecs2.clone();
         int itemCount = 0;
         for(int i=index; i<triggerSpecs.size();i++) {
             

@@ -23,6 +23,7 @@
             </div>
         </div>    
         <br>
+        
         <% ArrayList<Nodo> zoneModels = (ArrayList<Nodo>) request.getSession().getAttribute("lista"); %>
         <% for(int i=0; i<zoneModels.size(); i++){%>
         <%if(zoneModels.get(i).visibilidad){%>
