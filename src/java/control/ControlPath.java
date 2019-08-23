@@ -63,6 +63,14 @@ public class ControlPath {
     public static String bundledItemForm= "/views/bundledItemForm.jsp";
     public static String bundledClick= "/bundled";
     
+    public static String packagePath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_PACKAGE_OBJ_pricing.xml";
+    public static String packagePointer = "package";
+    public static String packageView = "/views/packageView.jsp";
+    public static String packageForm= "/views/packageForm.jsp";
+    public static String packageItemForm= "/views/packageItemForm.jsp";
+    public static String packageBalanceForm= "/views/packageBalanceForm.jsp";
+    public static String packageClick= "/package";
+    
     public static String listView= "/views/list.jsp";
     
     public static String attributeSpecMapPath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_ATTRIBUTE_SPEC_MAP_config.xml";

@@ -193,7 +193,7 @@ public class RolloverT extends Nodo{
     
     @Override
     public boolean buscar(String buscar) {
-        if((name+"/"+startDate+"/"+internalId+"/"+priceListName+"/"+pricingProfileName+"/"+endDate+"/"+glid+"/"+unitOfMeasure+"/"+balanceElementNumCode+"/"+rolloverUnits+"/"+rolloverMaxUnits+"/"+rolloverCount).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
+        if((name+"/"+startDate+"/"+internalId+"/"+priceListName+"/"+pricingProfileName+"/"+endDate+"/"+glid+"/"+unitOfMeasure+"/"+balanceElementName+"/"+rolloverUnits+"/"+rolloverMaxUnits+"/"+rolloverCount).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }else{

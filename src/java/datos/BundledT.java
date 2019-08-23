@@ -197,7 +197,7 @@ public class BundledT extends Nodo{
             aux=item.buscar(buscar);
             if(!estado)estado=aux;
         }
-        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+pricingProfileName+"/"+timeRange+"/"+productSpecName+"/"+customerSpecName+"/"+billOnPurchase+"/"+customize+"/"+groupBalanceElements).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
+        if((name+"/"+description+"/"+internalId+"/"+priceListName+"/"+pricingProfileName+"/"+timeRange+"/"+productSpecName+"/"+customerSpecName+"/"+billOnPurchase+"/"+customize+"/"+groupBalanceElements).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())||estado){
             this.visibilidad=true;
             return true;
         }else{

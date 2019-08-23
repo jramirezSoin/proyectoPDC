@@ -53,6 +53,7 @@
                                     <li><a href="#" onclick="hacerlist('/rollover', 'Rollover')">Rollovers</a></li>
                                     <li><a href="#" onclick="hacerlist('/timeModel','Time Model')">Time Models</a></li>
                                     <li><a href="#" onclick="hacerlist('/bundled', 'Bundle')">Bundle Offerings</a></li>
+                                    <li><a href="#" onclick="hacerlist('/package', 'Package')">Package</a></li>
                                 </ul>
                             </li>
                             <li>

@@ -117,7 +117,7 @@ public class ExpressionT extends Nodo{
     
             @Override
     public boolean buscar(String buscar) {
-        if((tipo+"/"+operator+"/"+binaryOperator+"/"+value+"/"+balanceElementNumCode).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
+        if((tipo+"/"+operator+"/"+binaryOperator+"/"+value+"/"+balanceElementName).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }else{
