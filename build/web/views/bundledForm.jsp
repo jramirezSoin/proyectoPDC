@@ -32,13 +32,13 @@
 <input class="form-control" type="text" id="-customize" placeholder="Customize" value="<%=bundled.getCustomize()%>"/>
 </div>
 <div class="form-group row">
-<label>Bill On Purchase<select class="form-control" id="-billOnPurchase">
+<label>Bill On Purchase<select class="custom-select" id="-billOnPurchase">
         <option <%=(bundled.getBillOnPurchase())?"Selected":""%> value="true">true</option>
         <option <%=(!bundled.getBillOnPurchase())?"Selected":""%> value="false">false</option>
 </select></label>
 </div>
 <div class="form-group row">
-<label>Group Balance Elements<select class="form-control" id="-groupBalanceElements">
+<label>Group Balance Elements<select class="custom-select" id="-groupBalanceElements">
         <option <%=(bundled.getGroupBalanceElements())?"Selected":""%> value="true">true</option>
         <option <%=(!bundled.getGroupBalanceElements())?"Selected":""%> value="false">false</option>
 </select></label>
@@ -46,7 +46,7 @@
 <%if(bundled.getProductSpecName().equals("") && bundled.getCustomerSpecName().equals("")){%>
 <% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick);%>
 <div class="form-group row">
-<label>Aplicable to<select class="form-control" id="-aplicable">
+<label>Aplicable to<select class="custom-select" id="-aplicable">
         <%for(int j=0;j<products.size();j++){%>
         <%products.get(j).valor= products.get(j).valor.replaceAll("_ASM","");%>
         <option <%=(products.get(j).valor.equals(bundled.getCustomerSpecName()) || products.get(j).valor.equals(bundled.getProductSpecName()))?"Selected":""%> value="<%=products.get(j).valor%>"><%=products.get(j).valor%></option>

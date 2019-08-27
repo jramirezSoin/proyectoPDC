@@ -110,7 +110,8 @@ public class PackageT extends Nodo{
                 +"    <name>" + name + "</name>\n    <description>" + description 
                 + "</description>\n    <internalId>" + internalId + "</internalId>\n    <pricingProfileName>" 
                 + pricingProfileName + "</pricingProfileName>\n    <priceListName>" + priceListName + "</priceListName>\n    <billOnPurchase>" 
-                + billOnPurchase + "</billOnPurchase>\n"+packItems+balanceSpecs+"</package>";
+                + billOnPurchase + "</billOnPurchase>\n"+packItems+"    <balanceSpecification>\n" +
+                  "        <name>Account Balance Group</name>\n"+balanceSpecs+"    </balanceSpecification>\n</package>";
     }
     
     @Override
@@ -186,9 +187,17 @@ public class PackageT extends Nodo{
     
     @Override
     public void agregar(Nodo nodo, ArrayList<Integer> index) {
-        if(index.get(0)==1)
-            this.packageItems.add((PackageItemT) nodo);
-        else
+        if(index.get(0)==1){
+            if(((PackageItemT)nodo).getSpecName().equals("CustomerPackage")){
+                PackageItemT pack= (PackageItemT) nodo;
+                pack.id=0;
+                for(PackageItemT p: this.packageItems)
+                    p.id++;
+                this.packageItems.add(0,pack);
+            }else
+                this.packageItems.add((PackageItemT) nodo);
+            
+        }else
             this.balances.add((BalanceSpecT) nodo);
     }
     

@@ -25,7 +25,7 @@
 </div>
 <div class="form-group row">
 <% ArrayList<ListaT> products = ControlFunctions.getListaFiltro((String)ControlPath.chargeOfferingClick,buscar);%>
-<label>Offers<select class="form-control" onclick="$('#-chargeOfferingName').val($(this).val()); $('#-alterationOfferingName').val('');">
+<label>Offers<select class="custom-select" onclick="$('#-chargeOfferingName').val($(this).val()); $('#-alterationOfferingName').val('');">
         <%for(int j=0;j<products.size();j++){%>
         <option <%=(products.get(j).valor.equals(zoneItem.getChargeOfferingName()))?"Selected":""%> value="<%=products.get(j).valor%>"><%=products.get(j).valor%></option>
         <%}%>
@@ -33,7 +33,7 @@
 </div>
 <div class="form-group row">
 <% ArrayList<ListaT> products2 = ControlFunctions.getListaFiltro((String)ControlPath.alterationOfferingClick, buscar);%>
-<label>Discount<select class="form-control" onclick="$('#-alterationOfferingName').val($(this).val()); $('#-chargeOfferingName').val('');">
+<label>Discount<select class="custom-select" onclick="$('#-alterationOfferingName').val($(this).val()); $('#-chargeOfferingName').val('');">
         <%for(int j=0;j<products2.size();j++){%>
         <option <%=(products2.get(j).valor.equals(zoneItem.getAlterationOfferingName()))?"Selected":""%> value="<%=products2.get(j).valor%>"><%=products2.get(j).valor%></option>
         <%}%>

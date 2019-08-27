@@ -80,10 +80,10 @@ function recorrerR(documento){
     for (let i = 0; i < childs.length; i++) {
         if(childs[i].nodeName != "#text"){
             if(childs[i].id.includes("-")){
-            if(childs[i].nodeName=="DIV"){
+            if("DIV TR".includes(childs[i].nodeName)){
                 response+=childs[i].id.substr(1)+"\n";
                 recorrerR(childs[i]);
-            }else if(childs[i].nodeName=="SPAN"){
+            }else if("SPAN TD".includes(childs[i].nodeName)){
                 response+=childs[i].id.substr(1)+": "+childs[i].textContent.replace(/\n/g,"/n")+"\n";
                 recorrerR(childs[i]);
             }

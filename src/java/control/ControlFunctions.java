@@ -70,6 +70,10 @@ public class ControlFunctions {
                 controls[0]= ControlPath.balanceElementPath;
                 controls[1]= ControlPath.balanceElementPointer;            
         }
+        else if(tipo.equals(ControlPath.bundledClick)){
+                controls[0]= ControlPath.bundledPath;
+                controls[1]= ControlPath.bundledPointer;            
+        }
         return controls;
     }
 

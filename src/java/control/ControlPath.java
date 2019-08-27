@@ -84,7 +84,8 @@ public class ControlPath {
     public static String chargeOfferingPointer = "chargeOffering";
     public static String chargeOfferingView = "/views/chargeOfferingView.jsp";
     public static String chargeOfferingForm= "/views/chargeOfferingForm.jsp";
-    public static String chargeOfferingClick= "/chargeOffering";
+    public static String chargeOfferingClick= "/charge";
+    public static String chargeEventForm= "/views/chargeEventForm.jsp";
     
     public static String alterationOfferingPath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_ALTERATION_OFFERING_pricing.xml";
     public static String alterationOfferingPointer = "alterationOffering";
@@ -98,6 +99,7 @@ public class ControlPath {
     public static String holidayForm= "/views/holidayForm.jsp";
     public static String holidayClick= "/holiday";
     public static String holidayItemForm= "/views/holidayItemForm.jsp";
+    
     
     
     

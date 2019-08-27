@@ -10,7 +10,7 @@
 <form style="margin: 20px;" id="formulaire">
 <% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick);%>
 <div class="form-group row">
-<label>Product Name<select class="form-control" id="-productName">
+<label>Product Name<select class="custom-select" id="-productName">
         <%for(int j=0;j<products.size();j++){%>
         <%products.get(j).valor= products.get(j).valor.replaceAll("_ASM","");%>
         <%if(!products.get(j).valor.equals("Account")){%>

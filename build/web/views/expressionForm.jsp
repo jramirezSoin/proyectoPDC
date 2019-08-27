@@ -56,7 +56,7 @@
 <%if(expression.getTipo().equals("balanceTriggerExpression") || expression.getTipo().equals("complexTriggerExpression")){%>
 <div class="form-group row">
 <% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick);%>
-    <label>Balance Element<select class="form-control" id="-balanceElementName">
+    <label>Balance Element<select class="custom-select" id="-balanceElementName">
         <option value=""></option>
     <%for(int j=0;j<impactCategories.size();j++){%>
     <option <%=(impactCategories.get(j).valor.equals(expression.getBalanceElementName()))?"selected":""%> value="<%=impactCategories.get(j).valor%>"><%=impactCategories.get(j).valor%></option>
@@ -77,7 +77,7 @@
         <div id="-balanceExpression">
             <div class="form-group row">
             <% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick);%>
-                <label>Balance Element<select class="form-control" id="-balanceElementName">
+                <label>Balance Element<select class="custom-select" id="-balanceElementName">
                     <option value=""></option>
                 <%for(int j=0;j<impactCategories.size();j++){%>
                     <option value="<%=impactCategories.get(j).valor%>"><%=impactCategories.get(j).valor%></option>

@@ -85,26 +85,36 @@ public class PackageItemT extends Nodo{
         ArrayList<String> packs= (ArrayList<String>) packs2.clone();
         for(int i=index; i<packs.size();i++) {
             
-            if(packs.get(i).matches("(?s)name: (.*)")) this.productSpecName= packs.get(i).substring(6);
+            if(packs.get(i).matches("(?s)name: (.*)")){ 
+                if(!packs.get(i).substring(6).equals("Account")){
+                    this.productSpecName= packs.get(i).substring(6);
+                    this.specName="ProductPackage";}
+                else{
+                    this.specName="CustomerPackage";
+                }
+            }
             else if(packs.get(i).matches("(?s)productSpecName: (.*)")){ this.productSpecName= packs.get(i).substring(17);
                 this.specName="ProductPackage";
             }
             else if(packs.get(i).matches("(?s)balanceSpecificationName: (.*)")) this.balanceSpecificationName= packs.get(i).substring(26);
             else if(("bundledProductOfferingAssociation").contains(packs.get(i))){
                 ListaT item= new ListaT();
-                if(packs.get(i+1).matches("(?s)tipo: (.*)")){
-                    item.unit=packs.get(i).substring(6);
-                    item.id=((item.unit.equals("Opcional"))?1:((item.unit.equals("Cancelar con servicio"))?2:3));
-                    if(packs.get(i+2).matches("(?s)bundledProductOfferingName: (.*)"))
-                        item.valor= packs.get(i).substring(28);
+                if(packs.get(i+1).matches("(?s)bundledProductOfferingName: (.*)")){
+                        item.valor= packs.get(i+1).substring(28);
+                if(packs.get(i+2).matches("(?s)tipo: (.*)"))
+                    item.unit=packs.get(i+2).substring(6);
+                    item.id=((item.unit.equals("Optional"))?3:((item.unit.equals("Cancel with service"))?1:2));
+                    i+=2;
                 }
                 else if(packs.get(i+1).matches("(?s)optional: (.*)")){
-                    item.id= ((packs.get(i).substring(10).equals("false"))?1:3);
+                    item.id= ((packs.get(i+1).substring(10).equals("false"))?1:3);
                     if(packs.get(i+2).matches("(?s)cancelWithService: (.*)"))
-                        item.id= ((packs.get(i).substring(19).equals("false") && item.id==1)?2:((packs.get(i).substring(19).equals("false") && item.id==3)?3:1));
-                        item.unit=((item.id==1)?"Opcional":((item.id==2)?"Cancelar con servicio":"Cancelar sin servicio"));
+                        item.id= ((packs.get(i+2).substring(19).equals("false") && item.id==1)?2:((packs.get(i+2).substring(19).equals("false") && item.id==3)?3:1));
+                        item.unit=((item.id==3)?"Optional":((item.id==1)?"Cancel with service":"Cancel without service"));
                     if(packs.get(i+3).matches("(?s)bundledProductOfferingName: (.*)"))
-                        item.valor= packs.get(i).substring(28);}
+                        item.valor= packs.get(i+3).substring(28);
+                    i+=3;
+                }
                 this.bundleProductOffering.add(item);
             }else return i;
         }

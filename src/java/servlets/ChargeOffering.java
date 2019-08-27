@@ -7,10 +7,9 @@ package servlets;
 
 import control.ControlFunctions;
 import control.ControlPath;
-import datos.BalanceSpecT;
 import datos.ListaT;
-import datos.PackageItemT;
-import datos.PackageT;
+import datos.ChargeEventMapT;
+import datos.ChargeOfferingT;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,8 +26,8 @@ import xml.XmlParser;
  *
  * @author Joseph Ramírez
  */
-@WebServlet(name = "Package", urlPatterns = {"/package"})
-public class Package extends HttpServlet {
+@WebServlet(name = "ChargeOffering", urlPatterns = {"/charge"})
+public class ChargeOffering extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,7 +40,6 @@ public class Package extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,26 +56,26 @@ public class Package extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         String id = request.getParameter("id");
-        ArrayList<String> packages;
+        ArrayList<String> chargeOffering;
         HttpSession session = request.getSession();
         if(id==null){
-            packages = XmlParser.Leer2(new File(ControlPath.packagePath) , ControlPath.packagePointer);
-            ArrayList<ListaT> packageId = ControlFunctions.ListS2ListT(packages);
-             session.setAttribute("click", ControlPath.packageClick);           
-            session.setAttribute("lista", packageId);
-            session.setAttribute("titulo", "Package");
+            chargeOffering = XmlParser.Leer2(new File(ControlPath.chargeOfferingPath) , ControlPath.chargeOfferingPointer);
+            ArrayList<ListaT> chargeOfferingId = ControlFunctions.ListS2ListT(chargeOffering);
+             session.setAttribute("click", ControlPath.chargeOfferingClick);           
+            session.setAttribute("lista", chargeOfferingId);
+            session.setAttribute("titulo", "Charge Offering");
             session.setAttribute("actual", "lista");
-            session.setAttribute("actualPath", ControlPath.packagePath);
-            session.setAttribute("actualPoint", ControlPath.packagePointer);
+            session.setAttribute("actualPath", ControlPath.chargeOfferingPath);
+            session.setAttribute("actualPoint", ControlPath.chargeOfferingPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            packages= XmlParser.LeerSeleccionado(new File(ControlPath.packagePath) , Integer.parseInt(id));
-            PackageT packageId = new PackageT(Integer.parseInt(id));
-            packageId.procesar(packages, 1);
-            session.setAttribute("principal", packageId);
-            session.setAttribute("actual", "Package");
-            session.setAttribute("actualView", ControlPath.packageView);
-            request.getRequestDispatcher(ControlPath.packageView).forward(request, response);
+            chargeOffering= XmlParser.LeerSeleccionado(new File(ControlPath.chargeOfferingPath) , Integer.parseInt(id));
+            ChargeOfferingT chargeOfferingId = new ChargeOfferingT(Integer.parseInt(id));
+            chargeOfferingId.procesar(chargeOffering, 1);
+            session.setAttribute("principal", chargeOfferingId);
+            session.setAttribute("actual", "chargeOffer");
+            session.setAttribute("actualView", ControlPath.chargeOfferingView);
+            request.getRequestDispatcher(ControlPath.chargeOfferingView).forward(request, response);
             
         }
        
@@ -100,13 +98,13 @@ public class Package extends HttpServlet {
         if(id==null || id.equals("-1")){
             request.getSession().setAttribute("add",null);
             request.getSession().setAttribute("index",null);
-            request.getRequestDispatcher(ControlPath.packageForm).forward(request, response);}
+            request.getRequestDispatcher(ControlPath.chargeOfferingForm).forward(request, response);}
         else if(id.equals("-2")){
-            PackageT zoneModelT= new PackageT(0);
+            ChargeOfferingT chargeOfferingT= new ChargeOfferingT(0);
             request.getSession().setAttribute("index",null);
-            request.getSession().setAttribute("add", zoneModelT);
-            request.getSession().setAttribute("addView",ControlPath.packageView);
-            request.getRequestDispatcher(ControlPath.packageForm).forward(request, response);
+            request.getSession().setAttribute("add", chargeOfferingT);
+            request.getSession().setAttribute("addView",ControlPath.chargeOfferingView);
+            request.getRequestDispatcher(ControlPath.chargeOfferingForm).forward(request, response);
         }
         else {
             ArrayList<Integer> index= new ArrayList<>();
@@ -114,53 +112,29 @@ public class Package extends HttpServlet {
             for (String a : arrOfStr){
                  index.add(Integer.parseInt(a));}
             if(index.get(0)>=0){
-                if(index.get(0)==1){
                 request.getSession().setAttribute("add",null);
                 request.getSession().setAttribute("index", index);
-                request.getRequestDispatcher(ControlPath.packageItemForm).forward(request, response);}
-                else{
-                request.getSession().setAttribute("add",null);
+                request.getRequestDispatcher(ControlPath.chargeEventForm).forward(request, response);}
+            else if(index.get(0)==-3){
+                ChargeOfferingT chargeOffering = (ChargeOfferingT) request.getSession().getAttribute("principal");
+                ChargeEventMapT chargeEventT = new ChargeEventMapT(chargeOffering.getChargeEvents().size());
                 request.getSession().setAttribute("index", index);
-                request.getRequestDispatcher(ControlPath.packageBalanceForm).forward(request, response);
-                }
-            }else if(index.get(0)==-3){
-                PackageT packages = (PackageT) request.getSession().getAttribute("principal");
-                if(index.get(1)==1){
-                PackageItemT packageItemT = new PackageItemT(packages.getPackageItems().size());
-                request.getSession().setAttribute("index", index);
-                request.getSession().setAttribute("add", packageItemT);
-                request.getSession().setAttribute("addView",ControlPath.packageView);
-                request.getRequestDispatcher(ControlPath.packageItemForm).forward(request, response);
-                }else{
-                BalanceSpecT packageItemT = new BalanceSpecT(packages.getBalances().size());
-                request.getSession().setAttribute("index", index);
-                request.getSession().setAttribute("add", packageItemT);
-                request.getSession().setAttribute("addView",ControlPath.packageView);
-                request.getRequestDispatcher(ControlPath.packageBalanceForm).forward(request, response);
-                }
-                
+                request.getSession().setAttribute("add", chargeEventT);
+                request.getSession().setAttribute("addView",ControlPath.chargeOfferingView);
+                request.getRequestDispatcher(ControlPath.chargeEventForm).forward(request, response);
             }else if(index.get(0)==-4){
                 request.getSession().setAttribute("del", index);
             }else if(index.get(0)==-6){
                 request.getSession().setAttribute("del", index);
             }else if(index.get(0)==-5){
-                if(index.get(1)==1){
-                PackageItemT packageItemT = new PackageItemT(0);
-                packageItemT.masivo();
+                ChargeEventMapT chargeEventT = new ChargeEventMapT(0);
+                chargeEventT.masivo();
                 request.getSession().setAttribute("index", index);
-                request.getSession().setAttribute("add", packageItemT);
-                request.getRequestDispatcher(ControlPath.packageItemForm).forward(request, response);
-                }else{
-                BalanceSpecT packageItemT = new BalanceSpecT(0);
-                packageItemT.masivo();
-                request.getSession().setAttribute("index", index);
-                request.getSession().setAttribute("add", packageItemT);
-                request.getRequestDispatcher(ControlPath.packageBalanceForm).forward(request, response);
-                }
+                request.getSession().setAttribute("add", chargeEventT);
+                request.getRequestDispatcher(ControlPath.chargeEventForm).forward(request, response);
             }
         }
     }
-
     /**
      * Returns a short description of the servlet.
      *

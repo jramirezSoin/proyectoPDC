@@ -60,6 +60,7 @@ public class Modificador extends HttpServlet {
             nodo.procesarI(lista,0,indexs);
         else if(indexs.get(0)==-3){
             Nodo nodoI = (Nodo) request.getSession().getAttribute("add");
+            indexs.remove(0);
             nodoI.procesar(lista, 0);
             nodo.agregar(nodoI, indexs);
         }

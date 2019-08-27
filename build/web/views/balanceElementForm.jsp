@@ -29,19 +29,19 @@
 <input class="form-control" type="text" id="-symbol" placeholder="Symbol" value="<%=balance.getSymbol()%>"/>
 </div>
 <div class="form-group row">
-<label>Transient Element<select class="form-control" id="-transientElement">
+<label>Transient Element<select class="custom-select" id="-transientElement">
         <option <%=(balance.getTransientElement())?"Selected":""%> value="true">true</option>
         <option <%=(!balance.getTransientElement())?"Selected":""%> value="false">false</option>
 </select></label>
 </div>
 <div class="form-group row">
-<label>Foldable<select class="form-control" id="-foldable">
+<label>Foldable<select class="custom-select" id="-foldable">
         <option <%=(balance.isFoldable())?"Selected":""%> value="true">true</option>
         <option <%=(!balance.isFoldable())?"Selected":""%> value="false">false</option>
 </select></label>
 </div>
 <div class="form-group row">
-<label>Counter<select class="form-control" id="-counter">
+<label>Counter<select class="custom-select" id="-counter">
         <option <%=(balance.isCounter())?"Selected":""%> value="true">true</option>
         <option <%=(!balance.isCounter())?"Selected":""%> value="false">false</option>
 </select></label>

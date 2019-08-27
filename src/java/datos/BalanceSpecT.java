@@ -20,8 +20,8 @@ public class BalanceSpecT extends Nodo{
     String consumptionRule="NONE";           
     String floor="";
     String ceil="";
-    String threshold1;
-    String threshold2;
+    String threshold1="";
+    String threshold2="";
         
     public BalanceSpecT(int id) {
         this.id=id;
@@ -118,6 +118,7 @@ public class BalanceSpecT extends Nodo{
                     this.threshold1= balances.get(i).substring(11);
                 else
                     this.threshold2= balances.get(i).substring(11);
+                i++;
             }
             else if(balances.get(i).matches("(?s)threshold1: (.*)")) this.threshold1= balances.get(i).substring(11);
             else if(balances.get(i).matches("(?s)threshold2: (.*)")) this.threshold2= balances.get(i).substring(11);
@@ -125,7 +126,8 @@ public class BalanceSpecT extends Nodo{
             else if(balances.get(i).matches("(?s)ceiling: (.*)")) this.ceil= balances.get(i).substring(9);
             else if(balances.get(i).matches("(?s)consumptionRule: (.*)")) this.consumptionRule= balances.get(i).substring(17);
             else if(balances.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= balances.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode",balances.get(i).substring(23)),"name");}
-           else if(balances.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= balances.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",balances.get(i).substring(20)),"numericCode");}
+            else if(balances.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= balances.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",balances.get(i).substring(20)),"numericCode");}
+            else if(("balanceCreditProfile thresholdLevel").contains(balances.get(i))){}
             else return i;
         }
         return balances.size();

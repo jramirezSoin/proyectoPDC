@@ -49,22 +49,23 @@
                             <li>
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-panel"></i><span>Pricing</span></a>
                                 <ul class="collapse">
-                                    <li><a href="#" onclick="hacerlist('/triggerSpec', 'Trigger')">Trigger Specs</a></li>
-                                    <li><a href="#" onclick="hacerlist('/rollover', 'Rollover')">Rollovers</a></li>
-                                    <li><a href="#" onclick="hacerlist('/timeModel','Time Model')">Time Models</a></li>
-                                    <li><a href="#" onclick="hacerlist('/bundled', 'Bundle')">Bundle Offerings</a></li>
+                                    <li><a href="#" onclick="hacerlist('/triggerSpec', 'Trigger')">Trigger</a></li>
+                                    <li><a href="#" onclick="hacerlist('/rollover', 'Rollover')">Rollover</a></li>
+                                    <li><a href="#" onclick="hacerlist('/timeModel','Time Model')">Time Model</a></li>
+                                    <li><a href="#" onclick="hacerlist('/bundled', 'Bundle')">Bundle Offering</a></li>
                                     <li><a href="#" onclick="hacerlist('/package', 'Package')">Package</a></li>
+                                    <li><a href="#" onclick="hacerlist('/charge', 'Charge Offering')">Charge Offering</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-settings"></i><span>Config
                                     </span></a>
                                 <ul class="collapse">
-                                    <li><a href="#" onclick="hacerlist('/zoneModels', 'Zone Model')">Zone Models</a></li>
-                                    <li><a href="#" onclick="hacerlist('/impactCategories', 'Impact Category')">Impact Categories</a></li>
-                                    <li><a href="#" onclick="hacerlist('/rumConfig','RUM')">RUMs</a></li>
-                                    <li><a href="#" onclick="hacerlist('/balanceElement', 'Balance Element')">Balance Elements</a></li>
-                                    <li><a href="#" onclick="hacerlist('/holiday', 'Holiday Calendar')">Holiday Calendars</a></li>
+                                    <li><a href="#" onclick="hacerlist('/zoneModels', 'Zone Model')">Zone Model</a></li>
+                                    <li><a href="#" onclick="hacerlist('/impactCategories', 'Impact Category')">Impact Categoriy</a></li>
+                                    <li><a href="#" onclick="hacerlist('/rumConfig','RUM')">RUM</a></li>
+                                    <li><a href="#" onclick="hacerlist('/balanceElement', 'Balance Element')">Balance Element</a></li>
+                                    <li><a href="#" onclick="hacerlist('/holiday', 'Holiday Calendar')">Holiday Calendar</a></li>
                                 </ul>
                             </li>
                             
@@ -109,11 +110,11 @@
         </div>
         <!-- main content area end -->
         <!-- footer area start-->
-        <footer>
+        <!--footer>
             <div class="footer-area">
                 
             </div>
-        </footer>
+        </footer-->
         <!-- footer area end-->
     </div>
     <!-- page container area end -->
@@ -133,7 +134,7 @@
 
             <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="modal-title" id="exampleModalLabel"></h2>
@@ -152,7 +153,7 @@
 </div>
 
 <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
           <h2 class="modal-title"></h2>
@@ -172,7 +173,7 @@
 </div>
 
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="modal-title" id="addModalLabel"></h2>
