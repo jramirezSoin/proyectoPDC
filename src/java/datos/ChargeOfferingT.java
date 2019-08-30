@@ -164,7 +164,7 @@ public class ChargeOfferingT extends Nodo{
         for(int i=0;i<this.chargeEvents.size();i++){
             chargeEvents+=this.chargeEvents.get(i).toString()+"\n";
         }
-        return "<chargeOffering externalID=\"Bono de 12 meses Plan Ultra 3 4GLTE\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" +
+        return "<chargeOffering externalID=\""+name+"\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" +
             "    <name>"+name+"</name>\n" +
             "    <description>"+description+"</description>\n" +
             "    <internalId>"+internalId+"</internalId>\n" +

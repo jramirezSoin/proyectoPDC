@@ -104,7 +104,25 @@ public class ChargeEventMapT extends Nodo{
     
     @Override
     public String toString() {
-        return "";
+        return 
+           "    <chargeEventMap>\n" +
+        "        <eventName>"+eventName+"</eventName>\n" +
+        "        <validIfCancelled>"+((valid<=2)?"true":"false")+"</validIfCancelled>\n" +
+        "        <validIfInactive>"+((valid%2!=0)?"true":"false")+"</validIfInactive>\n" +
+        "        <timezoneMode>"+timezoneMode+"</timezoneMode>\n" +
+        "        <minQuantity>"+minQuantity+"</minQuantity>\n" +
+        "        <minQuantityUnit>NONE</minQuantityUnit>\n" +
+        "        <incrementQuantity>1</incrementQuantity>\n" +
+        "        <incrementQuantityUnit>NONE</incrementQuantityUnit>\n" +
+        "        <roundingMode>NEAREST</roundingMode>\n" +
+        "        <prorateFirst>"+prorateFirst+"</prorateFirst>\n" +
+        "        <prorateLast>"+prorateLast+"</prorateLast>\n" +
+        "        <chargeRatePlanInfo>\n" +
+        "            <targetEngine>"+targetEngine+"</targetEngine>\n" +
+        "        </chargeRatePlanInfo>\n" +
+        "        <chargeRatePlanName>"+chargeRatePlanName+"</chargeRatePlanName>\n" +
+        "        <ratePlanIID>"+ratePlanIID+"</ratePlanIID>\n" +
+        "    </chargeEventMap>";
     }
     
     public int procesar(ArrayList<String> charges, int index) {

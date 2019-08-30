@@ -29,7 +29,7 @@ public class Nodo {
     }
     
     public int procesar(ArrayList<String> zoneModels, int index) {
-        return 0;
+        return index;
     }
 
     public int procesarI(ArrayList<String> lista, int i, ArrayList<Integer> indexs) {
@@ -54,6 +54,14 @@ public class Nodo {
     
     public void merge(Nodo nodo) {
         
+    }
+    
+    public String toString(String s){
+        return "";
+    }
+    
+    public String toString(String s, String aux){
+        return "";
     }
     
 }

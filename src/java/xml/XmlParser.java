@@ -303,7 +303,7 @@ public class XmlParser {
         }
     }
     
-    public static String BuscarUno(File file, String indicador, ListaT buscar, String retorna){
+    public static ArrayList<String> Buscar(File file, String indicador, ArrayList<ListaT> buscar, String child){
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -311,6 +311,43 @@ public class XmlParser {
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName(indicador);
             lista.clear();
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node node = nList.item(i);
+                int cont=0;
+                int ap=0;
+                for(int j=0; j< node.getChildNodes().getLength(); j++){
+                    for(int k=0; k< buscar.size();k++){
+                    if(node.getChildNodes().item(j).getNodeName().equals(buscar.get(k).unit)){
+                        ap++;
+                        if(!node.getChildNodes().item(j).getTextContent().equals(buscar.get(k).valor)){
+                            cont++;
+                            k=buscar.size();
+                            j= node.getChildNodes().getLength();
+                        }
+                    }
+                    }
+                }
+                if(ap!=buscar.size()) cont++;
+                if(cont==0){ 
+                    NodeList nChilds = ((Element)node).getElementsByTagName(child);
+                    for(int j=0; j< nChilds.getLength(); j++){
+                        lista.add(((Element)nChilds.item(j)).getElementsByTagName("name").item(0).getTextContent());
+                    }
+                }
+            }
+            return lista;
+        } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
+            return null;
+        }
+    }
+    
+    public static String BuscarUno(File file, String indicador, ListaT buscar, String retorna){
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName(indicador);
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
                 if(((Element)node).getElementsByTagName(buscar.unit).item(0).getTextContent().equals(buscar.valor)){

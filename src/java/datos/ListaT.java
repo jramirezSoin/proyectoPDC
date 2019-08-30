@@ -9,7 +9,7 @@ package datos;
  *
  * @author Joseph Ramírez
  */
-public class ListaT extends Nodo{
+public class ListaT extends Nodo implements java.io.Serializable{
     public String valor="";
     public String unit="";
 

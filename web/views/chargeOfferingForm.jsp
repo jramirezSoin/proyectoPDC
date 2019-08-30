@@ -24,6 +24,7 @@
 <label for="-timeRange">Time Range</label>
 <input class="form-control" type="text" id="-timeRange" placeholder="Time Range" value="<%=chargeOffering.getTimeRange()%>"/>
 </div>
+<%if(chargeOffering.getChargeEvents().size()==0){%>
 <% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick);%>
     <div class="form-group row">
     <label><select class="custom-select" id="-specName">
@@ -40,6 +41,7 @@
             <option <%=((chargeOffering.getOfferType().equals("SYSTEM"))?"selected":"")%> value="SYSTEM">SYSTEM</option>
     </select></label>
     </div>
+<%}%>    
 <div class="form-group row">
 <label for="-priority">Priority</label>
 <input class="form-control" type="number" id="-priority" placeholder="Priority" value="<%=chargeOffering.getPriority()%>"/>
@@ -57,5 +59,11 @@
 <div class="form-group row">
 <label for="-ownMax">Own Max</label>
 <input class="form-control" type="text" id="-ownMax" placeholder="Own Max" value="<%=chargeOffering.getOwnMax()%>"/>
+</div>
+<div class="form-group row">
+<label>Tax Supplier<select class="custom-select" id="-taxSupplier">
+        <option <%=(chargeOffering.getTaxSupplier().equals(""))?"Selected":""%> value=""></option>
+        <option <%=(chargeOffering.getTaxSupplier().equals("TS1"))?"Selected":""%> value="TS1">TS1</option>
+</select></label>
 </div>
 </form>

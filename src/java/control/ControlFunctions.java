@@ -44,6 +44,13 @@ public class ControlFunctions {
         return nodosId;
     }
     
+    public static ArrayList<ListaT> getListaFiltro(String tipo, ArrayList<ListaT> buscar, String s){
+        String[] controls = getPathPointer(tipo);
+        ArrayList<String> nodos = XmlParser.Buscar(new File(controls[0]) , controls[1],buscar, s);
+        ArrayList<ListaT> nodosId = ListS2ListT(nodos);
+        return nodosId;
+    }
+    
     public static String[] getPathPointer(String tipo){
         String[] controls= new String[2];
         if(tipo.equals(ControlPath.zoneModelsClick)){
@@ -73,6 +80,10 @@ public class ControlFunctions {
         else if(tipo.equals(ControlPath.bundledClick)){
                 controls[0]= ControlPath.bundledPath;
                 controls[1]= ControlPath.bundledPointer;            
+        }
+        else if(tipo.equals(ControlPath.eventAttributeSpecClick)){
+                controls[0]= ControlPath.eventAttributeSpecPath;
+                controls[1]= ControlPath.eventAttributeSpecPointer;            
         }
         return controls;
     }

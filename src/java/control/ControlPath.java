@@ -100,6 +100,17 @@ public class ControlPath {
     public static String holidayClick= "/holiday";
     public static String holidayItemForm= "/views/holidayItemForm.jsp";
     
+    public static String eventAttributeSpecPath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_EVENT_ATTRIBUTE_SPEC_metadata.xml";
+    public static String eventAttributeSpecPointer = "eventAttributeSpec";
+    public static String eventAttributeSpecClick= "/event";
+    
+    public static String ChargeRatePath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_CHARGE_RATE_PLAN_pricing.xml";
+    public static String ChargeRatePointer = "chargeRatePlan";
+    public static String ChargeRateView = "/views/chargeRatePlanView.jsp";
+    public static String ChargeRateForm= "/views/chargeRatePlanForm.jsp";
+    public static String ChargeRateClick= "/chargeRate";
+
+    
     
     
     
