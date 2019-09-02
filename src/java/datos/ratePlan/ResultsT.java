@@ -13,17 +13,17 @@ import java.util.ArrayList;
  * @author Joseph Ramírez
  */
 public class ResultsT extends Nodo{
-    private String name="";
+    private ArrayList<String> name= new ArrayList<>();
     private ResultI result;
     
     public ResultsT(){}
     public ResultsT(int id){this.id=id;}
 
-    public String getName() {
+    public ArrayList<String> getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(ArrayList<String> name) {
         this.name = name;
     }
 
@@ -37,9 +37,11 @@ public class ResultsT extends Nodo{
     
     @Override
     public String toString(String s) {
+        String names="";
+        for(String i: name) names+= s+"\t<name>"+i+"</name>\n";
         return 
         s+"<results>\n"+
-        s+"\t<name>"+name+"</name>\n"+
+        names+
         ((result instanceof GenericSelectorT)?((GenericSelectorT)result).toString(s+"\t")
         :((result instanceof CrpCompositePopModelT)?((CrpCompositePopModelT)result).toString(s+"\t")
         :((TimeConfigurationT)result).toString(s+"\t")))+"\n"+
@@ -50,7 +52,7 @@ public class ResultsT extends Nodo{
     public int procesar(ArrayList<String> chargeRates2, int index) {
         ArrayList<String> chargeRates=  (ArrayList<String>)chargeRates2.clone();
         for(int i=index; i<chargeRates.size();i++) {          
-            if(chargeRates.get(i).matches("(?s)name: (.*)")) this.name= chargeRates.get(i).substring(6);
+            if(chargeRates.get(i).matches("(?s)name: (.*)")) this.name.add(chargeRates.get(i).substring(6));
             else if(chargeRates.get(i).matches("(?s)genericSelector")){
                 GenericSelectorT resultado = new GenericSelectorT();
                 i= resultado.procesar(chargeRates, i+1);
@@ -85,7 +87,9 @@ public class ResultsT extends Nodo{
         if(result instanceof GenericSelectorT) estado=((GenericSelectorT)result).buscar(buscar);
         else if(result instanceof TimeConfigurationT) estado=((TimeConfigurationT)result).buscar(buscar);
         else if(result instanceof CrpCompositePopModelT) estado=((CrpCompositePopModelT)result).buscar(buscar);
-        if((name).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase()) || estado){
+        String names=""; 
+        for(String i: name) names+=i+" ";
+        if((names).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase()) || estado){
             this.visibilidad=true;
             return true;
         }else{

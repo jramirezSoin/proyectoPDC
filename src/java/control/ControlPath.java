@@ -104,11 +104,18 @@ public class ControlPath {
     public static String eventAttributeSpecPointer = "eventAttributeSpec";
     public static String eventAttributeSpecClick= "/event";
     
-    public static String ChargeRatePath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_CHARGE_RATE_PLAN_pricing.xml";
-    public static String ChargeRatePointer = "chargeRatePlan";
-    public static String ChargeRateView = "/views/chargeRatePlanView.jsp";
-    public static String ChargeRateForm= "/views/chargeRatePlanForm.jsp";
-    public static String ChargeRateClick= "/chargeRate";
+    public static String chargeRatePath = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_CHARGE_RATE_PLAN_pricing.xml";
+    public static String chargeRatePointer = "chargeRatePlan";
+    public static String chargeRateView = "/views/chargeRatePlanView.jsp";
+    public static String chargeRateForm= "/views/chargeRateForm.jsp";
+    public static String chargeRateClick= "/chargeRate";
+    
+    public static String crpCompositeView= "/views/crpCompositeView.jsp";
+    
+    public static String glidClick="/glid";
+    public static String glidPath="C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_GLID_config.xml";
+    public static String glidPointer="glid";
+    public static String crpRelDateForm;
 
     
     

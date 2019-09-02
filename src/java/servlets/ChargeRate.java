@@ -9,6 +9,8 @@ import control.ControlFunctions;
 import control.ControlPath;
 import datos.ratePlan.ChargeRatePlanT;
 import datos.ListaT;
+import datos.ratePlan.CrpCompositePopModelT;
+import datos.ratePlan.CrpRelDateRangeT;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -56,27 +58,34 @@ public class ChargeRate extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         String id = request.getParameter("id");
+        String dir = request.getParameter("path");
         ArrayList<String> ChargeRate;
         HttpSession session = request.getSession();
         if(id==null){
-            ChargeRate = XmlParser.Leer2(new File(ControlPath.ChargeRatePath) , ControlPath.ChargeRatePointer);
+            if(dir==null){
+            ChargeRate = XmlParser.Leer2(new File(ControlPath.chargeRatePath) , ControlPath.chargeRatePointer);
             ArrayList<ListaT> ChargeRateId = ControlFunctions.ListS2ListT(ChargeRate);
-             session.setAttribute("click", ControlPath.ChargeRateClick);           
+             session.setAttribute("click", ControlPath.chargeRateClick);           
             session.setAttribute("lista", ChargeRateId);
             session.setAttribute("titulo", "Charge Rate");
             session.setAttribute("actual", "lista");
-            session.setAttribute("actualPath", ControlPath.ChargeRatePath);
-            session.setAttribute("actualPoint", ControlPath.ChargeRatePointer);
+            session.setAttribute("actualPath", ControlPath.chargeRatePath);
+            session.setAttribute("actualPoint", ControlPath.chargeRatePointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
+            }else{
+                CrpCompositePopModelT composite = ((ChargeRatePlanT)session.getAttribute("principal")).buscaPop(dir);
+                session.setAttribute("composite", composite);
+                request.getRequestDispatcher(ControlPath.crpCompositeView).forward(request, response);
+            }
         }else{
-            ChargeRate= XmlParser.LeerSeleccionado(new File(ControlPath.ChargeRatePath) , Integer.parseInt(id));
-            ChargeRatePlanT ChargeRateId = new ChargeRatePlanT(Integer.parseInt(id));
-            ChargeRateId.procesar(ChargeRate, 1);
-            session.setAttribute("principal", ChargeRateId);
-            session.setAttribute("actual", "chargeRate");
-            session.setAttribute("actualView", ControlPath.ChargeRateView);
-            request.getRequestDispatcher(ControlPath.ChargeRateView).forward(request, response);
-            
+                ChargeRate= XmlParser.LeerSeleccionado(new File(ControlPath.chargeRatePath) , Integer.parseInt(id));
+                ChargeRatePlanT ChargeRateId = new ChargeRatePlanT(Integer.parseInt(id));
+                ChargeRateId.procesar(ChargeRate, 1);
+                System.out.println(ChargeRateId.toString());
+                session.setAttribute("principal", ChargeRateId);
+                session.setAttribute("actual", "chargeRate");
+                session.setAttribute("actualView", ControlPath.chargeRateView);
+                request.getRequestDispatcher(ControlPath.chargeRateView).forward(request, response);  
         }
        
     }
@@ -93,6 +102,47 @@ public class ChargeRate extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String id = request.getParameter("id");
+        
+        if(id==null || id.equals("-1")){
+            request.getSession().setAttribute("add",null);
+            request.getSession().setAttribute("index",null);
+            request.getRequestDispatcher(ControlPath.chargeRateForm).forward(request, response);}
+        else if(id.equals("-2")){
+            ChargeRatePlanT chargeRateT= new ChargeRatePlanT(0);
+            request.getSession().setAttribute("index",null);
+            request.getSession().setAttribute("add", chargeRateT);
+            request.getSession().setAttribute("addView",ControlPath.chargeRateView);
+            request.getRequestDispatcher(ControlPath.chargeRateForm).forward(request, response);
+        }
+        else {
+            ArrayList<Integer> index= new ArrayList<>();
+            String[] arrOfStr = id.split(",");
+            for (String a : arrOfStr){
+                 index.add(Integer.parseInt(a));}
+            if(index.get(0)>=0){
+                request.getSession().setAttribute("add",null);
+                request.getSession().setAttribute("index", index);
+                request.getRequestDispatcher(ControlPath.crpRelDateForm).forward(request, response);}
+            else if(index.get(0)==-3){
+                ChargeRatePlanT chargeRate = (ChargeRatePlanT) request.getSession().getAttribute("principal");
+                CrpRelDateRangeT crpRelDateT = new CrpRelDateRangeT(chargeRate.getSubscriberCurrency().getCrpRelDateRanges().size());
+                request.getSession().setAttribute("index", index);
+                request.getSession().setAttribute("add", crpRelDateT);
+                request.getSession().setAttribute("addView",ControlPath.chargeRateView);
+                request.getRequestDispatcher(ControlPath.crpRelDateForm).forward(request, response);
+            }else if(index.get(0)==-4){
+                request.getSession().setAttribute("del", index);
+            }else if(index.get(0)==-6){
+                request.getSession().setAttribute("del", index);
+            }else if(index.get(0)==-5){
+                CrpRelDateRangeT crpRelDateT = new CrpRelDateRangeT(0);
+                crpRelDateT.masivo();
+                request.getSession().setAttribute("index", index);
+                request.getSession().setAttribute("add", crpRelDateT);
+                request.getRequestDispatcher(ControlPath.crpRelDateForm).forward(request, response);
+            }
+        }
     }
 
     /**

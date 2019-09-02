@@ -7,8 +7,11 @@ package control;
 
 import datos.ListaT;
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 import xml.XmlParser;
+import java.text.SimpleDateFormat;  
+import java.util.Date;  
 
 /**
  *
@@ -85,12 +88,30 @@ public class ControlFunctions {
                 controls[0]= ControlPath.eventAttributeSpecPath;
                 controls[1]= ControlPath.eventAttributeSpecPointer;            
         }
+        else if(tipo.equals(ControlPath.chargeRateClick)){
+                controls[0]= ControlPath.chargeRatePath;
+                controls[1]= ControlPath.chargeRatePointer;            
+        }
+        else if(tipo.equals(ControlPath.glidClick)){
+                controls[0]= ControlPath.glidPath;
+                controls[1]= ControlPath.glidPointer;            
+        }
         return controls;
     }
 
     public static String Buscar(String tipo, ListaT buscar, String retorna) {
         String[] controls = getPathPointer(tipo);
         return XmlParser.BuscarUno(new File(controls[0]) , controls[1],buscar,retorna);
+    }
+    
+    public static String getParseDate(String s) throws ParseException{
+        SimpleDateFormat day= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat day2= new SimpleDateFormat("dd MMM yyyy");
+        if(s.equals("inf")) return "Never ends";
+        else if(s.equals("0")) return "Now";
+        else{
+            s= s.substring(0, 4)+"-"+s.substring(4, 6)+"-"+s.substring(6, 8);
+            return day2.format(day.parse(s));}
     }
     
 }

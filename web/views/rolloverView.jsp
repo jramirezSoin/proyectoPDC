@@ -4,6 +4,7 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="control.ControlFunctions"%>
 <%@page import="datos.RolloverT"%>
 <% RolloverT rollover = (RolloverT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
@@ -51,8 +52,8 @@
                         </div>
                         <div>
                             <dl class="row">
-                                <dt class="col-sm-4">Start Date</dt><dd class="col-sm-8"><%= rollover.getStartDate()%></dd>
-                                <dt class="col-sm-4">End Date</dt><dd class="col-sm-8"><%= rollover.getEndDate()%></dd>
+                                <dt class="col-sm-4">Start Date</dt><dd class="col-sm-8"><%= ControlFunctions.getParseDate(rollover.getStartDate())%></dd>
+                                <dt class="col-sm-4">End Date</dt><dd class="col-sm-8"><%= ControlFunctions.getParseDate(rollover.getEndDate())%></dd>
                             </dl>
                         </div>
                     </div>
@@ -67,7 +68,7 @@
                         </div>
                         <div>
                             <dl class="row">
-                                      <dt class="col-sm-4">Glid</dt><dd class="col-sm-8"><%= rollover.getGlid()%></dd>
+                                      <dt class="col-sm-4">Glid</dt><dd class="col-sm-8"><%= rollover.getGlidName()%></dd>
                                       <dt class="col-sm-4">Unit Of Measure</dt><dd class="col-sm-8"><%= rollover.getUnitOfMeasure()%></dd>
                                       <dt class="col-sm-4">Balance Element</dt><dd class="col-sm-8"><%= rollover.getBalanceElementName()%></dd>
                                       <dt class="col-sm-4">Rollover Units</dt><dd class="col-sm-8"><%= rollover.getRolloverUnits()%></dd>

@@ -351,6 +351,7 @@ public class XmlParser {
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
                 if(((Element)node).getElementsByTagName(buscar.unit).item(0).getTextContent().equals(buscar.valor)){
+                    if(retorna.equals("id")) return i+"";
                     return ((Element)node).getElementsByTagName(retorna).item(0).getTextContent();
                 }
             }

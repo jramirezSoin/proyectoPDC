@@ -21,6 +21,7 @@ public class RolloverT extends Nodo{
     private String startDate="";
     private String endDate="";
     private String glid="";
+    private String glidName="";
     private String unitOfMeasure="";
     private String balanceElementNumCode="";
     private String balanceElementName="";
@@ -138,6 +139,16 @@ public class RolloverT extends Nodo{
     public void setBalanceElementName(String balanceElementName) {
         this.balanceElementName = balanceElementName;
     }
+
+    public String getGlidName() {
+        return glidName;
+    }
+
+    public void setGlidName(String glidName) {
+        this.glidName = glidName;
+    }
+    
+    
     
     
 
@@ -160,15 +171,15 @@ public class RolloverT extends Nodo{
     @Override
     public int procesar(ArrayList<String> rollovers, int index) {
         ArrayList<String> rollovers2= (ArrayList<String>)rollovers.clone();
-        for(int i=index; i<rollovers2.size();i++) {
-           System.out.println(rollovers2.get(i)); 
+        for(int i=index; i<rollovers2.size();i++) { 
            if(rollovers2.get(i).matches("(?s)name: (.*)")) this.name= rollovers2.get(i).substring(6);
            else if(rollovers2.get(i).matches("(?s)internalId: (.*)")) this.internalId= rollovers2.get(i).substring(12);
            else if(rollovers2.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= rollovers2.get(i).substring(15);
            else if(rollovers2.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= rollovers2.get(i).substring(20);
            else if(rollovers2.get(i).matches("(?s)startDate: (.*)")) this.startDate= rollovers2.get(i).substring(11);
            else if(rollovers2.get(i).matches("(?s)endDate: (.*)")) this.endDate= rollovers2.get(i).substring(9);
-           else if(rollovers2.get(i).matches("(?s)glid: (.*)")) this.glid= rollovers2.get(i).substring(6);
+           else if(rollovers2.get(i).matches("(?s)glid: (.*)")){ this.glid= rollovers2.get(i).substring(6); this.glidName=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("code",rollovers2.get(i).substring(6)),"name");}
+           else if(rollovers2.get(i).matches("(?s)glidName: (.*)")){ this.glidName= rollovers2.get(i).substring(10); this.glid=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("name",rollovers2.get(i).substring(10)),"code");}
            else if(rollovers2.get(i).matches("(?s)unitOfMeasure: (.*)")) this.unitOfMeasure= rollovers2.get(i).substring(15);
            else if(rollovers2.get(i).matches("(?s)rolloverUnits: (.*)")) this.rolloverUnits= rollovers2.get(i).substring(15);
            else if(rollovers2.get(i).matches("(?s)rolloverMaxUnits: (.*)")) this.rolloverMaxUnits= rollovers2.get(i).substring(18);
@@ -193,7 +204,7 @@ public class RolloverT extends Nodo{
     
     @Override
     public boolean buscar(String buscar) {
-        if((name+"/"+startDate+"/"+internalId+"/"+priceListName+"/"+pricingProfileName+"/"+endDate+"/"+glid+"/"+unitOfMeasure+"/"+balanceElementName+"/"+rolloverUnits+"/"+rolloverMaxUnits+"/"+rolloverCount).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
+        if((name+"/"+startDate+"/"+internalId+"/"+priceListName+"/"+pricingProfileName+"/"+endDate+"/"+glidName+"/"+unitOfMeasure+"/"+balanceElementName+"/"+rolloverUnits+"/"+rolloverMaxUnits+"/"+rolloverCount).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
             this.visibilidad=true;
             return true;
         }else{

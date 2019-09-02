@@ -4,6 +4,7 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="control.ControlFunctions"%>
 <%@page import="datos.ListaT"%>
 <%@page import="datos.TimeModelTagT.TimeSpecT"%>
 <%@page import="datos.TimeModelT"%>
@@ -56,7 +57,7 @@
                         </div>
                         <div>
                             <dl class="row">
-                                  <dt class="col-sm-3">Valid From</dt><dd class="col-sm-9"><%= timeModel.getValidFrom()%></dd>
+                                  <dt class="col-sm-3">Valid From</dt><dd class="col-sm-9"><%= ControlFunctions.getParseDate(timeModel.getValidFrom())%></dd>
                             </dl>
                         </div>
                     </div>

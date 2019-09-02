@@ -69,7 +69,7 @@ public class SubscriberCurrencyT extends Nodo{
             s+"<subscriberCurrency>\n"+
             s+"\t<currencyCode>"+currencyCode+"</currencyCode>\n"+
             ((applicableRum==null)?crpRelDateRangess:applicableRum.toString(s+"\t", crpRelDateRangess)+"\n")+
-            s+"</subscriberCurrency>\n";
+            s+"</subscriberCurrency>";
     }
 
     @Override

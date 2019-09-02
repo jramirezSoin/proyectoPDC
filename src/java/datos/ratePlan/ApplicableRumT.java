@@ -15,10 +15,10 @@ import java.util.ArrayList;
 public class ApplicableRumT extends Nodo{
     private String applicableRumName="";
     private String minQuantity="";
-    private String minQuantityUnit="";
+    private String minQuantityUnit="NONE";
     private String incrementQuantity="";
-    private String incrementQuantityUnit="";
-    private String roundingMode="";
+    private String incrementQuantityUnit="NONE";
+    private String roundingMode="NEAREST";
     
     public ApplicableRumT(){}
     public ApplicableRumT(int id){this.id=id;}

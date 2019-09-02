@@ -3,6 +3,9 @@
     Created on : Aug 27, 2019, 2:54:22 PM
     Author     : Joseph Ramírez
 --%>
+<%@page import="datos.ListaT"%>
+<%@page import="control.ControlPath"%>
+<%@page import="control.ControlFunctions"%>
 <%@page import="datos.ChargeOfferingT"%>
 <%@page import="datos.ChargeEventMapT"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -39,7 +42,7 @@
                             <dl class="row">
                                 <dt class="col-sm-3">Description</dt><dd class="col-sm-9"><%= chargeOffer.getDescription()%></dd>
                                 <dt class="col-sm-3">Pricing Profile Name</dt><dd class="col-sm-9"><%= chargeOffer.getPricingProfileName()%></dd>
-                                <dt class="col-sm-3">Time Range</dt><dd class="col-sm-9"><%= chargeOffer.getTimeRange()%></dd>
+                                <dt class="col-sm-3">Time Range</dt><dd class="col-sm-9"><%= ControlFunctions.getParseDate(chargeOffer.getTimeRange().split("/")[0]) %>-<%= ControlFunctions.getParseDate(chargeOffer.getTimeRange().split("/")[1]) %></dd>
                                 <dt class="col-sm-3"><%= ((chargeOffer.getProductSpecName().equals(""))?"Customer SpecName":"Product SpecName")%></dt><dd class="col-sm-9"><%= ((chargeOffer.getProductSpecName().equals(""))?chargeOffer.getCustomerSpecName():chargeOffer.getProductSpecName())%></dd>
                                 <dt class="col-sm-3">Offer Type</dt><dd class="col-sm-9"><%= chargeOffer.getOfferType()%></dd>
                                 <dt class="col-sm-3">Priority</dt><dd class="col-sm-9"><%= chargeOffer.getPriority()%></dd>
@@ -85,6 +88,7 @@
                                 <tbody>
                                     <% for(int i=0; i<chargeOffer.getChargeEvents().size();i++){%>
                                     <% ChargeEventMapT item = chargeOffer.getChargeEvents().get(i);%>
+                                    <% ListaT buscar= new ListaT("name",item.getChargeRatePlanName());%>
                                     <%if(item.visibilidad){%>
                                         <tr>
                                         <td><div class="custom-control custom-checkbox">
@@ -92,7 +96,7 @@
                                                 <label class="custom-control-label" for="customCheck-<%=item.getId()%>"></label>
                                             </div></td>
                                         <td><%= item.getEventName()%></td>
-                                        <td><%= item.getChargeRatePlanName()%></td>
+                                        <td><a href="#" onclick="hacerClick(this,'/chargeRate',<%=ControlFunctions.Buscar(ControlPath.chargeRateClick, buscar, "id")%>)"><%= item.getChargeRatePlanName()%></a></td>
                                         <td><%= item.getTimezoneMode()%></td>
                                         <td><%= item.getProrateFirst()%></td>
                                         <td><%= item.getProrateLast()%></td>

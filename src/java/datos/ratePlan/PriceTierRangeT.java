@@ -20,6 +20,10 @@ public class PriceTierRangeT extends Nodo{
     
     public PriceTierRangeT(){}
     public PriceTierRangeT(int id){this.id=id;}
+    public PriceTierRangeT(int id, int validity){
+        this.id=id;
+        this.priceTierValidityPeriod=validity;
+    }
 
     public String getTipo() {
         return tipo;
@@ -53,6 +57,61 @@ public class PriceTierRangeT extends Nodo{
         this.priceTierValidityPeriod = priceTierValidityPeriod;
     }
     
+    @Override
+    public String toString(String s) {
+        String gens="";
+        for(int i=0;i<this.charges.size();i++){
+            gens+=this.charges.get(i).toString(s+"\t")+"\n";
+        }
+        return s+"<"+tipo+">\n"+
+               s+"\t<upperBound>"+upperBound+"</upperBound>\n"+gens+
+               s+"</"+tipo+">";
+    }
+
+    @Override
+    public int procesar(ArrayList<String> generics, int index) {
+        int itemCount = 0;
+        for(int i=index; i<generics.size();i++) {
+            
+            if(generics.get(i).matches("(?s)upperBound: (.*)")) this.upperBound= generics.get(i).substring(12);
+            else if(("fixedCharge scaledCharge recurringCharge oneTimeCharge").contains(generics.get(i))){ 
+                ChargeT resul = new ChargeT(itemCount);
+                resul.setTipo(generics.get(i));
+                itemCount++;
+                i= resul.procesar(generics, i+1);
+                i--;
+                this.charges.add(resul);
+            }else return i;
+        }
+        return generics.size();
+    }
+    
+    
+    @Override
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+        if(indexs.size()==0)
+            index= this.procesar(lista, index);
+        else{
+            int i= indexs.get(0);
+            indexs.remove(0);
+            this.charges.get(i).procesarI(lista, index, indexs);
+        }
+        return index;
+    }
+    
+    @Override
+    public boolean buscar(String buscar) {
+        for(ChargeT item: this.charges){
+            item.buscar(buscar);
+        }
+        if((upperBound).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
+            this.visibilidad=true;
+            return true;
+        }else{
+            this.visibilidad=false;
+            return false;
+        }
+    }
     
     
     

@@ -67,7 +67,7 @@ public class ZoneModelT extends Nodo{
         }
         return s+"<"+((enhanced)?"enhancedZ":"z")+"oneModel>\n" +
             s+"\t<zoneModelName>"+zoneModelName+"</zoneModelName>\n" +
-            ((uscModelName.equals(""))?"":s+"\t<zoneModelName>"+zoneModelName+"</zoneModelName>\n") +zoneItems+
+            ((uscModelName.equals(""))?"":s+"\t<uscModelName>"+uscModelName+"</uscModelName>\n") +zoneItems+
             s+"</"+((enhanced)?"enhancedZ":"z")+"oneModel>";
     }
     
@@ -114,6 +114,14 @@ public class ZoneModelT extends Nodo{
             this.visibilidad=false;
             return false;
         }
+    }
+
+    CrpCompositePopModelT buscaPop(ArrayList<Integer> index) {
+        if(index.size()==1) return (CrpCompositePopModelT)this.results.get(index.get(0)).getResult();
+        ResultI resul= this.results.get(index.get(0)).getResult();
+        if(resul instanceof GenericSelectorT) return (CrpCompositePopModelT)(((GenericSelectorT)resul).getResults().get(index.get(1)).getResult());
+        else if(resul instanceof TimeConfigurationT) return (CrpCompositePopModelT)(((TimeConfigurationT)resul).getTags().get(index.get(1)).getCrpCompositePopModel());       
+        else return null;
     }
     
     

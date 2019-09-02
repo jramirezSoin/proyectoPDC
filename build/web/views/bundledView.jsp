@@ -4,6 +4,9 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.ListaT"%>
+<%@page import="control.ControlPath"%>
+<%@page import="control.ControlFunctions"%>
 <%@page import="datos.BundledItemT"%>
 <%@page import="datos.BundledT"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -40,7 +43,7 @@
                             <dl class="row">
                               <dt class="col-sm-3">Description</dt><dd class="col-sm-9"><%= bundled.getDescription()%></dd>
                               <dt class="col-sm-3">Pricing Profile Name</dt><dd class="col-sm-9"><%= bundled.getPricingProfileName()%></dd>
-                              <dt class="col-sm-3">Time Range</dt><dd class="col-sm-9"><%= bundled.getTimeRange()%></dd>
+                              <dt class="col-sm-3">Time Range</dt><dd class="col-sm-9"><%= ControlFunctions.getParseDate(bundled.getTimeRange().split("/")[0]) %>-<%= ControlFunctions.getParseDate(bundled.getTimeRange().split("/")[1]) %></dd>
                               <dt class="col-sm-3"><%= (bundled.getCustomerSpecName().equals(""))?"Product":"Customer"%> Spec Name</dt><dd class="col-sm-9"><%= (bundled.getCustomerSpecName().equals(""))?bundled.getProductSpecName():bundled.getCustomerSpecName()%></dd>
                               <dt class="col-sm-3">Bill on Purchase</dt><dd class="col-sm-9"><%= bundled.getBillOnPurchase()%></dd>
                               <dt class="col-sm-3">Customize</dt><dd class="col-sm-9"><%= bundled.getCustomize()%></dd>
@@ -84,12 +87,14 @@
                                 <% for(int i=0; i<bundled.getBundledItems().size();i++){%>
                                     <% BundledItemT item = bundled.getBundledItems().get(i);%>
                                     <%if(item.visibilidad){%>
+                                    <%String s= ((item.getChargeOfferingName().equals(""))?"/alteration":"/charge");%>
+                                    <%ListaT buscar= new ListaT("name",((item.getChargeOfferingName().equals(""))?item.getAlterationOfferingName():item.getChargeOfferingName()));%>
                                         <tr>
                                         <td><div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck-<%=item.getId()%>">
                                                 <label class="custom-control-label" for="customCheck-<%=item.getId()%>"></label>
                                             </div></td>
-                                        <td><%= (item.getChargeOfferingName().equals(""))?item.getAlterationOfferingName().replaceAll("_", " "):item.getChargeOfferingName().replaceAll("_", " ")%></td>
+                                        <td><a href="#" onclick="hacerClick(this,'<%=s%>','<%=ControlFunctions.Buscar(ControlPath.chargeOfferingClick, buscar, "id")%>')"><%= (item.getChargeOfferingName().equals(""))?item.getAlterationOfferingName().replaceAll("_", " "):item.getChargeOfferingName().replaceAll("_", " ")%></a></td>
                                         <td><%= item.getStatus()%></td>
                                         <td><%= item.getStatusCode()%></td>
                                         <td><%= item.getQuantity()%></td>

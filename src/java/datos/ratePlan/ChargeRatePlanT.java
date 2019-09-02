@@ -17,18 +17,18 @@ public class ChargeRatePlanT extends Nodo{
     private String name="";
     private String internalId="";
     private String pricingProfileName="";
-    private String priceListName="";
+    private String priceListName="Default";
     private String taxCode="";
     private String applicableRums="";
     private String applicableQuantity="";
     private String taxTime="";
     private String todMode="";
-    private String applicableQtyTreatment="";
+    private String applicableQtyTreatment="CONTINOUS";
     private String permittedName="";
     private String permittedType="";
     private String eventName="";
-    private String cycleFeeFlag="";
-    private String billOffset="";
+    private String cycleFeeFlag="0";
+    private String billOffset="0";
     private String description="";
     private SubscriberCurrencyT subscriberCurrency= new SubscriberCurrencyT();
     
@@ -172,26 +172,30 @@ public class ChargeRatePlanT extends Nodo{
     }
     
     @Override
-    public String toString(String s) {
+    public String toString() {
+        if(todMode.equals("TIMED")){
+            this.subscriberCurrency.getApplicableRum().setIncrementQuantity("0.0");
+            this.subscriberCurrency.getApplicableRum().setMinQuantity("0.0");}
         return 
-        s+"<chargeRatePlan xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"+
-        s+"\t<name>"+name+"</name>\n"+
-        s+"\t<internalId>"+internalId+"</internalId>\n"+
-        s+"\t<pricingProfileName>"+pricingProfileName+"</pricingProfileName>\n"+
-        s+"\t<priceListName>"+priceListName+"</priceListName>\n"+
-        s+"\t<taxCode>"+taxCode+"</taxCode>\n"+
-        s+"\t<applicableRums>"+applicableRums+"</applicableRums>\n"+
-        s+"\t<applicableQuantity>"+applicableQuantity+"</applicableQuantity>\n"+
-        s+"\t<taxTime>"+taxTime+"</taxTime>\n"+
-        s+"\t<todMode>"+todMode+"</todMode>\n"+
-        s+"\t<applicableQtyTreatment>"+applicableQtyTreatment+"</applicableQtyTreatment>\n"+
-        s+"\t<permittedName>"+permittedName+"</permittedName>\n"+
-        s+"\t<permittedType>"+permittedType+"</permittedType>\n"+
-        s+"\t<eventName>"+eventName+"</eventName>\n"+
-        s+"\t<cycleFeeFlag>"+cycleFeeFlag+"</cycleFeeFlag>\n"+
-        s+"\t<billOffset>"+billOffset+"</billOffset>\n"+
-        s+"\t"+subscriberCurrency.toString(s+"\t")+"\n"+
-        s+"</chargeRatePlan>";
+        "<chargeRatePlan xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"+
+        "\t<name>"+name+"</name>\n"+
+        "\t<internalId>"+internalId+"</internalId>\n"+
+        "\t<pricingProfileName>"+pricingProfileName+"</pricingProfileName>\n"+
+        "\t<priceListName>"+priceListName+"</priceListName>\n"+
+        ((taxTime.equals("NONE"))?"":"\t<taxCode>"+taxCode+"</taxCode>\n")+
+        "\t<applicableRums>"+applicableRums+"</applicableRums>\n"+
+        "\t<applicableQuantity>"+applicableQuantity+"</applicableQuantity>\n"+
+        "\t<taxTime>"+taxTime+"</taxTime>\n"+
+        "\t<todMode>"+todMode+"</todMode>\n"+
+        "\t<applicableQtyTreatment>"+applicableQtyTreatment+"</applicableQtyTreatment>\n"+
+        "\t<permittedName>"+permittedName+"</permittedName>\n"+
+        "\t<permittedType>"+permittedType+"</permittedType>\n"+
+        "\t<eventName>"+eventName+"</eventName>\n"+
+        "\t<cycleFeeFlag>"+cycleFeeFlag+"</cycleFeeFlag>\n"+
+        "\t<billOffset>"+billOffset+"</billOffset>\n"+
+        subscriberCurrency.toString("\t")+"\n"+
+        ((description.equals(""))?"":"\t<description>"+description+"</description>\n")+        
+        "</chargeRatePlan>";
     }
 
     @Override
@@ -246,6 +250,17 @@ public class ChargeRatePlanT extends Nodo{
             this.visibilidad=false;
             return false;
         }
+    }
+
+    public CrpCompositePopModelT buscaPop(String dir) {
+        ArrayList<Integer> index= new ArrayList<>();
+            String[] arrOfStr = dir.split(",");
+            for (String a : arrOfStr){
+                 index.add(Integer.parseInt(a));}
+            int key=index.get(0);
+            index.remove(0);
+            if(index.size()==0) return this.subscriberCurrency.getCrpRelDateRanges().get(key).getCrpCompositePopModel();
+            else return this.subscriberCurrency.getCrpRelDateRanges().get(key).getZoneModel().buscaPop(index);
     }
     
     

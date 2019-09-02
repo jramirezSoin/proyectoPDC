@@ -170,3 +170,9 @@ function scrollFunction() {
 function topFunction() {
   $("html, body").animate({ scrollTop: 0 }, 600);
 }
+
+function composite(path, panel, dir){
+    $.get(path,{"path":dir},function(responseText) {
+        $('#'+panel).html(responseText);
+        });
+}

@@ -4,6 +4,7 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="control.ControlFunctions"%>
 <%@page import="datos.ZoneModelT"%>
 <%@page import="datos.ZoneItemT"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -85,8 +86,8 @@
                                         <td><%= item.getProductName()%></td>
                                         <td><%= item.getOriginPrefix()%></td>
                                         <td><%= item.getDestinationPrefix()%></td>
-                                        <td><%= item.getValidFrom()%></td>
-                                        <td><%= item.getValidTo()%></td>
+                                        <td><%= ControlFunctions.getParseDate(item.getValidFrom())%></td>
+                                        <td><%= ControlFunctions.getParseDate(item.getValidTo())%></td>
                                         <td><%= item.getZoneResult().getZoneName()%></td>
                                         <td>
                                             <ul class="d-flex justify-content-center">

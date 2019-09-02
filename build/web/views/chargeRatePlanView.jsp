@@ -3,6 +3,11 @@
     Created on : Aug 29, 2019, 10:12:54 AM
     Author     : Joseph Ramírez
 --%>
+<%@page import="control.ControlFunctions"%>
+<%@page import="datos.ratePlan.ChargeT"%>
+<%@page import="datos.ratePlan.PriceTierRangeT"%>
+<%@page import="datos.ratePlan.CrpCompositePopModelT"%>
+<%@page import="datos.ratePlan.TagsT"%>
 <%@page import="datos.ratePlan.TimeConfigurationT"%>
 <%@page import="datos.ratePlan.GenericSelectorT"%>
 <%@page import="datos.ratePlan.ResultsT"%>
@@ -50,7 +55,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mt-5">
+                    <div class="card-body sbg1 text-white">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h4 class="header-title mb-0 text-white">Date Range</h4>
+                            <select class="custom-select col-sm-6" id="crpRelDate" onselect="crpRel();">
+                            </select>
+                        </div>
+                    </div>
+                </div>            
                 <%for(CrpRelDateRangeT rel: chargeRate.getSubscriberCurrency().getCrpRelDateRanges()){%>
+                <script>
+                $("#crpRelDate").append("<option selected value='<%=rel.getId()%>'><%=ControlFunctions.getParseDate(rel.getStartDate())%>-<%=ControlFunctions.getParseDate(rel.getEndDate())%></option>");
+                </script>    
+                <div class="crpRelDates" id="select-<%=rel.getId()%>">
                 <%if(rel.getZoneModel()!=null){%>
                 <div class="card mt-5">
                     <div class="card-body">
@@ -62,7 +80,6 @@
                                     <span class="badge badge-pill badge-primary">Enhanced</span>
                                 <%}%>
                             </h4>
-                            <h4 class="header-title mb-0">Date Range <small><%=rel.getStartDate()%>-<%=rel.getEndDate()%></small></h4>
                             <i class="ti-close" onclick="$(this).parent().parent().parent().remove();"></i>
                         </div>
                         <div>
@@ -71,27 +88,43 @@
                                 <dt class="col-sm-3">Usc Model</dt><dd class="col-sm-9"><%= rel.getZoneModel().getUscModelName()%></dd>
                             </dl>
                             <%}%>
-                            <div id="accordion1" class="according">
+                            <div id="accordion1" class="according accordion-s2">
                             <%for(ResultsT result: rel.getZoneModel().getResults()){%>
                                 <div class="card">
                                     <div class="card-header">
-                                        <a class="card-link" data-toggle="collapse" href="#accordion-<%=rel.getId()%>-<%=result.getId()%>"><%=result.getName()%>
-                                        <span class="badge badge-pill badge-<%=((result.getResult() instanceof TimeConfigurationT)?"primary":((result.getResult() instanceof GenericSelectorT)?"danger":"success"))%>"><%=((result.getResult() instanceof TimeConfigurationT)?"Time":((result.getResult() instanceof GenericSelectorT)?"Generic":"Pop"))%></span>
+                                        <a class="card-link collapsed" data-toggle="collapse" href="#accordion-<%=rel.getId()%>-<%=result.getId()%>">
+                                        <%for(String name: result.getName()){%>
+                                        <span class="badge badge-pill badge-secondary"><%=name%></span>
+                                        <%}%>
+                                        <span class="badge badge-pill badge-<%=((result.getResult() instanceof TimeConfigurationT)?"primary":((result.getResult() instanceof GenericSelectorT)?"danger":"success"))%>"><%=((result.getResult() instanceof TimeConfigurationT)?"Time Model":((result.getResult() instanceof GenericSelectorT)?"Generic Selector":"Pop Model"))%></span>
                                         </a>
-                                        
                                     </div>
                                     <div id="accordion-<%=rel.getId()%>-<%=result.getId()%>" class="collapse" data-parent="#accordion1">
-                                    <div class="card-body">
-                            <%if(result.getResult() instanceof GenericSelectorT){%>
-
-
-                                            
-                            <%}else if(result.getResult() instanceof TimeConfigurationT){%>
+                                        <div class="card-body">
+                                        <%if(result.getResult() instanceof GenericSelectorT){%>
+                                         <%GenericSelectorT selector = (GenericSelectorT)result.getResult();%>
+                                            <p><%= selector.getGenericSelectorName()%></p>
+                                            <div class="list-group">
+                                              <%for(ResultsT res :selector.getResults()){%>
+                                              <a href="#Principal-<%=rel.getId()%>" class="list-group-item list-group-item-action" onclick="composite('/chargeRate','Principal-<%=rel.getId()%>','<%=rel.getId()%>,<%=result.getId()%>,<%=res.getId()%>')"><%=res.getName().get(0)%></a>
+                                              <%}%>
+                                             </div>    
+                                        <%}else if(result.getResult() instanceof TimeConfigurationT){%>
+                                         <%TimeConfigurationT time = (TimeConfigurationT)result.getResult();%>
+                                             <p><%= time.getTimeModelName()%></p>
+                                            <div class="list-group">
+                                            <%for(TagsT tag: time.getTags()){%>
+                                                 <a href="#Principal-<%=rel.getId()%>" class="list-group-item list-group-item-action"  onclick="composite('/chargeRate','Principal-<%=rel.getId()%>','<%=rel.getId()%>,<%=result.getId()%>,<%=tag.getId()%>')"><%=tag.getName()%></a>
+                                             <%}%>
+                                            </div>    
                             
-                            <%}else{%>
-                            
-                            <%}%>
-                                    </div>
+                                        <%}else{%>
+                                       <%CrpCompositePopModelT time = (CrpCompositePopModelT)result.getResult();%>
+                                          <div class="list-group">
+                                             <a href="#Principal-<%=rel.getId()%>" class="list-group-item list-group-item-action" onclick="composite('/chargeRate','Principal-<%=rel.getId()%>','<%=rel.getId()%>,<%=result.getId()%>')"><%= time.getName()%></a>
+                                          </div>
+                                       <%}%>
+                                        </div>
                                     </div>
                                 </div>
                             <%}%>
@@ -99,10 +132,35 @@
                         </div>
                     </div>
                 </div>
-                <%}%>
                 <div id="Principal-<%=rel.getId()%>">
                 </div>
+                <%}else{%>
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <div>
+                            <div id="accordion1" class="according accordion-s2">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <a  class="card-link collapsed" data-toggle="collapse" onclick="composite('/chargeRate','Principal--<%=rel.getId()%>','<%=rel.getId()%>')" href="#Principal--<%=rel.getId()%>"><%=rel.getCrpCompositePopModel().getName()%>
+                                            <span class="badge badge-pill badge-success">Pop</span>
+                                        </a>    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="Principal--<%=rel.getId()%>">
+                </div>
                 <%}%>
+                </div>
+                <%}%>
+                <script>
+                 function crpRel(){
+                    $(".crpRelDates").hide();
+                    $("#select-"+$("#crpRelDate").val()).show();}
+                    crpRel();
+                </script>    
             </div> 
             <div class="col-xs-12 col-md-4">
 
@@ -119,9 +177,9 @@
                                 <dt class="col-sm-6">Applicable Quantity</dt><dd class="col-sm-6"><%= chargeRate.getApplicableQuantity()%></dd>
                                 <dt class="col-sm-6">Tax Time</dt><dd class="col-sm-6"><%= chargeRate.getTaxTime()%></dd>
                                 <dt class="col-sm-6">Tod Mode</dt><dd class="col-sm-6"><%= chargeRate.getTodMode()%></dd>
-                                <dt class="col-sm-6">Applicable Qty Treatment</dt><dd class="col-sm-6"><%= chargeRate.getApplicableQtyTreatment()%></dd>     
-                                <dt class="col-sm-6">Cycle Fee Flag</dt><dd class="col-sm-6"><%= chargeRate.getCycleFeeFlag()%></dd>
-                                <dt class="col-sm-6">Bill Offset</dt><dd class="col-sm-6"><%= chargeRate.getBillOffset()%></dd>
+                                <!--dt class="col-sm-6">Applicable Qty Treatment</dt><dd class="col-sm-6"><%= chargeRate.getApplicableQtyTreatment()%></dd-->     
+                                <!--dt class="col-sm-6">Cycle Fee Flag</dt><dd class="col-sm-6"><%= chargeRate.getCycleFeeFlag()%></dd-->
+                                <!--dt class="col-sm-6">Bill Offset</dt><dd class="col-sm-6"><%= chargeRate.getBillOffset()%></dd-->
                             </dl>
                         </div>
                     </div>
@@ -137,9 +195,9 @@
                             <dl class="row">
                                 <dt class="col-sm-6">applicable Rum Name</dt><dd class="col-sm-6"><%= chargeRate.getSubscriberCurrency().getApplicableRum().getApplicableRumName()%></dd>
                                 <dt class="col-sm-6">min Quantity</dt><dd class="col-sm-6"><%= chargeRate.getSubscriberCurrency().getApplicableRum().getMinQuantity()%></dd>
-                                <dt class="col-sm-6">min Quantity Unit</dt><dd class="col-sm-6"><%= chargeRate.getSubscriberCurrency().getApplicableRum().getMinQuantityUnit()%></dd>
+                                <!--dt class="col-sm-6">min Quantity Unit</dt><dd class="col-sm-6"><%= chargeRate.getSubscriberCurrency().getApplicableRum().getMinQuantityUnit()%></dd-->
                                 <dt class="col-sm-6">increment Quantity</dt><dd class="col-sm-6"><%= chargeRate.getSubscriberCurrency().getApplicableRum().getIncrementQuantity()%></dd>
-                                <dt class="col-sm-6">increment Quantity Unit</dt><dd class="col-sm-6"><%= chargeRate.getSubscriberCurrency().getApplicableRum().getIncrementQuantityUnit()%></dd>
+                                <!--dt class="col-sm-6">increment Quantity Unit</dt><dd class="col-sm-6"><%= chargeRate.getSubscriberCurrency().getApplicableRum().getIncrementQuantityUnit()%></dd-->
                                 <dt class="col-sm-6">rounding Mode</dt><dd class="col-sm-6"><%= chargeRate.getSubscriberCurrency().getApplicableRum().getRoundingMode()%></dd>
                             </dl>
                         </div>

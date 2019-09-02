@@ -6,6 +6,7 @@
 package datos.ratePlan;
 
 import datos.Nodo;
+import java.util.ArrayList;
 
 /**
  *
@@ -71,5 +72,51 @@ public class PriceValidityT extends Nodo {
         this.relativeEndOffsetUnit = relativeEndOffsetUnit;
     }
     
+    @Override
+    public String toString(String s) {
+        return 
+        s+"<priceValidity>\n" +
+        s+"\t<startValidityMode>"+startValidityMode+"</startValidityMode>\n" +
+        s+"\t<endValidityMode>"+endValidityMode+"</endValidityMode>\n" +
+        s+"\t<validityRange>"+validityRange+"</validityRange>\n" +
+        s+"\t<relativeStartOffset>"+relativeStartOffset+"</relativeStartOffset>\n" +
+        s+"\t<relativeEndOffset>"+relativeEndOffset+"</relativeEndOffset>\n" +
+        ((relativeEndOffsetUnit.equals(""))?"":s+"\t<relativeEndOffsetUnit>"+relativeEndOffsetUnit+"</relativeEndOffsetUnit>\n")+
+        s+"</priceValidity>";
+                
+    }
+
+    @Override
+    public int procesar(ArrayList<String> validity, int index) {
+        for(int i=index; i<validity.size();i++) {
+            if(validity.get(i).matches("(?s)startValidityMode: (.*)")) this.startValidityMode= validity.get(i).substring(19);
+            else if(validity.get(i).matches("(?s)endValidityMode: (.*)")) this.endValidityMode= validity.get(i).substring(17);
+            else if(validity.get(i).matches("(?s)validityRange: (.*)")) this.validityRange= validity.get(i).substring(15);
+            else if(validity.get(i).matches("(?s)relativeStartOffset: (.*)")) this.relativeStartOffset= validity.get(i).substring(21);
+            else if(validity.get(i).matches("(?s)relativeEndOffset: (.*)")) this.relativeEndOffset= validity.get(i).substring(19);
+            else if(validity.get(i).matches("(?s)relativeEndOffsetUnit: (.*)")) this.relativeEndOffsetUnit= validity.get(i).substring(23);
+            else return i;
+        }
+        return validity.size();
+    }
+    
+    
+    @Override
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+        if(indexs.size()==0)
+            index= this.procesar(lista, index);
+        return index;
+    }
+    
+    @Override
+    public boolean buscar(String buscar) {
+        if((startValidityMode+"/"+endValidityMode+"/"+validityRange+"/"+relativeStartOffset+"/"+relativeEndOffset+"/"+relativeEndOffsetUnit).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
+            this.visibilidad=true;
+            return true;
+        }else{
+            this.visibilidad=false;
+            return false;
+        }
+    }
     
 }

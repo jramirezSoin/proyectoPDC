@@ -39,14 +39,14 @@ public class TagsT extends Nodo{
     public String toString(String s) {
         return 
         s+"<tags>\n"+
-        s+"\t<name>"+name+"</name>\n"+crpCompositePopModel.toString(s+"\t")+
+        s+"\t<name>"+name+"</name>\n"+crpCompositePopModel.toString(s+"\t")+"\n"+
         s+"</tags>";
     }
 
     @Override
     public int procesar(ArrayList<String> chargeRates2, int index) {
         ArrayList<String> chargeRates=  (ArrayList<String>)chargeRates2.clone();
-        for(int i=index; i<chargeRates.size();i++) {          
+        for(int i=index; i<chargeRates.size();i++) { 
             if(chargeRates.get(i).matches("(?s)name: (.*)")) this.name= chargeRates.get(i).substring(6);
             else if(chargeRates.get(i).matches("(?s)crpCompositePopModel")){
                 CrpCompositePopModelT crpCompositePopModelado = new CrpCompositePopModelT();

@@ -32,8 +32,12 @@
 <div id="-rolloverPopModel">
     <div id="-rolloverCharge">
 <div class="form-group row">
-<label for="-glid">Glid</label>
-<input class="form-control" type="text" id="-glid" placeholder="Glid" value="<%=rollover.getGlid()%>"/>
+<% ArrayList<ListaT> glids = ControlFunctions.getLista((String)ControlPath.glidClick);%>
+    <label>GL/Id<select class="custom-select" id="-glidName">
+    <%for(int j=0;j<glids.size();j++){%>
+    <option <%=(glids.get(j).valor.equals(rollover.getGlidName()))?"selected":""%> value="<%=glids.get(j).valor%>"><%=glids.get(j).valor%></option>
+    <%}%>
+    </select></label>
 </div>
 <div class="form-group row">
 <label for="-unitOfMeasure">Unit of Measure</label>

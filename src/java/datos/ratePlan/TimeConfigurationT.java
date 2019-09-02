@@ -51,7 +51,7 @@ public class TimeConfigurationT extends Nodo implements ResultI{
         int itemCount = 0;
         for(int i=index; i<generics.size();i++) {
             
-            if(generics.get(i).matches("(?s)timeModelName: (.*)")) this.timeModelName= generics.get(i).substring(21);
+            if(generics.get(i).matches("(?s)timeModelName: (.*)")) this.timeModelName= generics.get(i).substring(15);
             else if(generics.get(i).matches("(?s)tags")){ 
                 
                 TagsT resul = new TagsT(itemCount);

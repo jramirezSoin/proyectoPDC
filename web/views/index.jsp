@@ -63,7 +63,7 @@
                                     </span></a>
                                 <ul class="collapse">
                                     <li><a href="#" onclick="hacerlist('/zoneModels', 'Zone Model')">Zone Model</a></li>
-                                    <li><a href="#" onclick="hacerlist('/impactCategories', 'Impact Category')">Impact Categoriy</a></li>
+                                    <li><a href="#" onclick="hacerlist('/impactCategories', 'Impact Category')">Impact Category</a></li>
                                     <li><a href="#" onclick="hacerlist('/rumConfig','RUM')">RUM</a></li>
                                     <li><a href="#" onclick="hacerlist('/balanceElement', 'Balance Element')">Balance Element</a></li>
                                     <li><a href="#" onclick="hacerlist('/holiday', 'Holiday Calendar')">Holiday Calendar</a></li>
