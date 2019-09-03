@@ -116,7 +116,7 @@ public class XmlParser {
                 Node node = nList.item(i);
                 lista.add(((Element)node).getElementsByTagName("name").item(0).getTextContent());
             }
-            return lista;
+            return (ArrayList<String>)lista.clone();
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
             return null;
         }
@@ -132,7 +132,7 @@ public class XmlParser {
             NodeList nList = doc.getChildNodes().item(0).getChildNodes();
             Node node = nList.item(index);
             mainRSeleccionado(node, 0);
-            return lista;
+            return (ArrayList<String>)lista.clone();
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
             return null;
         }
@@ -297,13 +297,13 @@ public class XmlParser {
                 if(ap!=buscar.size()) cont++;
                 if(cont==0) lista.add(((Element)node).getElementsByTagName("name").item(0).getTextContent());
             }
-            return lista;
+            return (ArrayList<String>)lista.clone();
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
             return null;
         }
     }
     
-    public static ArrayList<String> Buscar(File file, String indicador, ArrayList<ListaT> buscar, String child){
+    public static ArrayList<String> Buscar(File file, String indicador, ArrayList<ListaT> buscar, ListaT child){
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -328,14 +328,62 @@ public class XmlParser {
                     }
                 }
                 if(ap!=buscar.size()) cont++;
-                if(cont==0){ 
-                    NodeList nChilds = ((Element)node).getElementsByTagName(child);
+                if(cont==0){
+                    String[] arrOfStr = child.unit.split(",");
+                    NodeList nChilds=((Element)node).getElementsByTagName(child.unit);
+                    for (String a : arrOfStr){
+                        nChilds = ((Element)node).getElementsByTagName(a);
+                        node= nChilds.item(0);
+                    }
                     for(int j=0; j< nChilds.getLength(); j++){
-                        lista.add(((Element)nChilds.item(j)).getElementsByTagName("name").item(0).getTextContent());
+                        lista.add(((Element)nChilds.item(j)).getElementsByTagName(child.valor).item(0).getTextContent());
                     }
                 }
             }
-            return lista;
+            return (ArrayList<String>)lista.clone();
+        } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
+            return null;
+        }
+    }
+    
+    public static ArrayList<String> BuscarDeep(File file, String indicador, ArrayList<ListaT> buscar, String child){
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName(indicador);
+            lista.clear();
+            ListaT prueba= new ListaT();
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node node = nList.item(i);
+                if(buscar.size()!=0){
+                for(int j=0; j< buscar.size(); j++){
+                 ListaT bus= buscar.get(j);
+                 if(!bus.valor.equals("")){
+                    if(!((Element)node).getElementsByTagName(bus.unit).item(0).getTextContent().equals(bus.valor)){
+                      break;  
+                    }else{
+                        prueba= bus;
+                        buscar.remove(j);
+                        i=-1;
+                        j--;
+                    }
+                   }else{
+                    nList= ((Element)node).getElementsByTagName(bus.unit);
+                    i=-1;
+                    buscar.remove(j);
+                    prueba= new ListaT();
+                    break;
+                 }
+                }}else{
+                    if(prueba.unit.equals("")) lista.add(((Element)node).getElementsByTagName(child).item(0).getTextContent());
+                    else if(((Element)node).getElementsByTagName(prueba.unit).item(0).getTextContent().equals(prueba.valor)){
+                        lista.add(((Element)node).getElementsByTagName(child).item(0).getTextContent());
+                    }
+                }
+            }
+            return (ArrayList<String>)lista.clone();
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
             return null;
         }
@@ -356,6 +404,24 @@ public class XmlParser {
                 }
             }
             return "null";
+        } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
+            return null;
+        }
+    }
+    
+    public static ArrayList<ListaT> LeerBalance(File file, String indicador){
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName(indicador);
+            ArrayList<ListaT> balances= new ArrayList<>();
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node node = nList.item(i);
+                balances.add(new ListaT(((Element)node).getElementsByTagName("numericCode").item(0).getTextContent(),((Element)node).getElementsByTagName("name").item(0).getTextContent()));
+            }
+            return balances;
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
             return null;
         }

@@ -22,6 +22,11 @@ public class ApplicableRumT extends Nodo{
     
     public ApplicableRumT(){}
     public ApplicableRumT(int id){this.id=id;}
+    public ApplicableRumT(String name, String tod){
+        this.applicableRumName=name;
+        this.minQuantity=tod;
+        this.incrementQuantity=tod;
+    }
 
     public String getApplicableRumName() {
         return applicableRumName;

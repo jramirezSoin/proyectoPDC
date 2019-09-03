@@ -18,7 +18,7 @@
 <%ArrayList<ListaT> filtro= new ArrayList<>(); 
     if(!charge.getProductSpecName().equals(""))filtro.add(new ListaT("productSpecName",charge.getProductSpecName()));
     else filtro.add(new ListaT("customerSpecName","Account"));%>
-    <% ArrayList<ListaT> events = ControlFunctions.getListaFiltro((String)ControlPath.attributeSpecMapClick, filtro,"eventRUMSpec");%>
+    <% ArrayList<ListaT> events = ControlFunctions.getListaFiltro((String)ControlPath.attributeSpecMapClick, filtro,new ListaT("eventRUMSpec","name"));%>
 <div class="form-group row">
     <label>Type<select class="custom-select" onclick="getTypeOptions();" id="Type">
     <option value="ONE_TIME">ONE TIME</option>

@@ -44,6 +44,7 @@
                                                 <th>Price</th>
                                                 <th>Balance</th>
                                                 <th>GL/Id</th>
+                                                <th></th>
                                                 </tr>
                                             </thead>    
                                             <tbody>
@@ -53,10 +54,48 @@
                                                 <td><%=res.getPrice()%></td>
                                                 <td><%=res.getBalanceElementName()%></td>
                                                 <td><%=res.getGlidName()%></td>
+                                                <%if(res.getPriceValidity()!=null){%>
+                                                <td><button tabindex="0" type="button" class="btn btn-rounded btn-light btn-sm" data-popover-content="#res-<%=res.getId()%>" data-toggle="popover" title data-placement="right" aria-describedby="popover300430"><i class="ti-eye"></i></button></td>
+                                                <td id="res-<%=res.getId()%>" style="display: none;">
+                                                    <div class="popover-body">
+                                                    <table class="table table-responsive text-center">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Start Mode</th>
+                                                                <th>End Mode</th>
+                                                                <th>Range</th>
+                                                                <th>Start Offset</th>
+                                                                <th>End Offset</th>
+                                                                <th>End Offset Unit</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><%=res.getPriceValidity().getStartValidityMode()%></td>
+                                                                <td><%=res.getPriceValidity().getEndValidityMode()%></td>
+                                                                <td><%=res.getPriceValidity().getValidityRange()%></td>
+                                                                <td><%=res.getPriceValidity().getRelativeStartOffset()%></td>
+                                                                <td><%=res.getPriceValidity().getRelativeEndOffset()%></td>
+                                                                <td><%=res.getPriceValidity().getRelativeEndOffsetUnit()%></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    </div>        
+                                                </td>
+                                                <%}%>    
                                                 </tr>
                                             <%}%>
                                             </tbody>
                                         </table>
+                                        <script>
+                                            $("[data-toggle=popover]").popover({
+                                                html : true,
+                                                content: function() {
+                                                    var content = $(this).attr("data-popover-content");
+                                                    return $(content).children(".popover-body").html();
+                                                }
+                                            });
+                                        </script>    
                                         </div>
                                         </div>    
                                     </div>

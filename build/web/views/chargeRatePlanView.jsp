@@ -61,6 +61,9 @@
                             <h4 class="header-title mb-0 text-white">Date Range</h4>
                             <select class="custom-select col-sm-6" id="crpRelDate" onselect="crpRel();">
                             </select>
+                            <div class="btn-group mb-xl-3" role="group" aria-label="Basic example"> 
+                                <i class="ti-pencil" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/chargeRate','Charge Rate Plan','0,-1');"></i>
+                            </div>
                         </div>
                     </div>
                 </div>            
@@ -172,7 +175,9 @@
                         </div>
                         <div>
                             <dl class="row">
+                                <%if(!chargeRate.getTaxTime().equals("NONE")){%>
                                 <dt class="col-sm-6">Tax Code</dt><dd class="col-sm-6"><%= chargeRate.getTaxCode()%></dd>
+                                <%}%>
                                 <dt class="col-sm-6">Applicable Rums</dt><dd class="col-sm-6"><%= chargeRate.getApplicableRums()%></dd>
                                 <dt class="col-sm-6">Applicable Quantity</dt><dd class="col-sm-6"><%= chargeRate.getApplicableQuantity()%></dd>
                                 <dt class="col-sm-6">Tax Time</dt><dd class="col-sm-6"><%= chargeRate.getTaxTime()%></dd>

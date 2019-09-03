@@ -109,13 +109,13 @@ public class ControlPath {
     public static String chargeRateView = "/views/chargeRatePlanView.jsp";
     public static String chargeRateForm= "/views/chargeRateForm.jsp";
     public static String chargeRateClick= "/chargeRate";
+    public static String crpRelDateForm="/views/crpRelDateForm.jsp";
     
     public static String crpCompositeView= "/views/crpCompositeView.jsp";
     
     public static String glidClick="/glid";
     public static String glidPath="C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_GLID_config.xml";
     public static String glidPointer="glid";
-    public static String crpRelDateForm;
 
     
     

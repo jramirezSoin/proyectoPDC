@@ -81,7 +81,6 @@ public class ChargeRate extends HttpServlet {
                 ChargeRate= XmlParser.LeerSeleccionado(new File(ControlPath.chargeRatePath) , Integer.parseInt(id));
                 ChargeRatePlanT ChargeRateId = new ChargeRatePlanT(Integer.parseInt(id));
                 ChargeRateId.procesar(ChargeRate, 1);
-                System.out.println(ChargeRateId.toString());
                 session.setAttribute("principal", ChargeRateId);
                 session.setAttribute("actual", "chargeRate");
                 session.setAttribute("actualView", ControlPath.chargeRateView);
@@ -123,7 +122,9 @@ public class ChargeRate extends HttpServlet {
             if(index.get(0)>=0){
                 request.getSession().setAttribute("add",null);
                 request.getSession().setAttribute("index", index);
-                request.getRequestDispatcher(ControlPath.crpRelDateForm).forward(request, response);}
+                if(index.get(1)==-1)
+                    request.getRequestDispatcher(ControlPath.crpRelDateForm).forward(request, response);
+            }
             else if(index.get(0)==-3){
                 ChargeRatePlanT chargeRate = (ChargeRatePlanT) request.getSession().getAttribute("principal");
                 CrpRelDateRangeT crpRelDateT = new CrpRelDateRangeT(chargeRate.getSubscriberCurrency().getCrpRelDateRanges().size());

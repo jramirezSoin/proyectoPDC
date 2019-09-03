@@ -40,6 +40,21 @@ public class ControlFunctions {
         return nodosId;
     }
     
+    public static ArrayList<ListaT> getListaBalance(String tipo){
+        String[] controls = getPathPointer(ControlPath.balanceElementClick);
+        ArrayList<ListaT> nodos = XmlParser.LeerBalance(new File(controls[0]) , controls[1]);
+        for(int i=0; i<nodos.size(); i++){
+            ListaT nodo= nodos.get(i);
+            if(Integer.parseInt(nodo.unit)>=1000 && tipo.equals("currency")){ nodos.remove(i);
+            i--;
+            }
+            else if((Integer.parseInt(nodo.unit)<1000 || Integer.parseInt(nodo.unit)>2000000) && tipo.equals("no_currency")){ nodos.remove(i);
+            i--;
+            }
+        }
+        return nodos;
+    }
+    
     public static ArrayList<ListaT> getListaFiltro(String tipo, ArrayList<ListaT> buscar){
         String[] controls = getPathPointer(tipo);
         ArrayList<String> nodos = XmlParser.Buscar(new File(controls[0]) , controls[1],buscar);
@@ -47,9 +62,16 @@ public class ControlFunctions {
         return nodosId;
     }
     
-    public static ArrayList<ListaT> getListaFiltro(String tipo, ArrayList<ListaT> buscar, String s){
+    public static ArrayList<ListaT> getListaFiltro(String tipo, ArrayList<ListaT> buscar, ListaT s){
         String[] controls = getPathPointer(tipo);
         ArrayList<String> nodos = XmlParser.Buscar(new File(controls[0]) , controls[1],buscar, s);
+        ArrayList<ListaT> nodosId = ListS2ListT(nodos);
+        return nodosId;
+    }
+    
+    public static ArrayList<ListaT> getListaFiltroDeep(String tipo, ArrayList<ListaT> buscar, String s){
+        String[] controls = getPathPointer(tipo);
+        ArrayList<String> nodos = XmlParser.BuscarDeep(new File(controls[0]) , controls[1],buscar, s);
         ArrayList<ListaT> nodosId = ListS2ListT(nodos);
         return nodosId;
     }

@@ -221,12 +221,12 @@ public class ChargeRatePlanT extends Nodo{
             else if(chargeRates.get(i).matches("(?s)description: (.*)")) this.description= chargeRates.get(i).substring(13);
             else if(chargeRates.get(i).matches("(?s)subscriberCurrency")){
                 
-                SubscriberCurrencyT subscriberCurrency = new SubscriberCurrencyT();
-                i= subscriberCurrency.procesar(chargeRates, i+1);
+                
+                i= this.getSubscriberCurrency().procesar(chargeRates, i+1);
                 i--;
-                this.setSubscriberCurrency(subscriberCurrency);
             }else return i;
         }
+        this.revisar();
         return chargeRates.size();
     }
     
@@ -261,6 +261,14 @@ public class ChargeRatePlanT extends Nodo{
             index.remove(0);
             if(index.size()==0) return this.subscriberCurrency.getCrpRelDateRanges().get(key).getCrpCompositePopModel();
             else return this.subscriberCurrency.getCrpRelDateRanges().get(key).getZoneModel().buscaPop(index);
+    }
+    
+    public void revisar(){
+        if(this.applicableRums.equals("Occurrence")) this.subscriberCurrency.setApplicableRum(null);
+        else if(this.subscriberCurrency.getApplicableRum()!=null)this.subscriberCurrency.getApplicableRum().setApplicableRumName(this.getApplicableRums());
+        else{
+            this.subscriberCurrency.setApplicableRum(new ApplicableRumT(this.applicableRums,((todMode.equals("Timed"))?"0.0":"1.0")));
+        }
     }
     
     
