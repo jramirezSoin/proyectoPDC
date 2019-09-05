@@ -5,8 +5,12 @@
  */
 package datos.ratePlan;
 
+import control.ControlFunctions;
 import datos.Nodo;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -224,7 +228,38 @@ public class ChargeRatePlanT extends Nodo{
                 
                 i= this.getSubscriberCurrency().procesar(chargeRates, i+1);
                 i--;
-            }else return i;
+            }else if(chargeRates.get(i).matches("(?s)crpDelRanges")){
+                i++;
+                while(i<chargeRates.size()){
+                    try {
+                        String valor = chargeRates.get(i).split(":")[1];
+                        String tipo = chargeRates.get(i).split(":")[0].split("_")[0];
+                        String ident = chargeRates.get(i).split(":")[0].split("_")[1];
+                        if(ControlFunctions.isNumeric(ident)){
+                        if(tipo.equals("startDate"))
+                            this.subscriberCurrency.getCrpRelDateRanges().get(Integer.parseInt(ident)).setStartDate(ControlFunctions.getParseString(valor.substring(1)));
+                        else if(tipo.equals("endDate"))
+                            this.subscriberCurrency.getCrpRelDateRanges().get(Integer.parseInt(ident)).setEndDate(ControlFunctions.getParseString(valor.substring(1)));
+                        }else{
+                            CrpRelDateRangeT crp= new CrpRelDateRangeT(this.subscriberCurrency.getCrpRelDateRanges().size());
+                            crp.setStartDate(ControlFunctions.getParseString(valor.substring(1)));
+                            i++;
+                            valor = chargeRates.get(i).split(":")[1];
+                            crp.setEndDate(ControlFunctions.getParseString(valor.substring(1)));
+                            CrpRelDateRangeT last = this.subscriberCurrency.getCrpRelDateRanges().get(this.subscriberCurrency.getCrpRelDateRanges().size()-1);
+                            if(last.getZoneModel()==null)
+                                crp.setCrpCompositePopModel(last.getCrpCompositePopModel());
+                            else
+                                crp.setZoneModel(last.getZoneModel());
+                            this.subscriberCurrency.getCrpRelDateRanges().add(crp);
+                        }
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ChargeRatePlanT.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    i++;
+                }
+            }
+            else return i;
         }
         this.revisar();
         return chargeRates.size();
@@ -236,6 +271,13 @@ public class ChargeRatePlanT extends Nodo{
         if(indexs.size()==0)
             index= this.procesar(lista, index);
         else{
+            if(indexs.get(0)==0 && indexs.get(1)<0){
+                if(indexs.get(1)==-1)
+                    index= this.procesar(lista, index);
+                else if(indexs.get(1)==-2)
+                    index= this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).getZoneModel().procesar(lista, index);
+            }
+            else
             this.subscriberCurrency.procesarI(lista, index, indexs);
         }
         return index;

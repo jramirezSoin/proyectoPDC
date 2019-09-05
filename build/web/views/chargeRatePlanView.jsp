@@ -59,111 +59,16 @@
                     <div class="card-body sbg1 text-white">
                         <div class="d-flex justify-content-between mb-3">
                             <h4 class="header-title mb-0 text-white">Date Range</h4>
-                            <select class="custom-select col-sm-6" id="crpRelDate" onselect="crpRel();">
+                            <select class="custom-select col-sm-6" id="crpRelDate" onclick="crpRel();">
                             </select>
                             <div class="btn-group mb-xl-3" role="group" aria-label="Basic example"> 
-                                <i class="ti-pencil" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/chargeRate','Charge Rate Plan','0,-1');"></i>
+                                <i class="ti-pencil" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/chargeRate','Date Range','0,-1');"></i>
                             </div>
                         </div>
                     </div>
                 </div>            
-                <%for(CrpRelDateRangeT rel: chargeRate.getSubscriberCurrency().getCrpRelDateRanges()){%>
-                <script>
-                $("#crpRelDate").append("<option selected value='<%=rel.getId()%>'><%=ControlFunctions.getParseDate(rel.getStartDate())%>-<%=ControlFunctions.getParseDate(rel.getEndDate())%></option>");
-                </script>    
-                <div class="crpRelDates" id="select-<%=rel.getId()%>">
-                <%if(rel.getZoneModel()!=null){%>
-                <div class="card mt-5">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-5">
-                            <h4 class="header-title mb-0">
-                                
-                                <%=rel.getZoneModel().getZoneModelName().replaceAll("_"," ")%>
-                                <%if(rel.getZoneModel().isEnhanced()){%>
-                                    <span class="badge badge-pill badge-primary">Enhanced</span>
-                                <%}%>
-                            </h4>
-                            <i class="ti-close" onclick="$(this).parent().parent().parent().remove();"></i>
-                        </div>
-                        <div>
-                            <%if(rel.getZoneModel().isEnhanced()){%>
-                            <dl class="row">
-                                <dt class="col-sm-3">Usc Model</dt><dd class="col-sm-9"><%= rel.getZoneModel().getUscModelName()%></dd>
-                            </dl>
-                            <%}%>
-                            <div id="accordion1" class="according accordion-s2">
-                            <%for(ResultsT result: rel.getZoneModel().getResults()){%>
-                                <div class="card">
-                                    <div class="card-header">
-                                        <a class="card-link collapsed" data-toggle="collapse" href="#accordion-<%=rel.getId()%>-<%=result.getId()%>">
-                                        <%for(String name: result.getName()){%>
-                                        <span class="badge badge-pill badge-secondary"><%=name%></span>
-                                        <%}%>
-                                        <span class="badge badge-pill badge-<%=((result.getResult() instanceof TimeConfigurationT)?"primary":((result.getResult() instanceof GenericSelectorT)?"danger":"success"))%>"><%=((result.getResult() instanceof TimeConfigurationT)?"Time Model":((result.getResult() instanceof GenericSelectorT)?"Generic Selector":"Pop Model"))%></span>
-                                        </a>
-                                    </div>
-                                    <div id="accordion-<%=rel.getId()%>-<%=result.getId()%>" class="collapse" data-parent="#accordion1">
-                                        <div class="card-body">
-                                        <%if(result.getResult() instanceof GenericSelectorT){%>
-                                         <%GenericSelectorT selector = (GenericSelectorT)result.getResult();%>
-                                            <p><%= selector.getGenericSelectorName()%></p>
-                                            <div class="list-group">
-                                              <%for(ResultsT res :selector.getResults()){%>
-                                              <a href="#Principal-<%=rel.getId()%>" class="list-group-item list-group-item-action" onclick="composite('/chargeRate','Principal-<%=rel.getId()%>','<%=rel.getId()%>,<%=result.getId()%>,<%=res.getId()%>')"><%=res.getName().get(0)%></a>
-                                              <%}%>
-                                             </div>    
-                                        <%}else if(result.getResult() instanceof TimeConfigurationT){%>
-                                         <%TimeConfigurationT time = (TimeConfigurationT)result.getResult();%>
-                                             <p><%= time.getTimeModelName()%></p>
-                                            <div class="list-group">
-                                            <%for(TagsT tag: time.getTags()){%>
-                                                 <a href="#Principal-<%=rel.getId()%>" class="list-group-item list-group-item-action"  onclick="composite('/chargeRate','Principal-<%=rel.getId()%>','<%=rel.getId()%>,<%=result.getId()%>,<%=tag.getId()%>')"><%=tag.getName()%></a>
-                                             <%}%>
-                                            </div>    
-                            
-                                        <%}else{%>
-                                       <%CrpCompositePopModelT time = (CrpCompositePopModelT)result.getResult();%>
-                                          <div class="list-group">
-                                             <a href="#Principal-<%=rel.getId()%>" class="list-group-item list-group-item-action" onclick="composite('/chargeRate','Principal-<%=rel.getId()%>','<%=rel.getId()%>,<%=result.getId()%>')"><%= time.getName()%></a>
-                                          </div>
-                                       <%}%>
-                                        </div>
-                                    </div>
-                                </div>
-                            <%}%>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="Principal-<%=rel.getId()%>">
-                </div>
-                <%}else{%>
-                <div class="card mt-5">
-                    <div class="card-body">
-                        <div>
-                            <div id="accordion1" class="according accordion-s2">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <a  class="card-link collapsed" data-toggle="collapse" onclick="composite('/chargeRate','Principal--<%=rel.getId()%>','<%=rel.getId()%>')" href="#Principal--<%=rel.getId()%>"><%=rel.getCrpCompositePopModel().getName()%>
-                                            <span class="badge badge-pill badge-success">Pop</span>
-                                        </a>    
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="Principal--<%=rel.getId()%>">
-                </div>
-                <%}%>
-                </div>
-                <%}%>
-                <script>
-                 function crpRel(){
-                    $(".crpRelDates").hide();
-                    $("#select-"+$("#crpRelDate").val()).show();}
-                    crpRel();
-                </script>    
+                <div id="Principal-0">
+                </div>    
             </div> 
             <div class="col-xs-12 col-md-4">
 
@@ -208,7 +113,103 @@
                         </div>
                     </div>
                 </div>
-                <%}%> 
+                <%}%>
+                <%for(CrpRelDateRangeT rel: chargeRate.getSubscriberCurrency().getCrpRelDateRanges()){%>
+                <script>
+                $("#crpRelDate").append("<option selected value='<%=rel.getId()%>'><%=ControlFunctions.getParseDate(rel.getStartDate())%>-<%=ControlFunctions.getParseDate(rel.getEndDate())%></option>");
+                </script>    
+                <div class="crpRelDates" id="select-<%=rel.getId()%>">
+                <%if(rel.getZoneModel()!=null){%>
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-5">
+                            <h4 class="header-title mb-0">
+                                
+                                <%=rel.getZoneModel().getZoneModelName().replaceAll("_"," ")%>
+                                <%if(rel.getZoneModel().isEnhanced()){%>
+                                    <span class="badge badge-pill badge-primary">Enhanced</span>
+                                <%}%>
+                            </h4>
+                            <div class="btn-group mb-xl-3" role="group" aria-label="Basic example"> 
+                                <i class="ti-pencil" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/chargeRate','Zone Model','0,-2,<%=rel.getId()%>');"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <%if(rel.getZoneModel().isEnhanced()){%>
+                            <dl class="row">
+                                <dt class="col-sm-3">Usc Model</dt><dd class="col-sm-9"><%= rel.getZoneModel().getUscModelName()%></dd>
+                            </dl>
+                            <%}%>
+                            <div id="accordion1" class="according accordion-s2">
+                            <%for(ResultsT result: rel.getZoneModel().getResults()){%>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <a class="card-link collapsed" data-toggle="collapse" href="#accordion-<%=rel.getId()%>-<%=result.getId()%>">
+                                        <%for(String name: result.getName()){%>
+                                        <span class="badge badge-pill badge-secondary"><%=name%></span>
+                                        <%}%>
+                                        <span class="badge badge-pill badge-<%=((result.getResult() instanceof TimeConfigurationT)?"primary":((result.getResult() instanceof GenericSelectorT)?"danger":"success"))%>"><%=((result.getResult() instanceof TimeConfigurationT)?"Time Model":((result.getResult() instanceof GenericSelectorT)?"Generic Selector":"Pop Model"))%></span>
+                                        </a>
+                                    </div>
+                                    <div id="accordion-<%=rel.getId()%>-<%=result.getId()%>" class="collapse" data-parent="#accordion1">
+                                        <div class="card-body">
+                                        <%if(result.getResult() instanceof GenericSelectorT){%>
+                                         <%GenericSelectorT selector = (GenericSelectorT)result.getResult();%>
+                                            <p><%= selector.getGenericSelectorName()%></p>
+                                            <div class="list-group">
+                                              <%for(ResultsT res :selector.getResults()){%>
+                                              <a href="#Principal-0" class="list-group-item list-group-item-action" onclick="composite('/chargeRate','Principal-0','<%=rel.getId()%>,<%=result.getId()%>,<%=res.getId()%>')"><%=res.getName().get(0)%></a>
+                                              <%}%>
+                                             </div>    
+                                        <%}else if(result.getResult() instanceof TimeConfigurationT){%>
+                                         <%TimeConfigurationT time = (TimeConfigurationT)result.getResult();%>
+                                             <p><%= time.getTimeModelName()%></p>
+                                            <div class="list-group">
+                                            <%for(TagsT tag: time.getTags()){%>
+                                                 <a href="#Principal-0" class="list-group-item list-group-item-action"  onclick="composite('/chargeRate','Principal-0','<%=rel.getId()%>,<%=result.getId()%>,<%=tag.getId()%>')"><%=tag.getName()%></a>
+                                             <%}%>
+                                            </div>    
+                            
+                                        <%}else{%>
+                                       <%CrpCompositePopModelT time = (CrpCompositePopModelT)result.getResult();%>
+                                          <div class="list-group">
+                                             <a href="#Principal-0" class="list-group-item list-group-item-action" onclick="composite('/chargeRate','Principal-0','<%=rel.getId()%>,<%=result.getId()%>')"><%= time.getName()%></a>
+                                          </div>
+                                       <%}%>
+                                        </div>
+                                    </div>
+                                </div>
+                            <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%}else{%>
+                <div class="card mt-5">
+                    <div class="card-body">
+                        <div>
+                            <div id="accordion1" class="according">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <a  class="card-link collapsed" onclick="composite('/chargeRate','Principal-0','<%=rel.getId()%>')"><%=rel.getCrpCompositePopModel().getName()%>
+                                            <span class="badge badge-pill badge-success">Pop</span>
+                                        </a>    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%}%>
+                </div>
+                <%}%>
+                <script>
+                 function crpRel(){
+                    console.log("ENTRA");
+                    $(".crpRelDates").hide();
+                    $("#select-"+$("#crpRelDate").val()).show();}
+                    crpRel();
+                </script>
             </div>                                        
         </div>
                             

@@ -2861,3 +2861,53 @@ table.dataTable thead td {
 }
 
 /*-------------------- END Offset Sidebar ------------------- */
+
+
+/* Remove default bullets */
+ul, #myUL {
+  list-style-type: none;
+}
+
+/* Remove margins and padding from the parent ul */
+#myUL {
+  margin: 10px;
+  font-weight: 500;
+    color: #666;
+    display: inline-block;
+    margin-bottom: 8px;
+    margin-bottom: .5rem;
+}
+
+/* Style the caret/arrow */
+.caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+}
+
+/* Create the caret/arrow with a unicode, and style it */
+.caret::before {
+    content: '\f107';
+    font-family: fontawesome;
+    color: #8d97ad;
+    font-size: 20px;
+}
+
+.caret-down::before {
+    content: '\f107';
+}
+
+/* Hide the nested list */
+.nested {
+  margin-left: 10px;  
+  display: none;
+}
+.nested a:hover, .nested span:hover{
+}
+
+
+/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+.active {
+  display: block;
+}
+
+/*-------------------- END Nested UL ------------------- */

@@ -4,6 +4,8 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="control.ControlFunctions"%>
+<%@page import="control.ControlPath"%>
 <%@page import="datos.ListaT"%>
 <%@page import="datos.PackageItemT"%>
 <%@page import="datos.BalanceSpecT"%>
@@ -113,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            <%for(PackageItemT item: pack.getPackageItems()){%>                
+            <%for(PackageItemT item: pack.getPackageItems()){%>
             <div class="col-xs-12 col-md-6">
 
                 <div class="card mt-5">
@@ -138,8 +140,9 @@
                                     </thead>
                                     <tbody>
                                         <%for(ListaT t: item.getBundleProductOffering()){%>
+                                        <% ListaT buscar= new ListaT("name",t.valor);%>
                                         <tr>
-                                            <td><%=t.valor%></td>
+                                            <td><a href="#" style="color: #fff;" onclick="hacerClick(this,'/bundled',<%=ControlFunctions.Buscar(ControlPath.bundledClick, buscar, "id")%>)"><%=t.valor%></a></td>
                                             <td><%=t.unit%></td>
                                         </tr>
                                         <%}%>

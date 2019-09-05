@@ -67,24 +67,50 @@ public class ZoneModelT extends Nodo{
         }
         return s+"<"+((enhanced)?"enhancedZ":"z")+"oneModel>\n" +
             s+"\t<zoneModelName>"+zoneModelName+"</zoneModelName>\n" +
-            ((uscModelName.equals(""))?"":s+"\t<uscModelName>"+uscModelName+"</uscModelName>\n") +zoneItems+
+            ((enhanced)?"":s+"\t<uscModelName>"+uscModelName+"</uscModelName>\n") +zoneItems+
             s+"</"+((enhanced)?"enhancedZ":"z")+"oneModel>";
     }
     
         @Override
     public int procesar(ArrayList<String> subscribers, int index) {
         int itemCount = 0;
+        Boolean isZoneModeled= false;
         for(int i=index; i<subscribers.size();i++) {
             if(subscribers.get(i).matches("(?s)zoneModelName: (.*)"))this.zoneModelName= subscribers.get(i).substring(15);
+            else if(subscribers.get(i).matches("(?s)enhanced: (.*)"))this.enhanced= Boolean.valueOf(subscribers.get(i).substring(10));
             else if(subscribers.get(i).matches("(?s)uscModelName: (.*)"))this.uscModelName= subscribers.get(i).substring(14);
             else if(subscribers.get(i).matches("(?s)results")){ 
-                
+                if(!isZoneModeled){
                 ResultsT result = new ResultsT(itemCount);
                 itemCount++;
                 i= result.procesar(subscribers, i+1);
                 i--;
-                this.results.add(result);
-            }else return i;
+                this.results.add(result);}
+                
+                
+                else{
+                i++;
+                if(itemCount== this.results.size()){
+                    this.results.add(this.results.get(itemCount-1));
+                }
+                this.results.get(itemCount).setName(new ArrayList<>());
+                for(int j=i; i<subscribers.size();i++) {
+                    int resultsdeep=0;
+                    if(subscribers.get(i).matches("(?s)name: (.*)"))this.results.get(itemCount).getName().add(subscribers.get(i).substring(6));
+                    else if(subscribers.get(i).matches("(?s)timeConfiguration")){i++; ((TimeConfigurationT)this.results.get(itemCount).getResult()).setTimeModelName(subscribers.get(i).substring(6));
+                    
+                    }else break;
+                }
+                i--;
+                itemCount++;
+                }
+                
+                
+            }else if(subscribers.get(i).matches("(?s)zoneModel")){
+                System.out.println(subscribers);
+                isZoneModeled= true;
+            }
+            else return i;
         }
         return subscribers.size();
     }

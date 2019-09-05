@@ -118,6 +118,10 @@ public class ControlFunctions {
                 controls[0]= ControlPath.glidPath;
                 controls[1]= ControlPath.glidPointer;            
         }
+        else if(tipo.equals(ControlPath.uscMapClick)){
+                controls[0]= ControlPath.uscMapPath;
+                controls[1]= ControlPath.uscMapPointer;            
+        }
         return controls;
     }
 
@@ -134,6 +138,19 @@ public class ControlFunctions {
         else{
             s= s.substring(0, 4)+"-"+s.substring(4, 6)+"-"+s.substring(6, 8);
             return day2.format(day.parse(s));}
+    }
+    
+    public static String getParseString(String s) throws ParseException{
+        SimpleDateFormat day= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat day2= new SimpleDateFormat("dd MMM yyyy");
+        if(s.equals("Never ends")) return "inf";
+        else if(s.equals("Now")) return "0";
+        else{
+            return (day.format(day2.parse(s))).replaceAll("-", "")+"T000000";}
+    }
+    
+    public static boolean isNumeric(String strNum) {
+        return strNum.matches("-?\\d+(\\.\\d+)?");
     }
     
 }

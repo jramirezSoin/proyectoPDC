@@ -58,7 +58,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-5">
-                            <h4 class="header-title mb-0">Zone Items</h4>
+                            <h4 class="header-title mb-0">Charge Events</h4>
                             <div class="search-box">
                              <input type="text" name="search" id="BuscaChargeEvent" placeholder="Search..." onkeypress=" if(event.keyCode===13){buscar('BuscaChargeEvent','Principal');}" required>
                              <i class="ti-close" onclick="$('#BuscaChargeEvent').val(''); buscar('BuscaChargeEvent','Principal');"></i>
