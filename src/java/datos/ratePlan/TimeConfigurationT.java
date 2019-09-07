@@ -90,6 +90,13 @@ public class TimeConfigurationT extends Nodo implements ResultI{
             return false;
         }
     }
+
+    @Override
+    public void getRumCurrency(String rum, String currency) {
+        for(TagsT crp : this.getTags()){
+            crp.getCrpCompositePopModel().getRumCurrency(rum,currency);
+        }
+    }
     
     
 }

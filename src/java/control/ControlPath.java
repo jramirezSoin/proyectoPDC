@@ -112,6 +112,7 @@ public class ControlPath {
     public static String crpRelDateForm="/views/crpRelDateForm.jsp";
     public static String zoneRateForm="/views/zoneRateForm.jsp";
     public static String crpCompositeView= "/views/crpCompositeView.jsp";
+    public static String crpCompositeForm= "/views/crpCompositeForm.jsp";
     
     public static String glidClick="/glid";
     public static String glidPath="C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_GLID_config.xml";
@@ -123,6 +124,7 @@ public class ControlPath {
     public static String uscMapView = "/views/uscMapView.jsp";
     public static String uscMapForm= "/views/uscMapForm.jsp";
     public static String uscMapClick= "/uscMap";
+    
     
     
     

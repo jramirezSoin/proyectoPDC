@@ -90,6 +90,13 @@ public class GenericSelectorT extends Nodo implements ResultI{
             return false;
         }
     }
+
+    @Override
+    public void getRumCurrency(String rum, String currency) {
+        for(ResultsT crp : this.getResults()){
+            ((CrpCompositePopModelT)crp.getResult()).getRumCurrency(rum,currency);
+        }
+    }
     
     
 }

@@ -311,6 +311,16 @@ public class ChargeRatePlanT extends Nodo{
         else{
             this.subscriberCurrency.setApplicableRum(new ApplicableRumT(this.applicableRums,((todMode.equals("Timed"))?"0.0":"1.0")));
         }
+        for(CrpRelDateRangeT rel: this.getSubscriberCurrency().getCrpRelDateRanges()){
+            if(rel.getCrpCompositePopModel()!=null){ 
+                rel.getCrpCompositePopModel().setRumName(this.getApplicableRums());
+                rel.getCrpCompositePopModel().setCurrencyCode(this.getSubscriberCurrency().getCurrencyCode());
+            }else{
+                for(ResultsT res: rel.getZoneModel().getResults()){
+                    res.getResult().getRumCurrency(this.getApplicableRums(), this.getSubscriberCurrency().getCurrencyCode());
+                }
+            }
+        }
     }
     
     

@@ -12,5 +12,5 @@ import datos.Nodo;
  * @author Joseph Ramírez
  */
 public interface ResultI{
-    
+    public void getRumCurrency(String rum,String currency);
 }

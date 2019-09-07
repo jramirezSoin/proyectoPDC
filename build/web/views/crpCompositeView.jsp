@@ -3,6 +3,8 @@
     Created on : Aug 30, 2019, 11:14:17 AM
     Author     : Joseph Ramírez
 --%>
+<%@page import="datos.ratePlan.PriceTierValidityPeriodT"%>
+<%@page import="control.ControlFunctions"%>
 <%@page import="datos.ratePlan.ChargeT"%>
 <%@page import="datos.ratePlan.PriceTierRangeT"%>
 <%@page import="datos.ratePlan.CrpCompositePopModelT"%>
@@ -13,11 +15,11 @@
                             <h4 class="header-title mb-0">                         
                                 <%=rel.getName().replaceAll("_"," ")%>
                             </h4>
-                            <i class="ti-close" onclick="$(this).parent().parent().parent().remove();"></i>
+                                <i class="ti-pencil" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/chargeRate','Crp Composite Pop Model','0,-3');"></i>
+                                <i class="ti-close" onclick="$(this).parent().parent().parent().remove();"></i>
                         </div>
                         <div>
                             <dl class="row">
-                                <dt class="col-sm-3">Pop Model</dt><dd class="col-sm-9"><%= rel.getPopModelType()%></dd>
                                 <dt class="col-sm-3">Distribution Method</dt><dd class="col-sm-9"><%= rel.getDistributionMethod()%></dd>
                                 <dt class="col-sm-3">Rum Tier</dt><dd class="col-sm-9"><%= rel.getRumTierExpression()%></dd>
                                 <dt class="col-sm-3">Enforce Credit limit</dt><dd class="col-sm-9"><%= rel.getEnforceCreditLimit()%></dd>
@@ -26,12 +28,28 @@
                                 <dt class="col-sm-3">Currency Code</dt><dd class="col-sm-9"><%= rel.getCurrencyCode()%></dd>
                                 <dt class="col-sm-3">Balance Element Name</dt><dd class="col-sm-9"><%= rel.getBalanceElementName()%></dd>
                             </dl>
+                                <%if(rel.getPopModelType().equals("usageChargePopModel")){%>
+                                    <div class="card mt-5">
+                                        <div class="card-body sbg1 text-white">
+                                            <div class="d-flex justify-content-between mb-3">
+                                                <h4 class="header-title mb-0 text-white">Periods</h4>
+                                                <select class="custom-select col-sm-6" onclick="getPeriods();" id="priceTierValidityPeriods">
+                                                    <%for(int k=0; k<rel.getPriceTierValidityPeriods().size();k++){%>
+                                                    <option value="<%=k%>"><%=ControlFunctions.getParseDate(rel.getPriceTierValidityPeriods().get(k).getValidFrom())%></option>
+                                                    <%}%>
+                                                </select>
+                                                <div class="btn-group mb-xl-3" role="group" aria-label="Basic example"> 
+                                                    <i class="ti-pencil" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/chargeRate','Periods','0,-4');"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <%}%>
                             <div id="daccordion1" class="according accordion-s2">
                             <%for(PriceTierRangeT result: rel.getPriceTierRanges()){%>
-                                <div class="card">
+                                <div class="card period period-<%=result.getPriceTierValidityPeriod()%>">
                                     <div class="card-header">
-                                        <a class="card-link" data-toggle="collapse" href="#daccordion-<%=rel.getId()%>-<%=result.getId()%>"><%=result.getUpperBound()%>
-                                        </a>                                        
+                                        <a class="card-link" data-toggle="collapse" href="#daccordion-<%=rel.getId()%>-<%=result.getId()%>">Upper Bound: <%=result.getUpperBound()%></a>
                                     </div>
                                     <div id="daccordion-<%=rel.getId()%>-<%=result.getId()%>" class="collapse show" data-parent="#daccordion1">
                                     <div class="card-body">
@@ -101,6 +119,15 @@
                                     </div>
                                     </div>
                                 </div>
+                            <%}%>
+                            <%if(rel.getPopModelType().equals("usageChargePopModel")){%>
+                                <script>
+                                function getPeriods(){
+                                    $(".period").hide();
+                                    $(".period-"+$("#priceTierValidityPeriods").val()).show();
+                                }
+                                getPeriods();
+                                </script>
                             <%}%>
                             </div>
                         </div>

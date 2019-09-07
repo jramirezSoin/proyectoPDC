@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author Joseph Ramírez
  */
-public class Nodo {
+public class Nodo implements Cloneable{
     public boolean visibilidad= true;
     public int id;
     public boolean masivo=false;
@@ -62,6 +62,16 @@ public class Nodo {
     
     public String toString(String s, String aux){
         return "";
+    }
+    
+    public Object clone(){
+        Nodo obj=null;
+        try{
+            obj=(Nodo)super.clone();
+        }catch(CloneNotSupportedException ex){
+            System.out.println(" no se puede duplicar");
+        }
+        return obj;
     }
     
 }

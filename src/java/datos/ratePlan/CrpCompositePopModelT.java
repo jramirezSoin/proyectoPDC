@@ -256,6 +256,12 @@ public class CrpCompositePopModelT extends Nodo implements ResultI{
             return false;
         }
     }
+
+    @Override
+    public void getRumCurrency(String rum, String currency) {
+        this.rumName=rum;
+        this.currencyCode=currency;
+    }
     
     
     

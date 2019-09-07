@@ -24,7 +24,7 @@
 <div id="zoneModelInfo">    
 <div class="form-group row">
 <% ArrayList<ListaT> zoneModels = ControlFunctions.getLista((String)ControlPath.zoneModelsClick);%>
-<i onclick="agregarResult();" class="ti-close"></i>
+<i onclick="agregarResult();" class="ti-plus"></i>
 <label>Zone Model Name<select onclick="$('#zone').text($(this).val())" class="custom-select" id="-zoneModelName">
     <%for(int j=0;j<zoneModels.size();j++){%>
     <option <%=(zoneModels.get(j).valor.equals(rel.getZoneModel().getZoneModelName()))?"selected":""%> value="<%=zoneModels.get(j).valor%>"><%=zoneModels.get(j).valor%></option>
@@ -64,7 +64,7 @@
         <div style="display: none" class="card res time" id="-timeConfiguration">
             <div class="card-header">
                 Time Configuration
-                <i onclick="agregarResultDeep($(this).parent().parent());" class="ti-close"></i>
+                <i onclick="agregarResultDeep($(this).parent().parent());" class="ti-plus"></i>
             </div>
             <div class="card-body">
                 <input class="form-control" id="-name" onkeyup="changeText(this);" type="text" value="<%=gen.getTimeModelName()%>">    
@@ -87,7 +87,7 @@
         <div style="display: none" class="card res time" id="-genericSelector">
             <div class="card-header">
                 Time Configuration
-                <i onclick="agregarResultDeep($(this).parent().parent());" class="ti-close"></i>
+                <i onclick="agregarResultDeep($(this).parent().parent());" class="ti-plus"></i>
             </div>
             <div class="card-body">
                 <input class="form-control" id="-name" onkeyup="changeText(this);" type="text" value="<%=gen.getGenericSelectorName()%>">    
