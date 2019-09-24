@@ -18,10 +18,16 @@ public class PriceTierValidityPeriodT extends Nodo{
     
     public PriceTierValidityPeriodT(){}
     public PriceTierValidityPeriodT(int id){this.id=id;}
-
+    public PriceTierValidityPeriodT(int id,String lowerBound, String validFrom){
+        this.id=id;
+        this.lowerBound=lowerBound;
+        this.validFrom=validFrom;
+    }
+    
     public String getLowerBound() {
         return lowerBound;
     }
+    
 
     public void setLowerBound(String lowerBound) {
         this.lowerBound = lowerBound;

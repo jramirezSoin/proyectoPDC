@@ -29,7 +29,7 @@
                 <label>Balance of<select class="custom-select" id="-balanceElementName">
                 <option value="">NO BALANCE</option>        
                 <%for(int j=0;j<impactCategories.size();j++){%>
-                <option <%=(impactCategories.get(j).valor.equals("")?"selected":"")%> value="<%=impactCategories.get(j).valor%>"><%=impactCategories.get(j).valor%></option>
+                <option <%=(impactCategories.get(j).valor.equals(crp.getBalanceElementName())?"selected":"")%> value="<%=impactCategories.get(j).valor%>"><%=impactCategories.get(j).valor%></option>
                 <%}%>
                 </select></label>
             </div>

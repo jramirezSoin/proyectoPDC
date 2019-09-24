@@ -128,6 +128,10 @@ public class ChargeRate extends HttpServlet {
                     request.getRequestDispatcher(ControlPath.zoneRateForm).forward(request, response);
                 else if(index.get(1)==-3)
                     request.getRequestDispatcher(ControlPath.crpCompositeForm).forward(request, response);
+                else if(index.get(1)==-4)
+                    request.getRequestDispatcher(ControlPath.priceTierPeriodForm).forward(request, response);
+                else if(index.get(1)==-5)
+                    request.getRequestDispatcher(ControlPath.chargeForm).forward(request, response);
             }
             else if(index.get(0)==-3){
                 ChargeRatePlanT chargeRate = (ChargeRatePlanT) request.getSession().getAttribute("principal");

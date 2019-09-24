@@ -25,6 +25,13 @@ public class PriceTierRangeT extends Nodo{
         this.priceTierValidityPeriod=validity;
     }
 
+    PriceTierRangeT(int id,int priceTierP, String upperBound, String tipo) {
+        this.id=id;
+        this.tipo=tipo;
+        this.priceTierValidityPeriod=priceTierP;
+        this.upperBound=upperBound;
+    }
+
     public String getTipo() {
         return tipo;
     }

@@ -22,9 +22,9 @@
 </div>
 <div class="form-group row">
 <label>Tax Time<select class="custom-select" id="-taxTime">
-        <option <%=(chargeRate.getTaxCode().equals("EVENT_TIME"))?"Selected":""%> value="EVENT_TIME">EVENT_TIME</option>
-        <option <%=(chargeRate.getTaxCode().equals("BILLING_TIME"))?"Selected":""%> value="BILLING_TIME">BILLING_TIME</option>
-        <option <%=(chargeRate.getTaxCode().equals("NONE"))?"Selected":""%> value="NONE">NONE</option>
+        <option <%=(chargeRate.getTaxTime().equals("EVENT_TIME"))?"Selected":""%> value="EVENT_TIME">EVENT_TIME</option>
+        <option <%=(chargeRate.getTaxTime().equals("BILLING_TIME"))?"Selected":""%> value="BILLING_TIME">BILLING_TIME</option>
+        <option <%=(chargeRate.getTaxTime().equals("NONE"))?"Selected":""%> value="NONE">NONE</option>
 </select></label>
 </div>
 <script>

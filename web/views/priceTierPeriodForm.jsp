@@ -4,6 +4,8 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.ratePlan.PriceTierRangeT"%>
+<%@page import="datos.ratePlan.PriceTierValidityPeriodT"%>
 <%@page import="datos.ratePlan.CrpCompositePopModelT"%>
 <%@page import="datos.ratePlan.CrpRelDateRangeT"%>
 <%@page import="control.ControlPath"%>
@@ -21,70 +23,61 @@ dateFormat: 'dd M yy',
 });
 $(".fecha").on("change",function(){
         var begins= document.getElementsByClassName("begin");
-        var ends= document.getElementsByClassName("end");
         for(var i=begins.length-1; i>=0; i--){
-            console.log(begins[i].value+" "+ends[i].value)
-            if(ends[i].value!="Never ends"){
-                if(begins[i].value!="Now"){
-                   if((new Date(begins[i].value)).getTime() > (new Date(ends[i].value)).getTime()){
-                       begins[i].value= ends[i].value;
-                   }
-                }
-            }
             if(i!=0){
-                ends[i-1].value=begins[i].value;
+            if(begins[i-1].value!="Now"){
+               if((new Date(begins[i-1].value)).getTime() > (new Date(begins[i].value)).getTime()){
+                   var k= begins[i].value;
+                   begins[i].value= begins[i-1].value;
+                   begins[i-1].value= k;
+               }else if((new Date(begins[i-1].value)).getTime() == (new Date(begins[i].value)).getTime()){
+                       $(begins[i]).parent().parent().remove();
+                   }
+            }
             }
         }
 });
 
 function mychange(){
-    var begins= document.getElementsByClassName("begin");
-        var ends= document.getElementsByClassName("end");
-        for(var i=begins.length-1; i>=0; i--){
-            console.log(begins[i].value+" "+ends[i].value)
-            if(ends[i].value!="Never ends"){
-                if(begins[i].value!="Now"){
-                   if((new Date(begins[i].value)).getTime() > (new Date(ends[i].value)).getTime()){
-                       begins[i].value= ends[i].value;
+        var begins= document.getElementsByClassName("begin");
+            for(var i=begins.length-1; i>=0; i--){
+                if(i!=0){
+                if(begins[i-1].value!="Now"){
+                   if((new Date(begins[i-1].value)).getTime() > (new Date(begins[i].value)).getTime()){
+                       var k= begins[i].value;
+                       begins[i].value= begins[i-1].value;
+                       begins[i-1].value= k;
+                   }else if((new Date(begins[i-1].value)).getTime() == (new Date(begins[i].value)).getTime()){
+                       $(begins[i]).parent().parent().remove();
                    }
                 }
+                }
             }
-            if(i!=0){
-                ends[i-1].value=begins[i].value;
-            }
-        }
 }
 </script>
 <form style="margin: 20px;" id="formulaire">
-    <div class="custom-control custom-checkbox">
-        <input id="begin" onclick="noTermina();" type="checkbox" class="custom-control-input">
-        <label class="custom-control-label" for="begin">Never Start</label>
-        </div>
-    <div class="custom-control custom-checkbox">
-        <input id='end' onclick="noTermina();" type="checkbox" class="custom-control-input">
-        <label class="custom-control-label" for="end">Never End</label>
-    </div>
-    <div id='-crpDelRanges'>
+    <div id='-priceTierPeriods'>
     <table class="table table-responsive text-center">
         <thead class="text-uppercase">
             <tr>
-                <th>Start</th>
-                <th>End</th>
+                <th>Period</th>
+                <th>Upper Bounds</th>
             </tr>  
         </thead>
         <tbody id="theBody">
-            <%for(CrpRelDateRangeT rel: chargeRate.getSubscriberCurrency().getCrpRelDateRanges()){%>
+            <%int cont=0;%>
+            <%for(PriceTierValidityPeriodT rel: crp.getPriceTierValidityPeriods()){%>
             <tr>
-                <%if(ControlFunctions.getParseDate(rel.getStartDate()).equals("Now")){%>
-                    <script>$("#begin").prop("checked",true);</script>
-                <%}%>
-                <%if(ControlFunctions.getParseDate(rel.getEndDate()).equals("Never ends")){%>
-                    <script>$("#end").prop("checked",true);</script>
-                <%}%>
-                <td><input readonly="" type='text' id="-startDate_<%=rel.getId()%>" class="form-control fecha begin"  value='<%=ControlFunctions.getParseDate(rel.getStartDate())%>'></td>
-                <td><input readonly="" type='text' id="-endDate_<%=rel.getId()%>" class="form-control end" value='<%=ControlFunctions.getParseDate(rel.getEndDate())%>'></td>
-                
+                <td><input readonly="" type='text' id="-startDate_<%=rel.getId()%>" class="form-control fecha begin"  value='<%=ControlFunctions.getParseDate(rel.getValidFrom())%>'></td>
+                <td>
+                    <input type="text" class="form-control-sm col-sm-5" onkeypress="tagsinput(this,'upperBound_n')">
+                    <%for(PriceTierRangeT range: crp.getPriceTierRanges()){%>
+                    <%if(range.getPriceTierValidityPeriod()==cont){%>
+                    <span class="badge badge-pill badge-primary" id="-upperBound_<%=range.getId()%>"><%=range.getUpperBound()%></span>
+                    <%}}%>
+                </td>
             </tr>
+            <%cont++;%>
             <%}%>            
         </tbody>
     </table>
@@ -97,34 +90,17 @@ function mychange(){
 </form>
 
 <script>
-    function noTermina(){
-        if($("#begin").prop("checked")){
-            $(".begin:eq(0)").val("Now");
-            $(".begin:eq(0)").datepicker("destroy");
-            $(".begin:eq(0)").removeClass('fecha hasDatepicker');
-        }else{
-            $(".begin:eq(0)").val("01 Jan 2010");
-            $(".begin:eq(0)").datepicker({dateFormat: 'dd M yy'});
-            $(".begin:eq(0)").addClass('fecha hasDatepicker');
-        }
-        if($("#end").prop("checked")){
-            $(".end").eq(($(".end").length)-1).val("Never ends");
-            $(".end").eq(($(".end").length)-1).datepicker("destroy");
-            $(".end").eq(($(".end").length)-1).removeClass('fecha hasDatepicker');
-        }else{
-            $(".end").eq(($(".end").length)-1).datepicker({dateFormat: 'dd M yy'}).datepicker("setDate",new Date());
-            $(".end").eq(($(".end").length)-1).addClass('fecha hasDatepicker');
-        }
-            
-        
-    }
     function addNew(){
-        var fin= $(".end").eq(($(".end").length)-1).val();
-        $("#theBody").append("<tr><td><input readonly='' type='text' id='-startDate_n"+newDate+"' class='form-control fecha begin' onChange='mychange();'  value='"+$("#new").val()+"'></td><td><input readonly='' type='text' id='-endDate_n"+newDate+"' class='form-control end' value='"+fin+"'></td></tr>");
-        $(".end").eq(($(".end").length)-2).val($("#new").val());
+        $("#theBody").append("<tr><td><input readonly='' type='text' id='-startDate_n"+newDate+"' class='form-control fecha begin' onChange='mychange();'  value='"+$("#new").val()+"'></td>"+
+        "<td><input type='text' class='form-control-sm col-sm-5' onkeypress='tagsinput(this,\"upperBound_n\")'></td></tr>");
         $(".begin").eq(($(".begin").length)-1).datepicker({dateFormat: 'dd M yy'});
         $("#new").datepicker("setDate",new Date());
         newDate++;
+        mychange();
     }
-    noTermina();
+    function tagsinput(id,tipo){
+        if(event.keyCode === 13 && id.value!=""){
+            $(id).parent().append("<span id='-"+tipo+"' class='badge badge-primary badge-pill'>"+id.value+"<i onclick='$(this).parent().remove();' class='ti-close'></i></span>");
+            id.value="";
+        }}
 </script>    

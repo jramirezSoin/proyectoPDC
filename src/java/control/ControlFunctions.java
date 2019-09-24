@@ -48,7 +48,7 @@ public class ControlFunctions {
             if(Integer.parseInt(nodo.unit)>=1000 && tipo.equals("currency")){ nodos.remove(i);
             i--;
             }
-            else if((Integer.parseInt(nodo.unit)<1000 || Integer.parseInt(nodo.unit)>2000000) && tipo.equals("no_currency")){ nodos.remove(i);
+            else if((Integer.parseInt(nodo.unit)<1000) && tipo.equals("no_currency")){ nodos.remove(i);
             i--;
             }
         }
@@ -131,12 +131,13 @@ public class ControlFunctions {
     }
     
     public static String getParseDate(String s) throws ParseException{
-        SimpleDateFormat day= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat day= new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat day2= new SimpleDateFormat("dd MMM yyyy");
         if(s.equals("inf")) return "Never ends";
         else if(s.equals("0")) return "Now";
         else{
-            s= s.substring(0, 4)+"-"+s.substring(4, 6)+"-"+s.substring(6, 8);
+            System.out.println(s);
+            s= s.replace("T000000","");
             return day2.format(day.parse(s));}
     }
     

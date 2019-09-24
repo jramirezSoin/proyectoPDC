@@ -35,6 +35,7 @@ public class ChargeRatePlanT extends Nodo{
     private String billOffset="0";
     private String description="";
     private SubscriberCurrencyT subscriberCurrency= new SubscriberCurrencyT();
+    private String dir="";
     
     public ChargeRatePlanT(){}
     public ChargeRatePlanT(int id){this.id=id;}
@@ -276,6 +277,12 @@ public class ChargeRatePlanT extends Nodo{
                     index= this.procesar(lista, index);
                 else if(indexs.get(1)==-2)
                     index= this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).getZoneModel().procesar(lista, index);
+                else if(indexs.get(1)==-3)
+                    index= (this.buscaPop(dir)).procesar(lista, index);
+                else if(indexs.get(1)==-4)
+                    index= (this.buscaPop(dir)).procesar(lista, index);
+                else if(indexs.get(1)==-5)
+                    index= (this.buscaPop(dir)).getPriceTierRanges().get(indexs.get(2)).getCharges().get(indexs.get(3)).procesar(lista, index);
             }
             else
             this.subscriberCurrency.procesarI(lista, index, indexs);
@@ -295,6 +302,7 @@ public class ChargeRatePlanT extends Nodo{
     }
 
     public CrpCompositePopModelT buscaPop(String dir) {
+        this.dir=dir;
         ArrayList<Integer> index= new ArrayList<>();
             String[] arrOfStr = dir.split(",");
             for (String a : arrOfStr){

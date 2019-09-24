@@ -191,10 +191,13 @@ public class ChargeT extends Nodo{
             else if(charge.get(i).matches("(?s)priceType: (.*)")) this.priceType= charge.get(i).substring(11);
             else if(charge.get(i).matches("(?s)glid: (.*)")){ this.glid= charge.get(i).substring(6); this.glidName=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("code",charge.get(i).substring(6)),"name");}
             else if(charge.get(i).matches("(?s)glidName: (.*)")){ this.glidName= charge.get(i).substring(10); this.glid=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("name",charge.get(i).substring(10)),"code");}
+            
             else if(charge.get(i).matches("(?s)incrementStep: (.*)")) this.incrementStep= charge.get(i).substring(15);
             else if(charge.get(i).matches("(?s)incrementRounding: (.*)")) this.incrementRounding= charge.get(i).substring(19);
             else if(charge.get(i).matches("(?s)taxTime: (.*)")) this.taxTime= charge.get(i).substring(9);
             else if(charge.get(i).matches("(?s)taxCode: (.*)")) this.taxCode= charge.get(i).substring(9);
+            
+            else if(charge.get(i).matches("(?s)scaled: (.*)")) this.tipo= ((charge.get(i).substring(8).equals("true"))?"scaledCharge":"fixedCharge");
             else if(charge.get(i).matches("(?s)priceValidity")){ 
                 
                 PriceValidityT resul = new PriceValidityT(itemCount);
@@ -202,8 +205,9 @@ public class ChargeT extends Nodo{
                 i= resul.procesar(charge, i+1);
                 i--;
                 this.setPriceValidity(resul);
-            }else return i;
+            }else{validar(); return i;}
         }
+        validar();
         return charge.size();
     }
     
@@ -224,6 +228,11 @@ public class ChargeT extends Nodo{
             this.visibilidad=false;
             return false;
         }
-    }   
+    }
+    
+    private void validar(){
+        if(!this.tipo.equals("scaledCharge")){this.incrementRounding=this.incrementStep=this.taxCode=this.taxTime="";}
+        if(this.priceType.equals("CONSUMPTION")){this.priceValidity=null;}
+    }
     
 }

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class PriceValidityT extends Nodo {
     private String startValidityMode="";
     private String endValidityMode="";
-    private String validityRange="";
+    private String validityRange="0/inf";
     private String relativeStartOffset="";
     private String relativeEndOffset="";
     private String relativeEndOffsetUnit="";
@@ -95,8 +95,9 @@ public class PriceValidityT extends Nodo {
             else if(validity.get(i).matches("(?s)relativeStartOffset: (.*)")) this.relativeStartOffset= validity.get(i).substring(21);
             else if(validity.get(i).matches("(?s)relativeEndOffset: (.*)")) this.relativeEndOffset= validity.get(i).substring(19);
             else if(validity.get(i).matches("(?s)relativeEndOffsetUnit: (.*)")) this.relativeEndOffsetUnit= validity.get(i).substring(23);
-            else return i;
+            else{validar(); return i;}
         }
+        validar();
         return validity.size();
     }
     
@@ -119,4 +120,8 @@ public class PriceValidityT extends Nodo {
         }
     }
     
+    private void validar(){
+        if(this.endValidityMode.equals("NEVER")){ this.relativeEndOffset="-1"; this.relativeEndOffsetUnit="";}
+        else if(this.endValidityMode.equals("RELATIVE_TO_START")){ this.relativeEndOffset="0"; this.relativeEndOffsetUnit="BILLING_CYCLE";}
+    }
 }

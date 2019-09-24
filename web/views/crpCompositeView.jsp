@@ -45,11 +45,11 @@
                                         </div>
                                     </div>
                                 <%}%>
-                            <div id="daccordion1" class="according accordion-s2">
+                            <div id="daccordion1" class="according">
                             <%for(PriceTierRangeT result: rel.getPriceTierRanges()){%>
                                 <div class="card period period-<%=result.getPriceTierValidityPeriod()%>">
                                     <div class="card-header">
-                                        <a class="card-link" data-toggle="collapse" href="#daccordion-<%=rel.getId()%>-<%=result.getId()%>">Upper Bound: <%=result.getUpperBound()%></a>
+                                        <a class="card-link">Upper Bound: <%=result.getUpperBound()%></a>
                                     </div>
                                     <div id="daccordion-<%=rel.getId()%>-<%=result.getId()%>" class="collapse show" data-parent="#daccordion1">
                                     <div class="card-body">
@@ -63,6 +63,7 @@
                                                 <th>Balance</th>
                                                 <th>GL/Id</th>
                                                 <th></th>
+                                                <th></th>
                                                 </tr>
                                             </thead>    
                                             <tbody>
@@ -72,6 +73,7 @@
                                                 <td><%=res.getPrice()%></td>
                                                 <td><%=res.getBalanceElementName()%></td>
                                                 <td><%=res.getGlidName()%></td>
+                                                <td><button tabindex="0" type="button" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/chargeRate','Periods','0,-5,<%=result.getId()%>,<%=res.getId()%>');" class="btn btn-rounded btn-light btn-sm"><i class="ti-pencil"></i></button></td>
                                                 <%if(res.getPriceValidity()!=null){%>
                                                 <td><button tabindex="0" type="button" class="btn btn-rounded btn-light btn-sm" data-popover-content="#res-<%=res.getId()%>" data-toggle="popover" title data-placement="right" aria-describedby="popover300430"><i class="ti-eye"></i></button></td>
                                                 <td id="res-<%=res.getId()%>" style="display: none;">
@@ -91,7 +93,7 @@
                                                             <tr>
                                                                 <td><%=res.getPriceValidity().getStartValidityMode()%></td>
                                                                 <td><%=res.getPriceValidity().getEndValidityMode()%></td>
-                                                                <td><%=res.getPriceValidity().getValidityRange()%></td>
+                                                                <td><%=ControlFunctions.getParseDate(res.getPriceValidity().getValidityRange().split("/")[0])%>/<%=ControlFunctions.getParseDate(res.getPriceValidity().getValidityRange().split("/")[1])%></td>
                                                                 <td><%=res.getPriceValidity().getRelativeStartOffset()%></td>
                                                                 <td><%=res.getPriceValidity().getRelativeEndOffset()%></td>
                                                                 <td><%=res.getPriceValidity().getRelativeEndOffsetUnit()%></td>
