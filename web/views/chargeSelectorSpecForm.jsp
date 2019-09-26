@@ -72,7 +72,7 @@
 </div>
 
 <div class="form-group row" id='-Ntimes'>
-    <%glids = ControlFunctions.getLista(ControlPath.timeModelsClick,"timeModelTag","tagName");%>
+    <%glids = ControlFunctions.getLista(ControlPath.timeModelsClick,"timeModelTag","tagName",true);%>
     <label>Time Model Tags</label>
     <select class="custom-select" onchange="tagSelect(this,'nt')" id="balanceElementName">
     <%for(ListaT glid: glids){%>

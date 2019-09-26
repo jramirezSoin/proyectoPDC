@@ -106,10 +106,14 @@ public class XmlParser {
     }
     
     public static ArrayList<String> Leer2(File file, String indicador){
-        return Leer2(file,indicador,"name");
+        return Leer2(file,indicador,"name",false);
     }
     
-    public static ArrayList<String> Leer2(File file, String indicador, String valor){
+    public static ArrayList<String> Leer2(File file, String indicador,String valor){
+        return Leer2(file,indicador,valor,false);
+    }
+    
+    public static ArrayList<String> Leer2(File file, String indicador, String valor, boolean conjunto){
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -120,7 +124,7 @@ public class XmlParser {
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
                 String k= convSpecialChar(((Element)node).getElementsByTagName(valor).item(0).getTextContent());
-                if(!lista.contains(k))
+                if((!conjunto) || (conjunto && !lista.contains(k)))
                     lista.add(k);
             }
             return (ArrayList<String>)lista.clone();
@@ -460,8 +464,6 @@ public class XmlParser {
                     NodeList nList2 = ((Element)node).getElementsByTagName("value");
                     for (int j = 0; j < nList2.getLength(); j++) {
                         Node node2 = nList2.item(j);
-                        System.out.println(((Element)node2).getTextContent());
-                        System.out.println(((Element)node2).getAttribute("value"));
                         constants.add(new ListaT(((Element)node2).getAttribute("value"),((Element)node2).getTextContent()));
                     }
                 }

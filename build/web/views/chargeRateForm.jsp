@@ -21,6 +21,20 @@
 <input class="form-control" type="text" id="-description" placeholder="Description" value="<%=chargeRate.getDescription()%>"/>
 </div>
 <div class="form-group row">
+<label>Permitted Name<select class="custom-select" id="-permittedName">
+        <%ArrayList<ListaT> attributes = ControlFunctions.getLista(ControlPath.attributeSpecMapClick);%>
+        <%for(ListaT constante : attributes){
+            constante.valor= constante.valor.replaceAll("_ASM","");
+        %>
+        <option <%=(chargeRate.getPermittedName().equals(constante.valor)?"selected":"")%> value="<%=constante.valor%>"><%=constante.valor%></option>
+        <%}%>
+</select></label>
+</div>
+<div class="form-group row">
+<label>Permitted Name<select class="custom-select" id="-eventName">
+</select></label>
+</div>
+<div class="form-group row">
 <label>Tax Time<select class="custom-select" id="-taxTime">
         <%ArrayList<ListaT> constants = ControlFunctions.LeerConstante("taxTime");%>
         <%for(ListaT constante : constants){%>
@@ -46,17 +60,8 @@
         <%}%>
 </select></label>
 </div>
-<%ArrayList<ListaT> filtro= new ArrayList<>();
-    filtro.add(new ListaT("name",chargeRate.getPermittedName()+"_ASM"));
-    filtro.add(new ListaT("eventRUMSpec",""));
-    filtro.add(new ListaT("name",chargeRate.getEventName()+"_ERS"));
-    filtro.add(new ListaT("rumSpec","")); %>
-<% ArrayList<ListaT> rums = ControlFunctions.getListaFiltroDeep((String)ControlPath.attributeSpecMapClick, filtro,"rumName");%>
 <div class="form-group row">
 <label>RUM<select class="custom-select" id="-applicableRums">
-        <%for(ListaT rum: rums){%>
-        <option <%=(chargeRate.getApplicableRums().equals(rum.valor))?"Selected":""%> value="<%=rum.valor%>"><%=rum.valor%></option>
-        <%}%>
 </select></label>
 </div>
 <div id="-subscriberCurrency">
@@ -70,3 +75,24 @@
 </div>
 </div>    
 </form>
+    <script>
+        function getRum(){
+            var parameters= { 'filtro' : 'name;<%=chargeRate.getPermittedName()%>_ASM,eventRUMSpec;,name;<%=chargeRate.getEventName()%>_ERS,rumSpec;',
+            'funcion' : 'getListaFiltroDeep',
+            'tipo' : '<%=ControlPath.attributeSpecMapClick%>',
+            'buscar' : 'rumName',
+            'compara' : '<%=chargeRate.getApplicableRums()%>'}
+            consulta("-applicableRums",parameters);
+        }
+        function getEvent(){
+            var parameters= { 'filtro' : 'name;<%=chargeRate.getPermittedName()%>_ASM,eventRUMSpec;',
+            'funcion' : 'getListaFiltroDeep',
+            'tipo' : '<%=ControlPath.attributeSpecMapClick%>',
+            'buscar' : 'name',
+            'compara' : '<%=chargeRate.getEventName()%>_ERS',
+            'replace' : '_ERS;'}
+            consulta("-eventName",parameters);
+        }
+        getEvent();
+        getRum();
+    </script>

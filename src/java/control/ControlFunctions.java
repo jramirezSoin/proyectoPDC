@@ -55,6 +55,14 @@ public class ControlFunctions {
         return nodosId;
     }
     
+    public static ArrayList<ListaT> getLista(String tipo, String indicador, String valor,boolean conjunto){
+        String[] controls = getPathPointer(tipo);
+        if(indicador.equals("")) indicador= controls[1];
+        ArrayList<String> nodos = XmlParser.Leer2(new File(controls[0]) , indicador, valor,conjunto);
+        ArrayList<ListaT> nodosId = ListS2ListT(nodos);
+        return nodosId;
+    }
+    
     public static ArrayList<ListaT> getListaBalance(String tipo){
         String[] controls = getPathPointer(ControlPath.balanceElementClick);
         ArrayList<ListaT> nodos = XmlParser.LeerBalance(new File(controls[0]) , controls[1]);
@@ -140,6 +148,10 @@ public class ControlFunctions {
         else if(tipo.equals(ControlPath.timeModelsClick)){
                 controls[0]= ControlPath.timeModelsPath;
                 controls[1]= ControlPath.timeModelsPointer;            
+        }
+        else if(tipo.equals(ControlPath.rolloverClick)){
+                controls[0]= ControlPath.rolloverPath;
+                controls[1]= ControlPath.rolloverPointer;            
         }
         return controls;
     }

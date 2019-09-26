@@ -38,4 +38,17 @@ public class ListaT extends Nodo implements java.io.Serializable{
         }
     }
     
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean sameSame = false;
+
+        if (object != null && object instanceof ListaT)
+        {
+            sameSame = this.valor.equals(((ListaT) object).valor);
+        }
+
+        return sameSame;
+    }
+    
 }

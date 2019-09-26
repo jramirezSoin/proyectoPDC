@@ -46,6 +46,111 @@ public class ControlPath {
     public static String constants = "";
     public static String path = "";
     
+    public static String zoneModelsPointer = "";
+    public static String zoneModelsView = "";
+    public static String zoneModelForm = "";
+    public static String zoneItemForm = "";
+    public static String zoneModelsClick = "";
+    
+    public static String impactCategoriesPointer = "";
+    public static String impactCategoriesView = "";
+    public static String impactCategoriesForm = "";
+    public static String impactCategoriesClick = "";
+    
+    public static String triggerSpecPointer = "";
+    public static String triggerSpecClick = "";
+    public static String triggerSpecView = "";
+    public static String triggerSpecForm = "";
+    public static String expressionForm = "";
+
+    public static String balanceElementPointer = "";
+    public static String balanceElementView = "";
+    public static String balanceElementForm = "";
+    public static String roundingRuleForm = "";
+    public static String balanceElementClick = "";
+    
+    public static String rumConfigPointer = "";
+    public static String rumConfigView = "";
+    public static String rumConfigForm = "";
+    public static String rumConfigClick = "";
+
+    public static String rolloverPointer = "";
+    public static String rolloverView = "";
+    public static String rolloverForm = "";
+    public static String rolloverClick = "";
+
+    public static String timeModelsPointer = "";
+    public static String timeModelsView = "";
+    public static String timeModelForm = "";
+    public static String timeModelTagForm = "";
+    public static String timeModelsClick = "";
+
+    public static String bundledPointer = "";
+    public static String bundledView = "";
+    public static String bundledForm = "";
+    public static String bundledItemForm = "";
+    public static String bundledClick = "";
+    
+    public static String packagePointer = "";
+    public static String packageView = "";
+    public static String packageForm = "";
+    public static String packageItemForm = "";
+    public static String packageBalanceForm = "";
+    public static String packageClick = "";
+
+    public static String listView = "";
+
+    public static String attributeSpecMapPointer = "";
+    public static String attributeSpecMapView = "";
+    public static String attributeSpecMapForm = "";
+    public static String attributeSpecMapItemForm = "";
+    public static String attributeSpecMapClick = "";
+
+    public static String chargeOfferingPointer = "";
+    public static String chargeOfferingView = "";
+    public static String chargeOfferingForm = "";
+    public static String chargeOfferingClick = "";
+    public static String chargeEventForm = "";
+
+    public static String alterationOfferingPointer = "";
+    public static String alterationOfferingView = "";
+    public static String alterationOfferingForm = "";
+    public static String alterationOfferingClick = "";
+
+    public static String holidayPointer = "";
+    public static String holidayView = "";
+    public static String holidayForm = "";
+    public static String holidayClick = "";
+    public static String holidayItemForm = "";
+
+    public static String eventAttributeSpecPointer = "";
+    public static String eventAttributeSpecClick = "";
+
+    public static String chargeRatePointer = "";
+    public static String chargeRateView = "";
+    public static String chargeRateForm = "";
+    public static String chargeRateClick = "";
+    public static String crpRelDateForm = "";
+    public static String zoneRateForm = "";
+    public static String crpCompositeView = "";
+    public static String crpCompositeForm = "";
+    public static String priceTierPeriodForm = "";
+    public static String chargeForm = "";
+
+    public static String glidClick = "";
+    public static String glidPointer = "";
+
+    public static String uscMapPointer = "";
+    public static String uscMapPointer2 = "";
+    public static String uscMapView = "";
+    public static String uscMapForm = "";
+    public static String uscMapClick = "";
+
+    public static String chargeSelectorSpecPointer = "";
+    public static String chargeSelectorSpecClick = "";
+    public static String chargeSelectorSpecView = "";
+    public static String chargeSelectorSpecForm = "";
+    
     
     public static void LoadParameters(){
         FileInputStream fis = null;
@@ -55,7 +160,6 @@ public class ControlPath {
                 PropertyResourceBundle properties= new PropertyResourceBundle(fis);
                 path = properties.getString("path").trim();
                 zoneModelsPath = path + properties.getString("zoneModelsPath").trim();
-                System.out.println(zoneModelsPath);
                 impactCategoriesPath = path + properties.getString("impactCategoriesPath").trim();
                 triggerSpecPath = path + properties.getString("triggerSpecPath").trim();
                 balanceElementPath = path + properties.getString("balanceElementPath").trim();
@@ -74,6 +178,110 @@ public class ControlPath {
                 uscMapPath = path + properties.getString("uscMapPath").trim();
                 chargeSelectorSpecPath = path + properties.getString("chargeSelectorSpecPath").trim();
                 constants = path + properties.getString("constants").trim();
+                zoneModelsPointer= properties.getString("zoneModelsPointer");
+                zoneModelsView= properties.getString("zoneModelsView");
+                zoneModelForm= properties.getString("zoneModelForm");
+                zoneItemForm= properties.getString("zoneItemForm");
+                zoneModelsClick= properties.getString("zoneModelsClick");
+
+                impactCategoriesPointer= properties.getString("impactCategoriesPointer");
+                impactCategoriesView= properties.getString("impactCategoriesView");
+                impactCategoriesForm= properties.getString("impactCategoriesForm");
+                impactCategoriesClick= properties.getString("impactCategoriesClick");
+
+                triggerSpecPointer= properties.getString("triggerSpecPointer");
+                triggerSpecClick= properties.getString("triggerSpecClick");
+                triggerSpecView= properties.getString("triggerSpecView");
+                triggerSpecForm= properties.getString("triggerSpecForm");
+                expressionForm= properties.getString("expressionForm");
+
+                balanceElementPointer= properties.getString("balanceElementPointer");
+                balanceElementView= properties.getString("balanceElementView");
+                balanceElementForm= properties.getString("balanceElementForm");
+                roundingRuleForm= properties.getString("roundingRuleForm");
+                balanceElementClick= properties.getString("balanceElementClick");
+
+                rumConfigPointer= properties.getString("rumConfigPointer");
+                rumConfigView= properties.getString("rumConfigView");
+                rumConfigForm= properties.getString("rumConfigForm");
+                rumConfigClick= properties.getString("rumConfigClick");
+
+                rolloverPointer= properties.getString("rolloverPointer");
+                rolloverView= properties.getString("rolloverView");
+                rolloverForm= properties.getString("rolloverForm");
+                rolloverClick= properties.getString("rolloverClick");
+
+                timeModelsPointer= properties.getString("timeModelsPointer");
+                timeModelsView= properties.getString("timeModelsView");
+                timeModelForm= properties.getString("timeModelForm");
+                timeModelTagForm= properties.getString("timeModelTagForm");
+                timeModelsClick= properties.getString("timeModelsClick");
+
+                bundledPointer= properties.getString("bundledPointer");
+                bundledView= properties.getString("bundledView");
+                bundledForm= properties.getString("bundledForm");
+                bundledItemForm= properties.getString("bundledItemForm");
+                bundledClick= properties.getString("bundledClick");
+
+                packagePointer= properties.getString("packagePointer");
+                packageView= properties.getString("packageView");
+                packageForm= properties.getString("packageForm");
+                packageItemForm= properties.getString("packageItemForm");
+                packageBalanceForm= properties.getString("packageBalanceForm");
+                packageClick= properties.getString("packageClick");
+
+                listView= properties.getString("listView");
+
+                attributeSpecMapPointer= properties.getString("attributeSpecMapPointer");
+                attributeSpecMapView= properties.getString("attributeSpecMapView");
+                attributeSpecMapForm= properties.getString("attributeSpecMapForm");
+                attributeSpecMapItemForm= properties.getString("attributeSpecMapItemForm");
+                attributeSpecMapClick= properties.getString("attributeSpecMapClick");
+
+                chargeOfferingPointer= properties.getString("chargeOfferingPointer");
+                chargeOfferingView= properties.getString("chargeOfferingView");
+                chargeOfferingForm= properties.getString("chargeOfferingForm");
+                chargeOfferingClick= properties.getString("chargeOfferingClick");
+                chargeEventForm= properties.getString("chargeEventForm");
+
+                alterationOfferingPointer= properties.getString("alterationOfferingPointer");
+                alterationOfferingView= properties.getString("alterationOfferingView");
+                alterationOfferingForm= properties.getString("alterationOfferingForm");
+                alterationOfferingClick= properties.getString("alterationOfferingClick");
+
+                holidayPointer= properties.getString("holidayPointer");
+                holidayView= properties.getString("holidayView");
+                holidayForm= properties.getString("holidayForm");
+                holidayClick= properties.getString("holidayClick");
+                holidayItemForm= properties.getString("holidayItemForm");
+
+                eventAttributeSpecPointer= properties.getString("eventAttributeSpecPointer");
+                eventAttributeSpecClick= properties.getString("eventAttributeSpecClick");
+
+                chargeRatePointer= properties.getString("chargeRatePointer");
+                chargeRateView= properties.getString("chargeRateView");
+                chargeRateForm= properties.getString("chargeRateForm");
+                chargeRateClick= properties.getString("chargeRateClick");
+                crpRelDateForm= properties.getString("crpRelDateForm");
+                zoneRateForm= properties.getString("zoneRateForm");
+                crpCompositeView= properties.getString("crpCompositeView");
+                crpCompositeForm= properties.getString("crpCompositeForm");
+                priceTierPeriodForm= properties.getString("priceTierPeriodForm");
+                chargeForm= properties.getString("chargeForm");
+
+                glidClick= properties.getString("glidClick");
+                glidPointer= properties.getString("glidPointer");
+
+                uscMapPointer= properties.getString("uscMapPointer");
+                uscMapPointer2= properties.getString("uscMapPointer2");
+                uscMapView= properties.getString("uscMapView");
+                uscMapForm= properties.getString("uscMapForm");
+                uscMapClick= properties.getString("uscMapClick");
+
+                chargeSelectorSpecPointer= properties.getString("chargeSelectorSpecPointer");
+                chargeSelectorSpecClick= properties.getString("chargeSelectorSpecClick");
+                chargeSelectorSpecView= properties.getString("chargeSelectorSpecView");
+                chargeSelectorSpecForm= properties.getString("chargeSelectorSpecForm");
             } finally {
                 fis.close();
             }
@@ -83,111 +291,5 @@ public class ControlPath {
                 Logger.getLogger(ControlPath.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    public static String zoneModelsPointer = "standardZoneModel";
-    public static String zoneModelsView = "/views/zoneModelView.jsp";
-    public static String zoneModelForm = "/views/zoneModelForm.jsp";
-    public static String zoneItemForm = "/views/zoneItemForm.jsp";
-    public static String zoneModelsClick = "/zoneModels";
-    
-    public static String impactCategoriesPointer = "zoneResultConfiguration";
-    public static String impactCategoriesView = "/views/impactCategoryView.jsp";
-    public static String impactCategoriesForm = "/views/impactCategoryForm.jsp";
-    public static String impactCategoriesClick = "/impactCategories";
-    
-    public static String triggerSpecPointer = "triggerSpec";
-    public static String triggerSpecClick = "/triggerSpec";
-    public static String triggerSpecView = "/views/triggerSpecView.jsp";
-    public static String triggerSpecForm = "/views/triggerSpecForm.jsp";
-    public static String expressionForm = "/views/expressionForm.jsp";
-
-    public static String balanceElementPointer = "balanceElements";
-    public static String balanceElementView = "/views/balanceElementView.jsp";
-    public static String balanceElementForm = "/views/balanceElementForm.jsp";
-    public static String roundingRuleForm = "/views/roundingRuleForm.jsp";
-    public static String balanceElementClick = "/balanceElement";
-    
-    public static String rumConfigPointer = "rumConfigurations";
-    public static String rumConfigView = "/views/rumConfigView.jsp";
-    public static String rumConfigForm = "/views/rumConfigForm.jsp";
-    public static String rumConfigClick = "/rumConfig";
-
-    public static String rolloverPointer = "rolloverRatePlan";
-    public static String rolloverView = "/views/rolloverView.jsp";
-    public static String rolloverForm = "/views/rolloverForm.jsp";
-    public static String rolloverClick = "/rollover";
-
-    public static String timeModelsPointer = "timeModel";
-    public static String timeModelsView = "/views/timeModelView.jsp";
-    public static String timeModelForm = "/views/timeModelForm.jsp";
-    public static String timeModelTagForm = "/views/timeModelTagForm.jsp";
-    public static String timeModelsClick = "/timeModel";
-
-    public static String bundledPointer = "bundledProductOffering";
-    public static String bundledView = "/views/bundledView.jsp";
-    public static String bundledForm = "/views/bundledForm.jsp";
-    public static String bundledItemForm = "/views/bundledItemForm.jsp";
-    public static String bundledClick = "/bundled";
-    
-    public static String packagePointer = "package";
-    public static String packageView = "/views/packageView.jsp";
-    public static String packageForm = "/views/packageForm.jsp";
-    public static String packageItemForm = "/views/packageItemForm.jsp";
-    public static String packageBalanceForm = "/views/packageBalanceForm.jsp";
-    public static String packageClick = "/package";
-
-    public static String listView = "/views/list.jsp";
-
-    public static String attributeSpecMapPointer = "attributeSpecMaps";
-    public static String attributeSpecMapView = "/views/attributeSpecMapView.jsp";
-    public static String attributeSpecMapForm = "/views/attributeSpecMapForm.jsp";
-    public static String attributeSpecMapItemForm = "/views/attributeSpecMapItemForm.jsp";
-    public static String attributeSpecMapClick = "/attributeSpecMap";
-
-    public static String chargeOfferingPointer = "chargeOffering";
-    public static String chargeOfferingView = "/views/chargeOfferingView.jsp";
-    public static String chargeOfferingForm = "/views/chargeOfferingForm.jsp";
-    public static String chargeOfferingClick = "/charge";
-    public static String chargeEventForm = "/views/chargeEventForm.jsp";
-
-    public static String alterationOfferingPointer = "alterationOffering";
-    public static String alterationOfferingView = "/views/alterationOfferingView.jsp";
-    public static String alterationOfferingForm = "/views/alterationOfferingForm.jsp";
-    public static String alterationOfferingClick = "/alterationOffering";
-
-    public static String holidayPointer = "holidayCalendar";
-    public static String holidayView = "/views/holidayView.jsp";
-    public static String holidayForm = "/views/holidayForm.jsp";
-    public static String holidayClick = "/holiday";
-    public static String holidayItemForm = "/views/holidayItemForm.jsp";
-
-    public static String eventAttributeSpecPointer = "eventAttributeSpec";
-    public static String eventAttributeSpecClick = "/event";
-
-    public static String chargeRatePointer = "chargeRatePlan";
-    public static String chargeRateView = "/views/chargeRatePlanView.jsp";
-    public static String chargeRateForm = "/views/chargeRateForm.jsp";
-    public static String chargeRateClick = "/chargeRate";
-    public static String crpRelDateForm = "/views/crpRelDateForm.jsp";
-    public static String zoneRateForm = "/views/zoneRateForm.jsp";
-    public static String crpCompositeView = "/views/crpCompositeView.jsp";
-    public static String crpCompositeForm = "/views/crpCompositeForm.jsp";
-    public static String priceTierPeriodForm = "/views/priceTierPeriodForm.jsp";
-    public static String chargeForm = "/views/chargeForm.jsp";
-
-    public static String glidClick = "/glid";
-    public static String glidPointer = "glid";
-
-    public static String uscMapPointer = "uscSelector";
-    public static String uscMapPointer2 = "validityPeriod";
-    public static String uscMapView = "/views/uscMapView.jsp";
-    public static String uscMapForm = "/views/uscMapForm.jsp";
-    public static String uscMapClick = "/uscMap";
-
-    public static String chargeSelectorSpecPointer = "chargeSelectorSpec";
-    public static String chargeSelectorSpecClick = "/chargeSelectorSpec";
-    public static String chargeSelectorSpecView = "/views/chargeSelectorSpecView.jsp";
-    public static String chargeSelectorSpecForm = "/views/chargeSelectorSpecForm.jsp";
 
 }

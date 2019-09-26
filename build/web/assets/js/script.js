@@ -176,3 +176,13 @@ function composite(path, panel, dir){
         $('#'+panel).html(responseText);
         });
 }
+
+function consulta(select,parameters){
+    $("#"+select).html("");
+    $.get('/consulta',parameters,function(responseText) {
+    var val= $.parseJSON(responseText);
+    for (i in val.elements) {
+        $("#"+select).append("<option value='"+val.elements[i]+"'>"+val.elements[i]+"</option>");
+    }
+    });
+}
