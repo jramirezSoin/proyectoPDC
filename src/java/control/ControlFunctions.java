@@ -40,6 +40,21 @@ public class ControlFunctions {
         return nodosId;
     }
     
+    public static ArrayList<ListaT> getLista(String tipo, String indicador){
+        String[] controls = getPathPointer(tipo);
+        ArrayList<String> nodos = XmlParser.Leer2(new File(controls[0]) , indicador);
+        ArrayList<ListaT> nodosId = ListS2ListT(nodos);
+        return nodosId;
+    }
+    
+    public static ArrayList<ListaT> getLista(String tipo, String indicador, String valor){
+        String[] controls = getPathPointer(tipo);
+        if(indicador.equals("")) indicador= controls[1];
+        ArrayList<String> nodos = XmlParser.Leer2(new File(controls[0]) , indicador, valor);
+        ArrayList<ListaT> nodosId = ListS2ListT(nodos);
+        return nodosId;
+    }
+    
     public static ArrayList<ListaT> getListaBalance(String tipo){
         String[] controls = getPathPointer(ControlPath.balanceElementClick);
         ArrayList<ListaT> nodos = XmlParser.LeerBalance(new File(controls[0]) , controls[1]);
@@ -122,6 +137,10 @@ public class ControlFunctions {
                 controls[0]= ControlPath.uscMapPath;
                 controls[1]= ControlPath.uscMapPointer;            
         }
+        else if(tipo.equals(ControlPath.timeModelsClick)){
+                controls[0]= ControlPath.timeModelsPath;
+                controls[1]= ControlPath.timeModelsPointer;            
+        }
         return controls;
     }
 
@@ -133,10 +152,9 @@ public class ControlFunctions {
     public static String getParseDate(String s) throws ParseException{
         SimpleDateFormat day= new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat day2= new SimpleDateFormat("dd MMM yyyy");
-        if(s.equals("inf")) return "Never ends";
+        if(s.equalsIgnoreCase("inf")) return "Never ends";
         else if(s.equals("0")) return "Now";
         else{
-            System.out.println(s);
             s= s.replace("T000000","");
             return day2.format(day.parse(s));}
     }
@@ -154,4 +172,7 @@ public class ControlFunctions {
         return strNum.matches("-?\\d+(\\.\\d+)?");
     }
     
+    public static ArrayList<ListaT> LeerConstante(String constante){
+        return XmlParser.LeerConstante(constante);
+    }
 }

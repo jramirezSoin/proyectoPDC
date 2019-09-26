@@ -6,6 +6,7 @@
 package xml;
 
 import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
+import control.ControlPath;
 import datos.ListaT;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -55,11 +56,11 @@ public class XmlParser {
                       }}
                   else{
                      Element eElement2 = (Element) nl;
-                     lista.add(eElement2.getNodeName()+": "+eElement2.getTextContent());
+                     lista.add(convSpecialChar(eElement2.getNodeName()+": "+eElement2.getTextContent()));
                   }
                     
                     }else{
-                     lista.add(eElement.getNodeName()+": "+eElement.getTextContent());
+                     lista.add(convSpecialChar(eElement.getNodeName()+": "+eElement.getTextContent()));
                   }
                 }
     }
@@ -105,6 +106,10 @@ public class XmlParser {
     }
     
     public static ArrayList<String> Leer2(File file, String indicador){
+        return Leer2(file,indicador,"name");
+    }
+    
+    public static ArrayList<String> Leer2(File file, String indicador, String valor){
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -114,7 +119,9 @@ public class XmlParser {
             lista.clear();
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
-                lista.add(((Element)node).getElementsByTagName("name").item(0).getTextContent());
+                String k= convSpecialChar(((Element)node).getElementsByTagName(valor).item(0).getTextContent());
+                if(!lista.contains(k))
+                    lista.add(k);
             }
             return (ArrayList<String>)lista.clone();
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
@@ -295,7 +302,7 @@ public class XmlParser {
                     }
                 }
                 if(ap!=buscar.size()) cont++;
-                if(cont==0) lista.add(((Element)node).getElementsByTagName("name").item(0).getTextContent());
+                if(cont==0) lista.add(convSpecialChar(convSpecialChar(((Element)node).getElementsByTagName("name").item(0).getTextContent())));
             }
             return (ArrayList<String>)lista.clone();
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
@@ -336,7 +343,7 @@ public class XmlParser {
                         node= nChilds.item(0);
                     }
                     for(int j=0; j< nChilds.getLength(); j++){
-                        lista.add(((Element)nChilds.item(j)).getElementsByTagName(child.valor).item(0).getTextContent());
+                        lista.add(convSpecialChar(((Element)nChilds.item(j)).getElementsByTagName(child.valor).item(0).getTextContent()));
                     }
                 }
             }
@@ -379,7 +386,7 @@ public class XmlParser {
                 }}else{
                     if(prueba.unit.equals("")) lista.add(((Element)node).getElementsByTagName(child).item(0).getTextContent());
                     else if(((Element)node).getElementsByTagName(prueba.unit).item(0).getTextContent().equals(prueba.valor)){
-                        lista.add(((Element)node).getElementsByTagName(child).item(0).getTextContent());
+                        lista.add(convSpecialChar(((Element)node).getElementsByTagName(child).item(0).getTextContent()));
                     }
                 }
             }
@@ -400,7 +407,7 @@ public class XmlParser {
                 Node node = nList.item(i);
                 if(((Element)node).getElementsByTagName(buscar.unit).item(0).getTextContent().equals(buscar.valor)){
                     if(retorna.equals("id")) return i+"";
-                    return ((Element)node).getElementsByTagName(retorna).item(0).getTextContent();
+                    return convSpecialChar(((Element)node).getElementsByTagName(retorna).item(0).getTextContent());
                 }
             }
             return "null";
@@ -419,11 +426,51 @@ public class XmlParser {
             ArrayList<ListaT> balances= new ArrayList<>();
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
-                balances.add(new ListaT(((Element)node).getElementsByTagName("numericCode").item(0).getTextContent(),((Element)node).getElementsByTagName("name").item(0).getTextContent()));
+                balances.add(new ListaT(convSpecialChar(((Element)node).getElementsByTagName("numericCode").item(0).getTextContent()),convSpecialChar(((Element)node).getElementsByTagName("name").item(0).getTextContent())));
             }
             return balances;
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
             return null;
         }
     }
+    
+    public static String convSpecialChar(String xmlString)
+    {	
+        
+        xmlString=xmlString.replaceAll("&", "&amp;");
+        xmlString=xmlString.replaceAll("\'", "&apo;");
+        xmlString=xmlString.replaceAll("\"", "&quot;");
+        xmlString=xmlString.replaceAll("<", "&lt;");
+        xmlString=xmlString.replaceAll(">", "&gt;");
+        return xmlString;
+    }
+    
+    public static ArrayList<ListaT> LeerConstante(String indicador){
+        File file= new File(ControlPath.constants);
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("constant");
+            ArrayList<ListaT> constants = new ArrayList<>();
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node node = nList.item(i);
+                if(((Element)node).getElementsByTagName("name").item(0).getTextContent().equals(indicador)){
+                    NodeList nList2 = ((Element)node).getElementsByTagName("value");
+                    for (int j = 0; j < nList2.getLength(); j++) {
+                        Node node2 = nList2.item(j);
+                        System.out.println(((Element)node2).getTextContent());
+                        System.out.println(((Element)node2).getAttribute("value"));
+                        constants.add(new ListaT(((Element)node2).getAttribute("value"),((Element)node2).getTextContent()));
+                    }
+                }
+            }
+            return constants;
+        } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
+            System.out.println("Error"+ e.getLocalizedMessage());
+            return null;
+        }
+    }
+    
 }

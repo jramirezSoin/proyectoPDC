@@ -36,9 +36,10 @@
     </div>
     <div class="form-group row">
     <label>Offer Type<select class="custom-select" id="-offerType">
-            <option <%=((chargeOffering.getOfferType().equals("ITEM"))?"selected":"")%> value="ITEM">ITEM</option>
-            <option <%=((chargeOffering.getOfferType().equals("SUBSCRIPTION"))?"selected":"")%> value="SUBSCRIPTION">SUBSCRIPTION</option>
-            <option <%=((chargeOffering.getOfferType().equals("SYSTEM"))?"selected":"")%> value="SYSTEM">SYSTEM</option>
+            <%ArrayList<ListaT> constants = ControlFunctions.LeerConstante("offerType");%>
+            <%for(ListaT constante : constants){%>
+            <option <%=(chargeOffering.getOfferType().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+            <%}%>
     </select></label>
     </div>
 <%}%>    
@@ -62,8 +63,10 @@
 </div>
 <div class="form-group row">
 <label>Tax Supplier<select class="custom-select" id="-taxSupplier">
-        <option <%=(chargeOffering.getTaxSupplier().equals(""))?"Selected":""%> value=""></option>
-        <option <%=(chargeOffering.getTaxSupplier().equals("TS1"))?"Selected":""%> value="TS1">TS1</option>
+        <%ArrayList<ListaT> constants1 = ControlFunctions.LeerConstante("taxSupplier");%>
+            <%for(ListaT constante : constants1){%>
+            <option <%=(chargeOffering.getTaxSupplier().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+        <%}%>
 </select></label>
 </div>
 </form>

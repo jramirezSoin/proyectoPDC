@@ -16,9 +16,11 @@
 <% ChargeT charge = crp.getPriceTierRanges().get(indexs.get(2)).getCharges().get(indexs.get(3));%>
 <form style="margin: 20px;" id="formulaire">
     <div class="form-group row">
+        <%ArrayList<ListaT> constants = ControlFunctions.LeerConstante("priceType");%>
         <label>Price Type<select class="custom-select" id="-priceType" onclick="checkPriceValidity();">
-        <option <%=(charge.getPriceType().equals("CONSUMPTION")?"selected":"")%> value="CONSUMPTION">Consumption</option>
-        <option <%=(charge.getPriceType().equals("GRANT")?"selected":"")%> value="GRANT">Grant</option>
+            <%for(ListaT constante : constants){%>    
+                <option <%=(charge.getPriceType().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+            <%}%>
         </select></label>
     </div>
     <div class="form-group row">
@@ -28,14 +30,10 @@
     <%if(crp.getRumName().equals("DUR")){%>
     <div class="form-group row">
         <label>Price Type<select class="custom-select" id="-unitOfMeasure">
-        <option <%=(charge.getUnitOfMeasure().equals("SECONDS")?"selected":"")%> value="SECONDS">Seconds</option>        
-        <option <%=(charge.getUnitOfMeasure().equals("MINUTES")?"selected":"")%> value="MINUTES">Minutes</option>
-        <option <%=(charge.getUnitOfMeasure().equals("HOUR")?"selected":"")%> value="HOUR">Hour</option>
-        <option <%=(charge.getUnitOfMeasure().equals("DAY")?"selected":"")%> value="DAY">Day</option>
-        <option <%=(charge.getUnitOfMeasure().equals("BYTE")?"selected":"")%> value="BYTE">Byte</option>
-        <option <%=(charge.getUnitOfMeasure().equals("KBYTE")?"selected":"")%> value="KILOBYTE">Kilobyte</option>
-        <option <%=(charge.getUnitOfMeasure().equals("MBYTE")?"selected":"")%> value="MEGABYTE">Megabyte</option>
-        <option <%=(charge.getUnitOfMeasure().equals("GBYTE")?"selected":"")%> value="GIGABYTE">Gigabyte</option>
+        <%constants = ControlFunctions.LeerConstante("unitOfMeasure");%>
+        <%for(ListaT constante : constants){%>
+        <option <%=(charge.getUnitOfMeasure().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+        <%}%>        
         </select></label>
     </div>
     <%}%>    
@@ -70,26 +68,26 @@
     </div>
     <div class="form-group row">
         <label>Rounding<select class="custom-select" id="-incrementRounding">
-        <option <%=(charge.getIncrementRounding().equals("NONE")?"selected":"")%> value="NONE">None</option>
-        <option <%=(charge.getIncrementRounding().equals("UP")?"selected":"")%> value="UP">Up</option>
+            <%constants = ControlFunctions.LeerConstante("incrementRounding");%>
+            <%for(ListaT constante : constants){%>
+            <option <%=(charge.getIncrementRounding().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+            <%}%>
         </select></label>
     </div>
     <div class="form-group row">
     <label>Tax Time<select class="custom-select" onclick="checkTax();" id="-taxTime">
-            <option <%=(charge.getTaxTime().equals("NONE"))?"Selected":""%> value="NONE">NONE</option>
-            <option <%=(charge.getTaxTime().equals("EVENT_TIME"))?"Selected":""%> value="EVENT_TIME">EVENT_TIME</option>
-            <option <%=(charge.getTaxTime().equals("BILLING_TIME"))?"Selected":""%> value="BILLING_TIME">BILLING_TIME</option>
+            <%constants = ControlFunctions.LeerConstante("taxTime");%>
+            <%for(ListaT constante : constants){%>
+            <option <%=(charge.getTaxTime().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+            <%}%>
     </select></label>
     </div>
     <div class="form-group row" id="taxCode">
     <label>Tax Code<select class="custom-select" id="-taxCode">
-            <option <%=(charge.getTaxCode().equals("IV"))?"Selected":""%> value="IV">IV</option>
-            <option <%=(charge.getTaxCode().equals("CR"))?"Selected":""%> value="CR">CR</option>
-            <option <%=(charge.getTaxCode().equals("NU"))?"Selected":""%> value="NU">NU</option>
-            <option <%=(charge.getTaxCode().equals("IV-CR-NU"))?"Selected":""%> value="IV-CR-NU">IV-CR-NU</option>
-            <option <%=(charge.getTaxCode().equals("IV-CR"))?"Selected":""%> value="IV-CR">IV-CR</option>
-            <option <%=(charge.getTaxCode().equals("CR-NU"))?"Selected":""%> value="CR-NU">CR-NU</option>
-            <option <%=(charge.getTaxCode().equals("NORM"))?"Selected":""%> value="NORM">NORM</option>
+            <%constants = ControlFunctions.LeerConstante("taxCode");%>
+            <%for(ListaT constante : constants){%>
+            <option <%=(charge.getTaxCode().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+            <%}%>
     </select></label>
     </div>   
     </div>
@@ -109,14 +107,18 @@
     <div id="-priceValidity">
        <div class="form-group row">
         <label>Start Mode<select class="custom-select" id="-startValidityMode">
-        <option <%=(charge.getIncrementRounding().equals("FOREVER")?"selected":"")%> value="FOREVER">Forever</option>
-        <option <%=(charge.getIncrementRounding().equals("INMEDIATE")?"selected":"")%> value="INMEDIATE">Inmediate</option>
+            <%constants = ControlFunctions.LeerConstante("startValidityMode");%>
+            <%for(ListaT constante : constants){%>
+            <option <%=(charge.getPriceValidity()!=null && charge.getPriceValidity().getStartValidityMode().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+            <%}%>
         </select></label>
        </div>
        <div class="form-group row">
         <label>End Mode<select class="custom-select" id="-endValidityMode">
-            <option <%=(charge.getIncrementRounding().equals("NEVER")?"selected":"")%> value="NEVER">Never</option>
-            <option <%=(charge.getIncrementRounding().equals("RELATIVE_TO_START")?"selected":"")%> value="RELATIVE_TO_START">Relative to start</option>
+            <%constants = ControlFunctions.LeerConstante("endValidityMode");%>
+            <%for(ListaT constante : constants){%>
+            <option <%=(charge.getPriceValidity()!=null && charge.getPriceValidity().getEndValidityMode().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+            <%}%>
         </select></label>
        </div> 
     </div>

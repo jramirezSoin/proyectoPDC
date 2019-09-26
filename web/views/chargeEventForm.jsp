@@ -20,14 +20,12 @@
     else filtro.add(new ListaT("customerSpecName","Account"));%>
     <% ArrayList<ListaT> events = ControlFunctions.getListaFiltro((String)ControlPath.attributeSpecMapClick, filtro,new ListaT("eventRUMSpec","name"));%>
 <div class="form-group row">
+    <%ArrayList<ListaT> constants = ControlFunctions.LeerConstante("eventType");%>
     <label>Type<select class="custom-select" onclick="getTypeOptions();" id="Type">
-    <option value="ONE_TIME">ONE TIME</option>
-    <%if(!charge.getOfferType().equals("ITEM")){%>
-    <option value="FOLD">FOLD</option>
-    <option value="ROLLOVER">ROLLOVER</option>
-    <option value="RECURRING">RECURRING</option>
-    <option value="REMITTANCE">REMITTANCE</option>
-    <option value="BILL_TIME_DISCOUNT">BILL TIME DISCOUNT</option>
+    <%for(ListaT constante : constants){%>
+        <%if(!charge.getOfferType().equals("ITEM") || (charge.getOfferType().equals("ITEM") && constante.unit.equals("ITEM"))){%>
+            <option value="<%=constante.valor%>"><%=constante.valor%></option>
+        <%}%>
     <%}%>
     </select></label>
 </div>

@@ -56,6 +56,7 @@
                                     <li><a href="#" onclick="hacerlist('/package', 'Package')">Package</a></li>
                                     <li><a href="#" onclick="hacerlist('/charge', 'Charge Offering')">Charge Offering</a></li>
                                     <li><a href="#" onclick="hacerlist('/chargeRate', 'Charge Rate Plan')">Charge Rate Plan</a></li>
+                                    <li><a href="#" onclick="hacerlist('/chargeSelectorSpec', 'Charge Selector Spec')">Charge Selector Spec</a></li>
                                 </ul>
                             </li>
                             <li>

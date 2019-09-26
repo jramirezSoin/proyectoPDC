@@ -13,25 +13,30 @@ import java.util.ArrayList;
  *
  * @author Joseph Ramírez
  */
-public class ChargeSelectorSpecT extends Nodo{
-    private String name="";
-    private String internalId="";
-    private String pricingProfileName="";
-    private String priceListName="Default";
-    private String glid="";
-    private String glidName="";
-    private String validFrom="";
-    private String validTo="";
-    private String balanceElementNumCode="";
-    private String balanceElementName="";
-    private String pricingName="";
-    private String zoneResult="";
-    private String timeModelTagName="";
-    private ListaT eventConditions= new ListaT();
-    private String description="";
-    
-    public ChargeSelectorSpecT(){}
-    public ChargeSelectorSpecT(int id){this.id=id;}
+public class ChargeSelectorSpecT extends Nodo {
+
+    private String name = "";
+    private String internalId = "";
+    private String pricingProfileName = "";
+    private String priceListName = "Default";
+    private String glid = "";
+    private String glidName = "";
+    private String validFrom = "";
+    private String validTo = "";
+    private String balanceElementNumCode = "";
+    private String balanceElementName = "";
+    private String pricingName = "";
+    private String zoneResult = "";
+    private String timeModelTagName = "";
+    private ListaT eventConditions = new ListaT();
+    private String description = "";
+
+    public ChargeSelectorSpecT() {
+    }
+
+    public ChargeSelectorSpecT(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -155,72 +160,139 @@ public class ChargeSelectorSpecT extends Nodo{
 
     @Override
     public String toString() {
-        return "<chargeSelectorSpec xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" +
-                "    <name>"+name+"</name>\n" +
-                "    <internalId>"+internalId+"</internalId>\n" +
-                "    <pricingProfileName>"+pricingProfileName+"</pricingProfileName>\n" +
-                "    <priceListName>"+priceListName+"</priceListName>\n" +
-                "    <validFrom>"+validFrom+"</validFrom>\n" +
-                "    <validTo>"+validTo+"</validTo>\n" +
-                "    <timeModelTagName>"+timeModelTagName+"</timeModelTagName>"+
-                "    <zoneResult>"+zoneResult+"</zoneResult>"+
-                "    <balanceElementNumCode>"+balanceElementNumCode+"</balanceElementNumCode>\n" +
-                "    <pricingName>"+pricingName+"</pricingName>"+
-                "    <glid>"+glid+"</glid>"+
-                "    <eventConditions>\n" +
-                "        <eventField>"+eventConditions.unit+"</eventField>\n" +
-                "        <eventValue>"+eventConditions.valor+"</eventValue>\n" +
-                "    </eventConditions>\n" +
-                "</chargeSelectorSpec>";
+        return "<chargeSelectorSpec xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"
+                + "    <name>" + name + "</name>\n"
+                + "    <internalId>" + internalId + "</internalId>\n"
+                + "    <pricingProfileName>" + pricingProfileName + "</pricingProfileName>\n"
+                + "    <priceListName>" + priceListName + "</priceListName>\n"
+                + "    <validFrom>" + validFrom + "</validFrom>\n"
+                + "    <validTo>" + validTo + "</validTo>\n"
+                + "    <timeModelTagName>" + timeModelTagName + "</timeModelTagName>\n"
+                + "    <zoneResult>" + zoneResult + "</zoneResult>\n"
+                + "    <balanceElementNumCode>" + balanceElementNumCode + "</balanceElementNumCode>\n"
+                + "    <pricingName>" + pricingName + "</pricingName>\n"
+                + "    <glid>" + glid + "</glid>\n"
+                + "    <eventConditions>\n"
+                + "        <eventField>" + eventConditions.unit + "</eventField>\n"
+                + "        <eventValue>" + eventConditions.valor + "</eventValue>\n"
+                + "    </eventConditions>\n"
+                + "</chargeSelectorSpec>";
     }
-    
-    
-    
+
     @Override
-    public int procesar(ArrayList<String> rollovers, int index) {
-        ArrayList<String> rollovers2= (ArrayList<String>)rollovers.clone();
-        for(int i=index; i<rollovers2.size();i++) { 
-           if(rollovers2.get(i).matches("(?s)name: (.*)")) this.name= rollovers2.get(i).substring(6);
-           else if(rollovers2.get(i).matches("(?s)internalId: (.*)")) this.internalId= rollovers2.get(i).substring(12);
-           else if(rollovers2.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= rollovers2.get(i).substring(15);
-           else if(rollovers2.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= rollovers2.get(i).substring(20);
-           else if(rollovers2.get(i).matches("(?s)validFrom: (.*)")) this.validFrom= rollovers2.get(i).substring(12);
-           else if(rollovers2.get(i).matches("(?s)validTo: (.*)")) this.validTo= rollovers2.get(i).substring(9);
-           else if(rollovers2.get(i).matches("(?s)glid: (.*)")){ this.glid= rollovers2.get(i).substring(6); this.glidName=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("code",rollovers2.get(i).substring(6)),"name");}
-           else if(rollovers2.get(i).matches("(?s)glidName: (.*)")){ this.glidName= rollovers2.get(i).substring(10); this.glid=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("name",rollovers2.get(i).substring(10)),"code");}
-           else if(rollovers2.get(i).matches("(?s)pricingName: (.*)")) this.pricingName= rollovers2.get(i).substring(13);
-           else if(rollovers2.get(i).matches("(?s)description: (.*)")) this.description= rollovers2.get(i).substring(13);
-           else if(rollovers2.get(i).matches("(?s)eventField: (.*)")) this.eventConditions.unit= rollovers2.get(i).substring(12);
-           else if(rollovers2.get(i).matches("(?s)eventValue: (.*)")) this.eventConditions.valor= rollovers2.get(i).substring(12);
-           else if(rollovers2.get(i).matches("(?s)timeModelTagName: (.*)")) this.timeModelTagName= rollovers2.get(i).substring(18);
-           else if(rollovers2.get(i).matches("(?s)zoneResult: (.*)")) this.zoneResult= rollovers2.get(i).substring(12);
-           else if(rollovers2.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= rollovers2.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode",rollovers2.get(i).substring(23)),"name");}
-           else if(rollovers2.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= rollovers2.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",rollovers2.get(i).substring(20)),"numericCode");}
-           else if(("eventConditions").contains(rollovers2.get(i))){
-               eventConditions=new ListaT();
-           }
-           else return i;
+    public int procesar(ArrayList<String> chargeSelectors2, int index) {
+        ArrayList<String> chargeSelectors = (ArrayList<String>) chargeSelectors2.clone();
+        for (int i = index; i < chargeSelectors.size(); i++) {
+            if (chargeSelectors.get(i).matches("(?s)name: (.*)")) {
+                this.name = chargeSelectors.get(i).substring(6);
+            } else if (chargeSelectors.get(i).matches("(?s)internalId: (.*)")) {
+                this.internalId = chargeSelectors.get(i).substring(12);
+            } else if (chargeSelectors.get(i).matches("(?s)priceListName: (.*)")) {
+                this.priceListName = chargeSelectors.get(i).substring(15);
+            } else if (chargeSelectors.get(i).matches("(?s)pricingProfileName: (.*)")) {
+                this.pricingProfileName = chargeSelectors.get(i).substring(20);
+            } else if (chargeSelectors.get(i).matches("(?s)validFrom: (.*)")) {
+                this.validFrom = chargeSelectors.get(i).substring(11);
+            } else if (chargeSelectors.get(i).matches("(?s)validTo: (.*)")) {
+                this.validTo = chargeSelectors.get(i).substring(9);
+            }  else if (chargeSelectors.get(i).matches("(?s)glid: (.*)")) {
+                this.glid = chargeSelectors.get(i).substring(6);
+                String[] balances= glid.split("\\|");
+                if(balances.length==1 || !glid.contains("|"))
+                    this.glidName = ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("code", chargeSelectors.get(i).substring(6)), "name");
+                else{
+                    this.glidName="";
+                    for(String balance: balances){ this.glidName+="|"+ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("code", balance), "name");}
+                    glidName = this.glidName.substring(1);
+                    }
+            } else if (chargeSelectors.get(i).matches("(?s)glidName: (.*)")) {
+                this.glidName = chargeSelectors.get(i).substring(10);
+                String[] balances= glidName.split("\\|");
+                if(balances.length==1 || !glidName.contains("|"))
+                    this.glid = ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("name", chargeSelectors.get(i).substring(10)), "code");
+                else{
+                    this.glid="";
+                    for(String balance: balances){ this.glid+="|"+ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("name", balance), "code");}
+                    glid = this.glid.substring(1);
+                    }
+            } else if (chargeSelectors.get(i).matches("(?s)pricingName: (.*)")) {
+                this.pricingName = chargeSelectors.get(i).substring(13);
+            } else if (chargeSelectors.get(i).matches("(?s)description: (.*)")) {
+                this.description = chargeSelectors.get(i).substring(13);
+            } else if (chargeSelectors.get(i).matches("(?s)eventField: (.*)")) {
+                this.eventConditions.unit = chargeSelectors.get(i).substring(12);
+            } else if (chargeSelectors.get(i).matches("(?s)eventValue: (.*)")) {
+                this.eventConditions.valor = chargeSelectors.get(i).substring(12);
+            } else if (chargeSelectors.get(i).matches("(?s)timeModelTagName: (.*)")) {
+                this.timeModelTagName = chargeSelectors.get(i).substring(18);
+            } else if (chargeSelectors.get(i).matches("(?s)zoneResult: (.*)")) {
+                this.zoneResult = chargeSelectors.get(i).substring(12);
+            } else if (chargeSelectors.get(i).matches("(?s)balanceElementNumCode: (.*)")) {
+                this.balanceElementNumCode = chargeSelectors.get(i).substring(23);
+                String[] balances= balanceElementNumCode.split("\\|");
+                if(balances.length==1 || !balanceElementNumCode.contains("|"))
+                    this.balanceElementName = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode", chargeSelectors.get(i).substring(23)), "name");
+                else{
+                    this.balanceElementName="";
+                    for(String balance: balances){System.out.println("BALANCE "+balance); this.balanceElementName+="|"+ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode", balance), "name");}
+                    balanceElementName = this.balanceElementName.substring(1);
+                    }
+            } else if (chargeSelectors.get(i).matches("(?s)balanceElementName: (.*)")) {
+                this.balanceElementName = chargeSelectors.get(i).substring(20);
+                String[] balances= balanceElementName.split("\\|");
+                if(balances.length==1 || !balanceElementName.contains("|"))
+                    this.balanceElementNumCode = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name", chargeSelectors.get(i).substring(20)), "numericCode");
+                else{
+                    this.balanceElementNumCode="";
+                    for(String balance: balances){System.out.println("BALANCE "+balance); this.balanceElementNumCode+="|"+ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name", balance), "numericCode");}
+                    balanceElementNumCode = this.balanceElementNumCode.substring(1);
+                    }
+            } else if (("eventConditions").contains(chargeSelectors.get(i))) {
+                eventConditions = new ListaT();
+            } else if (("Nglids Nbalances Ntimes").contains(chargeSelectors.get(i))) {
+                String s="";
+                int aux=i;
+                i++;
+                for(int j=i;i < chargeSelectors.size(); i++){
+                    if (chargeSelectors.get(i).matches("nt: (.*)")){ s+="|"+chargeSelectors.get(i).substring(4);}
+                    else{ break;}
+                }
+                System.out.println(s);
+                i--;
+                if(!s.equals("")){
+                    s=s.substring(1);
+                switch(chargeSelectors.get(aux)){
+                    case "Nglids": chargeSelectors.set(i,"glidName: "+s); break;
+                    case "Nbalances": chargeSelectors.set(i,"balanceElementName: "+s); break;
+                    case "Ntimes": chargeSelectors.set(i,"timeModelTagName: "+s); break;
+                }
+                i--;
+                }
+
+            }else {
+                return i;
+            }
         }
-        return rollovers2.size();
+        return chargeSelectors.size();
     }
-    
-    
+
     @Override
     public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
-        if(indexs.size()==0)
-            index= this.procesar(lista, index);
+        if (indexs.size() == 0) {
+            index = this.procesar(lista, index);
+        }
         return index;
     }
-    
+
     @Override
     public boolean buscar(String buscar) {
-        if((name+"/"+validFrom+"/"+internalId+"/"+priceListName+"/"+pricingProfileName+"/"+validTo+"/"+glidName+"/"+timeModelTagName+"/"+balanceElementName+"/"+zoneResult+"/"+description+"/"+pricingName+"/"+eventConditions.valor+"/"+eventConditions.unit).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
-            this.visibilidad=true;
+        if ((name + "/" + validFrom + "/" + internalId + "/" + priceListName + "/" + pricingProfileName + "/" + validTo + "/" + glidName + "/" + timeModelTagName + "/" + balanceElementName + "/" + zoneResult + "/" + description + "/" + pricingName + "/" + eventConditions.valor + "/" + eventConditions.unit).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())) {
+            this.visibilidad = true;
             return true;
-        }else{
-            this.visibilidad=false;
+        } else {
+            this.visibilidad = false;
             return false;
         }
     }
-    
+
 }

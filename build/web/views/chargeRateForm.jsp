@@ -22,9 +22,10 @@
 </div>
 <div class="form-group row">
 <label>Tax Time<select class="custom-select" id="-taxTime">
-        <option <%=(chargeRate.getTaxTime().equals("EVENT_TIME"))?"Selected":""%> value="EVENT_TIME">EVENT_TIME</option>
-        <option <%=(chargeRate.getTaxTime().equals("BILLING_TIME"))?"Selected":""%> value="BILLING_TIME">BILLING_TIME</option>
-        <option <%=(chargeRate.getTaxTime().equals("NONE"))?"Selected":""%> value="NONE">NONE</option>
+        <%ArrayList<ListaT> constants = ControlFunctions.LeerConstante("taxTime");%>
+        <%for(ListaT constante : constants){%>
+        <option <%=(chargeRate.getTaxTime().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+        <%}%>
 </select></label>
 </div>
 <script>
@@ -39,13 +40,10 @@
 </script>
 <div class="form-group row" id="taxCode">
 <label>Tax Code<select class="custom-select" id="-taxCode">
-        <option <%=(chargeRate.getTaxCode().equals("IV"))?"Selected":""%> value="IV">IV</option>
-        <option <%=(chargeRate.getTaxCode().equals("CR"))?"Selected":""%> value="CR">CR</option>
-        <option <%=(chargeRate.getTaxCode().equals("NU"))?"Selected":""%> value="NU">NU</option>
-        <option <%=(chargeRate.getTaxCode().equals("IV-CR-NU"))?"Selected":""%> value="IV-CR-NU">IV-CR-NU</option>
-        <option <%=(chargeRate.getTaxCode().equals("IV-CR"))?"Selected":""%> value="IV-CR">IV-CR</option>
-        <option <%=(chargeRate.getTaxCode().equals("CR-NU"))?"Selected":""%> value="CR-NU">CR-NU</option>
-        <option <%=(chargeRate.getTaxCode().equals("NORM"))?"Selected":""%> value="NORM">NORM</option>
+        <%constants = ControlFunctions.LeerConstante("taxCode");%>
+        <%for(ListaT constante : constants){%>
+        <option <%=(chargeRate.getTaxCode().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+        <%}%>
 </select></label>
 </div>
 <%ArrayList<ListaT> filtro= new ArrayList<>();

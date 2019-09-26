@@ -56,7 +56,7 @@ public class Guardar extends HttpServlet {
         ArrayList<String> lista = new ArrayList<>();
         String[] arrOfStr = ((String)request.getParameter("Documento")).split("\n"); 
         for (String a : arrOfStr) 
-            lista.add(a);
+            lista.add(XmlParser.convSpecialChar(a));
         Nodo nodo = (Nodo) request.getSession().getAttribute("add");
         nodo.procesar(lista, 0);
         String view= (String) request.getSession().getAttribute("addView");

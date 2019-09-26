@@ -52,7 +52,7 @@ public class Buscador extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         String buscar= request.getParameter("buscar");
-        buscar= buscar.replaceAll(" ", "_");
+        buscar= XmlParser.convSpecialChar(buscar.replaceAll(" ", "_"));
         if(((String)request.getParameter("tipo")).equals("Lista")){
             ArrayList<Nodo> lista= buscarLista(buscar,(ArrayList<Nodo>) request.getSession().getAttribute("lista")); 
             request.getSession().setAttribute("lista", lista);

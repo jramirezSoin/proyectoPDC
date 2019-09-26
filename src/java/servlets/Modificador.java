@@ -51,7 +51,7 @@ public class Modificador extends HttpServlet {
         ArrayList<String> lista = new ArrayList<>();
         String[] arrOfStr = ((String)request.getParameter("Documento")).split("\n"); 
         for (String a : arrOfStr) 
-            lista.add(a);
+            lista.add(XmlParser.convSpecialChar(a));
         ArrayList<Integer> indexs= (ArrayList<Integer>) request.getSession().getAttribute("index");
         Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
         if(indexs==null || indexs.size()==0)
