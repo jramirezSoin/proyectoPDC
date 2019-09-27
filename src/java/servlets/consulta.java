@@ -87,7 +87,9 @@ public class consulta extends HttpServlet {
             case "getListaFiltroDeep":
                 ArrayList<ListaT> filtro= getFiltro(request.getParameter("filtro"));
                 String buscar= request.getParameter("buscar");
-                response= ControlFunctions.getListaFiltroDeep(tipo, filtro, buscar);
+                String conjunto=request.getParameter("conjunto");
+                if(conjunto==null || conjunto.equals("")) conjunto="false";
+                response= ControlFunctions.getListaFiltroDeep(tipo, filtro, buscar,Boolean.valueOf(conjunto));
                 break;
         }
         String compara=request.getParameter("compara");

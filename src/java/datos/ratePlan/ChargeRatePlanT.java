@@ -24,7 +24,7 @@ public class ChargeRatePlanT extends Nodo{
     private String priceListName="Default";
     private String taxCode="";
     private String applicableRums="";
-    private String applicableQuantity="";
+    private String applicableQuantity="ORIGINAL";
     private String taxTime="";
     private String todMode="";
     private String applicableQtyTreatment="CONTINOUS";
@@ -178,6 +178,7 @@ public class ChargeRatePlanT extends Nodo{
     
     @Override
     public String toString() {
+        this.revisar();
         if(todMode.equals("TIMED")){
             this.subscriberCurrency.getApplicableRum().setIncrementQuantity("0.0");
             this.subscriberCurrency.getApplicableRum().setMinQuantity("0.0");}
@@ -247,11 +248,15 @@ public class ChargeRatePlanT extends Nodo{
                             i++;
                             valor = chargeRates.get(i).split(":")[1];
                             crp.setEndDate(ControlFunctions.getParseString(valor.substring(1)));
+                            if(this.subscriberCurrency.getCrpRelDateRanges().size()>0){
                             CrpRelDateRangeT last = this.subscriberCurrency.getCrpRelDateRanges().get(this.subscriberCurrency.getCrpRelDateRanges().size()-1);
                             if(last.getZoneModel()==null)
                                 crp.setCrpCompositePopModel(last.getCrpCompositePopModel());
                             else
-                                crp.setZoneModel(last.getZoneModel());
+                                crp.setZoneModel(last.getZoneModel());}
+                            else{
+                                crp.getDefaultComposite(this.getApplicableRums(),this.subscriberCurrency.getCurrencyName());
+                            }
                             this.subscriberCurrency.getCrpRelDateRanges().add(crp);
                         }
                     } catch (ParseException ex) {
@@ -275,8 +280,15 @@ public class ChargeRatePlanT extends Nodo{
             if(indexs.get(0)==0 && indexs.get(1)<0){
                 if(indexs.get(1)==-1)
                     index= this.procesar(lista, index);
-                else if(indexs.get(1)==-2)
-                    index= this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).getZoneModel().procesar(lista, index);
+                else if(indexs.get(1)==-2){
+                    try{
+                    index= this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).getZoneModel().procesar(lista, index);}
+                    catch(NullPointerException e){
+                        this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).setZoneModel(new ZoneModelT(0));
+                        this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).setCrpCompositePopModel(null);
+                        index= this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).getZoneModel().procesar(lista, index);
+                    }
+                }
                 else if(indexs.get(1)==-3)
                     index= (this.buscaPop(dir)).procesar(lista, index);
                 else if(indexs.get(1)==-4)
@@ -314,15 +326,20 @@ public class ChargeRatePlanT extends Nodo{
     }
     
     public void revisar(){
-        if(this.applicableRums.equals("Occurrence")) this.subscriberCurrency.setApplicableRum(null);
-        else if(this.subscriberCurrency.getApplicableRum()!=null)this.subscriberCurrency.getApplicableRum().setApplicableRumName(this.getApplicableRums());
+        this.permittedType= ((this.permittedName.equals("Account"))?"CUSTOMER":"PRODUCT");
+        if(this.applicableRums.equals("Occurrence")){ this.subscriberCurrency.setApplicableRum(null);
+                this.pricingProfileName="Subscription";
+                }
         else{
-            this.subscriberCurrency.setApplicableRum(new ApplicableRumT(this.applicableRums,((todMode.equals("Timed"))?"0.0":"1.0")));
+            this.pricingProfileName="Convergent Usage";
+            if(this.subscriberCurrency.getApplicableRum()!=null)this.subscriberCurrency.getApplicableRum().setApplicableRumName(this.getApplicableRums());
+            else{
+                this.subscriberCurrency.setApplicableRum(new ApplicableRumT(this.applicableRums,((todMode.equals("Timed"))?"0.0":"1.0")));
+            }
         }
         for(CrpRelDateRangeT rel: this.getSubscriberCurrency().getCrpRelDateRanges()){
             if(rel.getCrpCompositePopModel()!=null){ 
-                rel.getCrpCompositePopModel().setRumName(this.getApplicableRums());
-                rel.getCrpCompositePopModel().setCurrencyCode(this.getSubscriberCurrency().getCurrencyCode());
+                rel.getCrpCompositePopModel().getRumCurrency(this.getApplicableRums(), this.getSubscriberCurrency().getCurrencyCode());
             }else{
                 for(ResultsT res: rel.getZoneModel().getResults()){
                     res.getResult().getRumCurrency(this.getApplicableRums(), this.getSubscriberCurrency().getCurrencyCode());

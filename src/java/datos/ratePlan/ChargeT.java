@@ -15,15 +15,15 @@ import java.util.ArrayList;
  * @author Joseph Ramírez
  */
 public class ChargeT extends Nodo{
-    private String tipo="";
-    private String price="";
+    private String tipo="recurringCharge";
+    private String price="0.0";
     private String unitOfMeasure="";
     private String balanceElementNumCode="";
     private String balanceElementName="";
     private boolean discountable=false;
     private boolean proratable=false;
-    private String priceType="";
-    private String glid="";
+    private String priceType="CONSUMPTION";
+    private String glid="0";
     private String glidName="";
     private PriceValidityT priceValidity;
     private String incrementStep="";
@@ -233,6 +233,14 @@ public class ChargeT extends Nodo{
     private void validar(){
         if(!this.tipo.equals("scaledCharge")){this.incrementRounding=this.incrementStep=this.taxCode=this.taxTime="";}
         if(this.priceType.equals("CONSUMPTION")){this.priceValidity=null;}
+    }
+
+    void getRumCurrency(String rum, String currency) {
+        System.out.println("LLEGA "+currency+" "+this.balanceElementNumCode);
+        if(this.balanceElementNumCode.equals("") || this.balanceElementNumCode.equals("null") || Integer.parseInt(this.balanceElementNumCode)<1000){
+            this.balanceElementNumCode = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("code", currency), "numericCode");
+            this.balanceElementName = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("code", currency), "name");
+        }
     }
     
 }

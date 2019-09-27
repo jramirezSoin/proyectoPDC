@@ -21,7 +21,7 @@
 <input class="form-control" type="text" id="-description" placeholder="Description" value="<%=chargeRate.getDescription()%>"/>
 </div>
 <div class="form-group row">
-<label>Permitted Name<select class="custom-select" id="-permittedName">
+    <label>Permitted Name<select <%=((!chargeRate.getPermittedName().equals(""))?"disabled":"")%> class="custom-select" onchange="getEvent(); getRum();" id="-permittedName">
         <%ArrayList<ListaT> attributes = ControlFunctions.getLista(ControlPath.attributeSpecMapClick);%>
         <%for(ListaT constante : attributes){
             constante.valor= constante.valor.replaceAll("_ASM","");
@@ -31,7 +31,7 @@
 </select></label>
 </div>
 <div class="form-group row">
-<label>Permitted Name<select class="custom-select" id="-eventName">
+<label>Event Name<select <%=((!chargeRate.getEventName().equals(""))?"disabled":"")%> class="custom-select" onchange="getRum();" id="-eventName">
 </select></label>
 </div>
 <div class="form-group row">
@@ -77,21 +77,21 @@
 </form>
     <script>
         function getRum(){
-            var parameters= { 'filtro' : 'name;<%=chargeRate.getPermittedName()%>_ASM,eventRUMSpec;,name;<%=chargeRate.getEventName()%>_ERS,rumSpec;',
+            var parameters= { 'filtro' : 'name;'+$("#-permittedName").val()+'_ASM,eventRUMSpec;,name;'+$("#-eventName").val()+'_ERS,rumSpec;',
             'funcion' : 'getListaFiltroDeep',
             'tipo' : '<%=ControlPath.attributeSpecMapClick%>',
             'buscar' : 'rumName',
             'compara' : '<%=chargeRate.getApplicableRums()%>'}
-            consulta("-applicableRums",parameters);
+            consulta("-applicableRums",parameters,true);
         }
         function getEvent(){
-            var parameters= { 'filtro' : 'name;<%=chargeRate.getPermittedName()%>_ASM,eventRUMSpec;',
+            var parameters= { 'filtro' : 'name;'+$("#-permittedName").val()+'_ASM,eventRUMSpec;',
             'funcion' : 'getListaFiltroDeep',
             'tipo' : '<%=ControlPath.attributeSpecMapClick%>',
             'buscar' : 'name',
             'compara' : '<%=chargeRate.getEventName()%>_ERS',
             'replace' : '_ERS;'}
-            consulta("-eventName",parameters);
+            consulta("-eventName",parameters,false);
         }
         getEvent();
         getRum();

@@ -13,8 +13,8 @@ import java.util.ArrayList;
  * @author Joseph Ramírez
  */
 public class PriceTierRangeT extends Nodo{
-    private String tipo="";
-    private String upperBound="";
+    private String tipo="tierRange";
+    private String upperBound="NO_MAX";
     private ArrayList<ChargeT> charges= new ArrayList<>();
     private int priceTierValidityPeriod = -1;
     

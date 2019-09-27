@@ -67,7 +67,7 @@ public class ZoneModelT extends Nodo{
         }
         return s+"<"+((enhanced)?"enhancedZ":"z")+"oneModel>\n" +
             s+"\t<zoneModelName>"+zoneModelName+"</zoneModelName>\n" +
-            ((enhanced)?"":s+"\t<uscModelName>"+uscModelName+"</uscModelName>\n") +zoneItems+
+            ((!enhanced)?"":s+"\t<uscModelName>"+uscModelName+"</uscModelName>\n") +zoneItems+
             s+"</"+((enhanced)?"enhancedZ":"z")+"oneModel>";
     }
     

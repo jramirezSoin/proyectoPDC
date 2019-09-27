@@ -93,8 +93,12 @@ public class ControlFunctions {
     }
     
     public static ArrayList<ListaT> getListaFiltroDeep(String tipo, ArrayList<ListaT> buscar, String s){
+        return getListaFiltroDeep(tipo,buscar,s,false);
+    }
+    
+    public static ArrayList<ListaT> getListaFiltroDeep(String tipo, ArrayList<ListaT> buscar, String s,Boolean conjunto){
         String[] controls = getPathPointer(tipo);
-        ArrayList<String> nodos = XmlParser.BuscarDeep(new File(controls[0]) , controls[1],buscar, s);
+        ArrayList<String> nodos = XmlParser.BuscarDeep(new File(controls[0]) , controls[1],buscar, s,conjunto);
         ArrayList<ListaT> nodosId = ListS2ListT(nodos);
         return nodosId;
     }

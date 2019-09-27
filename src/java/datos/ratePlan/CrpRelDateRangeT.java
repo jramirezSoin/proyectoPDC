@@ -109,6 +109,16 @@ public class CrpRelDateRangeT extends Nodo{
             return false;
         }
     }
+
+    public void getDefaultComposite(String rum, String currencyCode) {
+        ChargeT charge= new ChargeT(0);
+        PriceTierRangeT tierRange = new PriceTierRangeT(0);
+        CrpCompositePopModelT popModel = new CrpCompositePopModelT(0);
+        tierRange.getCharges().add(charge);
+        popModel.getPriceTierRanges().add(tierRange);
+        popModel.getRumCurrency(rum, currencyCode);
+        this.crpCompositePopModel=popModel;
+    }
     
     
     

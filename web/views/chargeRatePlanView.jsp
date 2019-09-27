@@ -187,6 +187,18 @@
                 <%}else{%>
                 <div class="card mt-5">
                     <div class="card-body">
+                        <div class="d-flex justify-content-between mb-5">
+                            <h4 class="header-title mb-0">Add Zone Model</h4>
+                            <div class="btn-group mb-xl-3" role="group" aria-label="Basic example"> 
+                                <i class="ti-plus" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/chargeRate','Zone Model','0,-2,<%=rel.getId()%>');"></i>
+                            </div>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-5">
+                    <div class="card-body">
                         <div>
                             <div id="accordion1" class="according">
                                 <div class="card">

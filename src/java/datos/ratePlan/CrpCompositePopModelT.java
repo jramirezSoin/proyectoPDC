@@ -20,14 +20,14 @@ import java.util.logging.Logger;
  */
 public class CrpCompositePopModelT extends Nodo implements ResultI {
 
-    private String name = "";
-    private String popModelType = "";
-    private String lowerBound = "";
+    private String name = "pricing";
+    private String popModelType = "recurringPopModel";
+    private String lowerBound = "NO_MIN";
     private String rumTierExpression = "";
     private String balanceElementNumCode = "";
     private String balanceElementName = "";
     private String rumName = "";
-    private String enforceCreditLimit = "";
+    private String enforceCreditLimit = "false";
     private String distributionMethod = "FROM_BAL_IMPACT";
     private String currencyCode = "";
     private String applicableQuantity = "";
@@ -319,6 +319,11 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
     public void getRumCurrency(String rum, String currency) {
         this.rumName = rum;
         this.currencyCode = currency;
+        for(PriceTierRangeT tier: this.priceTierRanges){
+            for(ChargeT charge: tier.getCharges()){
+                charge.getRumCurrency(rum,currency);
+            }
+        }
     }
 
 }

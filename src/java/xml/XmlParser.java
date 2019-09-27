@@ -357,7 +357,7 @@ public class XmlParser {
         }
     }
     
-    public static ArrayList<String> BuscarDeep(File file, String indicador, ArrayList<ListaT> buscar, String child){
+    public static ArrayList<String> BuscarDeep(File file, String indicador, ArrayList<ListaT> buscar, String child, Boolean conjunto){
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -388,9 +388,10 @@ public class XmlParser {
                     break;
                  }
                 }}else{
-                    if(prueba.unit.equals("")) lista.add(((Element)node).getElementsByTagName(child).item(0).getTextContent());
-                    else if(((Element)node).getElementsByTagName(prueba.unit).item(0).getTextContent().equals(prueba.valor)){
-                        lista.add(convSpecialChar(((Element)node).getElementsByTagName(child).item(0).getTextContent()));
+                    if(prueba.unit.equals("") || ((Element)node).getElementsByTagName(prueba.unit).item(0).getTextContent().equals(prueba.valor)){
+                        String t = convSpecialChar(((Element)node).getElementsByTagName(child).item(0).getTextContent());
+                        if((!conjunto) || (conjunto && !lista.contains(t)))
+                            lista.add(t);
                     }
                 }
             }

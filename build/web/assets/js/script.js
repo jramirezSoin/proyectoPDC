@@ -177,12 +177,24 @@ function composite(path, panel, dir){
         });
 }
 
-function consulta(select,parameters){
+function consulta(select,parameters,async){
     $("#"+select).html("");
+    $.ajaxSetup({async:async});
     $.get('/consulta',parameters,function(responseText) {
     var val= $.parseJSON(responseText);
     for (i in val.elements) {
         $("#"+select).append("<option value='"+val.elements[i]+"'>"+val.elements[i]+"</option>");
     }
-    });
+    }).done(function(){$.ajaxSetup({async:false});});
+}
+
+function consultaByElement(select,parameters,async){
+    $(select).html("");
+    $.ajaxSetup({async:async});
+    $.get('/consulta',parameters,function(responseText) {
+    var val= $.parseJSON(responseText);
+    for (i in val.elements) {
+        $(select).append("<option value='"+val.elements[i]+"'>"+val.elements[i]+"</option>");
+    }
+    }).done(function(){$.ajaxSetup({async:false});});
 }
