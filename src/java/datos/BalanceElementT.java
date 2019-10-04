@@ -47,6 +47,11 @@ public class BalanceElementT extends Nodo{
         this.roundingRules = new ArrayList<>();
         this.consumptionRule= consumptionRule;
     }
+    
+    @Override
+    public void clean(){
+        roundingRules.clear();
+    }
 
     public String getCode() {
         return code;

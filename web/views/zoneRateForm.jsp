@@ -61,10 +61,12 @@
     </div>                        
     <div class="row">
         <div class="col-sm-7 mb-3 mb-md-0" id="icDesc">
-            <%if(rel.getZoneModel()!=null) for(ResultsT result: rel.getZoneModel().getResults()){%>
-            <div class="card mt-5" style="display: none;">
+            <%if(rel.getZoneModel()!=null) for(int i=0;i<rel.getZoneModel().getResults().size();i++){
+                ResultsT result= rel.getZoneModel().getResults().get(i);
+            %>
+            <div class="card mt-5" style="display: none;" id='-results_n<%=i%>'>
                 <div class="card-header">
-                    <a><%=result.getName()%></a>
+                    <a id='-nameS'><%=result.getName()%></a>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -77,22 +79,26 @@
                     <div class="row">
                         <div class="result" id="<%=((result.getResult() instanceof GenericSelectorT)?"-genericSelector":((result.getResult() instanceof TimeConfigurationT)?"-timeConfiguration":"-crpCompositePopModel"))%>">
                             <div class="form-group row col-sm-12">
-                                <label>name</label>
+                                <label>Time Model</label>
                                 <%if(result.getResult() instanceof GenericSelectorT){%>
-                                    <input readonly class="form-control" type="text" id="-name" placeholder="name" value="<%=((GenericSelectorT)result.getResult()).getGenericSelectorName()%>"/>
+                                    <input readonly class="form-control" type="text" id="-genericSelectorName" placeholder="name" value="<%=((GenericSelectorT)result.getResult()).getGenericSelectorName()%>"/>
                                 <%}else if(result.getResult() instanceof TimeConfigurationT){%>
-                                    <input readonly class="form-control" type="text" id="-name" placeholder="name" value="<%=((TimeConfigurationT)result.getResult()).getTimeModelName()%>"/>
+                                    <input readonly class="form-control" type="text" id="-timeModelName" placeholder="name" value="<%=((TimeConfigurationT)result.getResult()).getTimeModelName()%>"/>
                                 <%}%>
                             </div>
-                            <div class="form-group row col-sm-6">
-                                <label>name<select class="custom-select" onclick="addResult($(this).val());" id="resultsGen">
+                            <div class="form-group row col-sm-12">
+                                <label>Tags<select class="custom-select" onclick="addResult($(this).val());" id="resultsGen">
                                 </select></label>
                             </div>
                             <div id="-resultsGen">
-                                <%if(result.getResult() instanceof GenericSelectorT){for(ResultsT genres : ((GenericSelectorT)result.getResult()).getResults()){%>
-                                    <span class="badge badge-pill badge-primary"><%=genres.getName().get(0)%></span>
-                                <%}}else if(result.getResult() instanceof TimeConfigurationT){for(TagsT genres : ((TimeConfigurationT)result.getResult()).getTags()){%>
-                                    <span class="badge badge-pill badge-primary"><%=genres.getName()%></span>
+                                <%if(result.getResult() instanceof GenericSelectorT){for(int gens=0;gens<((GenericSelectorT)result.getResult()).getResults().size();gens++){
+                                    ResultsT genres = ((GenericSelectorT)result.getResult()).getResults().get(gens);
+                                %>
+                                    <span id='-name_<%=gens%>' class="badge badge-pill badge-primary"><%=genres.getName().get(0)%><i class="ti-close" onclick="$(this).parent().remove();"></i></span>
+                                <%}}else if(result.getResult() instanceof TimeConfigurationT){for(int gens=0;gens<((TimeConfigurationT)result.getResult()).getTags().size();gens++){
+                                    TagsT genres = ((TimeConfigurationT)result.getResult()).getTags().get(gens);
+                                %>
+                                    <span id='-name_<%=gens%>' class="badge badge-pill badge-primary"><%=genres.getName()%><i class="ti-close" onclick="$(this).parent().remove();"></i></span>
                                 <%}}%>
                             </div>    
                         </div>
@@ -134,12 +140,13 @@
         getIC();
         function addResult(val){
             if(!($("#icDesc").children().eq(indexZRF).find("#-resultsGen").text()).includes(val)){
-                $("#icDesc").children().eq(indexZRF).find("#-resultsGen").append("<span class='badge badge-pill badge-primary'>"+val+"</span>")
+                $("#icDesc").children().eq(indexZRF).find("#-resultsGen").append("<span id='-nameResult' class='badge badge-pill badge-primary'>"+val+"<i class='ti-close' onclick='$(this).parent().remove();'></i></span>")
             }
         }
         function addNew(val){
             if(!($("#ic").text()).includes(val))
             $("#ic").append("<button type='button'onclick='indexZRF=$(this).index(); changeShow();' class='list-group-item list-group-item-action'>["+val+"]</button>")
+            $("#icDesc").append($("#clonable").html().replace("Nombre",val));
         }
         function addToActual(val){
             if(indexZRF!=-1){
@@ -152,29 +159,62 @@
             }
             }
         }
-        function getTimes(val){
-            return {
+        function getTimeModel(){
+            return { 
             'funcion' : 'getLista',
-            'tipo' : '<%=ControlPath.attributeSpecMapClick%>',
-            }
+            'tipo' : '<%=ControlPath.timeModelsClick%>'}
+        }
+        function getGenericSelector(){
+            return { 
+            'funcion' : 'getLista',
+            'tipo' : '<%=ControlPath.genericSelectorClick%>'}
+        }
+        function getTimes(val){
+            return { 'filtro' : 'name;'+val+',timeModelTag;',
+            'funcion' : 'getListaFiltroDeep',
+            'tipo' : '<%=ControlPath.timeModelsClick%>',
+            'buscar' : 'tagName'}
         }
         function getGenerics(val){
-            return {
-            'funcion' : 'getLista',
-            'tipo' : '<%=ControlPath.zoneModelsClick%>',
-            }
+            return { 'filtro' : 'name;'+val+',rule;',
+            'funcion' : 'getListaFiltroDeep',
+            'tipo' : '<%=ControlPath.genericSelectorClick%>',
+            'buscar' : 'name'}
         }
         function changeShow(){
             $("#icDesc").children().hide();
             $("#icDesc").children().eq(indexZRF).show();
             var id= $("#icDesc").children().eq(indexZRF).find(".result").attr("id");
-            var val= $("#icDesc").children().eq(indexZRF).find("#-name").val();
+            var val="";
             var parameters;
             if(id!="-crpCompositePopModel"){
-                if(id=="-timeConfiguration") parameters=getTimes(val);
-                else parameters=getGenerics(val);
+                if(id=="-timeConfiguration"){
+                    val=$("#icDesc").children().eq(indexZRF).find("#-timeModelName").val();
+                    console.log("VAL"+val);
+                    parameters=getTimes(val);
+                }else{
+                    console.log("VAL"+val);
+                    val=$("#icDesc").children().eq(indexZRF).find("#-genericSelectorName").val();
+                    parameters=getGenerics(val);
+                }
                 consultaByElement($("#icDesc").children().eq(indexZRF).find("#resultsGen"),parameters);
             }
+        }
+        
+        function addClonable(tipo,actual){
+            if(tipo!='pricing'){
+                $(actual).parent().parent().parent().append($('#'+tipo+'Clonable').html());
+                changeShow();
+            }
+            $(actual).parent().parent().remove();
+        }
+        
+        function changeTags(actual,tipo){
+            if(tipo=='generic')
+                consultaByElement($('#icDesc').children().eq(indexZRF).find('#resultsGen'),getGenerics($(actual).val()));
+            else if(tipo=='time')
+                consultaByElement($('#icDesc').children().eq(indexZRF).find('#resultsGen'),getTimes($(actual).val()));
+            $('#icDesc').children().eq(indexZRF).find('#-resultsGen').html("");
         }
         
     </script>   
@@ -182,3 +222,60 @@
     
 </form>
 
+<div id="clonable">
+<div class="card mt-5" style="display: none;" id='-results'>
+    <div class="card-header">
+        <a id='-nameS'>Nombre</a>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="btn-group mb-xl-3" role="group" aria-label="Basic example"> 
+                <button type="button" class="btn btn-xs btn-primary bg1" onclick="addClonable('generic',this)">Generic Selector</button>
+                <button type="button" class="btn btn-xs btn-primary bg1" onclick="addClonable('time',this)">Time Model</button>
+                <button type="button" class="btn btn-xs btn-primary bg1" onclick="addClonable('pricing',this)">Pricing</button>
+            </div>    
+        </div>
+    </div>
+</div>
+</div>
+<div id="timeClonable" style="display: none;">
+    <div class="row">
+        <div class="result" id="-timeConfiguration">
+            <div class="form-group row col-sm-12">
+                <label>Time Model<select class="custom-select" onchange="changeTags(this,'time');" id="-timeModelName">
+                </select></label>
+
+            </div>
+            <div class="form-group row col-sm-12">
+                <label>Results<select class="custom-select" onclick="addResult($(this).val());" id="resultsGen">
+                </select></label>
+            </div>
+            <div id="-resultsGen">
+
+            </div>    
+        </div>
+    </div>
+</div>
+<div id="genericClonable" style="display: none;">
+    <div class="row">
+        <div class="result" id="-genericSelector">
+            <div class="form-group row col-sm-12">
+                <label>Time Model<select class="custom-select" onclick="changeTags(this,'generic');" id="-genericSelectorName">
+                </select></label>
+
+            </div>
+            <div class="form-group row col-sm-12">
+                <label>Results<select class="custom-select" onclick="addResult($(this).val());" id="resultsGen">
+                </select></label>
+            </div>
+            <div id="-resultsGen">
+
+            </div>    
+        </div>
+    </div>
+</div>
+
+<script>
+    consultaByElement($("#genericClonable").find("#-genericSelectorName"),getGenericSelector());
+    consultaByElement($("#timeClonable").find("#-timeModelName"),getTimeModel());
+</script>

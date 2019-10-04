@@ -26,6 +26,11 @@ public class TimeModelT extends Nodo{
         this.id=id;
         this.timeModelTags= new ArrayList<>();
     }
+    
+    @Override
+    public void clean(){
+        timeModelTags.clear();
+    }
 
     public String getName() {
         return name;

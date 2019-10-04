@@ -33,6 +33,11 @@ public class ZoneModelT extends Nodo{
         this.obsolete = obsolete;
         this.zoneItems = new ArrayList<>();
     }
+    
+    @Override
+    public void clean(){
+        zoneItems.clear();
+    }
 
     public int getId() {
         return id;

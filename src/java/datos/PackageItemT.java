@@ -23,6 +23,11 @@ public class PackageItemT extends Nodo{
         bundleProductOffering = new ArrayList<>();
     }
     
+    @Override
+    public void clean(){
+        bundleProductOffering.clear();
+    }
+    
     public PackageItemT() {
         bundleProductOffering = new ArrayList<>();
     }

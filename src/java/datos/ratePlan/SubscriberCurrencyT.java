@@ -27,6 +27,11 @@ public class SubscriberCurrencyT extends Nodo{
     public String getCurrencyCode() {
         return currencyCode;
     }
+    
+    @Override
+    public void clean(){
+        crpRelDateRanges.clear();
+    }
 
     public void setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
@@ -86,8 +91,7 @@ public class SubscriberCurrencyT extends Nodo{
             }
             else if(subscribers.get(i).matches("(?s)crpRelDateRange")){ 
                 
-                CrpRelDateRangeT crpRelDateRange = new CrpRelDateRangeT(itemCount);
-                itemCount++;
+                CrpRelDateRangeT crpRelDateRange = new CrpRelDateRangeT(crpRelDateRanges.size());
                 i= crpRelDateRange.procesar(subscribers, i+1);
                 i--;
                 this.crpRelDateRanges.add(crpRelDateRange);

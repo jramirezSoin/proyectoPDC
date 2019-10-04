@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @author Joseph Ramírez
  */
 public class ControlPath {
-
+    //PATHS
     public static String zoneModelsPath = "";
     public static String impactCategoriesPath = "";
     public static String triggerSpecPath = "";
@@ -43,9 +43,11 @@ public class ControlPath {
     public static String glidPath = "";
     public static String uscMapPath = "";
     public static String chargeSelectorSpecPath = "";
+    public static String genericSelectorPath = "";
     public static String constants = "";
     public static String path = "";
     
+    //OTRO
     public static String zoneModelsPointer = "";
     public static String zoneModelsView = "";
     public static String zoneModelForm = "";
@@ -151,6 +153,16 @@ public class ControlPath {
     public static String chargeSelectorSpecView = "";
     public static String chargeSelectorSpecForm = "";
     
+    public static String genericSelectorClick = "";
+    public static String genericSelectorPointer = "";
+    public static String genericSelectorView = "";
+    public static String genericSelectorForm = "";
+    public static String ruleForm = "";
+    public static String modelDataForm = "";
+    
+    public static String customRuleClick = "";
+    public static String customRulePath = "";
+    public static String customRulePointer = "";
     
     public static void LoadParameters(){
         FileInputStream fis = null;
@@ -177,7 +189,11 @@ public class ControlPath {
                 glidPath = path + properties.getString("glidPath").trim();
                 uscMapPath = path + properties.getString("uscMapPath").trim();
                 chargeSelectorSpecPath = path + properties.getString("chargeSelectorSpecPath").trim();
+                genericSelectorPath = path + properties.getString("genericSelectorPath").trim();
+                customRulePath = path + properties.getString("customRulePath").trim();
                 constants = path + properties.getString("constants").trim();
+                
+                
                 zoneModelsPointer= properties.getString("zoneModelsPointer");
                 zoneModelsView= properties.getString("zoneModelsView");
                 zoneModelForm= properties.getString("zoneModelForm");
@@ -282,6 +298,17 @@ public class ControlPath {
                 chargeSelectorSpecClick= properties.getString("chargeSelectorSpecClick");
                 chargeSelectorSpecView= properties.getString("chargeSelectorSpecView");
                 chargeSelectorSpecForm= properties.getString("chargeSelectorSpecForm");
+                
+                genericSelectorPointer= properties.getString("genericSelectorPointer");
+                genericSelectorClick= properties.getString("genericSelectorClick");
+                genericSelectorView = properties.getString("genericSelectorView");
+                genericSelectorForm = properties.getString("genericSelectorForm");
+                ruleForm = properties.getString("ruleForm");
+                modelDataForm = properties.getString("modelDataForm");
+                
+                customRuleClick = properties.getString("customRuleClick");
+                customRulePointer = properties.getString("customRulePointer");
+                
             } finally {
                 fis.close();
             }

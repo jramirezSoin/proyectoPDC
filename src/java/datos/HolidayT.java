@@ -25,6 +25,11 @@ public class HolidayT extends Nodo {
         this.holidayItems= new ArrayList<>();
     }
     
+    @Override
+    public void clean(){
+        holidayItems.clear();
+    }
+    
     public int getId() {
         return id;
     }

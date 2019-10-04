@@ -5,7 +5,9 @@
  */
 package servlets;
 
+import control.ControlFunctions;
 import datos.Nodo;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -74,6 +76,10 @@ public class Modificador extends HttpServlet {
         String path=(String) request.getSession().getAttribute("actualPath");
         String pointer=(String) request.getSession().getAttribute("actualPoint");
         XmlParser.Modificar(path, path, nodo.toString(), pointer, nodo.id);
+        ArrayList<String> nodos= XmlParser.LeerSeleccionado(new File(path) , nodo.id);
+        nodo.clean();
+        nodo.procesar(nodos, 1);
+        request.getSession().setAttribute("principal", nodo);
         request.getRequestDispatcher((String) request.getSession().getAttribute("actualView")).forward(request, response);
     }
 

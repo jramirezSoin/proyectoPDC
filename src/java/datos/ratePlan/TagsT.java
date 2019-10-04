@@ -18,6 +18,7 @@ public class TagsT extends Nodo{
     
     public TagsT(){}
     public TagsT(int id){this.id=id;}
+    
 
     public String getName() {
         return name;
@@ -46,10 +47,15 @@ public class TagsT extends Nodo{
     @Override
     public int procesar(ArrayList<String> chargeRates2, int index) {
         ArrayList<String> chargeRates=  (ArrayList<String>)chargeRates2.clone();
-        for(int i=index; i<chargeRates.size();i++) { 
+        for(int i=index; i<chargeRates.size();i++) {
             if(chargeRates.get(i).matches("(?s)name: (.*)")) this.name= chargeRates.get(i).substring(6);
+            else if(chargeRates.get(i).matches("(?s)nameResult: (.*)")){ this.name=chargeRates.get(i).substring(12);
+                CrpCompositePopModelT popModel = new CrpCompositePopModelT(0);
+                popModel.setZoneCrp();
+                this.setCrpCompositePopModel(popModel);
+            }
             else if(chargeRates.get(i).matches("(?s)crpCompositePopModel")){
-                CrpCompositePopModelT crpCompositePopModelado = new CrpCompositePopModelT();
+                CrpCompositePopModelT crpCompositePopModelado = new CrpCompositePopModelT(0);
                 i= crpCompositePopModelado.procesar(chargeRates, i+1);
                 i--;
                 this.setCrpCompositePopModel(crpCompositePopModelado);

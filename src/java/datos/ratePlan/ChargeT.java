@@ -180,7 +180,6 @@ public class ChargeT extends Nodo{
 
     @Override
     public int procesar(ArrayList<String> charge, int index) {
-        int itemCount = 0;
         for(int i=index; i<charge.size();i++) {
             if(charge.get(i).matches("(?s)price: (.*)")) this.price= charge.get(i).substring(7);
             else if(charge.get(i).matches("(?s)unitOfMeasure: (.*)")) this.unitOfMeasure= charge.get(i).substring(15);
@@ -200,8 +199,7 @@ public class ChargeT extends Nodo{
             else if(charge.get(i).matches("(?s)scaled: (.*)")) this.tipo= ((charge.get(i).substring(8).equals("true"))?"scaledCharge":"fixedCharge");
             else if(charge.get(i).matches("(?s)priceValidity")){ 
                 
-                PriceValidityT resul = new PriceValidityT(itemCount);
-                itemCount++;
+                PriceValidityT resul = new PriceValidityT(0);
                 i= resul.procesar(charge, i+1);
                 i--;
                 this.setPriceValidity(resul);
@@ -236,11 +234,14 @@ public class ChargeT extends Nodo{
     }
 
     void getRumCurrency(String rum, String currency) {
-        System.out.println("LLEGA "+currency+" "+this.balanceElementNumCode);
         if(this.balanceElementNumCode.equals("") || this.balanceElementNumCode.equals("null") || Integer.parseInt(this.balanceElementNumCode)<1000){
             this.balanceElementNumCode = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("code", currency), "numericCode");
             this.balanceElementName = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("code", currency), "name");
         }
+    }
+    
+    public void setZoneCrp(){
+        tipo="fixedCharge";
     }
     
 }

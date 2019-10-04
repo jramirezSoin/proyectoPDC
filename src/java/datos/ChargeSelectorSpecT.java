@@ -234,7 +234,7 @@ public class ChargeSelectorSpecT extends Nodo {
                     this.balanceElementName = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode", chargeSelectors.get(i).substring(23)), "name");
                 else{
                     this.balanceElementName="";
-                    for(String balance: balances){System.out.println("BALANCE "+balance); this.balanceElementName+="|"+ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode", balance), "name");}
+                    for(String balance: balances){this.balanceElementName+="|"+ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode", balance), "name");}
                     balanceElementName = this.balanceElementName.substring(1);
                     }
             } else if (chargeSelectors.get(i).matches("(?s)balanceElementName: (.*)")) {
@@ -244,7 +244,7 @@ public class ChargeSelectorSpecT extends Nodo {
                     this.balanceElementNumCode = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name", chargeSelectors.get(i).substring(20)), "numericCode");
                 else{
                     this.balanceElementNumCode="";
-                    for(String balance: balances){System.out.println("BALANCE "+balance); this.balanceElementNumCode+="|"+ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name", balance), "numericCode");}
+                    for(String balance: balances){ this.balanceElementNumCode+="|"+ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name", balance), "numericCode");}
                     balanceElementNumCode = this.balanceElementNumCode.substring(1);
                     }
             } else if (("eventConditions").contains(chargeSelectors.get(i))) {
@@ -257,7 +257,6 @@ public class ChargeSelectorSpecT extends Nodo {
                     if (chargeSelectors.get(i).matches("nt: (.*)")){ s+="|"+chargeSelectors.get(i).substring(4);}
                     else{ break;}
                 }
-                System.out.println(s);
                 i--;
                 if(!s.equals("")){
                     s=s.substring(1);

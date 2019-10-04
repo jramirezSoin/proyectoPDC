@@ -5,9 +5,12 @@
  */
 package servlets;
 
+import control.ControlFunctions;
 import control.ControlPath;
+import datos.ListaT;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +48,7 @@ public class Login extends HttpServlet {
         session.setAttribute("titulo", null);
         session.setAttribute("click", null);
         ControlPath.LoadParameters();
+        
         
     }
 

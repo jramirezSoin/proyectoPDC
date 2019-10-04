@@ -40,6 +40,12 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
     public CrpCompositePopModelT(int id) {
         this.id = id;
     }
+    
+    @Override
+    public void clean(){
+        priceTierRanges.clear();
+        priceTierValidityPeriods.clear();
+    }
 
     public String getName() {
         return name;
@@ -235,8 +241,7 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
                 i--;
                 this.priceTierRanges.add(resul);
             } else if (crp.get(i).matches("(?s)priceTierValidityPeriod") && priceTier) {
-                PriceTierValidityPeriodT resul = new PriceTierValidityPeriodT(itemCount);
-                itemCount++;
+                PriceTierValidityPeriodT resul = new PriceTierValidityPeriodT(priceTierValidityPeriods.size());
                 i = resul.procesar(crp, i + 1);
                 i--;
                 this.priceTierValidityPeriods.add(resul);
@@ -257,7 +262,6 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
                             Logger.getLogger(CrpCompositePopModelT.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else if (crp.get(i).matches("(?s)upperBound_(.*)")) {
-                        System.out.println("J= "+j);
                         for (int l = 0; i < crp.size(); i++) {
                             if (crp.get(i).matches("(?s)upperBound_n: (.*)")){
                                 this.getPriceTierRanges().add(new PriceTierRangeT(this.getPriceTierRanges().size(),j,crp.get(i).split(": ")[1],"TierRange"));
@@ -324,6 +328,18 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
                 charge.getRumCurrency(rum,currency);
             }
         }
+    }
+    
+    public void setZoneCrp(){
+        popModelType = "usageChargePopModel";
+        applicableQuantity = "ORIGINAL";
+        lowerBound="";
+        PriceTierRangeT pricetierR = new PriceTierRangeT(0);
+        PriceTierValidityPeriodT pricetierV = new PriceTierValidityPeriodT(0);
+        pricetierR.setZoneCrp();
+        pricetierV.setZoneCrp();
+        this.priceTierValidityPeriods.add(pricetierV);
+        this.priceTierRanges.add(pricetierR);
     }
 
 }

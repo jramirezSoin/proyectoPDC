@@ -185,7 +185,7 @@ function consulta(select,parameters,async){
     for (i in val.elements) {
         $("#"+select).append("<option value='"+val.elements[i]+"'>"+val.elements[i]+"</option>");
     }
-    }).done(function(){$.ajaxSetup({async:false});});
+    }).done(function(){$.ajaxSetup({async:true});});
 }
 
 function consultaByElement(select,parameters,async){
@@ -196,5 +196,5 @@ function consultaByElement(select,parameters,async){
     for (i in val.elements) {
         $(select).append("<option value='"+val.elements[i]+"'>"+val.elements[i]+"</option>");
     }
-    }).done(function(){$.ajaxSetup({async:false});});
+    }).done(function(){$.ajaxSetup({async:true});});
 }

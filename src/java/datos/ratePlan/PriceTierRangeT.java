@@ -24,6 +24,11 @@ public class PriceTierRangeT extends Nodo{
         this.id=id;
         this.priceTierValidityPeriod=validity;
     }
+    
+    @Override
+    public void clean(){
+        charges.clear();
+    }
 
     PriceTierRangeT(int id,int priceTierP, String upperBound, String tipo) {
         this.id=id;
@@ -82,7 +87,7 @@ public class PriceTierRangeT extends Nodo{
             
             if(generics.get(i).matches("(?s)upperBound: (.*)")) this.upperBound= generics.get(i).substring(12);
             else if(("fixedCharge scaledCharge recurringCharge oneTimeCharge").contains(generics.get(i))){ 
-                ChargeT resul = new ChargeT(itemCount);
+                ChargeT resul = new ChargeT(charges.size());
                 resul.setTipo(generics.get(i));
                 itemCount++;
                 i= resul.procesar(generics, i+1);
@@ -118,6 +123,14 @@ public class PriceTierRangeT extends Nodo{
             this.visibilidad=false;
             return false;
         }
+    }
+    
+    public void setZoneCrp(){
+        tipo="priceTierRange";
+        priceTierValidityPeriod = 0;
+        ChargeT charge = new ChargeT(0);
+        charge.setZoneCrp();
+        this.charges.add(charge);
     }
     
     

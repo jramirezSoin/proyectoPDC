@@ -80,7 +80,7 @@ public class CrpRelDateRangeT extends Nodo{
                 i--;
                 this.setZoneModel(zoneItem);
             }else if(zoneModels.get(i).matches("(?s)crpCompositePopModel")){ 
-                CrpCompositePopModelT crpCompositePopModel = new CrpCompositePopModelT();
+                CrpCompositePopModelT crpCompositePopModel = new CrpCompositePopModelT(0);
                 i= crpCompositePopModel.procesar(zoneModels, i+1);
                 i--;
                 this.setCrpCompositePopModel(crpCompositePopModel);

@@ -30,6 +30,11 @@ public class ZoneModelT extends Nodo{
     public boolean isEnhanced() {
         return enhanced;
     }
+    
+    @Override
+    public void clean(){
+        results.clear();
+    }
 
     public void setEnhanced(boolean enhanced) {
         this.enhanced = enhanced;
@@ -73,82 +78,26 @@ public class ZoneModelT extends Nodo{
     
         @Override
     public int procesar(ArrayList<String> subscribers, int index) {
-        int itemCount = 0;
+        int itemCount = results.size();
         Boolean isZoneModeled= false;
         for(int i=index; i<subscribers.size();i++) {
             if(subscribers.get(i).matches("(?s)zoneModelName: (.*)"))this.zoneModelName= subscribers.get(i).substring(15);
             else if(subscribers.get(i).matches("(?s)enhanced: (.*)"))this.enhanced= Boolean.valueOf(subscribers.get(i).substring(10));
             else if(subscribers.get(i).matches("(?s)uscModelName: (.*)"))this.uscModelName= subscribers.get(i).substring(14);
-            else if(subscribers.get(i).matches("(?s)results")){ 
-                if(!isZoneModeled){
-                ResultsT result = new ResultsT(itemCount);
-                itemCount++;
+            else if(subscribers.get(i).matches("(?s)results_n[0-9]{1,}") && isZoneModeled){ 
+                int resultIndex= Integer.parseInt(subscribers.get(i).replace("results_n",""));
+                i= this.getResults().get(resultIndex).procesar(subscribers, i+1);
+                i--;
+            }else if(subscribers.get(i).matches("(?s)results")){ 
+                ResultsT result = new ResultsT(results.size());
                 i= result.procesar(subscribers, i+1);
                 i--;
-                this.results.add(result);}
-                
-                
-                else{
-                i++;
-                if(itemCount== this.results.size()){
-                    this.results.add((ResultsT)this.results.get(itemCount-1).clone());
-                }
-                this.results.get(itemCount).setName(new ArrayList<>());
-                for(int j=i; i<subscribers.size();i++) {
-                    int resultsdeep=0;
-                    if(subscribers.get(i).matches("(?s)name: (.*)"))this.results.get(itemCount).getName().add(subscribers.get(i).substring(6));
-                    else if(subscribers.get(i).matches("(?s)timeConfiguration")){i++; ((TimeConfigurationT)this.results.get(itemCount).getResult()).setTimeModelName(subscribers.get(i).substring(6));
-                        i++;
-                        TimeConfigurationT time= ((TimeConfigurationT)this.results.get(itemCount).getResult());
-                        for(int k=i; i<subscribers.size();i++) {
-                            if(subscribers.get(i).matches("(?s)resultsGen")){
-                            if(resultsdeep==time.getTags().size()){
-                                time.getTags().add((TagsT)time.getTags().get(resultsdeep-1).clone());
-                                System.out.println(time.getTags().get(resultsdeep-1).getName());
-                            }
-                            i++; time.getTags().get(resultsdeep).setName(subscribers.get(i).substring(6));
-                            
-                            System.out.println(time.getTags().get(resultsdeep).getName());
-                            System.out.println("______");
-                            resultsdeep++;
-                            }else{break;}
-                        }
-                        while(resultsdeep+1<time.getTags().size()){
-                                time.getTags().remove(resultsdeep+1);
-                        }
-                        i--;
-                    }else if(subscribers.get(i).matches("(?s)genericSelector")){i++; ((GenericSelectorT)this.results.get(itemCount).getResult()).setGenericSelectorName(subscribers.get(i).substring(6));
-                        i++;
-                        GenericSelectorT time= ((GenericSelectorT)this.results.get(itemCount).getResult());
-                        for(int k=i; i<subscribers.size();i++) {
-                            if(subscribers.get(i).matches("(?s)resultsGen")){
-                            if(resultsdeep==time.getResults().size()){
-                                time.getResults().add((ResultsT)time.getResults().get(resultsdeep-1).clone());
-                            }    
-                            i++; time.getResults().get(resultsdeep).getName().set(0,subscribers.get(i).substring(6));
-                            resultsdeep++;
-                            }else{break;}
-                        }
-                        while(resultsdeep+1<time.getResults().size()){
-                                time.getResults().remove(resultsdeep+1);
-                        }
-                        i--;
-                    }else break;
-                    
-                }
-                i--;
-                itemCount++;
-                }
-                
-                
-            }else if(subscribers.get(i).matches("(?s)zoneModel")){
-                System.out.println(subscribers);
+                this.results.add(result);
+            }
+            else if(subscribers.get(i).matches("(?s)zoneModel")){
                 isZoneModeled= true;
             }
             else return i;
-        }
-        while(isZoneModeled && (itemCount+1)<this.getResults().size()){
-            this.getResults().remove(itemCount+1);
         }
         return subscribers.size();
     }

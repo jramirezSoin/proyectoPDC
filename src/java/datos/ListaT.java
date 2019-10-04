@@ -26,6 +26,12 @@ public class ListaT extends Nodo implements java.io.Serializable{
         this.unit = unit;
     }
     
+    public ListaT(int id,String unit, String valor){
+        this.id= id;
+        this.valor = valor;
+        this.unit = unit;
+    }
+    
     @Override
     public boolean buscar(String buscar) {   
         if((this.valor+"/"+this.unit).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
@@ -36,6 +42,11 @@ public class ListaT extends Nodo implements java.io.Serializable{
             this.visibilidad=false;
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ListaT{" + "valor=" + valor + ", unit=" + unit + '}';
     }
     
     @Override

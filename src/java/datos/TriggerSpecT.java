@@ -35,6 +35,11 @@ public class TriggerSpecT extends Nodo{
         this.expressions = new ArrayList<>();        
     }
     
+    @Override
+    public void clean(){
+        expressions.clear();
+    }
+    
     public int getId() {
         return id;
     }

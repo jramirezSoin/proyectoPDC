@@ -74,4 +74,8 @@ public class Nodo implements Cloneable{
         return obj;
     }
     
+    public void clean(){
+        
+    }
+    
 }

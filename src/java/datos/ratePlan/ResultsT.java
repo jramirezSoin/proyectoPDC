@@ -22,6 +22,11 @@ public class ResultsT extends Nodo{
     public ArrayList<String> getName() {
         return name;
     }
+    
+    @Override
+    public void clean(){
+        name.clear();
+    }
 
     public void setName(ArrayList<String> name) {
         this.name = name;
@@ -51,20 +56,33 @@ public class ResultsT extends Nodo{
     @Override
     public int procesar(ArrayList<String> chargeRates2, int index) {
         ArrayList<String> chargeRates=  (ArrayList<String>)chargeRates2.clone();
-        for(int i=index; i<chargeRates.size();i++) {          
+        boolean modified= false;
+        for(int i=index; i<chargeRates.size();i++) {
             if(chargeRates.get(i).matches("(?s)name: (.*)")) this.name.add(chargeRates.get(i).substring(6));
+            else if(chargeRates.get(i).matches("(?s)nameS: (.*)")){
+                this.name=listToArray(chargeRates.get(i).substring(7));
+                modified=true;
+            }
             else if(chargeRates.get(i).matches("(?s)genericSelector")){
-                GenericSelectorT resultado = new GenericSelectorT();
+                GenericSelectorT resultado;
+                if(modified && this.getResult()!=null)
+                    resultado = (GenericSelectorT)this.getResult();
+                else
+                    resultado = new GenericSelectorT(0);
                 i= resultado.procesar(chargeRates, i+1);
                 i--;
                 this.setResult(resultado);
             }else if(chargeRates.get(i).matches("(?s)crpCompositePopModel")){
-                CrpCompositePopModelT resultado = new CrpCompositePopModelT();
+                CrpCompositePopModelT resultado = new CrpCompositePopModelT(0);
                 i= resultado.procesar(chargeRates, i+1);
                 i--;
                 this.setResult(resultado);
             }else if(chargeRates.get(i).matches("(?s)timeConfiguration")){
-                TimeConfigurationT resultado = new TimeConfigurationT();
+                TimeConfigurationT resultado;
+                if(modified && this.getResult()!=null)
+                    resultado = (TimeConfigurationT)this.getResult();
+                else
+                    resultado = new TimeConfigurationT(0);
                 i= resultado.procesar(chargeRates, i+1);
                 i--;
                 this.setResult(resultado);
@@ -96,6 +114,14 @@ public class ResultsT extends Nodo{
             this.visibilidad=false;
             return false;
         }
+    }
+
+    private ArrayList<String> listToArray(String s) {
+        ArrayList<String> array = new ArrayList<>();
+        s=s.replace("]","").replace("[", "");
+        String[] strings = s.split(", ");
+        for(String item : strings) array.add(item);
+        return array;
     }
     
 }

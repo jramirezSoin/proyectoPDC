@@ -22,6 +22,11 @@ public class GenericSelectorT extends Nodo implements ResultI{
     public String getGenericSelectorName() {
         return genericSelectorName;
     }
+    
+    @Override
+    public void clean(){
+        results.clear();
+    }
 
     public void setGenericSelectorName(String genericSelectorName) {
         this.genericSelectorName = genericSelectorName;
@@ -49,16 +54,42 @@ public class GenericSelectorT extends Nodo implements ResultI{
     @Override
     public int procesar(ArrayList<String> generics, int index) {
         int itemCount = 0;
+        boolean resultsGen= false;
         for(int i=index; i<generics.size();i++) {
             
             if(generics.get(i).matches("(?s)genericSelectorName: (.*)")) this.genericSelectorName= generics.get(i).substring(21);
-            else if(generics.get(i).matches("(?s)results")){ 
-                
-                ResultsT resul = new ResultsT(itemCount);
+            else if(generics.get(i).matches("(?s)results") && !resultsGen){ 
+                if(i+2<generics.size() && generics.get(i+2).matches("(?s)timeConfiguration")) return i;
+                ResultsT resul = new ResultsT(results.size());
                 itemCount++;
                 i= resul.procesar(generics, i+1);
                 i--;
                 this.results.add(resul);
+            }else if(generics.get(i).matches("(?s)resultsGen")){
+                i++;
+                resultsGen=true;
+                int contador=0;
+                for(int k=i;i<generics.size();i++){
+                    if(generics.get(i).matches("(?s)name_[0-9]{1,}: (.*)")){
+                        int indexTag= Integer.parseInt(generics.get(i).split(": ")[0].replace("name_", ""));
+                        while(contador!=indexTag){
+                            this.getResults().remove(contador);
+                        }
+                        this.getResults().get(indexTag).getName().clear();
+                        this.getResults().get(indexTag).getName().add(generics.get(i).split(": ")[1]);
+                    }else if(generics.get(i).matches("(?s)nameResult: (.*)")){
+                        ResultsT resul = new ResultsT(results.size());
+                        resul.getName().add(generics.get(i).substring(12));
+                        CrpCompositePopModelT popModel = new CrpCompositePopModelT(0);
+                        popModel.setZoneCrp();
+                        resul.setResult(popModel);
+                        this.getResults().add(resul);
+                    }else{
+                        i--;
+                        break;
+                    }
+                }
+                
             }else return i;
         }
         return generics.size();

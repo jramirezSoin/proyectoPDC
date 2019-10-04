@@ -69,8 +69,11 @@ public class Eliminar extends HttpServlet {
                 Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
                 index.remove(0);
                 nodo.eliminar(index);
-                request.getSession().setAttribute("principal", nodo);
                 XmlParser.Modificar(path, path, nodo.toString(), pointer, nodo.id);
+                ArrayList<String> nodos= XmlParser.LeerSeleccionado(new File(path) , nodo.id);
+                nodo.clean();
+                nodo.procesar(nodos, 1);
+                request.getSession().setAttribute("principal", nodo);
                 request.getRequestDispatcher((String) request.getSession().getAttribute("actualView")).forward(request, response);}
             else if(index.get(0)==-6){
                 index.remove(0);

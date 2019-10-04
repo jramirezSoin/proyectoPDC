@@ -227,7 +227,7 @@ public class ChargeRatePlanT extends Nodo{
             else if(chargeRates.get(i).matches("(?s)description: (.*)")) this.description= chargeRates.get(i).substring(13);
             else if(chargeRates.get(i).matches("(?s)subscriberCurrency")){
                 
-                
+                this.setSubscriberCurrency(new SubscriberCurrencyT(0));
                 i= this.getSubscriberCurrency().procesar(chargeRates, i+1);
                 i--;
             }else if(chargeRates.get(i).matches("(?s)crpDelRanges")){
@@ -282,7 +282,7 @@ public class ChargeRatePlanT extends Nodo{
                     index= this.procesar(lista, index);
                 else if(indexs.get(1)==-2){
                     try{
-                    index= this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).getZoneModel().procesar(lista, index);}
+                        index= this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).getZoneModel().procesar(lista, index);}
                     catch(NullPointerException e){
                         this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).setZoneModel(new ZoneModelT(0));
                         this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).setCrpCompositePopModel(null);

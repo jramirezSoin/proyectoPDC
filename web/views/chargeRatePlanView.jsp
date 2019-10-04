@@ -217,7 +217,6 @@
                 <%}%>
                 <script>
                  function crpRel(){
-                    console.log("ENTRA");
                     $(".crpRelDates").hide();
                     $("#select-"+$("#crpRelDate").val()).show();}
                     crpRel();

@@ -22,7 +22,12 @@ public class TimeConfigurationT extends Nodo implements ResultI{
     public String getTimeModelName() {
         return timeModelName;
     }
-
+    
+    @Override
+    public void clean(){
+        tags.clear();
+    }
+    
     public void setTimeModelName(String timeModelName) {
         this.timeModelName = timeModelName;
     }
@@ -50,15 +55,33 @@ public class TimeConfigurationT extends Nodo implements ResultI{
     public int procesar(ArrayList<String> generics, int index) {
         int itemCount = 0;
         for(int i=index; i<generics.size();i++) {
-            
             if(generics.get(i).matches("(?s)timeModelName: (.*)")) this.timeModelName= generics.get(i).substring(15);
             else if(generics.get(i).matches("(?s)tags")){ 
                 
-                TagsT resul = new TagsT(itemCount);
+                TagsT resul = new TagsT(tags.size());
                 itemCount++;
                 i= resul.procesar(generics, i+1);
                 i--;
                 this.tags.add(resul);
+            }else if(generics.get(i).matches("(?s)resultsGen")){
+                i++;
+                for(int k=i;i<generics.size();i++){
+                    if(generics.get(i).matches("(?s)name_[0-9]{1,}: (.*)")){
+                        int indexTag= Integer.parseInt(generics.get(i).split(": ")[0].replace("name_", ""));
+                        this.getTags().get(indexTag).setName(generics.get(i).split(": ")[1]);
+                    }else if(generics.get(i).matches("(?s)nameResult: (.*)")){
+                        TagsT resul = new TagsT(tags.size());
+                        resul.setName(generics.get(i).substring(12));
+                        CrpCompositePopModelT popModel = new CrpCompositePopModelT(0);
+                        popModel.setZoneCrp();
+                        resul.setCrpCompositePopModel(popModel);
+                        this.getTags().add(resul);
+                    }else{
+                        i--;
+                        break;
+                    }
+                }
+                
             }else return i;
         }
         return generics.size();

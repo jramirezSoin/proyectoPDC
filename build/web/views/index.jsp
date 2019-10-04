@@ -54,11 +54,22 @@
                                     <li><a href="#" onclick="hacerlist('/timeModel','Time Model')">Time Model</a></li>
                                     <li><a href="#" onclick="hacerlist('/bundled', 'Bundle')">Bundle Offering</a></li>
                                     <li><a href="#" onclick="hacerlist('/package', 'Package')">Package</a></li>
-                                    <li><a href="#" onclick="hacerlist('/charge', 'Charge Offering')">Charge Offering</a></li>
-                                    <li><a href="#" onclick="hacerlist('/chargeRate', 'Charge Rate Plan')">Charge Rate Plan</a></li>
-                                    <li><a href="#" onclick="hacerlist('/chargeSelectorSpec', 'Charge Selector Spec')">Charge Selector Spec</a></li>
+                                    <li>
+                                        <a href="javascript:void(0)" aria-expanded="true"><i class="ti-shopping-cart"></i><span>Charge</span></a>
+                                        <ul class="collapse">
+                                            <li><a href="#" onclick="hacerlist('/charge', 'Charge Offering')">Charge Offering</a></li>
+                                            <li><a href="#" onclick="hacerlist('/chargeRate', 'Charge Rate Plan')">Charge Rate Plan</a></li>
+                                        </ul>
+                                    </li>    
+                                    <li>
+                                        <a href="javascript:void(0)" aria-expanded="true"><i class="ti-ruler"></i><span>Selector</span></a>
+                                        <ul class="collapse">
+                                            <li><a href="#" onclick="hacerlist('/chargeSelectorSpec', 'Charge Selector Spec')">Charge Selector</a></li>
+                                            <li><a href="#" onclick="hacerlist('/genericSelector', 'Generic Selector')">Generic Selector</a></li>
+                                        </ul>
+                                    </li>    
                                 </ul>
-                            </li>
+                            </li>    
                             <li>
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-settings"></i><span>Config
                                     </span></a>

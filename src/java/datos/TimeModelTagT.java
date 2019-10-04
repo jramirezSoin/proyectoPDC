@@ -23,6 +23,11 @@ public class TimeModelTagT extends Nodo{
     public String getTagName() {
         return tagName;
     }
+    
+    @Override
+    public void clean(){
+        timeSpecs.clear();
+    }
 
     public void setTagName(String tagName) {
         this.tagName = tagName;

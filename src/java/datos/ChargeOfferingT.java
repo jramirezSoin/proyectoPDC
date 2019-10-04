@@ -32,6 +32,11 @@ public class ChargeOfferingT extends Nodo{
         
     }
     
+    @Override
+    public void clean(){
+        chargeEvents.clear();
+    }
+    
     public ChargeOfferingT(int id){
         this.id=id;
     }

@@ -27,6 +27,12 @@ public class PackageT extends Nodo{
         balances = new ArrayList<>();
     }
     
+    @Override
+    public void clean(){
+        packageItems.clear();
+        balances.clear();
+    }
+    
     public PackageT(){
         packageItems = new ArrayList<>();
         balances = new ArrayList<>();

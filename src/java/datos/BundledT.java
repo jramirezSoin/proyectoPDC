@@ -29,6 +29,11 @@ public class BundledT extends Nodo{
         bundledItems= new ArrayList<>();
         this.id=id;
     }
+    
+    @Override
+    public void clean(){
+        bundledItems.clear();
+    }
 
     public String getName() {
         return name;

@@ -80,5 +80,10 @@ public class PriceTierValidityPeriodT extends Nodo{
         }
     }
     
+    public void setZoneCrp(){
+        lowerBound="NO_MIN";
+        validFrom="0";
+    }
+    
     
 }

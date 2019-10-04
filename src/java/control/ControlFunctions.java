@@ -6,6 +6,7 @@
 package control;
 
 import datos.ListaT;
+import datos.Nodo;
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -75,6 +76,12 @@ public class ControlFunctions {
             i--;
             }
         }
+        return nodos;
+    }
+    
+    public static ArrayList<ListaT> getListaEvent(){
+        String[] controls = getPathPointer(ControlPath.eventAttributeSpecClick);
+        ArrayList<ListaT> nodos = XmlParser.LeerEvent(new File(controls[0]) , controls[1],"EventDelayedSessionTelcoGprs");
         return nodos;
     }
     
@@ -156,6 +163,14 @@ public class ControlFunctions {
         else if(tipo.equals(ControlPath.rolloverClick)){
                 controls[0]= ControlPath.rolloverPath;
                 controls[1]= ControlPath.rolloverPointer;            
+        }
+        else if(tipo.equals(ControlPath.genericSelectorClick)){
+                controls[0]= ControlPath.genericSelectorPath;
+                controls[1]= ControlPath.genericSelectorPointer;            
+        }
+        else if(tipo.equals(ControlPath.customRuleClick)){
+                controls[0]= ControlPath.customRulePath;
+                controls[1]= ControlPath.customRulePointer;            
         }
         return controls;
     }

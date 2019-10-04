@@ -439,6 +439,26 @@ public class XmlParser {
         }
     }
     
+    public static ArrayList<ListaT> LeerEvent(File file,String indicador,String evento){
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName(indicador);
+            ArrayList<ListaT> balances= new ArrayList<>();
+            String path="";
+            for (int i = 0; i < nList.getLength(); i++) {
+                Element node = (Element)nList.item(i);
+                if(node.getElementsByTagName("name").item(0).getTextContent().equals(evento)) path=node.getElementsByTagName("className").item(0).getTextContent();
+            }
+            System.out.println(path);
+            return balances;
+        } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
+            return null;
+        }
+    }
+    
     public static String convSpecialChar(String xmlString)
     {	
         
