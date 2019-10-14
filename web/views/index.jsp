@@ -46,6 +46,7 @@
                 <div class="menu-inner">
                     <nav>
                         <ul class="metismenu" id="menu">
+                            <li><a href="#" onclick="cargaMain()"><i class="ti-home"></i><span>Home</span></a></li>
                             <li>
                                 <a href="javascript:void(0)" aria-expanded="true"><i class="ti-panel"></i><span>Pricing</span></a>
                                 <ul class="collapse">
@@ -235,6 +236,7 @@
     <script src="/assets/js/plugins.js"></script>
     <script src="/assets/js/scripts.js"></script>
     <script src="/assets/js/script.js"></script>
+    <script> cargaMain(); </script>
 </body>
 
 </html>

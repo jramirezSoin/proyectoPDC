@@ -111,12 +111,15 @@ public class TimeModelTagT extends Nodo{
     }
 
     @Override
-    public String toString() {
+    public String toString(String s) {
         String timeSpecss="";
         for(int i=0;i<this.timeSpecs.size();i++){
-            timeSpecss+=this.timeSpecs.get(i).toString()+"\n";
+            timeSpecss+=this.timeSpecs.get(i).toString(s+"\t")+"\n";
         }
-        return "        <timeModelTag>\n            <tagName>" + tagName + "</tagName>\n"+ timeSpecss + "        </timeModelTag>";
+        return s+"<timeModelTag>\n"+
+                s+"\t<tagName>" + tagName + "</tagName>\n"+
+                timeSpecss +
+                s+"</timeModelTag>";
     }
     
     
@@ -204,23 +207,31 @@ public class TimeModelTagT extends Nodo{
         }
 
         @Override
-        public String toString() {
+        public String toString(String s) {
             String days="",months="",daymon="";
             if(this.daysOfWeek.size()>0){
-                days="                <daysOfWeek>\n";
-                for(ListaT l: this.daysOfWeek) days+="                    <day>"+l.valor+"</day>\n";
-                days+="                </daysOfWeek>\n";
+                days=s+"\t<daysOfWeek>\n";
+                for(ListaT l: this.daysOfWeek) 
+                    days+=s+"\t\t<day>"+l.valor+"</day>\n";
+                days+=s+"\t</daysOfWeek>\n";
             }
             if(this.monthsOfYear.size()>0){
-                months="                <monthsOfYear>\n";
-                for(ListaT l: this.monthsOfYear) months+="                    <month>"+l.valor+"</month>\n";
-                months+="                </monthsOfYear>\n";
+                months=s+"\t<monthsOfYear>\n";
+                for(ListaT l: this.monthsOfYear) 
+                    months+=s+"\t\t<month>"+l.valor+"</month>\n";
+                months+=s+"\t</monthsOfYear>\n";
             }
             if(!this.daysOfMonth.equals(""))
-                daymon="<daysOfMonth>"+daysOfMonth+"</daysOfMonth>\n";
-            return "            <timeSpecification>\n                <name>" + name + "</name>\n                <description>" + description 
-                    + "</description>\n                <timeOfDay>" + timeOfDay + "</timeOfDay>\n" + days + months + "                <holiday>" + holiday+"</holiday>\n"
-                    + daymon +"            </timeSpecification>";
+                daymon=s+"\t<daysOfMonth>"+daysOfMonth+"</daysOfMonth>\n";
+            return  s+"<timeSpecification>\n"+
+                    s+"\t<name>" + name + "</name>\n"+
+                    s+"\t<description>" + description + "</description>\n"+
+                    s+"\t<timeOfDay>" + timeOfDay + "</timeOfDay>\n" + 
+                    days + 
+                    months + 
+                    s+"\t<holiday>" + holiday+"</holiday>\n"+
+                    daymon +
+                    s+"</timeSpecification>";
         }
         
         

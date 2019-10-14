@@ -160,23 +160,23 @@ public class ChargeSelectorSpecT extends Nodo {
 
     @Override
     public String toString() {
-        return "<chargeSelectorSpec xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"
-                + "    <name>" + name + "</name>\n"
-                + "    <internalId>" + internalId + "</internalId>\n"
-                + "    <pricingProfileName>" + pricingProfileName + "</pricingProfileName>\n"
-                + "    <priceListName>" + priceListName + "</priceListName>\n"
-                + "    <validFrom>" + validFrom + "</validFrom>\n"
-                + "    <validTo>" + validTo + "</validTo>\n"
-                + "    <timeModelTagName>" + timeModelTagName + "</timeModelTagName>\n"
-                + "    <zoneResult>" + zoneResult + "</zoneResult>\n"
-                + "    <balanceElementNumCode>" + balanceElementNumCode + "</balanceElementNumCode>\n"
-                + "    <pricingName>" + pricingName + "</pricingName>\n"
-                + "    <glid>" + glid + "</glid>\n"
-                + "    <eventConditions>\n"
-                + "        <eventField>" + eventConditions.unit + "</eventField>\n"
-                + "        <eventValue>" + eventConditions.valor + "</eventValue>\n"
-                + "    </eventConditions>\n"
-                + "</chargeSelectorSpec>";
+        return   "<chargeSelectorSpec xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"+
+                 "\t<name>" + name + "</name>\n"+
+                 ((internalId.equals(""))?"":"\t<internalId>"+ internalId + "</internalId>\n")+
+                 "\t<pricingProfileName>" + pricingProfileName + "</pricingProfileName>\n"+
+                 "\t<priceListName>" + priceListName + "</priceListName>\n"+
+                 "\t<validFrom>" + validFrom + "</validFrom>\n"+
+                 "\t<validTo>" + validTo + "</validTo>\n"+
+                 "\t<timeModelTagName>" + timeModelTagName + "</timeModelTagName>\n"+
+                 "\t<zoneResult>" + zoneResult + "</zoneResult>\n"+
+                 "\t<balanceElementNumCode>" + balanceElementNumCode + "</balanceElementNumCode>\n"+
+                 "\t<pricingName>" + pricingName + "</pricingName>\n"+
+                 "\t<glid>" + glid + "</glid>\n"+
+                 "\t<eventConditions>\n"+
+                 "\t\t<eventField>" + eventConditions.unit + "</eventField>\n"+
+                 "\t\t<eventValue>" + eventConditions.valor + "</eventValue>\n"+
+                 "\t</eventConditions>\n"+
+                 "</chargeSelectorSpec>";
     }
 
     @Override

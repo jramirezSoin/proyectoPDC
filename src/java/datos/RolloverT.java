@@ -154,9 +154,9 @@ public class RolloverT extends Nodo{
 
     @Override
     public String toString() {
-        return "<rolloverRatePlan xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">"
-                + "    <name>" + name + "</name>\n    <internalId>" + internalId + "</internalId>\n    <pricingProfileName>" 
-                + pricingProfileName + "</pricingProfileName>\n    <priceListName>" + priceListName + "</priceListName>    <dateRange>\n"
+        return "<rolloverRatePlan xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"
+                + "    <name>" + name + "</name>\n"+((internalId.equals(""))?"":"    <internalId>" + internalId + "</internalId>\n")+"    <pricingProfileName>" 
+                + pricingProfileName + "</pricingProfileName>\n    <priceListName>" + priceListName + "</priceListName>\n    <dateRange>\n"
                 +"        <startDate>" + startDate + "</startDate>\n        <endDate>" + endDate +"</endDate>\n        <rolloverPopModel>\n            <rolloverCharge>\n"
                 + "                <glid>" + glid + "</glid>\n                <unitOfMeasure>" + unitOfMeasure 
                 + "</unitOfMeasure>\n                <balanceElementNumCode>" + balanceElementNumCode 

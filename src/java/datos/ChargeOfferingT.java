@@ -167,26 +167,27 @@ public class ChargeOfferingT extends Nodo{
     public String toString() {
         String chargeEvents="";
         for(int i=0;i<this.chargeEvents.size();i++){
-            chargeEvents+=this.chargeEvents.get(i).toString()+"\n";
+            chargeEvents+=this.chargeEvents.get(i).toString("\t")+"\n";
         }
         return "<chargeOffering externalID=\""+name+"\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" +
-            "    <name>"+name+"</name>\n" +
-            "    <description>"+description+"</description>\n" +
-            "    <internalId>"+internalId+"</internalId>\n" +
-            "    <pricingProfileName>"+pricingProfileName+"</pricingProfileName>\n" +
-            "    <priceListName>"+priceListName+"</priceListName>\n" +
-            "    <timeRange>"+timeRange+"</timeRange>\n" +
-            ((productSpecName.equals(""))?"    <customerSpecName>"+customerSpecName+"</customerSpecName>\n":
-                "    <productSpecName>"+productSpecName+"</productSpecName>\n") +
-            "    <offerType>"+offerType+"</offerType>\n" +
-            "    <priority>"+priority+"</priority>\n" +
-            "    <partial>"+partial+"</partial>\n" +
-            "    <purchaseMin>-1.0</purchaseMin>\n" +
-            "    <purchaseMax>"+purchaseMax+"</purchaseMax>\n" +
-            "    <ownMin>-1.0</ownMin>\n" +
-            "    <ownMax>"+ownMax+"</ownMax>\n" +
-            "    <taxSupplier>"+taxSupplier+"</taxSupplier>\n" +
-            "    <applicableQuantity>REMAINING</applicableQuantity>\n"+chargeEvents+"</chargeOffering>";
+            "\t<name>"+name+"</name>\n" +
+            "\t<description>"+description+"</description>\n" +
+            ((internalId.equals(""))?"":"\t<internalId>"+ internalId + "</internalId>\n")+
+            "\t<pricingProfileName>"+pricingProfileName+"</pricingProfileName>\n" +
+            "\t<priceListName>"+priceListName+"</priceListName>\n" +
+            "\t<timeRange>"+timeRange+"</timeRange>\n" +
+            ((productSpecName.equals(""))?"\t<customerSpecName>"+customerSpecName+"</customerSpecName>\n":"\t<productSpecName>"+productSpecName+"</productSpecName>\n") +
+            "\t<offerType>"+offerType+"</offerType>\n" +
+            "\t<priority>"+priority+"</priority>\n" +
+            "\t<partial>"+partial+"</partial>\n" +
+            "\t<purchaseMin>-1.0</purchaseMin>\n" +
+            "\t<purchaseMax>"+purchaseMax+"</purchaseMax>\n" +
+            "\t<ownMin>-1.0</ownMin>\n" +
+            "\t<ownMax>"+ownMax+"</ownMax>\n" +
+            "\t<taxSupplier>"+taxSupplier+"</taxSupplier>\n" +
+            "\t<applicableQuantity>REMAINING</applicableQuantity>\n"+
+            chargeEvents+
+            "</chargeOffering>";
     }
 
     @Override

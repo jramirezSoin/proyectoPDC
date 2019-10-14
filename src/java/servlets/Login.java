@@ -5,12 +5,19 @@
  */
 package servlets;
 
+import client.ImportExportClient;
+import client.OraclePDCClient;
+import com.jcraft.jsch.SftpException;
 import control.ControlFunctions;
 import control.ControlPath;
 import datos.ListaT;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,20 +42,25 @@ public class Login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        session.setAttribute("index", null);
-        session.setAttribute("add", null);
-        session.setAttribute("addView", null);
-        session.setAttribute("principal", null);
-        session.setAttribute("lista", null);
-        session.setAttribute("actual", null);
-        session.setAttribute("actualView", null);
-        session.setAttribute("actualPath", null);
-        session.setAttribute("actualPoint", null);
-        session.setAttribute("titulo", null);
-        session.setAttribute("click", null);
-        ControlPath.LoadParameters();
-        
+            HttpSession session = request.getSession();
+            session.setAttribute("index", null);
+            session.setAttribute("add", null);
+            session.setAttribute("addView", null);
+            session.setAttribute("principal", null);
+            session.setAttribute("lista", null);
+            session.setAttribute("actual", null);
+            session.setAttribute("actualView", null);
+            session.setAttribute("actualPath", null);
+            session.setAttribute("actualPoint", null);
+            session.setAttribute("titulo", null);
+            session.setAttribute("click", null);
+            ControlPath.LoadParameters();
+            //ImportExport.main();
+            /*try {
+            OraclePDCClient.crearPricing();
+            } catch (Exception ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
         
     }
 
@@ -65,9 +77,7 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        request.setAttribute("hello","Mundo");
-        response.setContentType("text/html;charset=UTF-8");
-        request.getRequestDispatcher("/views/index.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/login.jsp").forward(request, response);
     }
 
     /**
@@ -82,6 +92,13 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String user= request.getParameter("user");
+        String password= request.getParameter("password");
+        System.out.println(user+" "+password);
+        if(ControlFunctions.login(user,password))
+            request.getRequestDispatcher("/views/index.jsp").forward(request, response);
+        else
+            request.getRequestDispatcher("/views/login.jsp").forward(request, response);
     }
 
     /**

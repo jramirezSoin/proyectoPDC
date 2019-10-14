@@ -124,11 +124,17 @@ public class RumT extends Nodo{
     
     @Override
     public String toString() {
-        return "<rumConfigurations xmlns:mtd=\"http://xmlns.oracle.com/communications/platform/model/Metadata\" xmlns:cim=\"http://xmlns.oracle.com/communications/platform/model/Config\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" 
-                +"    <name>" + name + "</name>\n    <description>" + description + "</description>\n    <internalId>" 
-                + internalId + "</internalId>\n    <priceListName>" + priceListName + "</priceListName>\n    <obsolete>" 
-                + obsolete + "</obsolete>\n    <unit>" + unit + "</unit>\n    <rumType>" + rumType + "</rumType>\n    <rumRounding>"  
-                + rumRounding + "</rumRounding>\n    <rumCode>"+rumCode+"</rumCode>\n</rumConfigurations>";
+        return "<rumConfigurations xmlns:mtd=\"http://xmlns.oracle.com/communications/platform/model/Metadata\" xmlns:cim=\"http://xmlns.oracle.com/communications/platform/model/Config\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"+ 
+                "\t<name>" + name + "</name>\n"+
+                "\t<description>" + description + "</description>\n"+
+                ((internalId.equals(""))?"":"\t<internalId>"+ internalId + "</internalId>\n")+
+                "\t<priceListName>" + priceListName + "</priceListName>\n"+
+                "\t<obsolete>" + obsolete + "</obsolete>\n"+
+                "\t<unit>" + unit + "</unit>\n"+
+                "\t<rumType>" + rumType + "</rumType>\n"+
+                "\t<rumRounding>"  + rumRounding + "</rumRounding>\n"+
+                "\t<rumCode>"+rumCode+"</rumCode>\n"+
+                "</rumConfigurations>";
     }
     
 

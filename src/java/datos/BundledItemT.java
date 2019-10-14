@@ -145,20 +145,30 @@ public class BundledItemT extends Nodo{
     }
 
     @Override
-    public String toString() {
-        return "    <bundledProductOfferingItem>\n" + "        <purchaseStart>" + separar(purchaseStart) + "        </purchaseStart>\n        <purchaseEnd>" 
-                + separar(purchaseEnd) + "</purchaseEnd>\n        <usageStart>" + separar(usageStart) + "        </usageStart>\n        <usageEnd>" 
-                + separar(usageEnd) + "        </usageEnd>        <cycleStart>" + separar(cycleStart) + "        </cycleStart>        <cycleEnd>" 
-                + separar(cycleEnd) + "        </cycleEnd>\n        <status>" + status + "</status>\n        <statusCode>" + statusCode 
-                + "</statusCode>\n        <quantity>" + quantity + "</quantity>\n        <purchaseChargeAdjustment>" 
-                + purchaseChargeAdjustment + "</purchaseChargeAdjustment>\n    <usageChargeAdjustment>" + usageChargeAdjustment 
-                + "</usageChargeAdjustment>\n        <cycleChargeAdjustment>" + cycleChargeAdjustment + "</cycleChargeAdjustment>\n        <chargeOfferingName>" 
-                + chargeOfferingName + "</chargeOfferingName>\n        <alterationOfferingName>" + alterationOfferingName + "</alterationOfferingName>\n    </bundledProductOfferingItem>";
+    public String toString(String s) {
+        return s+"<bundledProductOfferingItem>\n" + 
+                s+"\t<purchaseStart>" + separar(purchaseStart) + "        </purchaseStart>\n"+
+                s+"\t<purchaseEnd>" + separar(purchaseEnd) + "</purchaseEnd>\n"+
+                s+"\t<usageStart>" + separar(usageStart) + "        </usageStart>\n"+
+                s+"\t<usageEnd>" + separar(usageEnd) + "        </usageEnd>"+
+                s+"\t<cycleStart>" + separar(cycleStart) + "        </cycleStart>"+
+                s+"\t<cycleEnd>" + separar(cycleEnd) + "        </cycleEnd>\n"+
+                s+"\t<status>" + status + "</status>\n"+
+                s+"\t<statusCode>" + statusCode + "</statusCode>\n"+
+                s+"\t<quantity>" + quantity + "</quantity>\n"+
+                s+"\t<purchaseChargeAdjustment>" + purchaseChargeAdjustment + "</purchaseChargeAdjustment>\n"+
+                s+"\t<usageChargeAdjustment>" + usageChargeAdjustment + "</usageChargeAdjustment>\n"+
+                s+"\t<cycleChargeAdjustment>" + cycleChargeAdjustment + "</cycleChargeAdjustment>\n"+
+                s+"\t<chargeOfferingName>" + chargeOfferingName + "</chargeOfferingName>\n"+
+                s+"\t<alterationOfferingName>" + alterationOfferingName + "</alterationOfferingName>\n"+
+                s+"</bundledProductOfferingItem>";
         
     }
     
     private String separar(ListaT lista){
-       return "            <offset>"+lista.id+"</offset>\n"+((lista.unit.equals(""))?"":"            <unit>"+lista.unit+"</unit>\n")+"            <mode>"+lista.valor+"</mode>\n";
+       return  "            <offset>"+lista.id+"</offset>\n"+
+               ((lista.unit.equals(""))?"":"            <unit>"+lista.unit+"</unit>\n")+
+               "            <mode>"+lista.valor+"</mode>\n";
     }
     
     public int procesar(ArrayList<String> zoneModels, int index) {

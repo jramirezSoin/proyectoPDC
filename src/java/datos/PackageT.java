@@ -106,18 +106,25 @@ public class PackageT extends Nodo{
     public String toString() {
         String packItems="";
         for(int i=0;i<this.packageItems.size();i++){
-            packItems+=this.packageItems.get(i).toString()+"\n";
+            packItems+=this.packageItems.get(i).toString("\t")+"\n";
         }
         String balanceSpecs="";
         for(int i=0;i<this.balances.size();i++){
-            balanceSpecs+=this.balances.get(i).toString()+"\n";
+            balanceSpecs+=this.balances.get(i).toString("\t\t")+"\n";
         }
-        return "<package xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"
-                +"    <name>" + name + "</name>\n    <description>" + description 
-                + "</description>\n    <internalId>" + internalId + "</internalId>\n    <pricingProfileName>" 
-                + pricingProfileName + "</pricingProfileName>\n    <priceListName>" + priceListName + "</priceListName>\n    <billOnPurchase>" 
-                + billOnPurchase + "</billOnPurchase>\n"+packItems+"    <balanceSpecification>\n" +
-                  "        <name>Account Balance Group</name>\n"+balanceSpecs+"    </balanceSpecification>\n</package>";
+        return "<package xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"+
+                "\t<name>" + name + "</name>\n"+
+                "\t<description>" + description + "</description>\n"+
+                ((internalId.equals(""))?"":"\t<internalId>"+ internalId + "</internalId>\n")+
+                "\t<pricingProfileName>" + pricingProfileName + "</pricingProfileName>\n"+
+                "\t<priceListName>" + priceListName + "</priceListName>\n"+
+                "\t<billOnPurchase>" + billOnPurchase + "</billOnPurchase>\n"+
+                packItems+
+                "    <balanceSpecification>\n" +
+                "\t\t<name>Account Balance Group</name>\n"+
+                balanceSpecs+
+                "\t</balanceSpecification>\n"+
+                "</package>";
     }
     
     @Override

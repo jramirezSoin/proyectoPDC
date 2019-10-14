@@ -106,12 +106,15 @@ public class RoundingRuleT extends Nodo{
     }
 
     @Override
-    public String toString() {
-        return "    <roundingRules>\n        <precision>" + precision + "</precision>\n        <toleranceMin>" 
-                + toleranceMin + "</toleranceMin>\n        <toleranceMax>" + toleranceMax + "</toleranceMax>\n"
-                +"        <tolerancePercentage>" + tolerancePercentage + "</tolerancePercentage>\n        <roundingMode>" 
-                + roundingMode + "</roundingMode>\n        <processingStage>" + processingStage + "</processingStage>\n"
-                +"</roundingRules>";
+    public String toString(String s) {
+        return  s+"<roundingRules>\n"+
+                s+"\t<precision>" + precision + "</precision>\n"+
+                s+"\t<toleranceMin>" + toleranceMin + "</toleranceMin>\n"+
+                s+"\t<toleranceMax>" + toleranceMax + "</toleranceMax>\n"+
+                s+"\t<tolerancePercentage>" + tolerancePercentage + "</tolerancePercentage>\n"+
+                s+"\t<roundingMode>" + roundingMode + "</roundingMode>\n"+
+                s+"\t<processingStage>" + processingStage + "</processingStage>\n"+
+                s+"</roundingRules>";
     }
     
     

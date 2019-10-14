@@ -198,3 +198,23 @@ function consultaByElement(select,parameters,async){
     }
     }).done(function(){$.ajaxSetup({async:true});});
 }
+
+function cargaMain(){
+    $.get("/main",function(responseText) {
+        $('#Principal').html(responseText);
+        });
+}
+
+function exportar(){
+    $("#alertaIE").show();
+    $.get("/importexport",{tipo: "export", files: getChecks("listFileChecks")},function(responseText) {
+            $('#Principal').html(responseText);
+        });
+}
+
+function importar(){
+    $("#alertaIE").show();
+    $.get("/importexport",{tipo: "import", files: getChecks("listFileChecks")},function(responseText) {
+            $('#Principal').html(responseText);
+        });
+}

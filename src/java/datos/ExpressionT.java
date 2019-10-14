@@ -127,20 +127,29 @@ public class ExpressionT extends Nodo{
     }
 
     @Override
-    public String toString() {
-        String s="<"+tipo+">\n    <operator>"+operator+"</operator>\n    <value>"+value+"</value>\n";
+    public String toString(String s) {
+        String k=s+"<"+tipo+">\n"+
+                s+"\t<operator>"+operator+"</operator>\n"+
+                s+"\t<value>"+value+"</value>\n";
+        
         if(tipo.equals("balanceTriggerExpression")){
-            s+="    <balanceElementNumCode>"+balanceElementNumCode+"</balanceElementNumCode>\n";
+            k+=s+"\t<balanceElementNumCode>"+balanceElementNumCode+"</balanceElementNumCode>\n";
         }
         if(tipo.equals("complexTriggerExpression")){
-            s+="    <binaryExpression>\n        <leftOperand>\n            <balanceExpression>\n"
-                    +"                <balanceElementNumCode>"+balanceElementNumCode+"</balanceElementNumCode>\n"
-                    +"            </balanceExpression>\n        </leftOperand>\n        <rightOperand>\n"
-                    +"            <chargeExpression/>\n        </rightOperand>\n        <binaryOperator>"
-                    +binaryOperator+"</binaryOperator>\n    </binaryExpression>\n";
+            k+= s+"\t<binaryExpression>\n"+
+                s+"\t\t<leftOperand>\n"+
+                s+"\t\t\t<balanceExpression>\n"+
+                s+"\t\t\t\t<balanceElementNumCode>"+balanceElementNumCode+"</balanceElementNumCode>\n"+
+                s+"\t\t\t</balanceExpression>\n"+
+                s+"\t\t</leftOperand>\n"+
+                s+"\t\t<rightOperand>\n"+
+                s+"\t\t\t<chargeExpression/>\n"+
+                s+"\t\t</rightOperand>\n"+
+                s+"\t\t<binaryOperator>"+binaryOperator+"</binaryOperator>\n"+
+                s+"\t</binaryExpression>\n";
                     
         }
-        return s+"</"+tipo+">";
+        return k+s+"</"+tipo+">";
     }
     
     

@@ -8,8 +8,11 @@ package xml;
 import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
 import control.ControlPath;
 import datos.ListaT;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -151,6 +154,7 @@ public class XmlParser {
     
     public static void Modificar(String archivoViejo, String archivoNuevo, String contenido, String tag, int id){
         try {
+            contenido = contenido.replaceAll(" +<.+></.+>\n", "");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc1 = db.parse(new ByteArrayInputStream(contenido.getBytes("UTF-8")));
@@ -213,6 +217,7 @@ public class XmlParser {
     }
     public static void Agregar(String archivoViejo, String archivoNuevo, String contenido, String tag){
         try {
+            contenido = contenido.replaceAll(" +<.+></.+>\n", "");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc1 = db.parse(new ByteArrayInputStream(contenido.getBytes("UTF-8")));
@@ -220,13 +225,22 @@ public class XmlParser {
             // 1. cargar el XML original
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
+            try{
+                builder.parse(new File(archivoViejo));}
+            catch(FileNotFoundException e){
+                BufferedWriter bw;
+                bw = new BufferedWriter(new FileWriter(archivoViejo));
+                bw.write(getPlantilla(archivoViejo));
+                bw.close();
+            }
             Document doc = builder.parse(new File(archivoViejo));
-            
-            // 2. buscar y eliminar el elemento <enfermera id="3"> de entre
-            //    muchos elementos <enfermera> ubicados en cualquier posicion del documento
             NodeList items = doc.getElementsByTagName(tag);
             element = doc.importNode(element, true);
+            try{
             items.item(0).getParentNode().appendChild(element);
+            }catch(NullPointerException e){
+            doc.getFirstChild().appendChild(element);
+            }
             
             
             // 3. Exportar nuevamente el XML
@@ -494,6 +508,17 @@ public class XmlParser {
             System.out.println("Error"+ e.getLocalizedMessage());
             return null;
         }
+    }
+
+    private static String getPlantilla(String archivoViejo) {
+        if(archivoViejo.matches("(.*)_pricing.xml"))
+            return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><pdc:PricingObjectsJXB xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\"></pdc:PricingObjectsJXB>";
+        else if(archivoViejo.matches("(.*)_config.xml"))
+            return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><cim:ConfigObjects xmlns:cim=\"http://xmlns.oracle.com/communications/platform/model/Config\"></cim:ConfigObjects>";
+        else if(archivoViejo.matches("(.*)_metadata.xml"))
+            return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><mtd:MetadataObjects xmlns:mtd=\"http://xmlns.oracle.com/communications/platform/model/Metadata\"></mtd:MetadataObjects>";
+        else
+            return "";
     }
     
 }

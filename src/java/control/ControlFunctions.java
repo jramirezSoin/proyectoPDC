@@ -5,14 +5,17 @@
  */
 package control;
 
+import datos.Cambio;
 import datos.ListaT;
 import datos.Nodo;
+import datos.User;
 import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
 import xml.XmlParser;
 import java.text.SimpleDateFormat;  
 import java.util.Date;  
+import xml.TxtParser;
 
 /**
  *
@@ -22,8 +25,10 @@ public class ControlFunctions {
     
     public static ArrayList<ListaT> ListS2ListT(ArrayList<String> lista){
         ArrayList<ListaT> resultado = new ArrayList<>();
+        if(lista!=null){
         for(int i=0; i<lista.size(); i++)
             resultado.add(new ListaT(lista.get(i),i));
+        }
         return resultado;
     }
     
@@ -205,5 +210,38 @@ public class ControlFunctions {
     
     public static ArrayList<ListaT> LeerConstante(String constante){
         return XmlParser.LeerConstante(constante);
+    }
+    
+    public static boolean CambioContiene(ArrayList<Cambio> cambios, String valor){
+        for(Cambio cambio: cambios){
+            if(cambio.getArchivo().matches("(.*)"+valor+"(.*)")){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static ArrayList<Cambio> CambioContieneElimina(ArrayList<Cambio> cambios, String valor){
+        System.out.println("CAMBIA: "+valor);
+        if(cambios!=null){
+        for(int i=0; i<cambios.size(); i++){
+            Cambio cambio= cambios.get(i);
+            System.out.println("CAMBIO: "+cambio.getArchivo());
+            if(cambio.getArchivo().matches("(.*)"+valor+"(.*)")){
+                cambios.remove(i);
+                i--;
+            }
+        }
+        }
+        return cambios;
+    }
+
+    public static boolean login(String user, String password) {
+        User usuario= TxtParser.login(user, password);
+        if(usuario!=null){
+            System.out.print("OH YEAH");
+            return true;
+        }
+        return false;
     }
 }

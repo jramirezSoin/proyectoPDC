@@ -88,24 +88,24 @@ public class BalanceSpecT extends Nodo{
     }
 
     @Override
-    public String toString() {
+    public String toString(String s) {
         return
-        "        <balanceElementSpecification>\n" +
-        "            <balanceElementNumCode>"+balanceElementNumCode+"</balanceElementNumCode>\n" +
-        "            <consumptionRule>"+consumptionRule+"</consumptionRule>\n" +
-        "            <balanceCreditProfile>\n" +
-        "                <floor>"+floor+"</floor>\n" +
-        "                <ceiling>"+ceil+"</ceiling>\n" +
-        ((threshold1.equals(""))?"":"                <thresholdLevel>\n" +
-        "                    <threshold>"+threshold1+"</threshold>\n" +
-        "                    <type>ABSOLUTE</type>\n" +
-        "                </thresholdLevel>\n") +
-        ((threshold2.equals(""))?"":"                <thresholdLevel>\n" +
-        "                    <threshold>"+threshold2+"</threshold>\n" +
-        "                    <type>ABSOLUTE</type>\n" +
-        "                </thresholdLevel>\n") +
-        "            </balanceCreditProfile>\n" +
-        "        </balanceElementSpecification>";
+        s+"<balanceElementSpecification>\n" +
+        s+"\t<balanceElementNumCode>"+balanceElementNumCode+"</balanceElementNumCode>\n" +
+        s+"\t<consumptionRule>"+consumptionRule+"</consumptionRule>\n" +
+        s+"\t<balanceCreditProfile>\n" +
+        s+"\t\t<floor>"+floor+"</floor>\n" +
+        s+"\t\t<ceiling>"+ceil+"</ceiling>\n" +
+        ((threshold1.equals(""))?"":s+"\t\t<thresholdLevel>\n" +
+        s+"\t\t\t<threshold>"+threshold1+"</threshold>\n" +
+        s+"\t\t\t<type>ABSOLUTE</type>\n" +
+        s+"\t\t</thresholdLevel>\n") +
+        ((threshold2.equals(""))?"":s+"\t\t<thresholdLevel>\n" +
+        s+"\t\t\t<threshold>"+threshold2+"</threshold>\n" +
+        s+"\t\t\t<type>ABSOLUTE</type>\n" +
+        s+"\t\t</thresholdLevel>\n") +
+        s+"\t</balanceCreditProfile>\n" +
+        s+"</balanceElementSpecification>";
     }
     
     public int procesar(ArrayList<String> balances2, int index) {

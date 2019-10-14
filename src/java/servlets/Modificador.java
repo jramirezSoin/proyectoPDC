@@ -6,15 +6,20 @@
 package servlets;
 
 import control.ControlFunctions;
+import control.ControlPath;
+import datos.Cambio;
 import datos.Nodo;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import xml.TxtParser;
 import xml.XmlParser;
 
 /**
@@ -75,6 +80,9 @@ public class Modificador extends HttpServlet {
         request.getSession().setAttribute("principal", nodo);
         String path=(String) request.getSession().getAttribute("actualPath");
         String pointer=(String) request.getSession().getAttribute("actualPoint");
+        Date date= new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        TxtParser.aniadirCambio(new Cambio("Update", simpleDateFormat.format(new Date()),path.replace(ControlPath.path, "")));
         XmlParser.Modificar(path, path, nodo.toString(), pointer, nodo.id);
         ArrayList<String> nodos= XmlParser.LeerSeleccionado(new File(path) , nodo.id);
         nodo.clean();

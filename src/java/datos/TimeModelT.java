@@ -100,14 +100,20 @@ public class TimeModelT extends Nodo{
     public String toString() {
         String timeTags="";
         for(int i=0;i<this.timeModelTags.size();i++){
-            timeTags+=this.timeModelTags.get(i).toString()+"\n";
+            timeTags+=this.timeModelTags.get(i).toString("\t\t")+"\n";
         }
-        return "<timeModel xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" 
-                + "    <name>" + name + "</name>\n    <description>" + description + "</description>\n    <internalId>"
-                + internalId + "</internalId>\n    <pricingProfileName>" + pricingProfileName + "</pricingProfileName>\n    <priceListName>" 
-                + priceListName + "</priceListName>\n    <holidayCalendarName>" + holidayCalendarName + "</holidayCalendarName>\n"
-                + "    <validityPeriod>\n        <validFrom>"+ validFrom + "</validFrom>\n"
-                + timeTags + "    </validityPeriod>\n</timeModel>";
+        return  "<timeModel xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"+ 
+                "\t<name>" + name + "</name>\n"+
+                "\t<description>" + description + "</description>\n"+
+                ((internalId.equals(""))?"":"\t<internalId>"+ internalId + "</internalId>\n")+
+                "\t<pricingProfileName>" + pricingProfileName + "</pricingProfileName>\n"+
+                "\t<priceListName>" + priceListName + "</priceListName>\n"+
+                "\t<holidayCalendarName>" + holidayCalendarName + "</holidayCalendarName>\n"+
+                "\t<validityPeriod>\n"+
+                "\t\t<validFrom>"+ validFrom + "</validFrom>\n"+
+                timeTags + 
+                "\t</validityPeriod>\n"+
+                "</timeModel>";
     }
     
     @Override

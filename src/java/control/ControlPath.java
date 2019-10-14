@@ -163,6 +163,16 @@ public class ControlPath {
     public static String customRuleClick = "";
     public static String customRulePath = "";
     public static String customRulePointer = "";
+    public static String changes= "";
+    public static String users="C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/users.txt";
+    public static String mainView= "";
+    public static String pinDirectory= "";
+    public static String pinImportExport= "";
+    public static String pinPwdPDC= "";
+    public static String pinPwdUser= "";
+    public static String pinUser= "";
+    public static String pinPort= "";
+    public static String pinHost= "";
     
     public static void LoadParameters(){
         FileInputStream fis = null;
@@ -170,7 +180,16 @@ public class ControlPath {
             fis = new FileInputStream("C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/Infranet.properties");
             try {
                 PropertyResourceBundle properties= new PropertyResourceBundle(fis);
-                path = properties.getString("path").trim();
+                
+                pinDirectory = properties.getString("pinDirectory");
+                pinImportExport = properties.getString("pinImportExport");
+                pinPwdPDC= properties.getString("pinPwdPDC");
+                pinPwdUser= properties.getString("pinPwdUser");
+                pinUser= properties.getString("pinUser");
+                pinPort= properties.getString("pinPort");
+                pinHost= properties.getString("pinHost");
+                
+                path = properties.getString("path").trim()+pinUser+"/";
                 zoneModelsPath = path + properties.getString("zoneModelsPath").trim();
                 impactCategoriesPath = path + properties.getString("impactCategoriesPath").trim();
                 triggerSpecPath = path + properties.getString("triggerSpecPath").trim();
@@ -186,13 +205,14 @@ public class ControlPath {
                 alterationOfferingPath = path + properties.getString("alterationOfferingPath").trim();
                 eventAttributeSpecPath = path + properties.getString("eventAttributeSpecPath").trim();
                 chargeRatePath = path + properties.getString("chargeRatePath").trim();
-                glidPath = path + properties.getString("glidPath").trim();
                 uscMapPath = path + properties.getString("uscMapPath").trim();
                 chargeSelectorSpecPath = path + properties.getString("chargeSelectorSpecPath").trim();
                 genericSelectorPath = path + properties.getString("genericSelectorPath").trim();
                 customRulePath = path + properties.getString("customRulePath").trim();
-                constants = path + properties.getString("constants").trim();
+                changes = path + properties.getString("changes").trim();
                 
+                constants = path.replace(pinUser+"/", "") + properties.getString("constants").trim();
+                glidPath = path.replace(pinUser+"/", "") + properties.getString("glidPath").trim();
                 
                 zoneModelsPointer= properties.getString("zoneModelsPointer");
                 zoneModelsView= properties.getString("zoneModelsView");
@@ -308,6 +328,8 @@ public class ControlPath {
                 
                 customRuleClick = properties.getString("customRuleClick");
                 customRulePointer = properties.getString("customRulePointer");
+                
+                mainView= properties.getString("mainView");
                 
             } finally {
                 fis.close();

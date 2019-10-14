@@ -7,16 +7,19 @@ package servlets;
 
 import control.ControlFunctions;
 import control.ControlPath;
+import datos.Cambio;
 import datos.ListaT;
 import datos.Nodo;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import xml.TxtParser;
 import xml.XmlParser;
 
 /**
@@ -65,6 +68,7 @@ public class Guardar extends HttpServlet {
         request.getSession().setAttribute("add", null);
         String path=(String) request.getSession().getAttribute("actualPath");
         String pointer=(String) request.getSession().getAttribute("actualPoint");
+        TxtParser.aniadirCambio(new Cambio("Add", (new Date()).toString(),path.replace(ControlPath.path, "")));
         XmlParser.Agregar(path, path, nodo.toString(), pointer);
         ArrayList<String> impactCategories = XmlParser.Leer2(new File(path) , pointer);
         ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(impactCategories);             

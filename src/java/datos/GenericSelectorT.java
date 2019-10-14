@@ -168,17 +168,17 @@ public class GenericSelectorT extends Nodo{
                 validities+=validitiesAux;
             }
         }
-        return "<genericSelector xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" +
-        "\t<name>"+name+"</name>\n" +
-        "\t<description>"+description+"</description>\n" +
-        "\t<internalId>"+internalId+"</internalId>\n" +
-        "\t<pricingProfileName>"+pricingProfileName+"</pricingProfileName>\n" +
-        "\t<priceListName>"+priceListName+"</priceListName>\n" +
-        "\t<stereoType>"+stereoType+"</stereoType>\n" +
-        "\t<eventSpecName>"+eventSpecName+"</eventSpecName>\n" +
-        "\t"+((customerSpecName.equals(""))?"<productSpecName>" + productSpecName + "</productSpecName>":"<customerSpecName>" + customerSpecName + "</customerSpecName>")+"\n"+    
-        validities+        
-        "</genericSelector>";
+        return  "<genericSelector xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" +
+                "\t<name>"+name+"</name>\n" +
+                "\t<description>"+description+"</description>\n" +
+                ((internalId.equals(""))?"":"\t<internalId>"+ internalId + "</internalId>\n")+
+                "\t<pricingProfileName>"+pricingProfileName+"</pricingProfileName>\n" +
+                "\t<priceListName>"+priceListName+"</priceListName>\n" +
+                "\t<stereoType>"+stereoType+"</stereoType>\n" +
+                "\t<eventSpecName>"+eventSpecName+"</eventSpecName>\n" +
+                "\t"+((customerSpecName.equals(""))?"<productSpecName>" + productSpecName + "</productSpecName>":"<customerSpecName>" + customerSpecName + "</customerSpecName>")+"\n"+    
+                validities+        
+                "</genericSelector>";
     }
     
     

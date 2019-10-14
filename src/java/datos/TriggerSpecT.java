@@ -122,12 +122,16 @@ public class TriggerSpecT extends Nodo{
     public String toString() {
         String zoneItems="";
         for(int i=0;i<this.expressions.size();i++){
-            zoneItems+=this.expressions.get(i).toString()+"\n";
+            zoneItems+=this.expressions.get(i).toString("\t")+"\n";
         }
-        return "<triggerSpec xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" 
-                + "    <name>" + name + "</name>\n    <description>" + description + "</description>\n    <internalId>"
-                + internalId + "</internalId>\n    <pricingProfileName>" + pricingProfileName + "</pricingProfileName>\n    <priceListName>" 
-                + priceListName + "</priceListName>\n" + zoneItems + "</triggerSpec>";
+        return  "<triggerSpec xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" +
+                "\t<name>" + name + "</name>\n"+
+                "\t<description>" + description + "</description>\n"+
+                ((internalId.equals(""))?"":"\t<internalId>"+ internalId + "</internalId>\n")+
+                "\t<pricingProfileName>" + pricingProfileName + "</pricingProfileName>\n"+
+                "\t<priceListName>" + priceListName + "</priceListName>\n" + 
+                zoneItems + 
+                "</triggerSpec>";
     }
     
     @Override

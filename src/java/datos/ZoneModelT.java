@@ -100,12 +100,15 @@ public class ZoneModelT extends Nodo{
     public String toString() {
         String zoneItems="";
         for(int i=0;i<this.zoneItems.size();i++){
-            zoneItems+=this.zoneItems.get(i).toString()+"\n";
+            zoneItems+=this.zoneItems.get(i).toString("\t")+"\n";
         }
-        return "<standardZoneModel xmlns:mtd=\"http://xmlns.oracle.com/communications/platform/model/Metadata\" xmlns:cim=\"http://xmlns.oracle.com/communications/platform/model/Config\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" 
-                + "    <name>" + name + "</name>\n    <description>" + description + "</description>\n    <internalId>"
-                + internalId + "</internalId>\n    <priceListName>" + priceListName + "</priceListName>\n    <obsolete>" 
-                + obsolete + "</obsolete>\n" + zoneItems + "</standardZoneModel>";
+        return  "<standardZoneModel xmlns:mtd=\"http://xmlns.oracle.com/communications/platform/model/Metadata\" xmlns:cim=\"http://xmlns.oracle.com/communications/platform/model/Config\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"+
+                "\t<name>" + name + "</name>\n"+
+                "\t<description>" + description + "</description>\n"+
+                ((internalId.equals(""))?"":"\t<internalId>"+ internalId + "</internalId>\n")+
+                "\t<priceListName>" + priceListName + "</priceListName>\n"+
+                "\t<obsolete>" + obsolete + "</obsolete>\n" + zoneItems + 
+                "</standardZoneModel>";
     }
 
     @Override

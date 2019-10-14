@@ -96,7 +96,8 @@ public class RuleT extends Nodo{
         for(String m : this.models.keySet()){
             ListaT l= this.models.get(m);
             if(l.id==1){
-            fieldExpressions+= s+"\t<fieldToValueExpression>\n" +
+            fieldExpressions+= 
+            s+"\t<fieldToValueExpression>\n" +
             s+"\t\t<operation>"+l.unit+"</operation>\n" +
             s+"\t\t<seperator>"+seperator+"</seperator>\n" +
             s+"\t\t<fieldName>"+event+"."+m+"</fieldName>\n" +
@@ -111,13 +112,13 @@ public class RuleT extends Nodo{
             }
             
         }
-        return s+"<rule>\n" +
-            s+"\t<name>"+name+"</name>\n" +
-            s+"\t<result>\n" +
-            s+"\t\t<resultName>"+resultName+"</resultName>\n" +
-            s+"\t</result>\n" +
-            fieldExpressions+
-            s+"</rule>";
+        return  s+"<rule>\n" +
+                s+"\t<name>"+name+"</name>\n" +
+                s+"\t<result>\n" +
+                s+"\t\t<resultName>"+resultName+"</resultName>\n" +
+                s+"\t</result>\n" +
+                fieldExpressions+
+                s+"</rule>";
     }
     
     @Override

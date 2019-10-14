@@ -91,15 +91,15 @@ public class ZoneItemT extends Nodo{
     }
 
     @Override
-    public String toString() {
-        return "    <zoneItem>\n" 
-                + "        <productName>" + productName +"</productName>\n" 
-                + "        <originPrefix>" + originPrefix +"</originPrefix>\n" 
-                + "        <destinationPrefix>" + destinationPrefix +"</destinationPrefix>\n" 
-                + "        <validFrom>" + validFrom +"</validFrom>\n"
-                + "        <validTo>" + validTo +"</validTo>\n"
-                + zoneResult.toString()+"\n"
-                + "    </zoneItem>";
+    public String toString(String s) {
+        return s+"<zoneItem>\n"+ 
+               s+"\t<productName>" + productName +"</productName>\n" +
+               s+"\t<originPrefix>" + originPrefix +"</originPrefix>\n" +
+               s+"\t<destinationPrefix>" + destinationPrefix +"</destinationPrefix>\n" +
+               s+"\t<validFrom>" + validFrom +"</validFrom>\n"+
+               s+"\t<validTo>" + validTo +"</validTo>\n"+
+               s+zoneResult.toString(s+"\t")+"\n"+
+               s+"</zoneItem>";
     }
     
     public int procesar(ArrayList<String> zoneModels, int index) {
@@ -167,10 +167,10 @@ public class ZoneItemT extends Nodo{
         }
 
         @Override
-        public String toString() {
-            return "        <zoneResult>\n" 
-                    + "            <zoneName>" + ZoneName + "</zoneName>\n"
-                    + "        </zoneResult>";
+        public String toString(String s) {
+            return s+"<zoneResult>\n" +
+                    s+"\t<zoneName>" + ZoneName + "</zoneName>\n"+
+                    s+"</zoneResult>";
         }
         
         public int procesar(ArrayList<String> zoneModels, int index) {

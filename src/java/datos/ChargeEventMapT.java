@@ -103,26 +103,26 @@ public class ChargeEventMapT extends Nodo{
     }
     
     @Override
-    public String toString() {
+    public String toString(String s) {
         return 
-           "    <chargeEventMap>\n" +
-        "        <eventName>"+eventName+"</eventName>\n" +
-        "        <validIfCancelled>"+((valid<=2)?"true":"false")+"</validIfCancelled>\n" +
-        "        <validIfInactive>"+((valid%2!=0)?"true":"false")+"</validIfInactive>\n" +
-        "        <timezoneMode>"+timezoneMode+"</timezoneMode>\n" +
-        "        <minQuantity>"+minQuantity+"</minQuantity>\n" +
-        "        <minQuantityUnit>NONE</minQuantityUnit>\n" +
-        "        <incrementQuantity>1</incrementQuantity>\n" +
-        "        <incrementQuantityUnit>NONE</incrementQuantityUnit>\n" +
-        "        <roundingMode>NEAREST</roundingMode>\n" +
-        "        <prorateFirst>"+prorateFirst+"</prorateFirst>\n" +
-        "        <prorateLast>"+prorateLast+"</prorateLast>\n" +
-        "        <chargeRatePlanInfo>\n" +
-        "            <targetEngine>"+targetEngine+"</targetEngine>\n" +
-        "        </chargeRatePlanInfo>\n" +
-        "        <chargeRatePlanName>"+chargeRatePlanName+"</chargeRatePlanName>\n" +
-        "        <ratePlanIID>"+ratePlanIID+"</ratePlanIID>\n" +
-        "    </chargeEventMap>";
+           s+"<chargeEventMap>\n" +
+        s+"\t<eventName>"+eventName+"</eventName>\n" +
+        s+"\t<validIfCancelled>"+((valid<=2)?"true":"false")+"</validIfCancelled>\n" +
+        s+"\t<validIfInactive>"+((valid%2!=0)?"true":"false")+"</validIfInactive>\n" +
+        s+"\t<timezoneMode>"+timezoneMode+"</timezoneMode>\n" +
+        s+"\t<minQuantity>"+minQuantity+"</minQuantity>\n" +
+        s+"\t<minQuantityUnit>NONE</minQuantityUnit>\n" +
+        s+"\t<incrementQuantity>1</incrementQuantity>\n" +
+        s+"\t<incrementQuantityUnit>NONE</incrementQuantityUnit>\n" +
+        s+"\t<roundingMode>NEAREST</roundingMode>\n" +
+        s+"\t<prorateFirst>"+prorateFirst+"</prorateFirst>\n" +
+        s+"\t<prorateLast>"+prorateLast+"</prorateLast>\n" +
+        s+"\t<chargeRatePlanInfo>\n" +
+        s+"\t\t<targetEngine>"+targetEngine+"</targetEngine>\n" +
+        s+"\t</chargeRatePlanInfo>\n" +
+        s+"\t<chargeRatePlanName>"+chargeRatePlanName+"</chargeRatePlanName>\n" +
+        s+"\t<ratePlanIID>"+ratePlanIID+"</ratePlanIID>\n" +
+        s+"</chargeEventMap>";
     }
     
     public int procesar(ArrayList<String> charges, int index) {

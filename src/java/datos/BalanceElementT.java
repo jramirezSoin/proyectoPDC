@@ -180,15 +180,23 @@ public class BalanceElementT extends Nodo{
     public String toString() {
         String roundingRules="";
         for(int i=0;i<this.roundingRules.size();i++){
-            roundingRules+=this.roundingRules.get(i).toString()+"\n";
+            roundingRules+=this.roundingRules.get(i).toString("\t")+"\n";
         }
-        return "<balanceElements xmlns:mtd=\"http://xmlns.oracle.com/communications/platform/model/Metadata\" xmlns:cim=\"http://xmlns.oracle.com/communications/platform/model/Config\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" 
-                + "    <name>" + name + "</name>\n    <description>" + description + "</description>\n    <internalId>"
-                + internalId + "</internalId>\n    <priceListName>" + priceListName + "</priceListName>\n    <obsolete>" 
-                + obsolete + "</obsolete>\n    <code>"+code+"</code>\n    <numericCode>"+numCode+"</numericCode>\n    <symbol>"
-                + symbol +"</symbol>\n    <transientElement>"+transientElement+"</transientElement>\n    <foldable>"
-                + foldable +"</foldable>\n    <counter>"+counter+"</counter>\n" + roundingRules + "    <consumptionRule>"
-                + consumptionRule +"</consumptionRule>\n</balanceElements>";
+        return  "<balanceElements xmlns:mtd=\"http://xmlns.oracle.com/communications/platform/model/Metadata\" xmlns:cim=\"http://xmlns.oracle.com/communications/platform/model/Config\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" +
+                "\t<name>" + name + "</name>\n"+
+                "\t<description>" + description + "</description>\n"+
+                ((internalId.equals(""))?"":"\t<internalId>"+ internalId + "</internalId>\n")+
+                "\t<priceListName>" + priceListName + "</priceListName>\n"+
+                "\t<obsolete>" + obsolete + "</obsolete>\n"+
+                "\t<code>"+code+"</code>\n"+
+                "\t<numericCode>"+numCode+"</numericCode>\n"+
+                "\t<symbol>"+ symbol +"</symbol>\n"+
+                "\t<transientElement>"+transientElement+"</transientElement>\n"+
+                "\t<foldable>"+ foldable +"</foldable>\n"+
+                "\t<counter>"+counter+"</counter>\n" + 
+                roundingRules + 
+                "\t<consumptionRule>"+ consumptionRule +"</consumptionRule>\n"+
+                "</balanceElements>";
     }
 
     

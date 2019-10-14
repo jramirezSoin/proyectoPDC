@@ -101,10 +101,15 @@ public class ImpactCategoryT extends Nodo{
     }
     @Override
     public String toString() {
-        return "<zoneResultConfiguration xmlns:mtd=\"http://xmlns.oracle.com/communications/platform/model/Metadata\" xmlns:cim=\"http://xmlns.oracle.com/communications/platform/model/Config\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n" 
-                +"    <name>" + name + "</name>\n    <description>" + description + "</description>\n    <internalId>" 
-                + internalId + "</internalId>\n    <priceListName>" + priceListName + "</priceListName>\n    <obsolete>" 
-                + obsolete + "</obsolete>\n    <result>" + result + "</result>\n    <resultType>"+resultType+"</resultType>\n</zoneResultConfiguration>";
+        return "<zoneResultConfiguration xmlns:mtd=\"http://xmlns.oracle.com/communications/platform/model/Metadata\" xmlns:cim=\"http://xmlns.oracle.com/communications/platform/model/Config\" xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"+
+                "\t<name>" + name + "</name>\n"+
+                "\t<description>" + description + "</description>\n"+
+                ((internalId.equals(""))?"":"\t<internalId>"+ internalId + "</internalId>\n")+
+                "\t<priceListName>" + priceListName + "</priceListName>\n"+
+                "\t<obsolete>" + obsolete + "</obsolete>\n"+
+                "\t<result>" + result + "</result>\n"+
+                "\t<resultType>"+resultType+"</resultType>\n"+
+                "</zoneResultConfiguration>";
     }
     
 

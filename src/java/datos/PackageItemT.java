@@ -67,21 +67,22 @@ public class PackageItemT extends Nodo{
     
 
     @Override
-    public String toString() {
+    public String toString(String s) {
         String bundles="";
         for(ListaT item: bundleProductOffering){
-            bundles+="        <bundledProductOfferingAssociation>\n"+
-        "            <optional>"+((item.id>2)?"true":"false")+"</optional>\n"+
-        "            <cancelWithService>"+((item.id==1)?"true":"false")+"</cancelWithService>\n"+
-        "            <bundledProductOfferingName>"+item.valor+"</bundledProductOfferingName>\n"+
-        "        </bundledProductOfferingAssociation>\n";
+            bundles+=   s+"\t<bundledProductOfferingAssociation>\n"+
+                        s+"\t\t<optional>"+((item.id>2)?"true":"false")+"</optional>\n"+
+                        s+"\t\t<cancelWithService>"+((item.id==1)?"true":"false")+"</cancelWithService>\n"+
+                        s+"\t\t<bundledProductOfferingName>"+item.valor+"</bundledProductOfferingName>\n"+
+                        s+"\t</bundledProductOfferingAssociation>\n";
         }
         return 
-        "    <"+((productSpecName.equals(""))?"customer":"product")+"SpecPackageItem>\n"+
-        ((productSpecName.equals(""))?"":"        <name>"+productSpecName+"</name>\n")+
-        "        <balanceSpecificationName>Account Balance Group</balanceSpecificationName>\n"+
-        ((productSpecName.equals(""))?"":"        <productSpecName>"+productSpecName+"</productSpecName>\n")+
-        bundles+"    </"+((productSpecName.equals(""))?"customer":"product")+"SpecPackageItem>";
+        s+"<"+((productSpecName.equals(""))?"customer":"product")+"SpecPackageItem>\n"+
+        ((productSpecName.equals(""))?"":s+"\t<name>"+productSpecName+"</name>\n")+
+        s+"\t<balanceSpecificationName>Account Balance Group</balanceSpecificationName>\n"+
+        ((productSpecName.equals(""))?"":s+"\t<productSpecName>"+productSpecName+"</productSpecName>\n")+
+        bundles+
+        s+"</"+((productSpecName.equals(""))?"customer":"product")+"SpecPackageItem>";
     }
     
     @Override

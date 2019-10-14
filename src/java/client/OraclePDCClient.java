@@ -13,12 +13,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Map;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
+import javax.xml.ws.Service;
 import pricinggateway.PricingGateway;
 import pricinggateway.PricingGatewayPortType;
 
@@ -28,39 +31,74 @@ import pricinggateway.PricingGatewayPortType;
  */
 public class OraclePDCClient {
 
-    private static final String PDC_USER="";
-    private static final String PDC_PASSWORD="";
-    private static final String FILE = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/EM_20190731_HOLIDAY_CALENDAR_config.xml";
-    private static final String URL = "http://10.149.137.42:22537/pdc/PricingGatewayPort?wsdl";
+    private static final String FILE = "C:/Users/Joseph Ramírez/Desktop/PRD_20191007_ROLLOVERS_pricing.xml";
     private static final int BUFFER_SIZE= 1024;
+    private static String pdcUrl = "http://10.149.137.42:22537/pdc/PricingGatewayPort?wsdl";
+    private static String pdcUserName="occuser-25";
+    private static String pdcUserPassword="P4sspdc25";
+    private static String PDC="PDC";
+    
     
     public static void crearPricing() throws Exception{
         //Abre el puerto WS
+        System.setProperty("https.protocols", "SSLv3");
+        
+        javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+            new javax.net.ssl.HostnameVerifier(){
+
+                public boolean verify(String hostname,
+                        javax.net.ssl.SSLSession sslSession) {
+                    return hostname.equals("localhost");
+                }
+            });
+        
         PricingGateway port = new PricingGateway();
         PricingGatewayPortType pricingGatewayPortType =  port.getPricingGatewayPort();
 
-        //Autenticacion HttpHeader
         Map<String, Object> rc = ((BindingProvider)pricingGatewayPortType).getRequestContext();
-        rc. put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, URL);
-        rc.put(BindingProvider.USERNAME_PROPERTY,PDC_USER);
-        rc.put(BindingProvider.PASSWORD_PROPERTY,PDC_PASSWORD);
+        //rc. put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, pdcUrl);
+        rc.put(BindingProvider.USERNAME_PROPERTY,pdcUserName);
+        rc.put(BindingProvider.PASSWORD_PROPERTY,pdcUserPassword);
 
-        //Crear objeto UserContextType
         UserContextType userContext = new UserContextType();
-        userContext.setUserid(PDC_USER);
+        userContext.setUserid(pdcUserName);
 
-        //Crea y asigna a PricingInputXMLType el objeto anterior
         PricingInputXMLType pricingInputXMLType = new PricingInputXMLType();
         pricingInputXMLType.setUserContext(userContext);
-
-        //comprime el xml
-        byte[] bytesToRet = leerXml();
-        
-        //agrega a princingInputXMLType el bytesToRet con el xml compreso
+        ByteArrayOutputStream bs = new ByteArrayOutputStream();
+        ZipOutputStream out = new ZipOutputStream(bs);
+                FileInputStream fl = null;
+                try {
+                    fl = new FileInputStream(new File(FILE));
+                    // Set the compression ratio
+                    out.setLevel(Deflater.BEST_COMPRESSION);
+                    ZipEntry ze = new ZipEntry(PDC);
+                    out.putNextEntry(ze);
+                    byte[] data = new byte[BUFFER_SIZE];            int count = 0;
+                    BufferedInputStream in = new BufferedInputStream(fl);
+                    while ((count = in.read(data, 0, BUFFER_SIZE)) != -1){
+                        out.write(data, 0, count);
+                    }
+                } catch (Exception e) {
+                    throw e;
+                } finally {
+                    if (fl != null) {
+                        fl.close();
+                    }
+                    if (bs != null) {
+                        bs.flush();
+                    }
+                    if (out != null) {
+                        out.flush();
+                        out.close();
+                    }
+                }
+                byte[] bytesToRet = null;
+                if (bs != null) {
+                    bytesToRet = bs.toByteArray();
+                }
         pricingInputXMLType.setXmlBinaryString(bytesToRet);
-
-        //Envia el objeto bytesToRet con el xml
-        PDCResponseType pDCResponseType = pricingGatewayPortType.createPricingAndSubmit(pricingInputXMLType);
+        PDCResponseType pDCResponseType = pricingGatewayPortType.createPricing(pricingInputXMLType);
         System.out.println(pDCResponseType.getStatus());
     }
     
@@ -72,7 +110,7 @@ public class OraclePDCClient {
             fl = new FileInputStream(new File(FILE));
             // Set the compression ratio
             out.setLevel(Deflater.BEST_COMPRESSION);
-            ZipEntry ze = new ZipEntry("PDC");
+            ZipEntry ze = new ZipEntry(PDC);
             out.putNextEntry(ze);
             byte[] data = new byte[BUFFER_SIZE];            int count = 0;
             BufferedInputStream in = new BufferedInputStream(fl);
@@ -101,11 +139,6 @@ public class OraclePDCClient {
         
         return bytesToRet;
     
-    }
-    
-    public static void main(String[] args) throws Exception {  
-        byte[] bytesToRet= leerXml();
-        unzip(bytesToRet);
     }
     
     public static void unzip(byte[] bytesToRet) throws Exception, IOException{

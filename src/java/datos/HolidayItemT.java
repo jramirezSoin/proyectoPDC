@@ -54,9 +54,13 @@ public class HolidayItemT extends Nodo{
         }
 
         @Override
-        public String toString() {
-            return "    <holiday>\n        <name>" + name + "</name>\n        <month>" + month + "</month>\n        <day>"
-                    + day + "</day>\n"+((this.year.equals("")?"":"        <year>" + year +"</year>\n"))+"    </holiday>";
+        public String toString(String s) {
+            return s+"<holiday>\n"+
+                    s+"\t<name>" + name + "</name>\n"+
+                    s+"\t<month>" + month + "</month>\n"+
+                    s+"\t<day>"+ day + "</day>\n"+
+                    ((this.year.equals("")?"":s+"\t<year>" + year +"</year>\n"))+
+                    s+"</holiday>";
         }
         
         @Override
