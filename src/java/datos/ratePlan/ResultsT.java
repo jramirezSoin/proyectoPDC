@@ -5,6 +5,9 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import control.FirstPDF;
 import datos.Nodo;
 import java.util.ArrayList;
 
@@ -122,6 +125,16 @@ public class ResultsT extends Nodo{
         String[] strings = s.split(", ");
         for(String item : strings) array.add(item);
         return array;
+    }
+    
+    @Override
+    public void getPDF(Element element) {
+            Paragraph preface = (Paragraph) element;
+            String nombres="";
+            for(String t: name) nombres+=", "+t;
+            preface.add(new Paragraph("Resultado: "+nombres.substring(2),FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            this.result.getPDF(preface);
     }
     
 }

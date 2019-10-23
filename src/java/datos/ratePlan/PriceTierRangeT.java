@@ -5,6 +5,12 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.FirstPDF;
 import datos.Nodo;
 import java.util.ArrayList;
 
@@ -133,6 +139,29 @@ public class PriceTierRangeT extends Nodo{
         this.charges.add(charge);
     }
     
+    @Override
+    public void getPDF(Element element) {
+        try {
+            Paragraph preface = (Paragraph) element;
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Límite mayor: "+upperBound,FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            LineSeparator line = new LineSeparator();              
+            FirstPDF.addEmptyLine(preface, 1);
+            PdfPTable table = new PdfPTable(4);
+            float[] columnWidths = new float[]{20f, 20f, 30f, 10f};
+            table.setWidths(columnWidths);
+            table.setWidthPercentage(100);
+            table.addCell(FirstPDF.createTableHeader("Tipo"));
+            table.addCell(FirstPDF.createTableHeader("Precio"));
+            table.addCell(FirstPDF.createTableHeader("Saldo en"));
+            table.addCell(FirstPDF.createTableHeader("Unidad de medida"));
+            for(ChargeT tier: this.charges)
+                tier.getPDF(table);
+            preface.add(table);
+        } catch (DocumentException ex) {
+        }
+    }
     
     
 }

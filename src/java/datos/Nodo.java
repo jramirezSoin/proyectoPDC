@@ -5,7 +5,9 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
 import java.util.ArrayList;
+import com.itextpdf.text.Element;
 
 /**
  *
@@ -75,6 +77,14 @@ public class Nodo implements Cloneable{
     }
     
     public void clean(){
+        
+    }
+
+    public void getPDF(Document document) {
+        
+    }
+    
+    public void getPDF(Element element) {
         
     }
     

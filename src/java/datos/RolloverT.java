@@ -5,9 +5,16 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
 import control.ControlFunctions;
 import control.ControlPath;
+import control.FirstPDF;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -210,6 +217,37 @@ public class RolloverT extends Nodo{
         }else{
             this.visibilidad=false;
             return false;
+        }
+    }
+    
+    @Override
+    public void getPDF(Document document) {
+        try {
+            Paragraph preface = new Paragraph();
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Rollover: "+this.name, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
+            preface.add(new Paragraph("Perfil de precio: "+pricingProfileName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Fecha de inicio: "+ControlFunctions.getParseDate(startDate),FirstPDF.normalFont));
+            preface.add(new Paragraph("Fecha de fin: "+ControlFunctions.getParseDate(endDate),FirstPDF.normalFont));
+            preface.add(new Paragraph("GL/ID: "+glid,FirstPDF.normalFont));
+            preface.add(new Paragraph("GL/ID Descripción: "+glidName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Unidad de medida: "+unitOfMeasure,FirstPDF.normalFont));
+            preface.add(new Paragraph("Saldo en: "+balanceElementName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Unidades de traspaso: "+rolloverUnits,FirstPDF.normalFont));
+            preface.add(new Paragraph("Máximo de unidades de traspaso: "+rolloverMaxUnits,FirstPDF.normalFont));
+            preface.add(new Paragraph("Contador de traspaso: "+rolloverCount,FirstPDF.normalFont));
+            document.add(preface);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(RolloverT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

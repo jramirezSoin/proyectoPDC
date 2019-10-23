@@ -5,25 +5,18 @@
  */
 package servlets;
 
-import client.ImportExportClient;
+
 import client.OraclePDCClient;
-import com.jcraft.jsch.SftpException;
 import control.ControlFunctions;
 import control.ControlPath;
-import datos.ListaT;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import xml.XmlParser;
 
 /**
  *
@@ -54,13 +47,6 @@ public class Login extends HttpServlet {
             session.setAttribute("actualPoint", null);
             session.setAttribute("titulo", null);
             session.setAttribute("click", null);
-            ControlPath.LoadParameters();
-            //ImportExport.main();
-            /*try {
-            OraclePDCClient.crearPricing();
-            } catch (Exception ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
         
     }
 
@@ -77,7 +63,14 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        request.getRequestDispatcher("/views/login.jsp").forward(request, response);
+        //User user = (User)session.getAttribute("user");
+        String user="occuser-07", password="P4ssocc07";
+        if(ControlFunctions.login(user,password)){
+            request.getRequestDispatcher("/views/index.jsp").forward(request, response);
+            ControlPath.LoadParameters();
+        }
+        else
+            request.getRequestDispatcher("/views/login.jsp").forward(request, response);
     }
 
     /**
@@ -94,9 +87,10 @@ public class Login extends HttpServlet {
         processRequest(request, response);
         String user= request.getParameter("user");
         String password= request.getParameter("password");
-        System.out.println(user+" "+password);
-        if(ControlFunctions.login(user,password))
+        if(ControlFunctions.login(user,password)){
             request.getRequestDispatcher("/views/index.jsp").forward(request, response);
+            ControlPath.LoadParameters();
+        }
         else
             request.getRequestDispatcher("/views/login.jsp").forward(request, response);
     }

@@ -5,8 +5,12 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.ControlFunctions;
 import control.ControlPath;
+import control.FirstPDF;
 import datos.ListaT;
 import datos.Nodo;
 import java.text.ParseException;
@@ -340,6 +344,28 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
         pricetierV.setZoneCrp();
         this.priceTierValidityPeriods.add(pricetierV);
         this.priceTierRanges.add(pricetierR);
+    }
+    
+    @Override
+    public void getPDF(Element element) {
+            Paragraph preface = (Paragraph) element;
+            preface.add(new Paragraph("Límite menor: "+lowerBound,FirstPDF.normalFont));
+            preface.add(new Paragraph("Saldo en: "+balanceElementName,FirstPDF.normalFont));
+            preface.add(new Paragraph("RUM: "+rumName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Moneda: "+currencyCode,FirstPDF.normalFont));              
+            FirstPDF.addEmptyLine(preface, 1);
+            if(this.priceTierValidityPeriods!=null && this.priceTierValidityPeriods.size()>0){
+                for(PriceTierValidityPeriodT period: this.priceTierValidityPeriods){
+                    period.getPDF(preface);
+                    for(PriceTierRangeT tier: this.priceTierRanges){
+                        if(tier.getPriceTierValidityPeriod()==period.id)
+                            tier.getPDF(preface);
+                    }
+                }
+            }
+            else{
+            for(PriceTierRangeT tier: this.priceTierRanges)
+                tier.getPDF(preface);}
     }
 
 }

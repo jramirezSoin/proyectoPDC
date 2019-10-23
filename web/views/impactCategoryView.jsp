@@ -5,6 +5,7 @@
 --%>
 <%@page import="datos.ImpactCategoryT"%>
 <%@page import="datos.ImpactCategoryT"%>
+<%@page import="control.ControlPath"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% ImpactCategoryT impactCategory = (ImpactCategoryT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
@@ -19,6 +20,7 @@
                 </ul>
             </div>
         </div>
+        <%@include file="/views/userPanel.jsp" %>
     </div>
 </div>
             <!-- page title area end -->

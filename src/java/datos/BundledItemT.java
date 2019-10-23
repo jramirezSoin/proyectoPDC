@@ -5,6 +5,8 @@
  */
 package datos;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.pdf.PdfPTable;
 import java.util.ArrayList;
 
 /**
@@ -159,8 +161,9 @@ public class BundledItemT extends Nodo{
                 s+"\t<purchaseChargeAdjustment>" + purchaseChargeAdjustment + "</purchaseChargeAdjustment>\n"+
                 s+"\t<usageChargeAdjustment>" + usageChargeAdjustment + "</usageChargeAdjustment>\n"+
                 s+"\t<cycleChargeAdjustment>" + cycleChargeAdjustment + "</cycleChargeAdjustment>\n"+
-                s+"\t<chargeOfferingName>" + chargeOfferingName + "</chargeOfferingName>\n"+
-                s+"\t<alterationOfferingName>" + alterationOfferingName + "</alterationOfferingName>\n"+
+                ((!chargeOfferingName.equals(""))
+                ?s+"\t<chargeOfferingName>" + chargeOfferingName + "</chargeOfferingName>\n"
+                :s+"\t<alterationOfferingName>" + alterationOfferingName + "</alterationOfferingName>\n")+
                 s+"</bundledProductOfferingItem>";
         
     }
@@ -301,6 +304,15 @@ public class BundledItemT extends Nodo{
             this.visibilidad=false;
             return false;
         }
+    }
+    
+    public void getPDF(Element element){
+        if(chargeOfferingName.equals("")){
+        ((PdfPTable)element).addCell(this.alterationOfferingName);
+        ((PdfPTable)element).addCell("Descuento");}
+        else{
+        ((PdfPTable)element).addCell(this.chargeOfferingName);
+        ((PdfPTable)element).addCell("Cargo");}
     }
     
     

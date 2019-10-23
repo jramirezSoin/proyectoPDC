@@ -5,7 +5,15 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.FirstPDF;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -233,7 +241,61 @@ public class PackageT extends Nodo{
             this.packageItems.get(i).merge(nodoI);
         }
     }
+    
+    @Override
+    public void getPDF(Document document) {
+        try {
+            Paragraph preface = new Paragraph();
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Zone Model: "+this.name, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
+            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Factura por compra: "+billOnPurchase,FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            LineSeparator line = new LineSeparator();              
+            preface.add(line);
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Items",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            for(PackageItemT item : this.packageItems){
+                if(item.visibilidad){
+                    item.getPDF(preface);
+                }
+            }
+            FirstPDF.addEmptyLine(preface, 1);            
+            preface.add(line);
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Especificación de Saldo",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            PdfPTable table = new PdfPTable(5);
+            float[] columnWidths = new float[]{30f, 10f, 10f, 10f, 10f};
+            table.setWidths(columnWidths);
+            table.setWidthPercentage(100);
+            table.addCell(FirstPDF.createTableHeader("Saldo en"));
+            table.addCell(FirstPDF.createTableHeader("Limite de crédito"));
+            table.addCell(FirstPDF.createTableHeader("Nivel mínimo de crédito"));
+            table.addCell(FirstPDF.createTableHeader("Umbral"));
+            table.addCell(FirstPDF.createTableHeader("Umbral"));
+            for(BalanceSpecT item : this.balances){
+                if(item.visibilidad){
+                    item.getPDF(table);
+                }
+            }
+            preface.add(table);
+            document.add(preface);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
+
+
     
     
 

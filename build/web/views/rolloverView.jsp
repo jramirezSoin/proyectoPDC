@@ -6,6 +6,7 @@
 
 <%@page import="control.ControlFunctions"%>
 <%@page import="datos.RolloverT"%>
+<%@page import="control.ControlPath"%>
 <% RolloverT rollover = (RolloverT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
     <div class="row align-items-center">
@@ -19,6 +20,7 @@
                 </ul>
             </div>
         </div>
+        <%@include file="/views/userPanel.jsp" %>
     </div>
 </div>
             <!-- page title area end -->

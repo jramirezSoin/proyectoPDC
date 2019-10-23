@@ -6,6 +6,7 @@
 
 <%@page import="datos.RoundingRuleT"%>
 <%@page import="datos.BalanceElementT"%>
+<%@page import="control.ControlPath"%>
 <% BalanceElementT balance = (BalanceElementT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
     <div class="row align-items-center">
@@ -19,6 +20,7 @@
                 </ul>
             </div>
         </div>
+        <%@include file="/views/userPanel.jsp" %>
     </div>
 </div>
             <!-- page title area end -->

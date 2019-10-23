@@ -6,6 +6,7 @@
 
 <%@page import="datos.TriggerSpecT"%>
 <%@page import="datos.ExpressionT"%>
+<%@page import="control.ControlPath"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% TriggerSpecT triggerSpec = (TriggerSpecT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
@@ -20,6 +21,7 @@
                 </ul>
             </div>
         </div>
+        <%@include file="/views/userPanel.jsp" %>
     </div>
 </div>
             <!-- page title area end -->

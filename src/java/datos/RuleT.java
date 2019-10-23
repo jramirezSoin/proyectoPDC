@@ -5,8 +5,16 @@
  */
 package datos;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.FirstPDF;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -161,8 +169,6 @@ public class RuleT extends Nodo{
      @Override
     public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
         if(indexs.size()==0){
-            System.out.println(lista);
-            System.out.println(index);
             index= this.procesar(lista, index);}
         return index;
     }
@@ -187,6 +193,47 @@ public class RuleT extends Nodo{
         for(String s: modelDatas.keySet()){
             ModelDataT model= modelDatas.get(s);
             this.models.put(s, new ListaT(((model.getTipo().equals("Custom"))?2:1),model.getOperator(),"")); 
+        }
+    }
+    
+    @Override
+    public void getPDF(Element element) {
+        try {
+            Paragraph preface = (Paragraph) element;
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Regla: "+this.name, FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("Categoría de Repecusión: "+resultName,FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            LineSeparator line = new LineSeparator();              
+            preface.add(line);
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Expressiones",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            PdfPTable table = new PdfPTable(5);
+            float[] columnWidths = new float[]{30f, 20f, 20f, 10f,20f};
+            table.setWidths(columnWidths);
+            table.setWidthPercentage(100);
+            table.addCell(FirstPDF.createTableHeader("Nombre"));
+            table.addCell(FirstPDF.createTableHeader("Valor"));
+            table.addCell(FirstPDF.createTableHeader("Operador"));
+            table.addCell(FirstPDF.createTableHeader("Separador"));
+            table.addCell(FirstPDF.createTableHeader("Tipo"));
+            for(String item : this.models.keySet()){
+                ListaT t = this.models.get(item);
+                table.addCell(item);
+                table.addCell(t.valor);
+                table.addCell(t.unit);
+                table.addCell(this.seperator);
+                table.addCell(this.fieldKind);
+            }
+            preface.add(table);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

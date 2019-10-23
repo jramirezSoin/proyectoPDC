@@ -5,7 +5,15 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.FirstPDF;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -175,9 +183,51 @@ public class ZoneModelT extends Nodo{
         }
     }
     
+    @Override
     public void modificarMasivo(Nodo nodoI, ArrayList<Integer> indexs) {
         for(int i: indexs){
             this.zoneItems.get(i).merge(nodoI);
+        }
+    }
+    
+    @Override
+    public void getPDF(Document document) {
+        try {
+            Paragraph preface = new Paragraph();
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Zone Model: "+this.name, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
+            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Obsoleto: "+obsolete,FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            LineSeparator line = new LineSeparator();              
+            preface.add(line);
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Items",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            PdfPTable table = new PdfPTable(4);
+            float[] columnWidths = new float[]{30f, 10f, 10f, 20f};
+            table.setWidths(columnWidths);
+            table.setWidthPercentage(100);
+            table.addCell(FirstPDF.createTableHeader("Producto"));
+            table.addCell(FirstPDF.createTableHeader("Origen"));
+            table.addCell(FirstPDF.createTableHeader("Destino"));
+            table.addCell(FirstPDF.createTableHeader("Categoría de Repercusión"));
+            for(ZoneItemT item : this.zoneItems){
+                if(item.visibilidad){
+                    item.getPDF(table);
+                }
+            }
+            preface.add(table);
+            document.add(preface);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

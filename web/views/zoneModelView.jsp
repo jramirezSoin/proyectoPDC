@@ -7,6 +7,7 @@
 <%@page import="control.ControlFunctions"%>
 <%@page import="datos.ZoneModelT"%>
 <%@page import="datos.ZoneItemT"%>
+<%@page import="control.ControlPath"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% ZoneModelT zoneModel = (ZoneModelT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
@@ -21,6 +22,7 @@
                 </ul>
             </div>
         </div>
+        <%@include file="/views/userPanel.jsp" %>
     </div>
 </div>
             <!-- page title area end -->

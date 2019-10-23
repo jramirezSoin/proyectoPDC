@@ -30,6 +30,7 @@ public class ImportExportClient {
             comandos+="echo "+ControlPath.pinPwdPDC+" | "+ControlPath.pinImportExport+" -export "+file+" -"+type+" "+file+" ;";
             comandos+="[ -f "+file+"_"+type+".xml ] && echo \"yes\" ;";
             System.out.println("Exportando "+type+" "+file+"...");
+            System.out.println(comandos);
             String s= sshConnector.executeCommand(comandos);
             s= s.replaceAll("\n", "-");
             if(s.matches("(.*)-yes(.*)")){

@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class TxtParser {
@@ -38,6 +39,8 @@ public class TxtParser {
             scanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
         }
         return cambios;
     }
@@ -49,7 +52,6 @@ public class TxtParser {
             BufferedWriter bfwriter = new BufferedWriter(flwriter);
             bfwriter.write(cambio.getCambio()+","+cambio.getFecha()+","+cambio.getArchivo()+"\n");
             bfwriter.close();
-            System.out.println("Archivo modificado satisfactoriamente..");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,7 +78,6 @@ public class TxtParser {
             for(Cambio cambio: cambios)
                 bfwriter.write(cambio.getCambio()+","+cambio.getFecha()+","+cambio.getArchivo()+"\n");
             bfwriter.close();
-            System.out.println("Archivo modificado satisfactoriamente..");
 
         } catch (IOException e) {
             e.printStackTrace();

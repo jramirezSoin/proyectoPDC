@@ -5,9 +5,14 @@
  */
 package datos.alteration;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.pdf.PdfPTable;
+import control.ControlFunctions;
+import control.ControlPath;
 import datos.ListaT;
 import datos.Nodo;
 import datos.ratePlan.PriceValidityT;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,15 +20,18 @@ import datos.ratePlan.PriceValidityT;
  */
 public class AlterationChargeT extends Nodo{
     
+    public String tipo = "";
     private String price = "";
     private String unitOfMeasure = "";
     private String balanceElementNumCode = "";
+    private String balanceElementName = "";
     private String alterationAppliesTo = "";
     private ListaT alterationBasedOn = new ListaT("","");
     private String priceType = "";
     private String incrementStep = "";
     private String prorateLastIncrementStep = "";
     private String glid = "";
+    private String glidName = "";
     private PriceValidityT priceValidity;
     
     public AlterationChargeT() {
@@ -112,8 +120,122 @@ public class AlterationChargeT extends Nodo{
     public void setPriceValidity(PriceValidityT priceValidity) {
         this.priceValidity = priceValidity;
     }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getBalanceElementName() {
+        return balanceElementName;
+    }
+
+    public void setBalanceElementName(String balanceElementName) {
+        this.balanceElementName = balanceElementName;
+    }
+
+    public String getGlidName() {
+        return glidName;
+    }
+
+    public void setGlidName(String glidName) {
+        this.glidName = glidName;
+    }
     
     
+    
+    
+    @Override
+    public int procesar(ArrayList<String> ratePlan2, int index) {
+        ArrayList<String> ratePlan= (ArrayList<String>)ratePlan2.clone();
+        for(int i=index; i<ratePlan.size();i++) {
+            if(ratePlan.get(i).matches("(?s)price: (.*)")) this.price= ratePlan.get(i).substring(7);
+            else if(ratePlan.get(i).matches("(?s)unitOfMeasure: (.*)")) this.unitOfMeasure= ratePlan.get(i).substring(15);
+            else if(ratePlan.get(i).matches("(?s)alterationAppliesTo: (.*)")) this.alterationAppliesTo= ratePlan.get(i).substring(21);
+            else if(ratePlan.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= ratePlan.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode",ratePlan.get(i).substring(23)),"name");}
+            else if(ratePlan.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= ratePlan.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",ratePlan.get(i).substring(20)),"numericCode");}
+            else if(ratePlan.get(i).matches("(?s)glid: (.*)")){ this.glid= ratePlan.get(i).substring(6); this.glidName=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("code",ratePlan.get(i).substring(6)),"name");}
+            else if(ratePlan.get(i).matches("(?s)glidName: (.*)")){ this.glidName= ratePlan.get(i).substring(10); this.glid=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("name",ratePlan.get(i).substring(10)),"code");}
+            else if(ratePlan.get(i).matches("(?s)incrementStep: (.*)")) this.incrementStep= ratePlan.get(i).substring(15);
+            else if(ratePlan.get(i).matches("(?s)priceType: (.*)")) this.priceType= ratePlan.get(i).substring(11);
+            else if(ratePlan.get(i).matches("(?s)prorateLastIncrementStep: (.*)")) this.prorateLastIncrementStep= ratePlan.get(i).substring(26);
+            else if(ratePlan.get(i).matches("(?s)alterationBasedOn")){
+                i++;
+                if(ratePlan.get(i).matches("(?s)quantityBasisExpression")){
+                    alterationBasedOn.unit=ratePlan.get(i);
+                    i++;
+                    if(ratePlan.get(i).matches("(?s)useTierComponent: (.*)")){alterationBasedOn.valor= ratePlan.get(i).substring(18);}
+                    if(ratePlan.get(i+1).matches("(?s)preRated: (.*)")){i++;}
+                }
+                else if(ratePlan.get(i).matches("(?s)chargeBasisExpression")){
+                    alterationBasedOn.unit=ratePlan.get(i);
+                    i++;
+                    if(ratePlan.get(i).matches("(?s)useTierComponent: (.*)")){alterationBasedOn.valor= ratePlan.get(i).substring(18);}
+                    if(ratePlan.get(i+1).matches("(?s)preRated: (.*)")){i++;}
+                }
+            }
+            else if(("priceValidity").contains(ratePlan.get(i))){     
+                PriceValidityT priceValidity = new PriceValidityT(0);
+                i= priceValidity.procesar(ratePlan, i+1);
+                i--;
+                this.priceValidity=priceValidity;
+            }else return i;
+        }
+        return ratePlan.size();
+    }
+    
+    @Override
+    public String toString(String s) {
+        return  s+"<"+tipo+">\n" +
+                s+"\t<price>"+price+"</price>\n" +
+                s+"\t<unitOfMeasure>"+unitOfMeasure+"</unitOfMeasure>\n" +
+                s+"\t<balanceElementNumCode>"+balanceElementNumCode+"</balanceElementNumCode>\n" +
+                s+"\t<alterationAppliesTo>"+alterationAppliesTo+"</alterationAppliesTo>\n" +
+                s+"\t<alterationBasedOn>\n" +
+                s+"\t\t<"+alterationBasedOn.unit+">\n" +
+                s+"\t\t\t<useTierComponent>"+alterationBasedOn.valor+"</useTierComponent>\n" +
+                ((alterationBasedOn.unit.equals("chargeBasisExpression"))?s+"\t\t\t<preRated>false</preRated>\n":"") +
+                s+"\t\t</"+alterationBasedOn.unit+">\n" +
+                s+"\t</alterationBasedOn>\n" +
+                s+"\t<priceType>"+priceType+"</priceType>\n" +
+                s+"\t<glid>"+glid+"</glid>\n" +
+                s+"\t<incrementStep>"+incrementStep+"</incrementStep>\n" +
+                s+"\t<prorateLastIncrementStep>"+prorateLastIncrementStep+"</prorateLastIncrementStep>\n"+
+                ((this.priceValidity==null)?"":this.priceValidity.toString(s+"\t")+"\n")+
+                s+"</"+tipo+">";
+    }
+    
+    @Override
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+        if(indexs.size()==0)
+            index= this.procesar(lista, index);
+        return index;
+    }
+    
+    @Override
+    public boolean buscar(String buscar) {
+        if((tipo+"/"+price+"/"+unitOfMeasure+"/"+balanceElementNumCode+"/"+alterationAppliesTo+"/"+alterationBasedOn.valor+"/"+priceType
+                +"/"+incrementStep+"/"+prorateLastIncrementStep+"/"+glid).replaceAll(" ", "_").toLowerCase().contains(buscar.toLowerCase())){
+            this.visibilidad=true;
+            return true;
+        }else{
+            this.visibilidad=false;
+            return false;
+        }
+    }
+    
+    @Override
+    public void getPDF(Element element) {
+            PdfPTable table = (PdfPTable) element;
+            table.addCell(priceType);
+            table.addCell(price);
+            table.addCell(balanceElementName);
+            table.addCell(unitOfMeasure);
+            
+    }
     
     
 }

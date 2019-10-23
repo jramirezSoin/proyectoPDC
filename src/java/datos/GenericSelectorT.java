@@ -5,9 +5,17 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.FirstPDF;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -300,6 +308,47 @@ public class GenericSelectorT extends Nodo{
             m.setOperator(model.getOperator());
             m.setDefaultValue(model.getDefaultValue());
             m.setValueType(model.getValueType());
+        }
+    }
+    
+    @Override
+    public void getPDF(Document document) {
+        try {
+            Paragraph preface = new Paragraph();
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Zone Model: "+this.name, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
+            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            if(!productSpecName.equals(""))
+            preface.add(new Paragraph("Producto: "+productSpecName,FirstPDF.normalFont));
+            else
+            preface.add(new Paragraph("Cliente: "+customerSpecName,FirstPDF.normalFont));    
+            preface.add(new Paragraph("Evento: "+eventSpecName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Estereotipo: "+stereoType,FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            LineSeparator line = new LineSeparator();              
+            preface.add(line);
+            FirstPDF.addEmptyLine(preface, 1);
+            int i=0;
+            for(String item : this.validityPeriods){
+                preface.add(new Paragraph("Periodo: "+item,FirstPDF.subFont));
+                FirstPDF.addEmptyLine(preface, 1);
+                for(RuleT rule: this.rules){
+                    if(rule.visibilidad && rule.getValidityPeriod()==i){
+                        rule.getPDF(preface);
+                    }
+                }
+                i++;
+            }
+            document.add(preface);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

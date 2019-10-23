@@ -5,6 +5,8 @@
  */
 package datos;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.pdf.PdfPTable;
 import java.util.ArrayList;
 
 /**
@@ -92,6 +94,13 @@ public class HolidayItemT extends Nodo{
                 this.visibilidad=false;
                 return false;
             }
+        }
+        
+        public void getPDF(Element element){
+            ((PdfPTable)element).addCell(this.name);
+            ((PdfPTable)element).addCell(this.day);
+            ((PdfPTable)element).addCell(this.month);
+            ((PdfPTable)element).addCell(this.year);
         }
         
         

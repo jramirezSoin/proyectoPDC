@@ -61,7 +61,14 @@
                                             <li><a href="#" onclick="hacerlist('/charge', 'Charge Offering')">Charge Offering</a></li>
                                             <li><a href="#" onclick="hacerlist('/chargeRate', 'Charge Rate Plan')">Charge Rate Plan</a></li>
                                         </ul>
-                                    </li>    
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)" aria-expanded="true"><i class="ti-stats-down"></i><span>Discount</span></a>
+                                        <ul class="collapse">
+                                            <li><a href="#" onclick="hacerlist('/alterationOffering', 'Alteration Offering')">Alteration Offering</a></li>
+                                            <li><a href="#" onclick="hacerlist('/alterationRatePlan', 'Alteration Rate Plan')">Alteration Rate Plan</a></li>
+                                        </ul>
+                                    </li>
                                     <li>
                                         <a href="javascript:void(0)" aria-expanded="true"><i class="ti-ruler"></i><span>Selector</span></a>
                                         <ul class="collapse">
@@ -204,6 +211,46 @@
     </div>
   </div>
 </div>
+            
+<div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="pdfModalTitle"></h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <form action="/downloadPdf" method="POST">
+      <div class="modal-body" id="pdfModalBody">
+        <b class="text-muted mb-3 d-block">Reporte:</b>
+        <div class="custom-control custom-radio">
+            <input type="radio" checked id="customRadio1" name="customRadio" value="General" class="custom-control-input">
+            <label class="custom-control-label" for="customRadio1">General</label>
+        </div>
+        <div class="custom-control custom-radio">
+            <input type="radio" id="customRadio2" name="customRadio" value="Detallado" class="custom-control-input">
+            <label class="custom-control-label" for="customRadio2">Detallado</label>
+        </div>
+        <b class="text-muted mb-3 d-block">Nodos:</b>
+        <div class="custom-control custom-radio">
+            <input type="radio" checked id="customRadio3" name="customRadioD" value="Todos" class="custom-control-input">
+            <label class="custom-control-label" for="customRadio3">Todos</label>
+        </div>
+        <div class="custom-control custom-radio">
+            <input type="radio" id="customRadio4" name="customRadioD" value="Seleccionados" class="custom-control-input">
+            <label class="custom-control-label" for="customRadio4">Seleccionados</label>
+        </div>
+        <input type="hidden" value="" name="pdfChecks" id="pdfChecks">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input  type="submit" class="btn btn-primary" value="Download PDF">
+      </div>
+        </form>      
+    </div>
+  </div>
+</div>            
 
 
     <!-- offset area end -->

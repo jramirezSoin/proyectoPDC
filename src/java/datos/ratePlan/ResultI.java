@@ -5,6 +5,7 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Element;
 import datos.Nodo;
 
 /**
@@ -13,4 +14,5 @@ import datos.Nodo;
  */
 public interface ResultI{
     public void getRumCurrency(String rum,String currency);
+    public void getPDF(Element element);
 }

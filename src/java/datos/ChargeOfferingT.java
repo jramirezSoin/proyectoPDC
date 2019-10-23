@@ -5,7 +5,15 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.FirstPDF;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -271,6 +279,55 @@ public class ChargeOfferingT extends Nodo{
     public void modificarMasivo(Nodo nodoI, ArrayList<Integer> indexs) {
         for(int i: indexs){
             this.chargeEvents.get(i).merge(nodoI);
+        }
+    }
+    
+    @Override
+    public void getPDF(Document document) {
+        try {
+            Paragraph preface = new Paragraph();
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Zone Model: "+this.name, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
+            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Rango: "+timeRange,FirstPDF.normalFont));
+            if(!productSpecName.equals(""))
+            preface.add(new Paragraph("Producto: "+productSpecName,FirstPDF.normalFont));
+            else
+            preface.add(new Paragraph("Cliente: "+customerSpecName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Tipo de oferta: "+offerType,FirstPDF.normalFont));
+            preface.add(new Paragraph("Prioridad: "+priority,FirstPDF.normalFont));
+            preface.add(new Paragraph("Parcial: "+partial,FirstPDF.normalFont));
+            preface.add(new Paragraph("Máximo de compra: "+purchaseMax,FirstPDF.normalFont));
+            preface.add(new Paragraph("Mínimo de compra: -1.0",FirstPDF.normalFont));
+            preface.add(new Paragraph("Proveedor de impuestos: "+taxSupplier,FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            LineSeparator line = new LineSeparator();              
+            preface.add(line);
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Eventos",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            PdfPTable table = new PdfPTable(2);
+            float[] columnWidths = new float[]{10f, 10f};
+            table.setWidths(columnWidths);
+            table.setWidthPercentage(100);
+            table.addCell(FirstPDF.createTableHeader("Evento"));
+            table.addCell(FirstPDF.createTableHeader("Plan de Tarifa"));
+            for(ChargeEventMapT item : this.chargeEvents){
+                if(item.visibilidad){
+                    item.getPDF(table);
+                }
+            }
+            preface.add(table);
+            document.add(preface);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
    

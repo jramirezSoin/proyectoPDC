@@ -8,6 +8,9 @@ package datos;
 import control.ControlFunctions;
 import control.ControlPath;
 import java.util.ArrayList;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import control.FirstPDF;
 
 /**
  *
@@ -152,7 +155,34 @@ public class ExpressionT extends Nodo{
         return k+s+"</"+tipo+">";
     }
     
+    @Override
+    public void getPDF(Element element) {
+        Paragraph preface = (Paragraph) element;
+        if(tipo.equals("balanceTriggerExpression")){
+            preface.add(new Paragraph("Saldo",FirstPDF.normalBold));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Operador: "+operator,FirstPDF.normalFont));
+            preface.add(new Paragraph("Valor: "+value,FirstPDF.normalFont));
+            preface.add(new Paragraph("Saldo en: "+balanceElementName,FirstPDF.normalFont));
+        }
+        if(tipo.equals("complexTriggerExpression")){
+            preface.add(new Paragraph("Compleja",FirstPDF.normalBold));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Operador: "+operator,FirstPDF.normalFont));
+            preface.add(new Paragraph("Valor: "+value,FirstPDF.normalFont));
+            preface.add(new Paragraph("Operador Izquierdo: "+balanceElementName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Operador Derecho: Cargo",FirstPDF.normalFont));
+            preface.add(new Paragraph("Operador Binario: "+operator,FirstPDF.normalFont));
+            
+        }else if(tipo.equals("chargeTriggerExpression")){
+            preface.add(new Paragraph("Cargo",FirstPDF.normalBold));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Operador: "+operator,FirstPDF.normalFont));
+            preface.add(new Paragraph("Value: "+value,FirstPDF.normalFont));
+        }
+        FirstPDF.addEmptyLine(preface, 2);
     
+    }
     
     
 }

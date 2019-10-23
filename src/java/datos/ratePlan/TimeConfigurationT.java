@@ -5,6 +5,10 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.FirstPDF;
 import datos.Nodo;
 import java.util.ArrayList;
 
@@ -120,6 +124,20 @@ public class TimeConfigurationT extends Nodo implements ResultI{
             crp.getCrpCompositePopModel().getRumCurrency(rum,currency);
         }
     }
+    
+    @Override
+    public void getPDF(Element element) {
+            Paragraph preface = (Paragraph) element;
+            preface.add(new Paragraph("Time Model: "+timeModelName,FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            for(TagsT result: this.tags){
+                result.getPDF(preface);
+                LineSeparator line = new LineSeparator();              
+                preface.add(line);
+            }
+    }
+    
+    
     
     
 }

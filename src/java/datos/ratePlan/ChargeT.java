@@ -5,6 +5,8 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.pdf.PdfPTable;
 import control.ControlFunctions;
 import control.ControlPath;
 import datos.ListaT;
@@ -242,6 +244,16 @@ public class ChargeT extends Nodo{
     
     public void setZoneCrp(){
         tipo="fixedCharge";
+    }
+    
+    @Override
+    public void getPDF(Element element) {
+            PdfPTable table = (PdfPTable) element;
+            table.addCell(priceType);
+            table.addCell(price);
+            table.addCell(balanceElementName);
+            table.addCell(unitOfMeasure);
+            
     }
     
 }

@@ -5,9 +5,18 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.ControlFunctions;
 import control.ControlPath;
+import control.FirstPDF;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -293,5 +302,43 @@ public class ChargeSelectorSpecT extends Nodo {
             return false;
         }
     }
+    
+    @Override
+    public void getPDF(Document document) {
+        try {
+            Paragraph preface = new Paragraph();
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Zone Model: "+this.name, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
+            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            preface.add(new Paragraph("GL/ID: "+glid,FirstPDF.normalFont));
+            preface.add(new Paragraph("GL/ID Descripción: "+glidName,FirstPDF.normalFont));
+            preface.add(new Paragraph("valido desde: "+ControlFunctions.getParseDate(validFrom),FirstPDF.normalFont));
+            preface.add(new Paragraph("valido hasta: "+ControlFunctions.getParseDate(validTo),FirstPDF.normalFont));
+            preface.add(new Paragraph("Saldo en: "+balanceElementName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de precios: "+pricingName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Categoria de impacto: "+zoneResult,FirstPDF.normalFont));
+            preface.add(new Paragraph("Modelo de tiempo: "+timeModelTagName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Campo de evento: "+eventConditions.unit,FirstPDF.normalFont));
+            preface.add(new Paragraph("Valor del evento: "+eventConditions.valor,FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            LineSeparator line = new LineSeparator();              
+            preface.add(line);
+            FirstPDF.addEmptyLine(preface, 1);
+            document.add(preface);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(ChargeSelectorSpecT.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+        
 
 }

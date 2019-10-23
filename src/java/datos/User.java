@@ -65,6 +65,12 @@ public class User {
     public void setPwdPDCIE(String pwdPDCIE) {
         this.pwdPDCIE = pwdPDCIE;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "user=" + user + ", password=" + password + ", userPDC=" + userPDC + ", pwdPDC=" + pwdPDC + ", pwdPDCIE=" + pwdPDCIE + '}';
+    }
+    
     
     
 }

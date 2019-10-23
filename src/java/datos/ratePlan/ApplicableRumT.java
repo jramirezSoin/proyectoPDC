@@ -5,6 +5,10 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.FirstPDF;
 import datos.Nodo;
 import java.util.ArrayList;
 
@@ -122,6 +126,15 @@ public class ApplicableRumT extends Nodo{
             return false;
         }
     }
+    
+        @Override
+    public void getPDF(Element element) {
+            Paragraph preface = (Paragraph) element;
+            preface.add(new Paragraph("RUM aplicado: "+applicableRumName,FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+    }
+    
+    
     
     
     

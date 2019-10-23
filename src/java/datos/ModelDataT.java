@@ -20,6 +20,7 @@ public class ModelDataT extends Nodo{
     private String operator="EQUAL_TO";
     private String tipo="Explicito";
     
+    
     public ModelDataT(){}
     public ModelDataT(int id){this.id=id;}
     public ModelDataT(String name, String operator, String tipo){

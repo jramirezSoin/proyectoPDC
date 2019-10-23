@@ -5,10 +5,15 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.ControlFunctions;
 import control.ControlPath;
+import control.FirstPDF;
 import datos.ListaT;
 import datos.Nodo;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -125,6 +130,20 @@ public class SubscriberCurrencyT extends Nodo{
             this.visibilidad=false;
             return false;
         }
+    }
+    
+        @Override
+    public void getPDF(Element element) {
+            Paragraph preface = (Paragraph) element;
+            preface.add(new Paragraph("Moneda: "+currencyName,FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            if(this.applicableRum!=null){
+                this.applicableRum.getPDF(preface);  
+            }
+            for(CrpRelDateRangeT rel: this.crpRelDateRanges){
+                rel.getPDF(preface);
+            }
+
     }
     
     

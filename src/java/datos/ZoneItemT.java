@@ -5,6 +5,8 @@
  */
 package datos;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.pdf.PdfPTable;
 import java.util.ArrayList;
 
 /**
@@ -144,6 +146,13 @@ public class ZoneItemT extends Nodo{
     public void merge(Nodo nodo) {
         ZoneItemT zoneItemT= (ZoneItemT) nodo;
         
+    }
+    
+    public void getPDF(Element element){
+        ((PdfPTable)element).addCell(this.getProductName());
+        ((PdfPTable)element).addCell(this.getOriginPrefix());
+        ((PdfPTable)element).addCell(this.getDestinationPrefix());
+        ((PdfPTable)element).addCell(this.getZoneResult().getZoneName());
     }
     
     

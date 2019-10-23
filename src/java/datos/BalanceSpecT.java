@@ -5,6 +5,8 @@
  */
 package datos;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.pdf.PdfPTable;
 import control.ControlFunctions;
 import control.ControlPath;
 import java.util.ArrayList;
@@ -149,6 +151,14 @@ public class BalanceSpecT extends Nodo{
             this.visibilidad=false;
             return false;
         }
+    }
+    
+    public void getPDF(Element element){
+        ((PdfPTable)element).addCell(this.balanceElementName);
+        ((PdfPTable)element).addCell(this.ceil);
+        ((PdfPTable)element).addCell(this.floor);
+        ((PdfPTable)element).addCell(this.threshold1);
+        ((PdfPTable)element).addCell(this.threshold2);
     }
     
     

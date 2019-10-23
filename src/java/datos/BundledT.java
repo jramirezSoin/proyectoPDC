@@ -5,7 +5,15 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.FirstPDF;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -234,6 +242,50 @@ public class BundledT extends Nodo{
     public void modificarMasivo(Nodo nodoI, ArrayList<Integer> indexs) {
         for(int i: indexs){
             this.bundledItems.get(i).merge(nodoI);
+        }
+    }
+    
+    @Override
+    public void getPDF(Document document) {
+        try {
+            Paragraph preface = new Paragraph();
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Zone Model: "+this.name, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
+            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Rango: "+timeRange,FirstPDF.normalFont));
+            if(!productSpecName.equals(""))
+            preface.add(new Paragraph("Producto: "+productSpecName,FirstPDF.normalFont));
+            else
+            preface.add(new Paragraph("Cliente: "+customerSpecName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Factura por compra: "+billOnPurchase,FirstPDF.normalFont));
+            preface.add(new Paragraph("Personalizar: "+customize,FirstPDF.normalFont));
+            preface.add(new Paragraph("Elementos de grupo de saldo: "+groupBalanceElements,FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            LineSeparator line = new LineSeparator();              
+            preface.add(line);
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Ofertas",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            PdfPTable table = new PdfPTable(2);
+            table.setWidthPercentage(100);
+            table.addCell(FirstPDF.createTableHeader("Oferta"));
+            table.addCell(FirstPDF.createTableHeader("Tipo"));
+            for(BundledItemT item : this.bundledItems){
+                if(item.visibilidad){
+                    item.getPDF(table);
+                }
+            }
+            preface.add(table);
+            document.add(preface);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

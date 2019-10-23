@@ -31,7 +31,7 @@ import pricinggateway.PricingGatewayPortType;
  */
 public class OraclePDCClient {
 
-    private static final String FILE = "C:/Users/Joseph Ramírez/Desktop/PRD_20191007_ROLLOVERS_pricing.xml";
+    private static final String FILE = "C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/occuser-25/ROLLOVER_RATE_PLAN_pricing.xml";
     private static final int BUFFER_SIZE= 1024;
     private static String pdcUrl = "http://10.149.137.42:22537/pdc/PricingGatewayPort?wsdl";
     private static String pdcUserName="occuser-25";

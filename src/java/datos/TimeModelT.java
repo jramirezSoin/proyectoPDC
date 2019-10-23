@@ -5,7 +5,17 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.ControlFunctions;
+import control.FirstPDF;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -191,6 +201,41 @@ public class TimeModelT extends Nodo{
     public void modificarMasivo(Nodo nodoI, ArrayList<Integer> indexs) {
         for(int i: indexs){
             this.timeModelTags.get(i).merge(nodoI);
+        }
+    }
+    
+    @Override
+    public void getPDF(Document document) {
+        try {
+            Paragraph preface = new Paragraph();
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Zone Model: "+this.name, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
+            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Calendario de Festividades: "+holidayCalendarName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Valido desde: "+ControlFunctions.getParseDate(validFrom),FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            LineSeparator line = new LineSeparator();              
+            preface.add(line);
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Tags",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            for(TimeModelTagT item : this.timeModelTags){
+                if(item.visibilidad){
+                    item.getPDF(preface);
+                }
+            }
+            document.add(preface);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(TimeModelT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

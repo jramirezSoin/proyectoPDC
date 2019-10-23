@@ -5,8 +5,15 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import control.ControlFunctions;
+import control.FirstPDF;
 import datos.Nodo;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -83,6 +90,18 @@ public class PriceTierValidityPeriodT extends Nodo{
     public void setZoneCrp(){
         lowerBound="NO_MIN";
         validFrom="0";
+    }
+    
+    @Override
+    public void getPDF(Element element) {
+        try {
+            Paragraph preface = (Paragraph) element;
+            preface.add(new Paragraph("Límite mínimo: "+lowerBound,FirstPDF.normalFont));
+            preface.add(new Paragraph("válido desde: "+ControlFunctions.getParseDate(validFrom),FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+        } catch (ParseException ex) {
+            Logger.getLogger(PriceTierValidityPeriodT.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     

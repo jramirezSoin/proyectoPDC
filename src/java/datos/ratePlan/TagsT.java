@@ -5,6 +5,9 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import control.FirstPDF;
 import datos.Nodo;
 import java.util.ArrayList;
 
@@ -83,6 +86,14 @@ public class TagsT extends Nodo{
             this.visibilidad=false;
             return false;
         }
+    }
+    
+    @Override
+    public void getPDF(Element element) {
+            Paragraph preface = (Paragraph) element;
+            preface.add(new Paragraph("Tag: "+name,FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            this.crpCompositePopModel.getPDF(preface);
     }
     
 }

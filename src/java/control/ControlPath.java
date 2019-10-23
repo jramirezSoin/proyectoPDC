@@ -5,6 +5,22 @@
  */
 package control;
 
+import datos.BalanceElementT;
+import datos.BundledT;
+import datos.ChargeOfferingT;
+import datos.ChargeSelectorSpecT;
+import datos.GenericSelectorT;
+import datos.HolidayT;
+import datos.ImpactCategoryT;
+import datos.Nodo;
+import datos.PackageT;
+import datos.RolloverT;
+import datos.RumT;
+import datos.TimeModelT;
+import datos.TriggerSpecT;
+import datos.ZoneModelT;
+import datos.alteration.AlterationRatePlanT;
+import datos.ratePlan.ChargeRatePlanT;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -173,6 +189,12 @@ public class ControlPath {
     public static String pinUser= "";
     public static String pinPort= "";
     public static String pinHost= "";
+    public static String alterationRatePath= "";
+    public static String alterationRatePointer= "";
+    public static String alterationRateClick= "";
+    public static String alterationRateView= "";
+    private static String alterationRateForm= "";
+    public static String arpCompositeView;
     
     public static void LoadParameters(){
         FileInputStream fis = null;
@@ -183,12 +205,11 @@ public class ControlPath {
                 
                 pinDirectory = properties.getString("pinDirectory");
                 pinImportExport = properties.getString("pinImportExport");
-                pinPwdPDC= properties.getString("pinPwdPDC");
-                pinPwdUser= properties.getString("pinPwdUser");
-                pinUser= properties.getString("pinUser");
+                //pinPwdPDC= properties.getString("pinPwdPDC");
+                //pinPwdUser= properties.getString("pinPwdUser");
+                //pinUser= properties.getString("pinUser");
                 pinPort= properties.getString("pinPort");
                 pinHost= properties.getString("pinHost");
-                
                 path = properties.getString("path").trim()+pinUser+"/";
                 zoneModelsPath = path + properties.getString("zoneModelsPath").trim();
                 impactCategoriesPath = path + properties.getString("impactCategoriesPath").trim();
@@ -205,6 +226,7 @@ public class ControlPath {
                 alterationOfferingPath = path + properties.getString("alterationOfferingPath").trim();
                 eventAttributeSpecPath = path + properties.getString("eventAttributeSpecPath").trim();
                 chargeRatePath = path + properties.getString("chargeRatePath").trim();
+                alterationRatePath = path + properties.getString("alterationRatePath").trim();
                 uscMapPath = path + properties.getString("uscMapPath").trim();
                 chargeSelectorSpecPath = path + properties.getString("chargeSelectorSpecPath").trim();
                 genericSelectorPath = path + properties.getString("genericSelectorPath").trim();
@@ -304,6 +326,13 @@ public class ControlPath {
                 crpCompositeForm= properties.getString("crpCompositeForm");
                 priceTierPeriodForm= properties.getString("priceTierPeriodForm");
                 chargeForm= properties.getString("chargeForm");
+                
+                alterationRatePointer= properties.getString("alterationRatePointer");
+                alterationRateView= properties.getString("alterationRateView");
+                alterationRateForm= properties.getString("alterationRateForm");
+                alterationRateClick= properties.getString("alterationRateClick");
+                arpCompositeView= properties.getString("arpCompositeView");
+                
 
                 glidClick= properties.getString("glidClick");
                 glidPointer= properties.getString("glidPointer");
@@ -339,6 +368,26 @@ public class ControlPath {
         } catch (IOException ex) {
                 Logger.getLogger(ControlPath.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public static Nodo getNodo(String path, int item) {
+        if(path.equals(zoneModelsPath)){return new ZoneModelT(item);}
+        else if(path.equals(impactCategoriesPath)){return new ImpactCategoryT(item);}
+        else if(path.equals(triggerSpecPath)){return new TriggerSpecT(item);}
+        else if(path.equals(balanceElementPath)){return new BalanceElementT(item);}
+        else if(path.equals(rumConfigPath)){return new RumT(item);}
+        else if(path.equals(rolloverPath)){return new RolloverT(item);}
+        else if(path.equals(timeModelsPath)){return new TimeModelT(item);}
+        else if(path.equals(bundledPath)){return new BundledT(item);}
+        else if(path.equals(packagePath)){return new PackageT(item);}
+        else if(path.equals(chargeOfferingPath)){return new ChargeOfferingT(item);}
+        else if(path.equals(holidayPath)){return new HolidayT(item);}
+        else if(path.equals(chargeRatePath)){return new ChargeRatePlanT(item);}
+        else if(path.equals(chargeSelectorSpecPath)){return new ChargeSelectorSpecT(item);}
+        else if(path.equals(genericSelectorPath)){return new GenericSelectorT(item);}
+        else if(path.equals(alterationRatePath)){return new AlterationRatePlanT(item);}
+        
+        else return null;
     }
 
 }

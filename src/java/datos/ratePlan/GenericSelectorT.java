@@ -5,6 +5,10 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.FirstPDF;
 import datos.Nodo;
 import java.util.ArrayList;
 
@@ -127,6 +131,18 @@ public class GenericSelectorT extends Nodo implements ResultI{
         for(ResultsT crp : this.getResults()){
             ((CrpCompositePopModelT)crp.getResult()).getRumCurrency(rum,currency);
         }
+    }
+    
+    @Override
+    public void getPDF(Element element) {
+            Paragraph preface = (Paragraph) element;
+            preface.add(new Paragraph("Generic Selector: "+genericSelectorName,FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            for(ResultsT result: this.results){
+                result.getPDF(preface);
+                LineSeparator line = new LineSeparator();              
+                preface.add(line);
+            }
     }
     
     

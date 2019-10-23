@@ -5,7 +5,13 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import control.FirstPDF;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -171,6 +177,34 @@ public class TriggerSpecT extends Nodo{
         this.expressions.remove(((int) index.get(0)));
         for(int i=index.get(0); i<this.expressions.size();i++){
             this.expressions.get(i).id--;
+        }
+    }
+    
+    @Override
+    public void getPDF(Document document) {
+        try {
+            Paragraph preface = new Paragraph();
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Trigger: "+this.name, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("descripción: "+description,FirstPDF.normalFont));
+            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Expresiones",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            for(ExpressionT item : this.expressions){
+                if(item.visibilidad){
+                    item.getPDF(preface);
+                }
+            }
+            document.add(preface);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

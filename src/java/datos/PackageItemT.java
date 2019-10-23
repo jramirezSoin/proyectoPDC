@@ -4,8 +4,14 @@
  * and open the template in the editor.
  */
 package datos;
-
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import control.FirstPDF;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -148,6 +154,30 @@ public class PackageItemT extends Nodo{
         }else{
             this.visibilidad=false;
             return false;
+        }
+    }
+    
+    @Override
+    public void getPDF(Element element){
+        try {
+            Paragraph preface = (Paragraph)element;
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Item: "+(specName.equals("CustomerPackage")?"Account":productSpecName),FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            PdfPTable table = new PdfPTable(2);
+            float[] columnWidths = new float[]{30f, 20f};
+            table.setWidths(columnWidths);
+            table.setWidthPercentage(100);
+            table.addCell(FirstPDF.createTableHeader("Lote"));
+            table.addCell(FirstPDF.createTableHeader("Lote de descuento opcional"));
+            for(ListaT t: this.bundleProductOffering){
+                table.addCell(t.valor);
+                table.addCell(t.unit);
+            }
+            preface.add(table);
+            FirstPDF.addEmptyLine(preface, 1);
+        } catch (DocumentException ex) {
+            Logger.getLogger(PackageItemT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

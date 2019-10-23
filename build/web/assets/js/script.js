@@ -218,3 +218,8 @@ function importar(){
             $('#Principal').html(responseText);
         });
 }
+
+function getPDFSelects(){
+    var checks=getChecks("listChecks");
+    $("#pdfChecks").val(checks);
+}

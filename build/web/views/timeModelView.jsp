@@ -9,6 +9,7 @@
 <%@page import="datos.TimeModelTagT.TimeSpecT"%>
 <%@page import="datos.TimeModelT"%>
 <%@page import="datos.TimeModelTagT"%>
+<%@page import="control.ControlPath"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% TimeModelT timeModel = (TimeModelT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
@@ -23,6 +24,7 @@
                 </ul>
             </div>
         </div>
+        <%@include file="/views/userPanel.jsp" %>
     </div>
 </div>
             <!-- page title area end -->

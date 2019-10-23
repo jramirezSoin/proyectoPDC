@@ -39,7 +39,7 @@
 <div class="form-group row">
 <% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.impactCategoriesClick);%>
 
-<label>Impact Category<select id="-zoneName">
+<label>Impact Category<select class="custom-select" id="-zoneName">
         <%for(int j=0;j<impactCategories.size();j++){%>
         <option <%=(impactCategories.get(j).valor.equals(zoneItem.getZoneResult().getZoneName()))?"Selected":""%> value="<%=impactCategories.get(j).valor%>"><%=impactCategories.get(j).valor%></option>
         <%}%>

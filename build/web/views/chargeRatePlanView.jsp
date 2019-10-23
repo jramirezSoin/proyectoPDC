@@ -13,6 +13,7 @@
 <%@page import="datos.ratePlan.ResultsT"%>
 <%@page import="datos.ratePlan.CrpRelDateRangeT"%>
 <%@page import="datos.ratePlan.ChargeRatePlanT"%>
+<%@page import="control.ControlPath"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% ChargeRatePlanT chargeRate = (ChargeRatePlanT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
@@ -27,6 +28,7 @@
                 </ul>
             </div>
         </div>
+        <%@include file="/views/userPanel.jsp" %>
     </div>
 </div>
             <!-- page title area end -->

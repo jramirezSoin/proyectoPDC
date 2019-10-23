@@ -195,6 +195,15 @@ public class ControlFunctions {
             return day2.format(day.parse(s));}
     }
     
+    public static String getParseHour(String s) throws ParseException{
+        String[] ss= s.split("/");
+        SimpleDateFormat day= new SimpleDateFormat("HHmmss");
+        SimpleDateFormat day2= new SimpleDateFormat("HH:mm:ss");
+        ss[0]= ss[0].replace("T","");
+        ss[1]= ss[1].replace("T","");
+        return day2.format(day.parse(ss[0]))+"/"+day2.format(day.parse(ss[1]));
+    }
+    
     public static String getParseString(String s) throws ParseException{
         SimpleDateFormat day= new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat day2= new SimpleDateFormat("dd MMM yyyy");
@@ -222,11 +231,9 @@ public class ControlFunctions {
     }
     
     public static ArrayList<Cambio> CambioContieneElimina(ArrayList<Cambio> cambios, String valor){
-        System.out.println("CAMBIA: "+valor);
         if(cambios!=null){
         for(int i=0; i<cambios.size(); i++){
             Cambio cambio= cambios.get(i);
-            System.out.println("CAMBIO: "+cambio.getArchivo());
             if(cambio.getArchivo().matches("(.*)"+valor+"(.*)")){
                 cambios.remove(i);
                 i--;
@@ -239,7 +246,10 @@ public class ControlFunctions {
     public static boolean login(String user, String password) {
         User usuario= TxtParser.login(user, password);
         if(usuario!=null){
-            System.out.print("OH YEAH");
+
+            ControlPath.pinUser= usuario.getUserPDC();
+            ControlPath.pinPwdUser= usuario.getPwdPDC();
+            ControlPath.pinPwdPDC= usuario.getPwdPDCIE();
             return true;
         }
         return false;

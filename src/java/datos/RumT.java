@@ -5,7 +5,13 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import control.FirstPDF;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -172,6 +178,31 @@ public class RumT extends Nodo{
         }else{
             this.visibilidad=false;
             return false;
+        }
+    }
+    
+    @Override
+    public void getPDF(Document document) {
+        try {
+            Paragraph preface = new Paragraph();
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("RUM: "+this.name, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
+            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Obsoleto: "+obsolete,FirstPDF.normalFont));
+            preface.add(new Paragraph("Tipo de RUM: "+rumType,FirstPDF.normalFont));
+            preface.add(new Paragraph("Redondeo de RUM: "+rumRounding,FirstPDF.normalFont));
+            preface.add(new Paragraph("Código de RUM: "+rumCode,FirstPDF.normalFont));
+            preface.add(new Paragraph("Unidad: "+unit,FirstPDF.normalFont));
+            document.add(preface);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

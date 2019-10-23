@@ -5,6 +5,7 @@
 --%>
 
 <%@page import="datos.RumT"%>
+<%@page import="control.ControlPath"%>
 <% RumT rum = (RumT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
     <div class="row align-items-center">
@@ -18,6 +19,7 @@
                 </ul>
             </div>
         </div>
+        <%@include file="/views/userPanel.jsp" %>
     </div>
 </div>
             <!-- page title area end -->

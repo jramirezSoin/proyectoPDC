@@ -466,7 +466,6 @@ public class XmlParser {
                 Element node = (Element)nList.item(i);
                 if(node.getElementsByTagName("name").item(0).getTextContent().equals(evento)) path=node.getElementsByTagName("className").item(0).getTextContent();
             }
-            System.out.println(path);
             return balances;
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
             return null;

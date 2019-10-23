@@ -5,7 +5,14 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.ControlFunctions;
+import control.FirstPDF;
 import datos.Nodo;
+import datos.alteration.AlterationConfigurationT;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -120,6 +127,21 @@ public class CrpRelDateRangeT extends Nodo{
         this.crpCompositePopModel=popModel;
     }
     
+        @Override
+    public void getPDF(Element element) {
+        try {
+            Paragraph preface = (Paragraph) element;
+            preface.add(new Paragraph("fecha inicio: "+ControlFunctions.getParseDate(startDate),FirstPDF.normalFont));
+            preface.add(new Paragraph("fecha fin: "+ControlFunctions.getParseDate(endDate),FirstPDF.normalFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            if(this.crpCompositePopModel!=null)
+                this.crpCompositePopModel.getPDF(preface);
+            else
+                this.zoneModel.getPDF(preface);
+            
+        } catch (ParseException ex) {
+        }
+    }
     
     
     

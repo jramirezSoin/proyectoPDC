@@ -5,7 +5,18 @@
  */
 package datos;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.draw.LineSeparator;
+import control.ControlFunctions;
+import control.FirstPDF;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -122,7 +133,64 @@ public class TimeModelTagT extends Nodo{
                 s+"</timeModelTag>";
     }
     
-    
+    @Override
+    public void getPDF(Element element) {
+        try {
+            Paragraph preface = (Paragraph) element;
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Tag: "+this.tagName, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            LineSeparator line = new LineSeparator();              
+            preface.add(line);
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Especificación",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            for(TimeSpecT item : this.timeSpecs){
+                PdfPTable table = new PdfPTable(4);
+                    float[] columnWidths = new float[]{30f, 20f, 20f, 20f};
+                    table.setWidths(columnWidths);
+                    table.setWidthPercentage(100);
+                    table.addCell(FirstPDF.createTableHeader("Nombre"));
+                    table.addCell(FirstPDF.createTableHeader("Descripción"));
+                    table.addCell(FirstPDF.createTableHeader("Tiempo"));
+                    table.addCell(FirstPDF.createTableHeader("Festividad"));
+                    preface.add(table);
+                if(item.visibilidad){
+                    table = new PdfPTable(4);
+                    columnWidths = new float[]{30f, 20f, 20f, 20f};
+                    table.setWidths(columnWidths);
+                    table.setWidthPercentage(100);
+                    table.addCell(item.getName());
+                    table.addCell(item.getDescription());
+                    table.addCell(ControlFunctions.getParseHour(item.getTimeOfDay()));
+                    table.addCell(item.getHoliday());
+                    preface.add(table);
+                    table = new PdfPTable(2);
+                    columnWidths = new float[]{10f, 30f};
+                    table.setWidths(columnWidths);
+                    String dias="";
+                    for(ListaT t: item.daysOfWeek) dias+=", "+t.valor;
+                    String meses="";
+                    for(ListaT t: item.monthsOfYear) meses+=", "+t.valor;
+                    table.setWidthPercentage(100);
+                    table.addCell("Dias");
+                    table.addCell(dias.length()>0?dias.substring(2):dias);
+                    table.addCell("Meses");
+                    table.addCell(meses.length()>0?meses.substring(2):meses);
+                    table.addCell("Dias del mes");
+                    table.addCell(item.daysOfMonth);
+                    table.addCell("");
+                    table.addCell("");
+                    preface.add(table);
+                }
+            }
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(TimeModelTagT.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     
     

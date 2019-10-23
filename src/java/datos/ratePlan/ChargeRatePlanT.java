@@ -5,7 +5,12 @@
  */
 package datos.ratePlan;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.ControlFunctions;
+import control.FirstPDF;
 import datos.Nodo;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -345,6 +350,33 @@ public class ChargeRatePlanT extends Nodo{
                     res.getResult().getRumCurrency(this.getApplicableRums(), this.getSubscriberCurrency().getCurrencyCode());
                 }
             }
+        }
+    }
+    
+        @Override
+    public void getPDF(Document document) {
+        try {
+            Paragraph preface = new Paragraph();
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Plan de Tarifa de Cargos: "+this.name, FirstPDF.titleFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            FirstPDF.addEmptyLine(preface, 1);
+            preface.add(new Paragraph("Nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
+            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Código de impuesto: "+taxCode,FirstPDF.normalFont));
+            preface.add(new Paragraph("Tiempo de impuesto: "+taxTime,FirstPDF.normalFont));
+            preface.add(new Paragraph("RUMs aplicables: "+applicableRums,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre permitido: "+permittedName,FirstPDF.normalFont));
+            preface.add(new Paragraph("Tipo permitido: "+permittedType,FirstPDF.normalFont));
+            preface.add(new Paragraph("Evento: "+eventName,FirstPDF.normalFont));
+            this.subscriberCurrency.getPDF(preface);
+            document.add(preface);
+            
+        } catch (DocumentException ex) {
+            
         }
     }
     
