@@ -287,11 +287,11 @@ public class ChargeOfferingT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Zone Model: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Oferta de cargo: "+this.name, FirstPDF.titleFont));
             FirstPDF.addEmptyLine(preface, 1);
             preface.add(new Paragraph("Descripción",FirstPDF.subFont));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
+            preface.add(new Paragraph("Nombre: "+name,FirstPDF.normalFont));
             preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
             preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
             preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));

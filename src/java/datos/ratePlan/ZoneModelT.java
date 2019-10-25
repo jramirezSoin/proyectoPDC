@@ -148,8 +148,7 @@ public class ZoneModelT extends Nodo{
             FirstPDF.addEmptyLine(preface, 1);
             for(ResultsT result:this.results){
                 result.getPDF(preface);
-                LineSeparator line = new LineSeparator();              
-                preface.add(line);
+                
             }
     }
     

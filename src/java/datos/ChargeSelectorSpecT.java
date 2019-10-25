@@ -37,7 +37,7 @@ public class ChargeSelectorSpecT extends Nodo {
     private String pricingName = "";
     private String zoneResult = "";
     private String timeModelTagName = "";
-    private ListaT eventConditions = new ListaT();
+    private ListaT eventConditions = new ListaT("","");
     private String description = "";
 
     public ChargeSelectorSpecT() {
@@ -181,11 +181,12 @@ public class ChargeSelectorSpecT extends Nodo {
                  "\t<balanceElementNumCode>" + balanceElementNumCode + "</balanceElementNumCode>\n"+
                  "\t<pricingName>" + pricingName + "</pricingName>\n"+
                  "\t<glid>" + glid + "</glid>\n"+
+                (eventConditions.unit.equals("") && eventConditions.valor.equals("")?"":
                  "\t<eventConditions>\n"+
                  "\t\t<eventField>" + eventConditions.unit + "</eventField>\n"+
                  "\t\t<eventValue>" + eventConditions.valor + "</eventValue>\n"+
-                 "\t</eventConditions>\n"+
-                 "</chargeSelectorSpec>";
+                 "\t</eventConditions>\n")+
+                "</chargeSelectorSpec>";
     }
 
     @Override
@@ -308,7 +309,7 @@ public class ChargeSelectorSpecT extends Nodo {
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Zone Model: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Filtro: "+this.name, FirstPDF.titleFont));
             FirstPDF.addEmptyLine(preface, 1);
             preface.add(new Paragraph("Descripción",FirstPDF.subFont));
             FirstPDF.addEmptyLine(preface, 1);
@@ -318,8 +319,8 @@ public class ChargeSelectorSpecT extends Nodo {
             preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
             preface.add(new Paragraph("GL/ID: "+glid,FirstPDF.normalFont));
             preface.add(new Paragraph("GL/ID Descripción: "+glidName,FirstPDF.normalFont));
-            preface.add(new Paragraph("valido desde: "+ControlFunctions.getParseDate(validFrom),FirstPDF.normalFont));
-            preface.add(new Paragraph("valido hasta: "+ControlFunctions.getParseDate(validTo),FirstPDF.normalFont));
+            preface.add(new Paragraph("Válido desde: "+ControlFunctions.getParseDate(validFrom),FirstPDF.normalFont));
+            preface.add(new Paragraph("Válido hasta: "+ControlFunctions.getParseDate(validTo),FirstPDF.normalFont));
             preface.add(new Paragraph("Saldo en: "+balanceElementName,FirstPDF.normalFont));
             preface.add(new Paragraph("Nombre de precios: "+pricingName,FirstPDF.normalFont));
             preface.add(new Paragraph("Categoria de impacto: "+zoneResult,FirstPDF.normalFont));

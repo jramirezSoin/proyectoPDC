@@ -134,6 +134,7 @@ public class TimeConfigurationT extends Nodo implements ResultI{
                 result.getPDF(preface);
                 LineSeparator line = new LineSeparator();              
                 preface.add(line);
+                FirstPDF.addEmptyLine(preface, 1);
             }
     }
     

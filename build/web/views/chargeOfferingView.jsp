@@ -90,6 +90,7 @@
                                     <% for(int i=0; i<chargeOffer.getChargeEvents().size();i++){%>
                                     <% ChargeEventMapT item = chargeOffer.getChargeEvents().get(i);%>
                                     <% ListaT buscar= new ListaT("name",item.getChargeRatePlanName());%>
+                                    <% ListaT buscar2= new ListaT("name",item.getRolloverRatePlanName());%>
                                     <%if(item.visibilidad){%>
                                         <tr>
                                         <td><div class="custom-control custom-checkbox">
@@ -97,7 +98,11 @@
                                                 <label class="custom-control-label" for="customCheck-<%=item.getId()%>"></label>
                                             </div></td>
                                         <td><%= item.getEventName()%></td>
+                                        <%if(!item.getChargeRatePlanName().equals("")){%>
                                         <td><a href="#" onclick="hacerClick(this,'/chargeRate',<%=ControlFunctions.Buscar(ControlPath.chargeRateClick, buscar, "id")%>)"><%= item.getChargeRatePlanName()%></a></td>
+                                        <%}else if(!item.getRolloverRatePlanName().equals("")){%>
+                                        <td><a href="#" onclick="hacerClick(this,'/rollover',<%=ControlFunctions.Buscar(ControlPath.rolloverClick, buscar2, "id")%>)"><%= item.getRolloverRatePlanName()%></a></td>
+                                        <%}%>
                                         <td><%= item.getTimezoneMode()%></td>
                                         <td><%= item.getProrateFirst()%></td>
                                         <td><%= item.getProrateLast()%></td>

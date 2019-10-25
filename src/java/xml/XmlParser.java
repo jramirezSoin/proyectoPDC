@@ -154,7 +154,8 @@ public class XmlParser {
     
     public static void Modificar(String archivoViejo, String archivoNuevo, String contenido, String tag, int id){
         try {
-            contenido = contenido.replaceAll(" +<.+></.+>\n", "");
+            System.out.println(contenido);
+            contenido = contenido.replaceAll("[ \t]+<.+></.+>\n", "");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc1 = db.parse(new ByteArrayInputStream(contenido.getBytes("UTF-8")));
@@ -217,7 +218,8 @@ public class XmlParser {
     }
     public static void Agregar(String archivoViejo, String archivoNuevo, String contenido, String tag){
         try {
-            contenido = contenido.replaceAll(" +<.+></.+>\n", "");
+            System.out.println(contenido);
+            contenido = contenido.replaceAll("[ \t]+<.+></.+>\n", "");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc1 = db.parse(new ByteArrayInputStream(contenido.getBytes("UTF-8")));

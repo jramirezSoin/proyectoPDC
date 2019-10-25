@@ -66,11 +66,13 @@ public class ImportExportClient {
             System.out.println("Subiendo archivo "+file+".xml...");
             sshConnector.putXml(file+"_"+type+".xml");
             String comandos="cd "+ControlPath.pinDirectory+" ;";
-            comandos+="echo "+ControlPath.pinPwdPDC+" | "+ControlPath.pinImportExport+" -import -"+type+" "+file+"_"+type+".xml -ow ;";
+            comandos+="echo "+ControlPath.pinPwdPDC+" | "+ControlPath.pinImportExport+" -import -"+type+" "+file+"_"+type+".xml -v -ow ;";
             comandos+="[ $? -eq 0 ] && echo \"yes\" ;";
             System.out.println("Importando "+type+" "+file+"...");
+            System.out.println(comandos);
             String s= sshConnector.executeCommand(comandos);
             s= s.replaceAll("\n", "-");
+            System.out.println(s);
             if(s.matches("(.*)-yes(.*)")){
                 System.out.println("Import realizado!, "+file+"...");
                 estado= true;

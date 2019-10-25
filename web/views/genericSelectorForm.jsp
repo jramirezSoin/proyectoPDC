@@ -61,7 +61,7 @@
         'funcion' : 'getListaFiltroDeep',
         'tipo' : '<%=ControlPath.attributeSpecMapClick%>',
         'buscar' : 'name',
-        'compara' : '<%=genericSelector.getEventSpecName()%>_ERS',
+        'compara' : '<%=genericSelector.getEventSpecName()%>',
         'replace' : '_ERS;'}
         consulta("-eventSpecName",parameters,false);
     }

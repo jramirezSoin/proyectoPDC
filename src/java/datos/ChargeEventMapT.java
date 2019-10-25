@@ -16,13 +16,15 @@ import java.util.ArrayList;
 public class ChargeEventMapT extends Nodo{
     private String eventName="";
     private int valid=0;
-    private String timezoneMode="";
-    private String targetEngine="";
+    private String timezoneMode="EVENT";
+    private String targetEngine="RRE";
     private String chargeRatePlanName="";
     private String ratePlanIID="";
-    private String prorateFirst="";
-    private String prorateLast="";
+    private String prorateFirst="PRORATE_CHARGE";
+    private String prorateLast="PRORATE_CHARGE";
+    private String rum="";
     private int minQuantity= 0;
+    private String rolloverRatePlanName= "";
     
     public ChargeEventMapT(){
         
@@ -103,6 +105,26 @@ public class ChargeEventMapT extends Nodo{
     public void setMinQuantity(int minQuantity) {
         this.minQuantity = minQuantity;
     }
+
+    public String getRum() {
+        return rum;
+    }
+
+    public void setRum(String rum) {
+        this.rum = rum;
+    }
+
+    public String getRolloverRatePlanName() {
+        return rolloverRatePlanName;
+    }
+
+    public void setRolloverRatePlanName(String rolloverRatePlanName) {
+        this.rolloverRatePlanName = rolloverRatePlanName;
+    }
+    
+    
+    
+    
     
     @Override
     public String toString(String s) {
@@ -111,6 +133,7 @@ public class ChargeEventMapT extends Nodo{
         s+"\t<eventName>"+eventName+"</eventName>\n" +
         s+"\t<validIfCancelled>"+((valid<=2)?"true":"false")+"</validIfCancelled>\n" +
         s+"\t<validIfInactive>"+((valid%2!=0)?"true":"false")+"</validIfInactive>\n" +
+        s+"\t<rum>"+rum+"</rum>\n"+
         s+"\t<timezoneMode>"+timezoneMode+"</timezoneMode>\n" +
         s+"\t<minQuantity>"+minQuantity+"</minQuantity>\n" +
         s+"\t<minQuantityUnit>NONE</minQuantityUnit>\n" +
@@ -123,6 +146,7 @@ public class ChargeEventMapT extends Nodo{
         s+"\t\t<targetEngine>"+targetEngine+"</targetEngine>\n" +
         s+"\t</chargeRatePlanInfo>\n" +
         s+"\t<chargeRatePlanName>"+chargeRatePlanName+"</chargeRatePlanName>\n" +
+        s+"\t<rolloverRatePlanName>"+rolloverRatePlanName+"</rolloverRatePlanName>\n" +
         s+"\t<ratePlanIID>"+ratePlanIID+"</ratePlanIID>\n" +
         s+"</chargeEventMap>";
     }
@@ -139,16 +163,19 @@ public class ChargeEventMapT extends Nodo{
                         this.valid= ((charges.get(i).substring(17).equals("false"))?this.valid+1:this.valid);
             }
             else if(charges.get(i).matches("(?s)valid: (.*)")) this.valid= Integer.parseInt(charges.get(i).substring(7));
+            else if(charges.get(i).matches("(?s)rum: (.*)")) this.rum= charges.get(i).substring(5);
             else if(charges.get(i).matches("(?s)timezoneMode: (.*)")) this.timezoneMode= charges.get(i).substring(14);
             else if(charges.get(i).matches("(?s)chargeRatePlanName: (.*)")) this.chargeRatePlanName= charges.get(i).substring(20);
+            else if(charges.get(i).matches("(?s)rolloverRatePlanName: (.*)")) this.rolloverRatePlanName= charges.get(i).substring(22);
             else if(charges.get(i).matches("(?s)ratePlanIID: (.*)")) this.ratePlanIID= charges.get(i).substring(13);
             else if(charges.get(i).matches("(?s)prorateFirst: (.*)")) this.prorateFirst= charges.get(i).substring(14);
             else if(charges.get(i).matches("(?s)prorateLast: (.*)")) this.prorateLast= charges.get(i).substring(13);
             else if(charges.get(i).matches("(?s)minQuantity: (.*)")) this.minQuantity= Integer.parseInt(charges.get(i).substring(13));
             else if(charges.get(i).matches("(?s)chargeRatePlanInfo")){i++; this.targetEngine= charges.get(i).substring(14);}
             else if(charges.get(i).matches("(?s)incrementQuantity(.*)") || charges.get(i).matches("(?s)roundingMode(.*)") || charges.get(i).matches("(?s)minQuantityUnit(.*)")){}
-            else return i;
+            else{ validaRollover(); return i;}
         }
+        validaRollover();
         return charges.size();
     }
     
@@ -179,6 +206,13 @@ public class ChargeEventMapT extends Nodo{
     public void getPDF(Element element){
         ((PdfPTable)element).addCell(this.eventName);
         ((PdfPTable)element).addCell(this.chargeRatePlanName);
+    }
+
+    private void validaRollover() {
+        if(this.eventName.equals("EventBillingCycleRolloverMonthly") && !this.chargeRatePlanName.equals("")){
+            this.rolloverRatePlanName= this.chargeRatePlanName;
+            this.chargeRatePlanName="";
+        }
     }
     
     
