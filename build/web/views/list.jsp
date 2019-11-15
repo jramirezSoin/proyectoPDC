@@ -18,8 +18,6 @@
         <div class="timeline-task">
             <div class="btn-group mb-xl-3" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>', '-2');">Add</button>
-                <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>','-5');">Edit</button>
-                <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('<%=request.getSession().getAttribute("click")%>', '-6');">Delete</button>
                 <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#pdfModal" onclick="getPDFSelects();">Download PDF</button>
             </div>
         </div>    

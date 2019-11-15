@@ -87,7 +87,7 @@ public class PriceValidityT extends Nodo {
     }
 
     @Override
-    public int procesar(ArrayList<String> validity, int index) {
+    public int procesar(ArrayList<String> validity, int index, String user) {
         for(int i=index; i<validity.size();i++) {
             if(validity.get(i).matches("(?s)startValidityMode: (.*)")) this.startValidityMode= validity.get(i).substring(19);
             else if(validity.get(i).matches("(?s)endValidityMode: (.*)")) this.endValidityMode= validity.get(i).substring(17);
@@ -103,9 +103,9 @@ public class PriceValidityT extends Nodo {
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     

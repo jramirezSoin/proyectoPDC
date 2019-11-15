@@ -4,6 +4,7 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.User"%>
 <%@page import="datos.ratePlan.TagsT"%>
 <%@page import="datos.ratePlan.TimeConfigurationT"%>
 <%@page import="datos.ratePlan.GenericSelectorT"%>
@@ -14,6 +15,7 @@
 <%@page import="datos.ListaT"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="datos.ratePlan.ChargeRatePlanT"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <% ChargeRatePlanT chargeRate = (ChargeRatePlanT) request.getSession().getAttribute("principal");%>
 <% int index = ((ArrayList<Integer>) request.getSession().getAttribute("index")).get(2);%>
 <% CrpRelDateRangeT rel = chargeRate.getSubscriberCurrency().getCrpRelDateRanges().get(index);%>
@@ -26,7 +28,7 @@
             <div id="-zoneModel">
                 <div id="zoneModelInfo">    
                     <div class="form-group row">
-                        <% ArrayList<ListaT> zoneModels = ControlFunctions.getLista((String) ControlPath.zoneModelsClick);%>
+                        <% ArrayList<ListaT> zoneModels = ControlFunctions.getLista((String) ControlPath.zoneModelsClick,user);%>
                         <label>Zone Model Name<select onchange="getIC(); $('#ic').html(''); indexZRF=-1;" class="custom-select" id="-zoneModelName">
                                 <%for (int j = 0; j < zoneModels.size(); j++) {%>
                                 <option <%=(rel.getZoneModel()!=null && zoneModels.get(j).valor.equals(rel.getZoneModel().getZoneModelName())) ? "selected" : ""%> value="<%=zoneModels.get(j).valor%>"><%=zoneModels.get(j).valor%></option>
@@ -39,7 +41,7 @@
                     </div>    
                     <input id="-enhanced" type="text" value="false" hidden="" class="form-control">    
                     <div class="form-group row col-sm-6" id="uscModelName">
-                        <% ArrayList<ListaT> usc = ControlFunctions.getLista((String) ControlPath.uscMapClick);%>
+                        <% ArrayList<ListaT> usc = ControlFunctions.getLista((String) ControlPath.uscMapClick,user);%>
                         <label>Usc Model<select class="custom-select" id="-uscModelName">
                                 <%for (int j = 0; j < usc.size(); j++) {%>
                                 <option <%=(rel.getZoneModel()!=null && usc.get(j).valor.equals(rel.getZoneModel().getUscModelName())) ? "selected" : ""%> value="<%=usc.get(j).valor%>"><%=usc.get(j).valor%></option>

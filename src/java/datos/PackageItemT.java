@@ -92,7 +92,7 @@ public class PackageItemT extends Nodo{
     }
     
     @Override
-    public int procesar(ArrayList<String> packs2, int index) {
+    public int procesar(ArrayList<String> packs2, int index, String user) {
         bundleProductOffering.clear();
         ArrayList<String> packs= (ArrayList<String>) packs2.clone();
         for(int i=index; i<packs.size();i++) {
@@ -134,9 +134,9 @@ public class PackageItemT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index,user);
         return index;
     }
     
@@ -162,7 +162,7 @@ public class PackageItemT extends Nodo{
         try {
             Paragraph preface = (Paragraph)element;
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Item: "+(specName.equals("CustomerPackage")?"Account":productSpecName),FirstPDF.subFont));
+            preface.add(new Paragraph("Item: "+(specName.equals("CustomerPackage")?"Account":productSpecName),FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             PdfPTable table = new PdfPTable(2);
             float[] columnWidths = new float[]{30f, 20f};
@@ -171,8 +171,8 @@ public class PackageItemT extends Nodo{
             table.addCell(FirstPDF.createTableHeader("Lote"));
             table.addCell(FirstPDF.createTableHeader("Lote de descuento opcional"));
             for(ListaT t: this.bundleProductOffering){
-                table.addCell(t.valor);
-                table.addCell(t.unit);
+                table.addCell(FirstPDF.createTableCell(t.valor));
+                table.addCell(FirstPDF.createTableCell(t.unit));
             }
             preface.add(table);
             FirstPDF.addEmptyLine(preface, 1);

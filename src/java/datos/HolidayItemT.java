@@ -7,6 +7,7 @@ package datos;
 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.pdf.PdfPTable;
+import control.FirstPDF;
 import java.util.ArrayList;
 
 /**
@@ -66,7 +67,7 @@ public class HolidayItemT extends Nodo{
         }
         
         @Override
-        public int procesar(ArrayList<String> holidays, int index) {
+        public int procesar(ArrayList<String> holidays, int index, String user) {
             for(int i=index; i<holidays.size();i++) {
                 if(holidays.get(i).matches("(?s)name: (.*)")) this.name= holidays.get(i).substring(6);
                 else if(holidays.get(i).matches("(?s)month: (.*)")) this.month= holidays.get(i).substring(7);
@@ -79,9 +80,9 @@ public class HolidayItemT extends Nodo{
 
 
         @Override
-        public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+        public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
             if(indexs.size()==0)
-                index= this.procesar(lista, index);
+                index= this.procesar(lista, index,user);
             return index;
         }
 
@@ -97,10 +98,10 @@ public class HolidayItemT extends Nodo{
         }
         
         public void getPDF(Element element){
-            ((PdfPTable)element).addCell(this.name);
-            ((PdfPTable)element).addCell(this.day);
-            ((PdfPTable)element).addCell(this.month);
-            ((PdfPTable)element).addCell(this.year);
+            ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.name));
+            ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.day));
+            ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.month));
+            ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.year));
         }
         
         

@@ -9,9 +9,9 @@ import control.ControlFunctions;
 import control.ControlPath;
 import datos.ListaT;
 import datos.RolloverT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -56,8 +56,9 @@ public class Rollover extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> rollovers;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            rollovers = XmlParser.Leer2(new File(ControlPath.rolloverPath) , ControlPath.rolloverPointer);
+            rollovers = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.rolloverPath)) , ControlPath.rolloverPointer);
             ArrayList<ListaT> rolloverId = ControlFunctions.ListS2ListT(rollovers);
              session.setAttribute("click", ControlPath.rolloverClick);           
             session.setAttribute("lista", rolloverId);
@@ -67,9 +68,9 @@ public class Rollover extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.rolloverPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            rollovers= XmlParser.LeerSeleccionado(new File(ControlPath.rolloverPath) , Integer.parseInt(id));
+            rollovers= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.rolloverPath)) , Integer.parseInt(id));
             RolloverT rollover = new RolloverT(Integer.parseInt(id));
-            rollover.procesar(rollovers, 1);
+            rollover.procesar(rollovers, 1, user);
             session.setAttribute("principal", rollover);
             session.setAttribute("actual", "Rollover");
             session.setAttribute("actualView", ControlPath.rolloverView);

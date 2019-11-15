@@ -3,6 +3,7 @@
     Created on : Sep 18, 2019, 11:33:35 AM
     Author     : Joseph Ramírez
 --%>
+<%@page import="datos.User"%>
 <%@page import="datos.ratePlan.ChargeRatePlanT"%>
 <%@page import="datos.ratePlan.ChargeT"%>
 <%@page import="datos.ratePlan.CrpCompositePopModelT"%>
@@ -10,6 +11,7 @@
 <%@page import="control.ControlPath"%>
 <%@page import="datos.ListaT"%>
 <%@page import="java.util.ArrayList"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <% CrpCompositePopModelT crp = (CrpCompositePopModelT) request.getSession().getAttribute("composite");%>
 <% ChargeRatePlanT chargeRate = (ChargeRatePlanT) request.getSession().getAttribute("principal");%>
 <%ArrayList<Integer> indexs= ((ArrayList<Integer>)request.getSession().getAttribute("index"));%>
@@ -38,7 +40,7 @@
     </div>
     <%}%>    
     <div class="form-group row">
-        <% ArrayList<ListaT> glids = ControlFunctions.getLista((String)ControlPath.glidClick);%>
+        <% ArrayList<ListaT> glids = ControlFunctions.getLista((String)ControlPath.glidClick,user);%>
         <label>GL/Id<select class="custom-select" id="-glidName">
         <%for(int j=0;j<glids.size();j++){%>
         <option <%=((glids.get(j).valor.equals(charge.getGlidName()))?"selected":"")%> value="<%=glids.get(j).valor%>"><%=glids.get(j).valor%></option>
@@ -46,7 +48,7 @@
         </select></label>
     </div>
     <div class="form-group row">
-        <% ArrayList<ListaT> impactCategories = ControlFunctions.getListaBalance("no_currency");%>
+        <% ArrayList<ListaT> impactCategories = ControlFunctions.getListaBalance("no_currency",user);%>
         <label>Currency<select class="custom-select" id="-balanceElementName">
                 <option value="<%=chargeRate.getSubscriberCurrency().getCurrencyName()%>"><%=chargeRate.getSubscriberCurrency().getCurrencyName()%></option>        
                 <%for(int j=0;j<impactCategories.size();j++){%>

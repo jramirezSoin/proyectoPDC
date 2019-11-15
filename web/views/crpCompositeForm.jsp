@@ -4,11 +4,13 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.User"%>
 <%@page import="datos.ratePlan.ChargeRatePlanT"%>
 <%@page import="control.ControlFunctions"%>
 <%@page import="datos.ListaT"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="datos.ratePlan.CrpCompositePopModelT"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <%CrpCompositePopModelT crp = (CrpCompositePopModelT) request.getSession().getAttribute("composite");%>
 <%ChargeRatePlanT charge = (ChargeRatePlanT) request.getSession().getAttribute("principal");%>
 <form style="margin: 20px;" id="formulaire">
@@ -25,7 +27,7 @@
             </div>
             <%}%>
             <div class="form-group row">
-            <% ArrayList<ListaT> impactCategories = ControlFunctions.getListaBalance("no_currency");%>
+            <% ArrayList<ListaT> impactCategories = ControlFunctions.getListaBalance("no_currency",user);%>
                 <label>Balance of<select class="custom-select" id="-balanceElementName">
                 <option value="">NO BALANCE</option>        
                 <%for(int j=0;j<impactCategories.size();j++){%>

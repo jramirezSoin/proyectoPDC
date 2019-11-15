@@ -7,13 +7,11 @@ package datos.ratePlan;
 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.ControlFunctions;
 import control.ControlPath;
 import control.FirstPDF;
 import datos.ListaT;
 import datos.Nodo;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -83,21 +81,21 @@ public class SubscriberCurrencyT extends Nodo{
     }
 
     @Override
-    public int procesar(ArrayList<String> subscribers, int index) {
+    public int procesar(ArrayList<String> subscribers, int index, String user) {
         int itemCount = 0;
         for(int i=index; i<subscribers.size();i++) {
-            if(subscribers.get(i).matches("(?s)currencyCode: (.*)")){ this.currencyCode= subscribers.get(i).substring(14); this.currencyName=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("code",subscribers.get(i).substring(14)),"name");}
-            else if(subscribers.get(i).matches("(?s)currencyName: (.*)")){ this.currencyName= subscribers.get(i).substring(14); this.currencyCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",subscribers.get(i).substring(14)),"code"); }
+            if(subscribers.get(i).matches("(?s)currencyCode: (.*)")){ this.currencyCode= subscribers.get(i).substring(14); this.currencyName=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("code",subscribers.get(i).substring(14)),"name");}
+            else if(subscribers.get(i).matches("(?s)currencyName: (.*)")){ this.currencyName= subscribers.get(i).substring(14); this.currencyCode=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("name",subscribers.get(i).substring(14)),"code"); }
             else if(subscribers.get(i).matches("(?s)applicableRum")){ 
                 ApplicableRumT applicableRum = new ApplicableRumT();
-                i= applicableRum.procesar(subscribers, i+1);
+                i= applicableRum.procesar(subscribers, i+1, user);
                 i--;
                 this.setApplicableRum(applicableRum);
             }
             else if(subscribers.get(i).matches("(?s)crpRelDateRange")){ 
                 
                 CrpRelDateRangeT crpRelDateRange = new CrpRelDateRangeT(crpRelDateRanges.size());
-                i= crpRelDateRange.procesar(subscribers, i+1);
+                i= crpRelDateRange.procesar(subscribers, i+1, user);
                 i--;
                 this.crpRelDateRanges.add(crpRelDateRange);
             }else return i;
@@ -107,13 +105,13 @@ public class SubscriberCurrencyT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.crpRelDateRanges.get(i).procesarI(lista, index, indexs);
+            this.crpRelDateRanges.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -135,7 +133,7 @@ public class SubscriberCurrencyT extends Nodo{
         @Override
     public void getPDF(Element element) {
             Paragraph preface = (Paragraph) element;
-            preface.add(new Paragraph("Moneda: "+currencyName,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Moneda: ",currencyName));
             FirstPDF.addEmptyLine(preface, 1);
             if(this.applicableRum!=null){
                 this.applicableRum.getPDF(preface);  

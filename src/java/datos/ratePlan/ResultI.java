@@ -6,13 +6,12 @@
 package datos.ratePlan;
 
 import com.itextpdf.text.Element;
-import datos.Nodo;
 
 /**
  *
  * @author Joseph Ramírez
  */
 public interface ResultI{
-    public void getRumCurrency(String rum,String currency);
+    public void getRumCurrency(String rum,String currency, String user);
     public void getPDF(Element element);
 }

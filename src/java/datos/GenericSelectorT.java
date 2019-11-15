@@ -8,7 +8,6 @@ package datos;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.FirstPDF;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class GenericSelectorT extends Nodo{
     private String name="";
     private String description="";
     private String internalId="";
-    private String pricingProfileName="";
+    private String pricingProfileName="Convergent Usage";
     private String priceListName="Default";
     private String stereoType="";
     private String eventSpecName="";
@@ -193,7 +192,7 @@ public class GenericSelectorT extends Nodo{
     
     
     @Override
-    public int procesar(ArrayList<String> generics, int index) {
+    public int procesar(ArrayList<String> generics, int index, String user) {
         ArrayList<ModelDataT> models = new ArrayList<>();
         for(int i=index; i<generics.size();i++) {
             
@@ -217,7 +216,7 @@ public class GenericSelectorT extends Nodo{
                 else return i;
             }else if(generics.get(i).matches("(?s)rule")){ 
                 RuleT rule = new RuleT(rules.size(), validityPeriods.size()-1, eventSpecName);
-                i= rule.procesar(generics, i+1);
+                i= rule.procesar(generics, i+1, user);
                 i--;
                 this.rules.add(rule);
             }else if(generics.get(i).matches("(?s)modelData")){ 
@@ -234,6 +233,20 @@ public class GenericSelectorT extends Nodo{
                     }
                 }
                 i+=2;
+            }else if(generics.get(i).matches("(?s)modelDat")){
+                i++;
+                for(int k=0;i<generics.size();i++){
+                    String type= generics.get(i).split(":")[0];
+                    switch(type){
+                        case "name": models.add(new ModelDataT(k)); models.get(k).setName(generics.get(i).substring(6)); break;
+                        case "tipo": models.get(k).setKind(generics.get(i).substring(6)); break;
+                        case "operator": models.get(k).setOperator(generics.get(i).substring(10)); break;
+                        case "valueType": models.get(k).setValueType(generics.get(i).substring(11)); break;
+                        case "defaultValue": models.get(k).setDefaultValue(generics.get(i).substring(14)); k++; break;
+                    }
+                }
+                getRuleModelDatas(models);
+                return generics.size();
             }
             else{getModelDataRules(models); return i;}
         }
@@ -242,17 +255,17 @@ public class GenericSelectorT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index,user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
             if(i==0 && indexs.size()>0 && indexs.get(0)==-1){
-                
+                this.procesar(lista, 0, user);
             }
             else{
-            this.rules.get(i).procesarI(lista, index, indexs);
+            this.rules.get(i).procesarI(lista, index, indexs, user);
             }
         }
         return index;
@@ -316,27 +329,27 @@ public class GenericSelectorT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Selector Genérico: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Selector Genérico: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Nombre: ",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
             if(!productSpecName.equals(""))
-            preface.add(new Paragraph("Producto: "+productSpecName,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Producto: ",productSpecName));
             else
-            preface.add(new Paragraph("Cliente: "+customerSpecName,FirstPDF.normalFont));    
-            preface.add(new Paragraph("Evento: "+eventSpecName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Estereotipo: "+stereoType,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Cliente: ",customerSpecName));    
+            preface.add(FirstPDF.createDescription("Evento: ",eventSpecName));
+            preface.add(FirstPDF.createDescription("Estereotipo: ",stereoType));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);
             FirstPDF.addEmptyLine(preface, 1);
             int i=0;
             for(String item : this.validityPeriods){
-                preface.add(new Paragraph("Periodo: "+item,FirstPDF.subFont));
+                preface.add(new Paragraph("Periodo: "+item,FirstPDF.h2));
                 FirstPDF.addEmptyLine(preface, 1);
                 for(RuleT rule: this.rules){
                     if(rule.visibilidad && rule.getValidityPeriod()==i){
@@ -349,6 +362,63 @@ public class GenericSelectorT extends Nodo{
             
         } catch (DocumentException ex) {
             Logger.getLogger(ZoneModelT.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void getRuleModelDatas(ArrayList<ModelDataT> models) {
+        for(int j=0; j<models.size();j++){
+            ModelDataT model = models.get(j);
+            ModelDataT m = modelDatas.get(model.getName());
+            if(m!=null){
+                if(!model.getKind().equals("3")){    
+                m.setOperator(model.getOperator());
+                m.setDefaultValue(model.getDefaultValue());
+                m.setValueType(model.getValueType());
+                m.setTipo(((model.getKind().equals("1"))?(model.getOperator().equals("REGEX")?"Implicito":"Explicito"):"Custom"));
+                }
+                else{
+                System.out.println("Borra "+ model.getName());
+                modelDatas.remove(model.getName());
+                }
+            }else{
+                modelDatas.put(model.getName(), new ModelDataT(model.getName(), model.getOperator(),((model.getKind().equals("1"))?(model.getOperator().equals("REGEX")?"Implicito":"Explicito"):"Custom")));
+                m = modelDatas.get(model.getName());
+                m.setOperator(model.getOperator());
+                m.setDefaultValue(model.getDefaultValue());
+                m.setValueType(model.getValueType());
+            }
+        }
+        for(int j=0; j<rules.size();j++){
+            RuleT rule = rules.get(j);
+            Set<String> values= rule.getModels().keySet();
+            for(int i=0; i<models.size();i++){
+                ModelDataT model = models.get(i);
+                System.out.println(model.getName());
+                System.out.println(model.getKind());
+                System.out.println(model.getOperator());
+                System.out.println(model.getDefaultValue());
+                ListaT t= rule.getModels().get(model.getName());
+                if(t!=null){
+                    System.out.println("Yes");
+                    if(!model.getKind().equals("3")){
+                    t.id= Integer.parseInt(model.getKind());
+                    if(!t.unit.equals(model.getOperator())){
+                        t.unit= model.getOperator();
+                        t.valor= (model.getKind().equals("1")?model.getDefaultValue():"");
+                    }
+                    }
+                    else{
+                        System.out.println("Borra "+ model.getName());
+                        rule.getModels().remove(model.getName());
+                    }
+                }else{
+                    rule.getModels().put(model.getName(),new ListaT("",""));
+                    t= rule.getModels().get(model.getName());
+                    t.id= Integer.parseInt(model.getKind());
+                    t.unit= model.getOperator();
+                    t.valor= (model.getKind().equals("1")?model.getDefaultValue():"");
+                }
+            }
         }
     }
     

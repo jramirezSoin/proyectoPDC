@@ -10,9 +10,9 @@ import control.ControlPath;
 import datos.ListaT;
 import datos.TimeModelT;
 import datos.TimeModelTagT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -57,8 +57,9 @@ public class TimeModel extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> timeModels;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            timeModels = XmlParser.Leer2(new File(ControlPath.timeModelsPath) , ControlPath.timeModelsPointer);
+            timeModels = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.timeModelsPath)) , ControlPath.timeModelsPointer);
             ArrayList<ListaT> timeModelsId = ControlFunctions.ListS2ListT(timeModels);
              session.setAttribute("click", ControlPath.timeModelsClick);           
             session.setAttribute("lista", timeModelsId);
@@ -68,9 +69,9 @@ public class TimeModel extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.timeModelsPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            timeModels= XmlParser.LeerSeleccionado(new File(ControlPath.timeModelsPath) , Integer.parseInt(id));
+            timeModels= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.timeModelsPath)) , Integer.parseInt(id));
             TimeModelT timeModel = new TimeModelT(Integer.parseInt(id));
-            timeModel.procesar(timeModels, 1);
+            timeModel.procesar(timeModels, 1,user);
             session.setAttribute("principal", timeModel);
             session.setAttribute("actual", "timeModel");
             session.setAttribute("actualView", ControlPath.timeModelsView);

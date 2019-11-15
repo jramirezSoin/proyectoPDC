@@ -39,8 +39,10 @@
                     <input class="form-control" type="text" id="-timeOfDay" placeholder="Time Of Day" value="<%=timeSpec.getTimeOfDay()%>"/>
                 </div>
                 <div class="form-group row">
-                    <label for="-holiday">Holiday</label>
-                    <input class="form-control" type="text" id="-holiday" placeholder="Holiday" value="<%=timeSpec.getHoliday()%>"/>
+                    <label>Holiday<select class="custom-select" id="-holiday">
+                            <option <%=(timeSpec.getHoliday()) ? "Selected" : ""%> value="true">true</option>
+                            <option <%=(!timeSpec.getHoliday()) ? "Selected" : ""%> value="false">false</option>
+                        </select></label>
                 </div>
                 <div class="form-group row">
                     <label for="-daysOfMonth">Days Of Month</label>

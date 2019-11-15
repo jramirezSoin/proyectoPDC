@@ -4,11 +4,13 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.User"%>
 <%@page import="control.ControlFunctions"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="control.ControlPath"%>
 <%@page import="datos.ListaT"%>
 <%@page import="datos.ChargeOfferingT"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <% ChargeOfferingT chargeOffering = (ChargeOfferingT) request.getSession().getAttribute("add");%>
 <% if(chargeOffering==null){chargeOffering = (ChargeOfferingT) request.getSession().getAttribute("principal");}%>
 <form style="margin: 20px;" id="formulaire">
@@ -25,7 +27,7 @@
 <input class="form-control" type="text" id="-timeRange" placeholder="Time Range" value="<%=chargeOffering.getTimeRange()%>"/>
 </div>
 <%if(chargeOffering.getChargeEvents().size()==0){%>
-<% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick);%>
+<% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick,user);%>
     <div class="form-group row">
     <label><select class="custom-select" id="-specName">
             <%for(int j=0;j<products.size();j++){%>

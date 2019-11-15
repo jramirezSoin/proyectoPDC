@@ -209,7 +209,7 @@ public class BalanceElementT extends Nodo{
 
     
     @Override
-    public int procesar(ArrayList<String> balances, int index) {
+    public int procesar(ArrayList<String> balances, int index, String user) {
         int itemCount = 0;
         for(int i=index; i<balances.size();i++) {
             
@@ -229,7 +229,7 @@ public class BalanceElementT extends Nodo{
                 
                 RoundingRuleT roundingRule = new RoundingRuleT(itemCount);
                 itemCount++;
-                i= roundingRule.procesar(balances, i+1);
+                i= roundingRule.procesar(balances, i+1, user);
                 i--;
                 this.roundingRules.add(roundingRule);
             }else return i;
@@ -239,13 +239,13 @@ public class BalanceElementT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.roundingRules.get(i).procesarI(lista, index, indexs);
+            this.roundingRules.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -284,27 +284,27 @@ public class BalanceElementT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Balance: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Balance: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Obsoleto: "+obsolete,FirstPDF.normalFont));
-            preface.add(new Paragraph("Código: "+code,FirstPDF.normalFont));
-            preface.add(new Paragraph("Código numeral: "+numCode,FirstPDF.normalFont));
-            preface.add(new Paragraph("Símbolo: "+symbol,FirstPDF.normalFont));
-            preface.add(new Paragraph("Elemento Transitorio: "+transientElement,FirstPDF.normalFont));
-            preface.add(new Paragraph("Plegable: "+foldable,FirstPDF.normalFont));
-            preface.add(new Paragraph("Contador: "+counter,FirstPDF.normalFont));
-            preface.add(new Paragraph("Regla de consumo: "+consumptionRule,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Nombre: ",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("Obsoleto: ",obsolete+""));
+            preface.add(FirstPDF.createDescription("Código: ",code));
+            preface.add(FirstPDF.createDescription("Código numeral: ",numCode));
+            preface.add(FirstPDF.createDescription("Símbolo: ",symbol));
+            preface.add(FirstPDF.createDescription("Elemento Transitorio: ",transientElement+""));
+            preface.add(FirstPDF.createDescription("Plegable: ",foldable+""));
+            preface.add(FirstPDF.createDescription("Contador: ",counter+""));
+            preface.add(FirstPDF.createDescription("Regla de consumo: ",consumptionRule));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Reglas de Redondeo",FirstPDF.subFont));
+            preface.add(new Paragraph("Reglas de Redondeo",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             PdfPTable table = new PdfPTable(6);
             float[] columnWidths = new float[]{30f,20f, 10f, 10f, 10f,10f};

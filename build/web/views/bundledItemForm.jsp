@@ -4,12 +4,14 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.User"%>
 <%@page import="control.ControlFunctions"%>
 <%@page import="control.ControlPath"%>
 <%@page import="datos.ListaT"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="datos.BundledT"%>
 <%@page import="datos.BundledItemT"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <%int index= ((ArrayList<Integer>)request.getSession().getAttribute("index")).get(0);%>
 <% BundledItemT zoneItem = (BundledItemT) request.getSession().getAttribute("add");%>
 <% ArrayList<ListaT> buscar = (ArrayList<ListaT>) request.getSession().getAttribute("buscar");%>
@@ -24,7 +26,7 @@
 <input readonly="" class="form-control" type="text" id="-alterationOfferingName" placeholder="Alteration Offering" value="<%=zoneItem.getAlterationOfferingName()%>"/>
 </div>
 <div class="form-group row">
-<% ArrayList<ListaT> products = ControlFunctions.getListaFiltro((String)ControlPath.chargeOfferingClick,buscar);%>
+<% ArrayList<ListaT> products = ControlFunctions.getListaFiltro((String)ControlPath.chargeOfferingClick,user,buscar);%>
 <label>Offers<select class="custom-select" onclick="$('#-chargeOfferingName').val($(this).val()); $('#-alterationOfferingName').val('');">
         <%for(int j=0;j<products.size();j++){%>
         <option <%=(products.get(j).valor.equals(zoneItem.getChargeOfferingName()))?"Selected":""%> value="<%=products.get(j).valor%>"><%=products.get(j).valor%></option>
@@ -32,7 +34,7 @@
 </select></label>
 </div>
 <div class="form-group row">
-<% ArrayList<ListaT> products2 = ControlFunctions.getListaFiltro((String)ControlPath.alterationOfferingClick, buscar);%>
+<% ArrayList<ListaT> products2 = ControlFunctions.getListaFiltro((String)ControlPath.alterationOfferingClick,user, buscar);%>
 <label>Discount<select class="custom-select" onclick="$('#-alterationOfferingName').val($(this).val()); $('#-chargeOfferingName').val('');">
         <%for(int j=0;j<products2.size();j++){%>
         <option <%=(products2.get(j).valor.equals(zoneItem.getAlterationOfferingName()))?"Selected":""%> value="<%=products2.get(j).valor%>"><%=products2.get(j).valor%></option>

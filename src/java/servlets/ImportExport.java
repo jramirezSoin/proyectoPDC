@@ -10,8 +10,8 @@ import control.ControlFunctions;
 import control.ControlPath;
 import datos.Cambio;
 import datos.ListaT;
+import datos.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -56,9 +56,10 @@ public class ImportExport extends HttpServlet {
         processRequest(request, response);
         String tipo = request.getParameter("tipo");
         String files = request.getParameter("files");
+        User usuario = (User) request.getSession().getAttribute("user");
         ArrayList<ListaT> seleccionados= new ArrayList<>();
         ArrayList<ListaT> constants = ControlFunctions.LeerConstante("files");
-        ArrayList<Cambio> cambios = TxtParser.leerCambios();
+        ArrayList<Cambio> cambios = TxtParser.leerCambios(usuario.getUserPDC());
         if(files!=null && !files.equals("")){
             files= files.substring(1);
             String[] filesS = files.split(",");
@@ -70,7 +71,7 @@ public class ImportExport extends HttpServlet {
         if(tipo.equals("export")){
             boolean estado= true;
             for(ListaT l: seleccionados){
-                estado= ImportExportClient.exportPricing(l.valor, l.unit);
+                estado= ImportExportClient.exportPricing(l.valor, l.unit, usuario.getUserPDC(), usuario.getPwdPDC(), usuario.getPwdPDCIE());
                 if(estado==false){reporte.add(new ListaT("error","ERROR EXPORTING,"+l.valor+"\n"));}
                 else{
                     reporte.add(new ListaT("success","SUCCESSFUL EXPORTING,"+l.valor+"\n"));
@@ -80,7 +81,7 @@ public class ImportExport extends HttpServlet {
         }else if(tipo.equals("import")){
             boolean estado= true;
             for(ListaT l: seleccionados){
-                estado= ImportExportClient.importPricing(l.valor, l.unit);
+                estado= ImportExportClient.importPricing(l.valor, l.unit, usuario.getUserPDC(), usuario.getPwdPDC(), usuario.getPwdPDCIE());
                 if(estado==false){reporte.add(new ListaT("error","ERROR IMPORTING,"+l.valor+"\n"));}
                 else{
                     reporte.add(new ListaT("success","SUCCESSFUL IMPORTING,"+l.valor+"\n"));
@@ -89,7 +90,7 @@ public class ImportExport extends HttpServlet {
             }
         }
         HttpSession session = request.getSession();
-        TxtParser.aniadirCambios(cambios);
+        TxtParser.aniadirCambios(cambios,usuario.getUserPDC());
         session.setAttribute("cambios", cambios);
         session.setAttribute("errores", reporte);
         request.getRequestDispatcher(ControlPath.mainView).forward(request, response);

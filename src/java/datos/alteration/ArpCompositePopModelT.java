@@ -73,7 +73,7 @@ public class ArpCompositePopModelT extends Nodo{
     }
     
     @Override
-    public int procesar(ArrayList<String> ratePlan2, int index) {
+    public int procesar(ArrayList<String> ratePlan2, int index, String user) {
         ArrayList<String> ratePlan= (ArrayList<String>)ratePlan2.clone();
         boolean alterationPopModel=false, priceTier= false;
         for(int i=index; i<ratePlan.size();i++) {
@@ -102,12 +102,12 @@ public class ArpCompositePopModelT extends Nodo{
             }
             else if(("lowerBound").contains(ratePlan.get(i)) && priceTier){     
                 BoundT bound = new BoundT();
-                i= bound.procesar(ratePlan, i+1);
+                i= bound.procesar(ratePlan, i+1, user);
                 i--;
                 this.lowerBound=bound;
             }else if(("tierRange").contains(ratePlan.get(i)) && priceTier){     
                 TierRangeT tierRange = new TierRangeT();
-                i= tierRange.procesar(ratePlan, i+1);
+                i= tierRange.procesar(ratePlan, i+1, user);
                 i--;
                 this.tierRange.add(tierRange);
             }else return i;
@@ -151,13 +151,13 @@ public class ArpCompositePopModelT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.tierRange.get(i).procesarI(lista, index, indexs);
+            this.tierRange.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -177,7 +177,7 @@ public class ArpCompositePopModelT extends Nodo{
     public void getPDF(Element element) {
             Paragraph preface = (Paragraph) element;
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Límite menor: "+lowerBound.toString(),FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Límite menor: ",lowerBound.toString()));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             FirstPDF.addEmptyLine(preface, 1);

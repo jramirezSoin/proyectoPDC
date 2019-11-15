@@ -92,8 +92,8 @@ public class ExpressionT extends Nodo{
     
     
     
-        @Override
-    public int procesar(ArrayList<String> triggerSpecs2, int index) {
+    @Override
+    public int procesar(ArrayList<String> triggerSpecs2, int index, String user) {
         ArrayList<String> triggerSpecs= (ArrayList<String>) triggerSpecs2.clone();
         for(int i=index; i<triggerSpecs.size();i++) {
             
@@ -101,8 +101,8 @@ public class ExpressionT extends Nodo{
             else if(triggerSpecs.get(i).matches("(?s)type: (.*)")) this.tipo= triggerSpecs.get(i).substring(6);
             else if(triggerSpecs.get(i).matches("(?s)value: (.*)")) this.value= triggerSpecs.get(i).substring(7);
             else if(triggerSpecs.get(i).matches("(?s)binaryOperator: (.*)")) this.binaryOperator= triggerSpecs.get(i).substring(16);
-            else if(triggerSpecs.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= triggerSpecs.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode",triggerSpecs.get(i).substring(23)),"name");}
-            else if(triggerSpecs.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= triggerSpecs.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",triggerSpecs.get(i).substring(20)),"numericCode");}
+            else if(triggerSpecs.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= triggerSpecs.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("numericCode",triggerSpecs.get(i).substring(23)),"name");}
+            else if(triggerSpecs.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= triggerSpecs.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("name",triggerSpecs.get(i).substring(20)),"numericCode");}
             else if(("leftOperand rightOperand binaryExpression chargeExpression: balanceExpression").contains(triggerSpecs.get(i))){
                 
             }
@@ -112,9 +112,9 @@ public class ExpressionT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -159,26 +159,26 @@ public class ExpressionT extends Nodo{
     public void getPDF(Element element) {
         Paragraph preface = (Paragraph) element;
         if(tipo.equals("balanceTriggerExpression")){
-            preface.add(new Paragraph("Saldo",FirstPDF.normalBold));
+            preface.add(new Paragraph("Saldo",FirstPDF.h5));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Operador: "+operator,FirstPDF.normalFont));
-            preface.add(new Paragraph("Valor: "+value,FirstPDF.normalFont));
-            preface.add(new Paragraph("Saldo en: "+balanceElementName,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Operador: ",operator));
+            preface.add(FirstPDF.createDescription("Valor: ",value));
+            preface.add(FirstPDF.createDescription("Saldo en: ",balanceElementName));
         }
         if(tipo.equals("complexTriggerExpression")){
-            preface.add(new Paragraph("Compleja",FirstPDF.normalBold));
+            preface.add(new Paragraph("Compleja",FirstPDF.h5));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Operador: "+operator,FirstPDF.normalFont));
-            preface.add(new Paragraph("Valor: "+value,FirstPDF.normalFont));
-            preface.add(new Paragraph("Operador Izquierdo: "+balanceElementName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Operador Derecho: Cargo",FirstPDF.normalFont));
-            preface.add(new Paragraph("Operador Binario: "+operator,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Operador: ",operator));
+            preface.add(FirstPDF.createDescription("Valor: ",value));
+            preface.add(FirstPDF.createDescription("Operador Izquierdo: ",balanceElementName));
+            preface.add(new Paragraph("Operador Derecho: Cargo",FirstPDF.p));
+            preface.add(FirstPDF.createDescription("Operador Binario: ",operator));
             
         }else if(tipo.equals("chargeTriggerExpression")){
-            preface.add(new Paragraph("Cargo",FirstPDF.normalBold));
+            preface.add(new Paragraph("Cargo",FirstPDF.h5));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Operador: "+operator,FirstPDF.normalFont));
-            preface.add(new Paragraph("Value: "+value,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Operador: ",operator));
+            preface.add(FirstPDF.createDescription("Value: ",value));
         }
         FirstPDF.addEmptyLine(preface, 2);
     

@@ -120,7 +120,7 @@ public class ImpactCategoryT extends Nodo{
     
 
     @Override
-    public int procesar(ArrayList<String> impactCategories, int index) {
+    public int procesar(ArrayList<String> impactCategories, int index, String user) {
         for(int i=index; i<impactCategories.size();i++) {
             
             if(impactCategories.get(i).matches("(?s)name: (.*)")){ this.name= impactCategories.get(i).substring(6); this.result= impactCategories.get(i).substring(6);}
@@ -137,9 +137,9 @@ public class ImpactCategoryT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -159,17 +159,17 @@ public class ImpactCategoryT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Impact Category: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Impact Category: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Obsoleto: "+obsolete,FirstPDF.normalFont));
-            preface.add(new Paragraph("Resultado: "+result,FirstPDF.normalFont));
-            preface.add(new Paragraph("Tipo de Resultado: "+resultType,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("nombre: ",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("Obsoleto: ",obsolete+""));
+            preface.add(FirstPDF.createDescription("Resultado: ",result));
+            preface.add(FirstPDF.createDescription("Tipo de Resultado: ",resultType));
             document.add(preface);
             
         } catch (DocumentException ex) {

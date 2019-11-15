@@ -116,7 +116,7 @@ public class RuleT extends Nodo{
             fieldExpressions+=s+"\t<crSelectorExpression>\n" +
             s+"\t\t<rightOperand>"+m+"</rightOperand>\n" +
             s+"\t\t<operator>"+l.unit+"</operator>\n" +
-            s+"\t</crSelectorExpression>\t";
+            s+"\t</crSelectorExpression>\n";
             }
             
         }
@@ -130,7 +130,7 @@ public class RuleT extends Nodo{
     }
     
     @Override
-    public int procesar(ArrayList<String> generics, int index) {
+    public int procesar(ArrayList<String> generics, int index, String user) {
         for(int i=index; i<generics.size();i++) {
             if(generics.get(i).matches("(?s)name: (.*)")) this.name= generics.get(i).substring(6);
             else if(generics.get(i).matches("(?s)result")){
@@ -166,10 +166,10 @@ public class RuleT extends Nodo{
         return generics.size();
     }
     
-     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    @Override
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0){
-            index= this.procesar(lista, index);}
+            index= this.procesar(lista, index, user);}
         return index;
     }
     
@@ -201,17 +201,17 @@ public class RuleT extends Nodo{
         try {
             Paragraph preface = (Paragraph) element;
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Regla: "+this.name, FirstPDF.subFont));
+            preface.add(new Paragraph("Regla: "+this.name, FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Categoría de Repecusión: "+resultName,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("nombre: ",name));
+            preface.add(FirstPDF.createDescription("Categoría de Repecusión: ",resultName));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Expressiones",FirstPDF.subFont));
+            preface.add(new Paragraph("Expressiones",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             PdfPTable table = new PdfPTable(5);
             float[] columnWidths = new float[]{30f, 20f, 20f, 10f,20f};
@@ -224,11 +224,11 @@ public class RuleT extends Nodo{
             table.addCell(FirstPDF.createTableHeader("Tipo"));
             for(String item : this.models.keySet()){
                 ListaT t = this.models.get(item);
-                table.addCell(item);
-                table.addCell(t.valor);
-                table.addCell(t.unit);
-                table.addCell(this.seperator);
-                table.addCell(this.fieldKind);
+                table.addCell(FirstPDF.createTableCell(item));
+                table.addCell(FirstPDF.createTableCell(t.valor));
+                table.addCell(FirstPDF.createTableCell(t.unit));
+                table.addCell(FirstPDF.createTableCell(this.seperator));
+                table.addCell(FirstPDF.createTableCell(this.fieldKind));
             }
             preface.add(table);
             

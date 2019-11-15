@@ -8,7 +8,6 @@ package datos;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.ControlFunctions;
 import control.FirstPDF;
@@ -26,7 +25,7 @@ public class TimeModelT extends Nodo{
     private String name="";
     private String description="";
     private String internalId="";
-    private String pricingProfileName="";
+    private String pricingProfileName="Convergent Usage";
     private String priceListName="Default";
     private String holidayCalendarName="";
     private ArrayList<TimeModelTagT> timeModelTags;
@@ -127,7 +126,7 @@ public class TimeModelT extends Nodo{
     }
     
     @Override
-    public int procesar(ArrayList<String> timeModels, int index) {
+    public int procesar(ArrayList<String> timeModels, int index, String user) {
         int itemCount = 0;
         boolean ingresa=false;
         for(int i=index; i<timeModels.size();i++) {
@@ -144,7 +143,7 @@ public class TimeModelT extends Nodo{
                 
                 TimeModelTagT timeModelTag = new TimeModelTagT(itemCount);
                 itemCount++;
-                i= timeModelTag.procesar(timeModels, i+1);
+                i= timeModelTag.procesar(timeModels, i+1, user);
                 i--;
                 this.timeModelTags.add(timeModelTag);
             }else{return i;}
@@ -155,13 +154,13 @@ public class TimeModelT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.timeModelTags.get(i).procesarI(lista, index, indexs);
+            this.timeModelTags.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -209,21 +208,21 @@ public class TimeModelT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Modelo de tiempo: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Modelo de tiempo: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Calendario de Festividades: "+holidayCalendarName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Valido desde: "+ControlFunctions.getParseDate(validFrom),FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Nombre: ",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("Calendario de Festividades: ",holidayCalendarName));
+            preface.add(FirstPDF.createDescription("Valido desde: ",ControlFunctions.getParseDate(validFrom)));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Tags",FirstPDF.subFont));
+            preface.add(new Paragraph("Tags",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             for(TimeModelTagT item : this.timeModelTags){
                 if(item.visibilidad){

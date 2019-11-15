@@ -9,6 +9,7 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.pdf.PdfPTable;
 import control.ControlFunctions;
 import control.ControlPath;
+import control.FirstPDF;
 import datos.ListaT;
 import datos.Nodo;
 import java.util.ArrayList;
@@ -181,17 +182,17 @@ public class ChargeT extends Nodo{
     }
 
     @Override
-    public int procesar(ArrayList<String> charge, int index) {
+    public int procesar(ArrayList<String> charge, int index, String user) {
         for(int i=index; i<charge.size();i++) {
             if(charge.get(i).matches("(?s)price: (.*)")) this.price= charge.get(i).substring(7);
             else if(charge.get(i).matches("(?s)unitOfMeasure: (.*)")) this.unitOfMeasure= charge.get(i).substring(15);
-            else if(charge.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= charge.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode",charge.get(i).substring(23)),"name");}
-            else if(charge.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= charge.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",charge.get(i).substring(20)),"numericCode");}
+            else if(charge.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= charge.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("numericCode",charge.get(i).substring(23)),"name");}
+            else if(charge.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= charge.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("name",charge.get(i).substring(20)),"numericCode");}
             else if(charge.get(i).matches("(?s)discountable: (.*)")) this.discountable= Boolean.valueOf(charge.get(i).substring(14));
             else if(charge.get(i).matches("(?s)proratable: (.*)")) this.proratable= Boolean.valueOf(charge.get(i).substring(12));
             else if(charge.get(i).matches("(?s)priceType: (.*)")) this.priceType= charge.get(i).substring(11);
-            else if(charge.get(i).matches("(?s)glid: (.*)")){ this.glid= charge.get(i).substring(6); this.glidName=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("code",charge.get(i).substring(6)),"name");}
-            else if(charge.get(i).matches("(?s)glidName: (.*)")){ this.glidName= charge.get(i).substring(10); this.glid=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("name",charge.get(i).substring(10)),"code");}
+            else if(charge.get(i).matches("(?s)glid: (.*)")){ this.glid= charge.get(i).substring(6); this.glidName=ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("code",charge.get(i).substring(6)),"name");}
+            else if(charge.get(i).matches("(?s)glidName: (.*)")){ this.glidName= charge.get(i).substring(10); this.glid=ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("name",charge.get(i).substring(10)),"code");}
             
             else if(charge.get(i).matches("(?s)incrementStep: (.*)")) this.incrementStep= charge.get(i).substring(15);
             else if(charge.get(i).matches("(?s)incrementRounding: (.*)")) this.incrementRounding= charge.get(i).substring(19);
@@ -202,7 +203,7 @@ public class ChargeT extends Nodo{
             else if(charge.get(i).matches("(?s)priceValidity")){ 
                 
                 PriceValidityT resul = new PriceValidityT(0);
-                i= resul.procesar(charge, i+1);
+                i= resul.procesar(charge, i+1, user);
                 i--;
                 this.setPriceValidity(resul);
             }else{validar(); return i;}
@@ -213,9 +214,9 @@ public class ChargeT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -235,10 +236,10 @@ public class ChargeT extends Nodo{
         if(this.priceType.equals("CONSUMPTION")){this.priceValidity=null;}
     }
 
-    void getRumCurrency(String rum, String currency) {
+    void getRumCurrency(String rum, String currency, String user) {
         if(this.balanceElementNumCode.equals("") || this.balanceElementNumCode.equals("null") || Integer.parseInt(this.balanceElementNumCode)<1000){
-            this.balanceElementNumCode = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("code", currency), "numericCode");
-            this.balanceElementName = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("code", currency), "name");
+            this.balanceElementNumCode = ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("code", currency), "numericCode");
+            this.balanceElementName = ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("code", currency), "name");
         }
     }
     
@@ -249,10 +250,10 @@ public class ChargeT extends Nodo{
     @Override
     public void getPDF(Element element) {
             PdfPTable table = (PdfPTable) element;
-            table.addCell(priceType);
-            table.addCell(price);
-            table.addCell(balanceElementName);
-            table.addCell(unitOfMeasure);
+            table.addCell(FirstPDF.createTableCell(priceType));
+            table.addCell(FirstPDF.createTableCell(price));
+            table.addCell(FirstPDF.createTableCell(balanceElementName));
+            table.addCell(FirstPDF.createTableCell(unitOfMeasure));
             
     }
     

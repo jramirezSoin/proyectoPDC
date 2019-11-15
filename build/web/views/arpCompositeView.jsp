@@ -4,19 +4,33 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.User"%>
+<%@page import="datos.ListaT"%>
+<%@page import="control.ControlPath"%>
 <%@page import="datos.alteration.AlterationConfigurationT"%>
 <%@page import="control.ControlFunctions"%>
 <%@page import="datos.alteration.AlterationChargeT"%>
 <%@page import="datos.alteration.TierRangeT"%>
 <%@page import="datos.alteration.ArpCompositePopModelT"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <%AlterationConfigurationT conf = (AlterationConfigurationT) request.getSession().getAttribute("composite"); %>
 <%ArpCompositePopModelT rel = conf.getArpCompositePopModel();%>
 <div class="card mt-5">
     <div class="card-body">
+        <div class="d-flex justify-content-between mb-5">
+                        <h4 class="header-title mb-0">Configuration</h4>
+                        <div class="btn-group mb-xl-3" role="group" aria-label="Basic example"> 
+                            <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/alterationRatePlan','Configuration','<%=conf.id%>,-1');">Edit Config</button>
+                            <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#eliminarModal" onclick="eliminar('/alterationRatePlan','-6,<%=conf.id%>')">Delete</button>
+                            <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/alterationRatePlan','Bounds','<%=conf.id%>,-2')">Edit Bounds</button>
+                        </div>
+        </div>
         <dl class="row">
+                <% ListaT buscar= new ListaT("name",conf.getTriggerSpecName());%>
+                <% ListaT buscar2= new ListaT("name",conf.getChargeSelectorSpecName());%>
                 <dt class="col-sm-5">Applicable Charge And Quantity</dt><dd class="col-sm-7"><%= conf.getApplicableChargeAndQuantity()%></dd>
-                <dt class="col-sm-5">Trigger Spec Name</dt><dd class="col-sm-7"><%= conf.getTriggerSpecName()%></dd>
-                <dt class="col-sm-5">Charge Selector Spec Name</dt><dd class="col-sm-7"><%= conf.getChargeSelectorSpecName()%></dd>
+                <dt class="col-sm-5">Trigger Spec Name</dt><dd class="col-sm-7"><a href="#" onclick="hacerClick(this,'/triggerSpec',<%=ControlFunctions.Buscar(ControlPath.triggerSpecClick,user, buscar, "id")%>)"><%= conf.getTriggerSpecName()%></a></dd>
+                <dt class="col-sm-5">Charge Selector Spec Name</dt><dd class="col-sm-7"><a href="#" onclick="hacerClick(this,'/chargeSelectorSpec',<%=ControlFunctions.Buscar(ControlPath.chargeSelectorSpecClick,user, buscar2, "id")%>)"><%= conf.getChargeSelectorSpecName()%></a></dd>
         </dl>        
         <div>
             <dl class="row">
@@ -80,7 +94,7 @@
                                 <td><%=res.getUnitOfMeasure()%></td>
                                 <td><%=res.getBalanceElementName()%></td>
                                 <td><%=res.getGlidName()%></td>
-                                <td><button tabindex="0" type="button" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/alterationRatePlan','Periods','0,-5,<%=result.getId()%>,<%=res.getId()%>');" class="btn btn-rounded btn-light btn-sm"><i class="ti-pencil"></i></button></td>
+                                <td><button tabindex="0" type="button" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/alterationRatePlan','Periods','0,-3,<%=result.getId()%>,<%=res.getId()%>');" class="btn btn-rounded btn-light btn-sm"><i class="ti-pencil"></i></button></td>
                                 <%if(res.getPriceValidity()!=null){%>
                                 <td><button tabindex="0" type="button" class="btn btn-rounded btn-light btn-sm" data-popover-content="#res-<%=res.getId()%>" data-toggle="popover" title data-placement="right" aria-describedby="popover300430"><i class="ti-eye"></i></button></td>
                                 <td id="res-<%=res.getId()%>" style="display: none;">

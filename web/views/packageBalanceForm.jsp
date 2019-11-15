@@ -4,18 +4,20 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.User"%>
 <%@page import="control.ControlPath"%>
 <%@page import="control.ControlFunctions"%>
 <%@page import="datos.ListaT"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="datos.PackageT"%>
 <%@page import="datos.BalanceSpecT"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <%int index= ((ArrayList<Integer>)request.getSession().getAttribute("index")).get(1);%>
 <% BalanceSpecT balance = (BalanceSpecT) request.getSession().getAttribute("add");%>
 <%if(balance==null){balance = ((PackageT)request.getSession().getAttribute("principal")).getBalances().get(index);}%>
 <form style="margin: 20px;" id="formulaire">
 <div class="form-group row">
-<% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick);%>
+<% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick,user);%>
     <label>Balance Element<select class="custom-select" id="-balanceElementName">
     <%for(int j=0;j<impactCategories.size();j++){%>
     <option <%=(impactCategories.get(j).valor.equals(balance.getBalanceElementName()))?"selected":""%> value="<%=impactCategories.get(j).valor%>"><%=impactCategories.get(j).valor%></option>

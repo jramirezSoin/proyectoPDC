@@ -5,18 +5,15 @@
  */
 package servlets;
 
-
-import client.OraclePDCClient;
-import control.ControlFunctions;
 import control.ControlPath;
+import datos.User;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import xml.TxtParser;
 
 /**
  *
@@ -63,9 +60,11 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        //User user = (User)session.getAttribute("user");
-        String user="occuser-07", password="P4ssocc07";
-        if(ControlFunctions.login(user,password)){
+        User user = (User)request.getSession().getAttribute("user");
+        //String user="occuser-25", password="P4ssocc25";
+        //User usuario=TxtParser.login(user,password);
+        if(user!=null){
+            request.getSession().setAttribute("user", user);
             request.getRequestDispatcher("/views/index.jsp").forward(request, response);
             ControlPath.LoadParameters();
         }
@@ -87,7 +86,9 @@ public class Login extends HttpServlet {
         processRequest(request, response);
         String user= request.getParameter("user");
         String password= request.getParameter("password");
-        if(ControlFunctions.login(user,password)){
+        User usuario=TxtParser.login(user,password);
+        if(usuario!=null){
+            request.getSession().setAttribute("user", usuario);
             request.getRequestDispatcher("/views/index.jsp").forward(request, response);
             ControlPath.LoadParameters();
         }

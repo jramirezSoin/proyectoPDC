@@ -9,12 +9,10 @@ import control.ControlPath;
 import control.FirstPDF;
 import datos.ListaT;
 import datos.Nodo;
+import datos.User;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,8 +61,9 @@ public class DownloadPdf extends HttpServlet {
         String name = "PDC_"+simpleDateFormat.format(new Date())+".pdf";
         response.setContentType("text/plain");
         response.setHeader("Content-disposition", "attachment; filename="+name);
-        FirstPDF.crearPDF(name, nodo);
-        File file = new File(ControlPath.path+"PDF/"+name);
+        String user = ((User)request.getSession().getAttribute("user")).getUserPDC();
+        FirstPDF.crearPDF(name, nodo,user);
+        File file = new File(ControlPath.path+user+"/PDF/"+name);
         FileInputStream fileIn = new FileInputStream(file);
         ServletOutputStream out = response.getOutputStream();
         byte[] outputByte = new byte[ARBITARY_SIZE];
@@ -100,21 +99,21 @@ public class DownloadPdf extends HttpServlet {
         String name = "PDC_"+simpleDateFormat.format(new Date())+".pdf";
         response.setContentType("text/plain");
         response.setHeader("Content-disposition", "attachment; filename="+name);
-        
+        String user = ((User)request.getSession().getAttribute("user")).getUserPDC();
         if(calidad.equals("General")){
             if(cantidad.equals("Todos"))
-                FirstPDF.crearListaPDF(name, nodo);
+                FirstPDF.crearListaPDF(name, nodo,user);
             else if(cantidad.equals("Seleccionados")){
-                FirstPDF.crearListaPDF(name, nodo, checks);
+                FirstPDF.crearListaPDF(name, nodo, checks,user);
             }
         }else if(calidad.equals("Detallado")){
             if(cantidad.equals("Todos"))
-                FirstPDF.crearListaDPDF(name, nodo, (String)request.getSession().getAttribute("actualPath"));
+                FirstPDF.crearListaDPDF(name, nodo, (String)request.getSession().getAttribute("actualPath"),user);
             else if(cantidad.equals("Seleccionados")){
-                FirstPDF.crearListaDPDF(name, nodo, checks, (String)request.getSession().getAttribute("actualPath"));
+                FirstPDF.crearListaDPDF(name, nodo, checks, (String)request.getSession().getAttribute("actualPath"),user);
             }
         }
-        File file = new File(ControlPath.path+"PDF/"+name);
+        File file = new File(ControlPath.path+user+"/PDF/"+name);
         FileInputStream fileIn = new FileInputStream(file);
         ServletOutputStream out = response.getOutputStream();
         byte[] outputByte = new byte[ARBITARY_SIZE];

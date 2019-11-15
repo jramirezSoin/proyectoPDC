@@ -30,11 +30,11 @@ public class Nodo implements Cloneable{
         return true;
     }
     
-    public int procesar(ArrayList<String> zoneModels, int index) {
+    public int procesar(ArrayList<String> zoneModels, int index, String user) {
         return index;
     }
 
-    public int procesarI(ArrayList<String> lista, int i, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int i, ArrayList<Integer> indexs, String user) {
         return 0;
     }
 

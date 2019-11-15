@@ -20,8 +20,8 @@ import java.util.Scanner;
 public class TxtParser {
 
 
-    public static ArrayList<Cambio> leerCambios() {
-        File file = new File(ControlPath.changes);
+    public static ArrayList<Cambio> leerCambios(String user) {
+        File file = new File(ControlPath.path+user+"/"+ControlPath.changes);
         ArrayList<Cambio> cambios = new ArrayList<>();
         Scanner scanner;
         try {
@@ -45,10 +45,10 @@ public class TxtParser {
         return cambios;
     }
 
-    public static void aniadirCambio(Cambio cambio) {
+    public static void aniadirCambio(Cambio cambio, String user) {
         FileWriter flwriter = null;
         try {
-            flwriter = new FileWriter(ControlPath.changes, true);
+            flwriter = new FileWriter(ControlPath.path+user+"/"+ControlPath.changes, true);
             BufferedWriter bfwriter = new BufferedWriter(flwriter);
             bfwriter.write(cambio.getCambio()+","+cambio.getFecha()+","+cambio.getArchivo()+"\n");
             bfwriter.close();
@@ -66,14 +66,14 @@ public class TxtParser {
         }
     }
     
-    public static void aniadirCambios(ArrayList<Cambio> cambios) {
-        aniadirCambios(cambios,false);
+    public static void aniadirCambios(ArrayList<Cambio> cambios, String user) {
+        aniadirCambios(cambios,false, user);
     }
     
-    public static void aniadirCambios(ArrayList<Cambio> cambios, boolean sobreescribe) {
+    public static void aniadirCambios(ArrayList<Cambio> cambios, boolean sobreescribe, String user) {
         FileWriter flwriter = null;
         try {
-            flwriter = new FileWriter(ControlPath.changes, sobreescribe);
+            flwriter = new FileWriter(ControlPath.path+user+"/"+ControlPath.changes, sobreescribe);
             BufferedWriter bfwriter = new BufferedWriter(flwriter);
             for(Cambio cambio: cambios)
                 bfwriter.write(cambio.getCambio()+","+cambio.getFecha()+","+cambio.getArchivo()+"\n");

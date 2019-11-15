@@ -2356,8 +2356,8 @@ table.dataTable thead td {
 .form-gp label {
     position: absolute;
     left: 0;
-    top: 0;
-    color: #b3b2b2;
+    top: -15px;
+    color: #7e74ff;
     -webkit-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
 }

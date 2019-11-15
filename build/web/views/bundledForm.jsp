@@ -3,11 +3,13 @@
     Created on : Aug 19, 2019, 8:53:35 AM
     Author     : Joseph Ramírez
 --%>
+<%@page import="datos.User"%>
 <%@page import="control.ControlPath"%>
 <%@page import="control.ControlFunctions"%>
 <%@page import="datos.ListaT"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="datos.BundledT"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <% BundledT bundled = (BundledT) request.getSession().getAttribute("add");%>
 <% if(bundled==null){bundled = (BundledT) request.getSession().getAttribute("principal");}%>
 <form style="margin: 20px;" id="formulaire">
@@ -44,7 +46,7 @@
 </select></label>
 </div>
 <%if(bundled.getProductSpecName().equals("") && bundled.getCustomerSpecName().equals("")){%>
-<% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick);%>
+<% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick, user);%>
 <div class="form-group row">
 <label>Aplicable to<select class="custom-select" id="-aplicable">
         <%for(int j=0;j<products.size();j++){%>

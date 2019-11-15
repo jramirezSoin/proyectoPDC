@@ -7,11 +7,9 @@ package datos.ratePlan;
 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.ControlFunctions;
 import control.FirstPDF;
 import datos.Nodo;
-import datos.alteration.AlterationConfigurationT;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -72,7 +70,7 @@ public class CrpRelDateRangeT extends Nodo{
     }
 
     @Override
-    public int procesar(ArrayList<String> zoneModels, int index) {
+    public int procesar(ArrayList<String> zoneModels, int index, String user) {
         for(int i=index; i<zoneModels.size();i++) {
             
             if(zoneModels.get(i).matches("(?s)absoluteDateRange(.*)")){
@@ -83,12 +81,12 @@ public class CrpRelDateRangeT extends Nodo{
             } 
             else if(("zoneModel enhancedZoneModel").contains(zoneModels.get(i))){ 
                 ZoneModelT zoneItem = new ZoneModelT(zoneModels.get(i));
-                i= zoneItem.procesar(zoneModels, i+1);
+                i= zoneItem.procesar(zoneModels, i+1, user);
                 i--;
                 this.setZoneModel(zoneItem);
             }else if(zoneModels.get(i).matches("(?s)crpCompositePopModel")){ 
                 CrpCompositePopModelT crpCompositePopModel = new CrpCompositePopModelT(0);
-                i= crpCompositePopModel.procesar(zoneModels, i+1);
+                i= crpCompositePopModel.procesar(zoneModels, i+1, user);
                 i--;
                 this.setCrpCompositePopModel(crpCompositePopModel);
             }else return i;
@@ -98,9 +96,9 @@ public class CrpRelDateRangeT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs,String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -117,13 +115,13 @@ public class CrpRelDateRangeT extends Nodo{
         }
     }
 
-    public void getDefaultComposite(String rum, String currencyCode) {
+    public void getDefaultComposite(String rum, String currencyCode, String user) {
         ChargeT charge= new ChargeT(0);
         PriceTierRangeT tierRange = new PriceTierRangeT(0);
         CrpCompositePopModelT popModel = new CrpCompositePopModelT(0);
         tierRange.getCharges().add(charge);
         popModel.getPriceTierRanges().add(tierRange);
-        popModel.getRumCurrency(rum, currencyCode);
+        popModel.getRumCurrency(rum, currencyCode, user);
         this.crpCompositePopModel=popModel;
     }
     
@@ -131,8 +129,8 @@ public class CrpRelDateRangeT extends Nodo{
     public void getPDF(Element element) {
         try {
             Paragraph preface = (Paragraph) element;
-            preface.add(new Paragraph("fecha inicio: "+ControlFunctions.getParseDate(startDate),FirstPDF.normalFont));
-            preface.add(new Paragraph("fecha fin: "+ControlFunctions.getParseDate(endDate),FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("fecha inicio: ",ControlFunctions.getParseDate(startDate)));
+            preface.add(FirstPDF.createDescription("fecha fin: ",ControlFunctions.getParseDate(endDate)));
             FirstPDF.addEmptyLine(preface, 1);
             if(this.crpCompositePopModel!=null)
                 this.crpCompositePopModel.getPDF(preface);

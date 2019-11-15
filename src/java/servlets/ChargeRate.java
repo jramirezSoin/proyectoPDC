@@ -9,11 +9,11 @@ import control.ControlFunctions;
 import control.ControlPath;
 import datos.ratePlan.ChargeRatePlanT;
 import datos.ListaT;
+import datos.User;
 import datos.ratePlan.CrpCompositePopModelT;
 import datos.ratePlan.CrpRelDateRangeT;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -61,9 +61,10 @@ public class ChargeRate extends HttpServlet {
         String dir = request.getParameter("path");
         ArrayList<String> ChargeRate;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
             if(dir==null){
-            ChargeRate = XmlParser.Leer2(new File(ControlPath.chargeRatePath) , ControlPath.chargeRatePointer);
+            ChargeRate = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.chargeRatePath)) , ControlPath.chargeRatePointer);
             ArrayList<ListaT> ChargeRateId = ControlFunctions.ListS2ListT(ChargeRate);
              session.setAttribute("click", ControlPath.chargeRateClick);           
             session.setAttribute("lista", ChargeRateId);
@@ -78,9 +79,9 @@ public class ChargeRate extends HttpServlet {
                 request.getRequestDispatcher(ControlPath.crpCompositeView).forward(request, response);
             }
         }else{
-                ChargeRate= XmlParser.LeerSeleccionado(new File(ControlPath.chargeRatePath) , Integer.parseInt(id));
+                ChargeRate= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.chargeRatePath)) , Integer.parseInt(id));
                 ChargeRatePlanT ChargeRateId = new ChargeRatePlanT(Integer.parseInt(id));
-                ChargeRateId.procesar(ChargeRate, 1);
+                ChargeRateId.procesar(ChargeRate, 1, user);
                 session.setAttribute("principal", ChargeRateId);
                 session.setAttribute("actual", "chargeRate");
                 session.setAttribute("actualView", ControlPath.chargeRateView);

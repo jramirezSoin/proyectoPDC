@@ -5,7 +5,6 @@
  */
 package datos;
 
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
@@ -53,7 +52,7 @@ public class TimeModelTagT extends Nodo{
     }
     
     @Override
-    public int procesar(ArrayList<String> timeSpecs1, int index) {
+    public int procesar(ArrayList<String> timeSpecs1, int index, String user) {
         this.getTimeSpecs().clear();
         int itemCount = 0;
         for(int i=index; i<timeSpecs1.size();i++) {
@@ -62,7 +61,7 @@ public class TimeModelTagT extends Nodo{
                 
                 TimeSpecT timespec = new TimeSpecT(itemCount);
                 itemCount++;
-                i= timespec.procesar(timeSpecs1, i+1);
+                i= timespec.procesar(timeSpecs1, i+1, user);
                 i--;
                 this.timeSpecs.add(timespec);
             }else{return i;}
@@ -72,13 +71,13 @@ public class TimeModelTagT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.timeSpecs.get(i).procesarI(lista, index, indexs);
+            this.timeSpecs.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -138,12 +137,12 @@ public class TimeModelTagT extends Nodo{
         try {
             Paragraph preface = (Paragraph) element;
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Tag: "+this.tagName, FirstPDF.titleFont));
+            preface.add(new Paragraph("Tag: "+this.tagName, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Especificación",FirstPDF.subFont));
+            preface.add(new Paragraph("Especificación",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             for(TimeSpecT item : this.timeSpecs){
                 PdfPTable table = new PdfPTable(4);
@@ -160,10 +159,10 @@ public class TimeModelTagT extends Nodo{
                     columnWidths = new float[]{30f, 20f, 20f, 20f};
                     table.setWidths(columnWidths);
                     table.setWidthPercentage(100);
-                    table.addCell(item.getName());
-                    table.addCell(item.getDescription());
-                    table.addCell(ControlFunctions.getParseHour(item.getTimeOfDay()));
-                    table.addCell(item.getHoliday());
+                    table.addCell(FirstPDF.createTableCell(item.getName()));
+                    table.addCell(FirstPDF.createTableCell(item.getDescription()));
+                    table.addCell(FirstPDF.createTableCell(ControlFunctions.getParseHour(item.getTimeOfDay())));
+                    table.addCell(FirstPDF.createTableCell(item.getHoliday()+""));
                     preface.add(table);
                     table = new PdfPTable(2);
                     columnWidths = new float[]{10f, 30f};
@@ -173,14 +172,14 @@ public class TimeModelTagT extends Nodo{
                     String meses="";
                     for(ListaT t: item.monthsOfYear) meses+=", "+t.valor;
                     table.setWidthPercentage(100);
-                    table.addCell("Dias");
-                    table.addCell(dias.length()>0?dias.substring(2):dias);
-                    table.addCell("Meses");
-                    table.addCell(meses.length()>0?meses.substring(2):meses);
-                    table.addCell("Dias del mes");
-                    table.addCell(item.daysOfMonth);
-                    table.addCell("");
-                    table.addCell("");
+                    table.addCell(FirstPDF.createTableCell("Dias"));
+                    table.addCell(FirstPDF.createTableCell(dias.length()>0?dias.substring(2):dias));
+                    table.addCell(FirstPDF.createTableCell("Meses"));
+                    table.addCell(FirstPDF.createTableCell(meses.length()>0?meses.substring(2):meses));
+                    table.addCell(FirstPDF.createTableCell("Dias del mes"));
+                    table.addCell(FirstPDF.createTableCell(item.daysOfMonth));
+                    table.addCell(FirstPDF.createTableCell(""));
+                    table.addCell(FirstPDF.createTableCell(""));
                     preface.add(table);
                 }
             }
@@ -203,7 +202,7 @@ public class TimeModelTagT extends Nodo{
         private String timeOfDay="";
         private ArrayList<ListaT> daysOfWeek;
         private ArrayList<ListaT> monthsOfYear;
-        private String holiday="";
+        private boolean holiday;
         private String daysOfMonth="";
         
         public TimeSpecT(){
@@ -258,11 +257,11 @@ public class TimeModelTagT extends Nodo{
             this.monthsOfYear = monthsOfYear;
         }
 
-        public String getHoliday() {
+        public boolean getHoliday() {
             return holiday;
         }
 
-        public void setHoliday(String holiday) {
+        public void setHoliday(boolean holiday) {
             this.holiday = holiday;
         }
 
@@ -305,7 +304,7 @@ public class TimeModelTagT extends Nodo{
         
         
         @Override
-    public int procesar(ArrayList<String> timeTags, int index) {
+    public int procesar(ArrayList<String> timeTags, int index, String user) {
         int dayCount = 0;
         int monthCount = 0;
         boolean meses = false;
@@ -314,7 +313,7 @@ public class TimeModelTagT extends Nodo{
             if(timeTags.get(i).matches("(?s)name: (.*)")) this.name= timeTags.get(i).substring(6);
             else if(timeTags.get(i).matches("(?s)description: (.*)")) this.description= timeTags.get(i).substring(13);
             else if(timeTags.get(i).matches("(?s)timeOfDay: (.*)")) this.timeOfDay= timeTags.get(i).substring(11);
-            else if(timeTags.get(i).matches("(?s)holiday: (.*)")) this.holiday= timeTags.get(i).substring(9);
+            else if(timeTags.get(i).matches("(?s)holiday: (.*)")) this.holiday= Boolean.valueOf(timeTags.get(i).substring(9));
             else if(timeTags.get(i).matches("(?s)daysOfMonth: (.*)")) this.daysOfMonth= timeTags.get(i).substring(13);
             else if(timeTags.get(i).matches("(?s)monthsOfYear")) meses=true;
             else if(timeTags.get(i).matches("(?s)daysOfWeek")) dias=true;
@@ -334,9 +333,9 @@ public class TimeModelTagT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     

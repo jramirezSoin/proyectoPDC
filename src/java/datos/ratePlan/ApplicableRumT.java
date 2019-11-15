@@ -7,7 +7,6 @@ package datos.ratePlan;
 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.FirstPDF;
 import datos.Nodo;
 import java.util.ArrayList;
@@ -95,7 +94,7 @@ public class ApplicableRumT extends Nodo{
     }
 
     @Override
-    public int procesar(ArrayList<String> applicable, int index) {
+    public int procesar(ArrayList<String> applicable, int index, String user) {
         for(int i=index; i<applicable.size();i++) {
             if(applicable.get(i).matches("(?s)applicableRumName: (.*)")) this.applicableRumName= applicable.get(i).substring(19);
             else if(applicable.get(i).matches("(?s)minQuantity: (.*)")) this.minQuantity= applicable.get(i).substring(13);
@@ -110,9 +109,9 @@ public class ApplicableRumT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -130,7 +129,7 @@ public class ApplicableRumT extends Nodo{
         @Override
     public void getPDF(Element element) {
             Paragraph preface = (Paragraph) element;
-            preface.add(new Paragraph("RUM aplicado: "+applicableRumName,FirstPDF.titleFont));
+            preface.add(new Paragraph("RUM aplicado: "+applicableRumName,FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
     }
     

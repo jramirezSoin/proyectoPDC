@@ -10,9 +10,9 @@ import control.ControlPath;
 import datos.BalanceElementT;
 import datos.ListaT;
 import datos.RoundingRuleT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,8 +58,9 @@ public class BalanceElement extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> balances;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            balances = XmlParser.Leer2(new File(ControlPath.balanceElementPath) , ControlPath.balanceElementPointer);
+            balances = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.balanceElementPath)) , ControlPath.balanceElementPointer);
             ArrayList<ListaT> balancesId = ControlFunctions.ListS2ListT(balances);
              session.setAttribute("click", ControlPath.balanceElementClick);           
             session.setAttribute("lista", balancesId);
@@ -69,9 +70,9 @@ public class BalanceElement extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.balanceElementPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            balances= XmlParser.LeerSeleccionado(new File(ControlPath.balanceElementPath) , Integer.parseInt(id));
+            balances= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.balanceElementPath)) , Integer.parseInt(id));
             BalanceElementT balance = new BalanceElementT(Integer.parseInt(id));
-            balance.procesar(balances, 1);
+            balance.procesar(balances, 1, user);
             session.setAttribute("principal", balance);
             session.setAttribute("actual", "zoneModel");
             session.setAttribute("actualView", ControlPath.balanceElementView);

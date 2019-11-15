@@ -1,14 +1,16 @@
+<%@page import="datos.User"%>
 <%@page import="control.ControlPath"%>
 <%@page import="control.ControlFunctions"%>
 <%@page import="datos.ListaT"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="datos.ZoneModelT"%>
 <%@page import="datos.ZoneItemT"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <%int index= ((ArrayList<Integer>)request.getSession().getAttribute("index")).get(0);%>
 <% ZoneItemT zoneItem = (ZoneItemT) request.getSession().getAttribute("add");%>
 <%if(zoneItem==null){zoneItem = ((ZoneModelT)request.getSession().getAttribute("principal")).getZoneItems().get(index);}%>
 <form style="margin: 20px;" id="formulaire">
-<% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick);%>
+<% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick,user);%>
 <div class="form-group row">
 <label>Product Name<select class="custom-select" id="-productName">
         <%for(int j=0;j<products.size();j++){%>
@@ -37,7 +39,7 @@
 </div>
 <div id="-zoneResult">
 <div class="form-group row">
-<% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.impactCategoriesClick);%>
+<% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.impactCategoriesClick,user);%>
 
 <label>Impact Category<select class="custom-select" id="-zoneName">
         <%for(int j=0;j<impactCategories.size();j++){%>

@@ -9,9 +9,9 @@ import control.ControlFunctions;
 import control.ControlPath;
 import datos.ImpactCategoryT;
 import datos.ListaT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -57,8 +57,9 @@ public class ImpactCategory extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> impactCategories;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            impactCategories = XmlParser.Leer2(new File(ControlPath.impactCategoriesPath) , ControlPath.impactCategoriesPointer);
+            impactCategories = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.impactCategoriesPath)) , ControlPath.impactCategoriesPointer);
             ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(impactCategories);
              session.setAttribute("click", ControlPath.impactCategoriesClick);           
             session.setAttribute("lista", zoneModelsId);
@@ -68,9 +69,9 @@ public class ImpactCategory extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.impactCategoriesPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            impactCategories= XmlParser.LeerSeleccionado(new File(ControlPath.impactCategoriesPath) , Integer.parseInt(id));
+            impactCategories= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.impactCategoriesPath)) , Integer.parseInt(id));
             ImpactCategoryT impactCategory = new ImpactCategoryT(Integer.parseInt(id));
-            impactCategory.procesar(impactCategories, 1);
+            impactCategory.procesar(impactCategories, 1, user);
             session.setAttribute("principal", impactCategory);
             session.setAttribute("actual", "impactCategory");
             session.setAttribute("actualView", ControlPath.impactCategoriesView);

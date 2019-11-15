@@ -11,9 +11,9 @@ import datos.BalanceSpecT;
 import datos.ListaT;
 import datos.PackageItemT;
 import datos.PackageT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -60,8 +60,9 @@ public class Package extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> packages;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            packages = XmlParser.Leer2(new File(ControlPath.packagePath) , ControlPath.packagePointer);
+            packages = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.packagePath)) , ControlPath.packagePointer);
             ArrayList<ListaT> packageId = ControlFunctions.ListS2ListT(packages);
              session.setAttribute("click", ControlPath.packageClick);           
             session.setAttribute("lista", packageId);
@@ -71,9 +72,9 @@ public class Package extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.packagePointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            packages= XmlParser.LeerSeleccionado(new File(ControlPath.packagePath) , Integer.parseInt(id));
+            packages= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.packagePath)) , Integer.parseInt(id));
             PackageT packageId = new PackageT(Integer.parseInt(id));
-            packageId.procesar(packages, 1);
+            packageId.procesar(packages, 1,user);
             session.setAttribute("principal", packageId);
             session.setAttribute("actual", "Package");
             session.setAttribute("actualView", ControlPath.packageView);

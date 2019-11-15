@@ -4,6 +4,7 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.User"%>
 <%-- 
     Document   : genericSelectorForm
     Created on : Aug 19, 2019, 8:53:35 AM
@@ -14,6 +15,7 @@
 <%@page import="datos.ListaT"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="datos.GenericSelectorT"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <% GenericSelectorT genericSelector = (GenericSelectorT) request.getSession().getAttribute("add");%>
 <% if(genericSelector==null){genericSelector = (GenericSelectorT) request.getSession().getAttribute("principal");}%>
 <form style="margin: 20px;" id="formulaire">
@@ -34,7 +36,7 @@
 <input class="form-control" type="text" id="-pricingProfileName" placeholder="Pricing Profile Name" value="<%=genericSelector.getPricingProfileName()%>"/>
 </div>
 <%if(genericSelector.getRules().size()==0){%>
-<% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick);%>
+<% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick,user);%>
 <div class="form-group row">
     <label>Aplicable to<select class="custom-select" id="-aplicable" onclick="getEvent();">
         <%for(int j=0;j<products.size();j++){%>

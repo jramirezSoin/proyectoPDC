@@ -8,7 +8,6 @@ package datos;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.ControlFunctions;
 import control.ControlPath;
@@ -190,7 +189,7 @@ public class ChargeSelectorSpecT extends Nodo {
     }
 
     @Override
-    public int procesar(ArrayList<String> chargeSelectors2, int index) {
+    public int procesar(ArrayList<String> chargeSelectors2, int index, String user) {
         ArrayList<String> chargeSelectors = (ArrayList<String>) chargeSelectors2.clone();
         for (int i = index; i < chargeSelectors.size(); i++) {
             if (chargeSelectors.get(i).matches("(?s)name: (.*)")) {
@@ -209,20 +208,20 @@ public class ChargeSelectorSpecT extends Nodo {
                 this.glid = chargeSelectors.get(i).substring(6);
                 String[] balances= glid.split("\\|");
                 if(balances.length==1 || !glid.contains("|"))
-                    this.glidName = ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("code", chargeSelectors.get(i).substring(6)), "name");
+                    this.glidName = ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("code", chargeSelectors.get(i).substring(6)), "name");
                 else{
                     this.glidName="";
-                    for(String balance: balances){ this.glidName+="|"+ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("code", balance), "name");}
+                    for(String balance: balances){ this.glidName+="|"+ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("code", balance), "name");}
                     glidName = this.glidName.substring(1);
                     }
             } else if (chargeSelectors.get(i).matches("(?s)glidName: (.*)")) {
                 this.glidName = chargeSelectors.get(i).substring(10);
                 String[] balances= glidName.split("\\|");
                 if(balances.length==1 || !glidName.contains("|"))
-                    this.glid = ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("name", chargeSelectors.get(i).substring(10)), "code");
+                    this.glid = ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("name", chargeSelectors.get(i).substring(10)), "code");
                 else{
                     this.glid="";
-                    for(String balance: balances){ this.glid+="|"+ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("name", balance), "code");}
+                    for(String balance: balances){ this.glid+="|"+ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("name", balance), "code");}
                     glid = this.glid.substring(1);
                     }
             } else if (chargeSelectors.get(i).matches("(?s)pricingName: (.*)")) {
@@ -241,20 +240,20 @@ public class ChargeSelectorSpecT extends Nodo {
                 this.balanceElementNumCode = chargeSelectors.get(i).substring(23);
                 String[] balances= balanceElementNumCode.split("\\|");
                 if(balances.length==1 || !balanceElementNumCode.contains("|"))
-                    this.balanceElementName = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode", chargeSelectors.get(i).substring(23)), "name");
+                    this.balanceElementName = ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("numericCode", chargeSelectors.get(i).substring(23)), "name");
                 else{
                     this.balanceElementName="";
-                    for(String balance: balances){this.balanceElementName+="|"+ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode", balance), "name");}
+                    for(String balance: balances){this.balanceElementName+="|"+ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("numericCode", balance), "name");}
                     balanceElementName = this.balanceElementName.substring(1);
                     }
             } else if (chargeSelectors.get(i).matches("(?s)balanceElementName: (.*)")) {
                 this.balanceElementName = chargeSelectors.get(i).substring(20);
                 String[] balances= balanceElementName.split("\\|");
                 if(balances.length==1 || !balanceElementName.contains("|"))
-                    this.balanceElementNumCode = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name", chargeSelectors.get(i).substring(20)), "numericCode");
+                    this.balanceElementNumCode = ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("name", chargeSelectors.get(i).substring(20)), "numericCode");
                 else{
                     this.balanceElementNumCode="";
-                    for(String balance: balances){ this.balanceElementNumCode+="|"+ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name", balance), "numericCode");}
+                    for(String balance: balances){ this.balanceElementNumCode+="|"+ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("name", balance), "numericCode");}
                     balanceElementNumCode = this.balanceElementNumCode.substring(1);
                     }
             } else if (("eventConditions").contains(chargeSelectors.get(i))) {
@@ -286,9 +285,9 @@ public class ChargeSelectorSpecT extends Nodo {
     }
 
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if (indexs.size() == 0) {
-            index = this.procesar(lista, index);
+            index = this.procesar(lista, index, user);
         }
         return index;
     }
@@ -309,24 +308,24 @@ public class ChargeSelectorSpecT extends Nodo {
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Filtro: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Filtro: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("GL/ID: "+glid,FirstPDF.normalFont));
-            preface.add(new Paragraph("GL/ID Descripción: "+glidName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Válido desde: "+ControlFunctions.getParseDate(validFrom),FirstPDF.normalFont));
-            preface.add(new Paragraph("Válido hasta: "+ControlFunctions.getParseDate(validTo),FirstPDF.normalFont));
-            preface.add(new Paragraph("Saldo en: "+balanceElementName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de precios: "+pricingName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Categoria de impacto: "+zoneResult,FirstPDF.normalFont));
-            preface.add(new Paragraph("Modelo de tiempo: "+timeModelTagName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Campo de evento: "+eventConditions.unit,FirstPDF.normalFont));
-            preface.add(new Paragraph("Valor del evento: "+eventConditions.valor,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Nombre: ",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("GL/ID: ",glid));
+            preface.add(FirstPDF.createDescription("GL/ID Descripción: ",glidName));
+            preface.add(FirstPDF.createDescription("Válido desde: ",ControlFunctions.getParseDate(validFrom)));
+            preface.add(FirstPDF.createDescription("Válido hasta: ",ControlFunctions.getParseDate(validTo)));
+            preface.add(FirstPDF.createDescription("Saldo en: ",balanceElementName));
+            preface.add(FirstPDF.createDescription("Nombre de precios: ",pricingName));
+            preface.add(FirstPDF.createDescription("Categoria de impacto: ",zoneResult));
+            preface.add(FirstPDF.createDescription("Modelo de tiempo: ",timeModelTagName));
+            preface.add(FirstPDF.createDescription("Campo de evento: ",eventConditions.unit));
+            preface.add(FirstPDF.createDescription("Valor del evento: ",eventConditions.valor));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);

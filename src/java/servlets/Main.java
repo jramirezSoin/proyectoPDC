@@ -7,8 +7,8 @@ package servlets;
 
 import control.ControlPath;
 import datos.Cambio;
+import datos.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,8 +51,9 @@ public class Main extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        ArrayList<Cambio> cambios = TxtParser.leerCambios();
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
+        ArrayList<Cambio> cambios = TxtParser.leerCambios(user);
         session.setAttribute("cambios", cambios);
         session.setAttribute("errores", null);
         request.getRequestDispatcher(ControlPath.mainView).forward(request, response);

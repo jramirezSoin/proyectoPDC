@@ -7,6 +7,7 @@ package datos;
 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.pdf.PdfPTable;
+import control.FirstPDF;
 import java.util.ArrayList;
 
 /**
@@ -104,7 +105,8 @@ public class ZoneItemT extends Nodo{
                s+"</zoneItem>";
     }
     
-    public int procesar(ArrayList<String> zoneModels, int index) {
+    @Override
+    public int procesar(ArrayList<String> zoneModels, int index, String user) {
         
         
         for(int i=index; i<zoneModels.size();i++) {
@@ -116,7 +118,7 @@ public class ZoneItemT extends Nodo{
             else if(zoneModels.get(i).matches("(?s)validTo: (.*)")) this.validTo= zoneModels.get(i).substring(9);
             else if(zoneModels.get(i).matches("(?s)zoneResult")){ 
                 ZoneResult zoneResult = new ZoneResult();
-                i= zoneResult.procesar(zoneModels, i+1);
+                i= zoneResult.procesar(zoneModels, i+1, user);
                 i--;
                 this.zoneResult = zoneResult;
             }else return i;
@@ -125,9 +127,9 @@ public class ZoneItemT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index,user);
         return index;
     }
     
@@ -149,10 +151,10 @@ public class ZoneItemT extends Nodo{
     }
     
     public void getPDF(Element element){
-        ((PdfPTable)element).addCell(this.getProductName());
-        ((PdfPTable)element).addCell(this.getOriginPrefix());
-        ((PdfPTable)element).addCell(this.getDestinationPrefix());
-        ((PdfPTable)element).addCell(this.getZoneResult().getZoneName());
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.getProductName()));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.getOriginPrefix()));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.getDestinationPrefix()));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.getZoneResult().getZoneName()));
     }
     
     
@@ -182,7 +184,8 @@ public class ZoneItemT extends Nodo{
                     s+"</zoneResult>";
         }
         
-        public int procesar(ArrayList<String> zoneModels, int index) {
+        @Override
+        public int procesar(ArrayList<String> zoneModels, int index, String user) {
             
             for(int i=index; i<zoneModels.size();i++) {
                 

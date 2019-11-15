@@ -10,6 +10,7 @@ import control.ControlPath;
 import datos.HolidayT;
 import datos.HolidayItemT;
 import datos.ListaT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,8 +58,9 @@ public class Holiday extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> holidays;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            holidays = XmlParser.Leer2(new File(ControlPath.holidayPath) , ControlPath.holidayPointer);
+            holidays = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.holidayPath)) , ControlPath.holidayPointer);
             ArrayList<ListaT> holidayId = ControlFunctions.ListS2ListT(holidays);
              session.setAttribute("click", ControlPath.holidayClick);           
             session.setAttribute("lista", holidayId);
@@ -68,9 +70,9 @@ public class Holiday extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.holidayPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            holidays= XmlParser.LeerSeleccionado(new File(ControlPath.holidayPath) , Integer.parseInt(id));
+            holidays= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.holidayPath)) , Integer.parseInt(id));
             HolidayT holiday = new HolidayT(Integer.parseInt(id));
-            holiday.procesar(holidays, 1);
+            holiday.procesar(holidays, 1, user);
             session.setAttribute("principal", holiday);
             session.setAttribute("actual", "holidayCalendar");
             session.setAttribute("actualView", ControlPath.holidayView);

@@ -87,7 +87,7 @@ public class PriceTierRangeT extends Nodo{
     }
 
     @Override
-    public int procesar(ArrayList<String> generics, int index) {
+    public int procesar(ArrayList<String> generics, int index, String user) {
         int itemCount = 0;
         for(int i=index; i<generics.size();i++) {
             
@@ -96,7 +96,7 @@ public class PriceTierRangeT extends Nodo{
                 ChargeT resul = new ChargeT(charges.size());
                 resul.setTipo(generics.get(i));
                 itemCount++;
-                i= resul.procesar(generics, i+1);
+                i= resul.procesar(generics, i+1,user);
                 i--;
                 this.charges.add(resul);
             }else return i;
@@ -106,13 +106,13 @@ public class PriceTierRangeT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.charges.get(i).procesarI(lista, index, indexs);
+            this.charges.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -144,7 +144,7 @@ public class PriceTierRangeT extends Nodo{
         try {
             Paragraph preface = (Paragraph) element;
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Límite mayor: "+upperBound,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Límite mayor: ",upperBound));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             FirstPDF.addEmptyLine(preface, 1);

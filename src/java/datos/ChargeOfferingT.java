@@ -23,7 +23,7 @@ public class ChargeOfferingT extends Nodo{
     private String name="";
     private String description="";
     private String internalId="";
-    private String pricingProfileName="";
+    private String pricingProfileName="Product Offering";
     private String priceListName="Default";
     private String timeRange="";
     private String productSpecName="";
@@ -199,7 +199,7 @@ public class ChargeOfferingT extends Nodo{
     }
 
     @Override
-    public int procesar(ArrayList<String> chargeOfferings2, int index) {
+    public int procesar(ArrayList<String> chargeOfferings2, int index, String user) {
         ArrayList<String> chargeOfferings= (ArrayList<String>)chargeOfferings2.clone();
         int itemCount = 0;
         for(int i=index; i<chargeOfferings.size();i++) {
@@ -226,7 +226,7 @@ public class ChargeOfferingT extends Nodo{
                 
                 ChargeEventMapT chargeEvent = new ChargeEventMapT(itemCount);
                 itemCount++;
-                i= chargeEvent.procesar(chargeOfferings, i+1);
+                i= chargeEvent.procesar(chargeOfferings, i+1, user);
                 i--;
                 this.chargeEvents.add(chargeEvent);
             }else return i;
@@ -236,13 +236,13 @@ public class ChargeOfferingT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index,user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.chargeEvents.get(i).procesarI(lista, index, indexs);
+            this.chargeEvents.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -287,30 +287,30 @@ public class ChargeOfferingT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Oferta de cargo: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Oferta de cargo: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Rango: "+timeRange,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Nombre: ",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("Rango: ",timeRange));
             if(!productSpecName.equals(""))
-            preface.add(new Paragraph("Producto: "+productSpecName,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Producto: ",productSpecName));
             else
-            preface.add(new Paragraph("Cliente: "+customerSpecName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Tipo de oferta: "+offerType,FirstPDF.normalFont));
-            preface.add(new Paragraph("Prioridad: "+priority,FirstPDF.normalFont));
-            preface.add(new Paragraph("Parcial: "+partial,FirstPDF.normalFont));
-            preface.add(new Paragraph("Máximo de compra: "+purchaseMax,FirstPDF.normalFont));
-            preface.add(new Paragraph("Mínimo de compra: -1.0",FirstPDF.normalFont));
-            preface.add(new Paragraph("Proveedor de impuestos: "+taxSupplier,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Cliente: ",customerSpecName));
+            preface.add(FirstPDF.createDescription("Tipo de oferta: ",offerType));
+            preface.add(FirstPDF.createDescription("Prioridad: ",priority));
+            preface.add(FirstPDF.createDescription("Parcial: ",partial+""));
+            preface.add(FirstPDF.createDescription("Máximo de compra: ",purchaseMax));
+            preface.add(new Paragraph("Mínimo de compra: -1.0",FirstPDF.p));
+            preface.add(FirstPDF.createDescription("Proveedor de impuestos: ",taxSupplier));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Eventos",FirstPDF.subFont));
+            preface.add(new Paragraph("Eventos",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             PdfPTable table = new PdfPTable(2);
             float[] columnWidths = new float[]{10f, 10f};

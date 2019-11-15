@@ -9,6 +9,7 @@
 <%@page import="datos.ChargeOfferingT"%>
 <%@page import="datos.ChargeEventMapT"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <% ChargeOfferingT chargeOffer = (ChargeOfferingT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
     <div class="row align-items-center">
@@ -99,9 +100,9 @@
                                             </div></td>
                                         <td><%= item.getEventName()%></td>
                                         <%if(!item.getChargeRatePlanName().equals("")){%>
-                                        <td><a href="#" onclick="hacerClick(this,'/chargeRate',<%=ControlFunctions.Buscar(ControlPath.chargeRateClick, buscar, "id")%>)"><%= item.getChargeRatePlanName()%></a></td>
+                                        <td><a href="#" onclick="hacerClick(this,'/chargeRate',<%=ControlFunctions.Buscar(ControlPath.chargeRateClick,user, buscar, "id")%>)"><%= item.getChargeRatePlanName()%></a></td>
                                         <%}else if(!item.getRolloverRatePlanName().equals("")){%>
-                                        <td><a href="#" onclick="hacerClick(this,'/rollover',<%=ControlFunctions.Buscar(ControlPath.rolloverClick, buscar2, "id")%>)"><%= item.getRolloverRatePlanName()%></a></td>
+                                        <td><a href="#" onclick="hacerClick(this,'/rollover',<%=ControlFunctions.Buscar(ControlPath.rolloverClick,user, buscar2, "id")%>)"><%= item.getRolloverRatePlanName()%></a></td>
                                         <%}%>
                                         <td><%= item.getTimezoneMode()%></td>
                                         <td><%= item.getProrateFirst()%></td>

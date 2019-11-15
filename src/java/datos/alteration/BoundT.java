@@ -88,7 +88,7 @@ public class BoundT extends Nodo{
     }
     
     @Override
-    public int procesar(ArrayList<String> ratePlan2, int index) {
+    public int procesar(ArrayList<String> ratePlan2, int index, String user) {
         ArrayList<String> ratePlan= (ArrayList<String>)ratePlan2.clone();
         for(int i=index; i<ratePlan.size();i++) {
             if(ratePlan.get(i).matches("(?s)numberTBExpression")){

@@ -9,9 +9,9 @@ import control.ControlFunctions;
 import control.ControlPath;
 import datos.ListaT;
 import datos.ChargeSelectorSpecT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -57,8 +57,9 @@ public class ChargeSelectorSpec extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> chargeSelectorSpecs;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            chargeSelectorSpecs = XmlParser.Leer2(new File(ControlPath.chargeSelectorSpecPath) , ControlPath.chargeSelectorSpecPointer);
+            chargeSelectorSpecs = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.chargeSelectorSpecPath)) , ControlPath.chargeSelectorSpecPointer);
             ArrayList<ListaT> chargeSelectorSpecId = ControlFunctions.ListS2ListT(chargeSelectorSpecs);
              session.setAttribute("click", ControlPath.chargeSelectorSpecClick);           
             session.setAttribute("lista", chargeSelectorSpecId);
@@ -68,9 +69,9 @@ public class ChargeSelectorSpec extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.chargeSelectorSpecPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            chargeSelectorSpecs= XmlParser.LeerSeleccionado(new File(ControlPath.chargeSelectorSpecPath) , Integer.parseInt(id));
+            chargeSelectorSpecs= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.chargeSelectorSpecPath)) , Integer.parseInt(id));
             ChargeSelectorSpecT chargeSelectorSpec = new ChargeSelectorSpecT(Integer.parseInt(id));
-            chargeSelectorSpec.procesar(chargeSelectorSpecs, 1);
+            chargeSelectorSpec.procesar(chargeSelectorSpecs, 1,user);
             session.setAttribute("principal", chargeSelectorSpec);
             session.setAttribute("actual", "ChargeSelectorSpec");
             session.setAttribute("actualView", ControlPath.chargeSelectorSpecView);

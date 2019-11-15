@@ -8,7 +8,6 @@ package datos.ratePlan;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.ControlFunctions;
 import control.FirstPDF;
 import datos.Nodo;
@@ -183,7 +182,6 @@ public class ChargeRatePlanT extends Nodo{
     
     @Override
     public String toString() {
-        this.revisar();
         if(todMode.equals("TIMED")){
             this.subscriberCurrency.getApplicableRum().setIncrementQuantity("0.0");
             this.subscriberCurrency.getApplicableRum().setMinQuantity("0.0");}
@@ -210,7 +208,7 @@ public class ChargeRatePlanT extends Nodo{
     }
 
     @Override
-    public int procesar(ArrayList<String> chargeRates2, int index) {
+    public int procesar(ArrayList<String> chargeRates2, int index, String user) {
         ArrayList<String> chargeRates=  (ArrayList<String>)chargeRates2.clone();
         for(int i=index; i<chargeRates.size();i++) {
             
@@ -233,7 +231,7 @@ public class ChargeRatePlanT extends Nodo{
             else if(chargeRates.get(i).matches("(?s)subscriberCurrency")){
                 
                 this.setSubscriberCurrency(new SubscriberCurrencyT(0));
-                i= this.getSubscriberCurrency().procesar(chargeRates, i+1);
+                i= this.getSubscriberCurrency().procesar(chargeRates, i+1, user);
                 i--;
             }else if(chargeRates.get(i).matches("(?s)crpDelRanges")){
                 i++;
@@ -260,7 +258,7 @@ public class ChargeRatePlanT extends Nodo{
                             else
                                 crp.setZoneModel(last.getZoneModel());}
                             else{
-                                crp.getDefaultComposite(this.getApplicableRums(),this.subscriberCurrency.getCurrencyName());
+                                crp.getDefaultComposite(this.getApplicableRums(),this.subscriberCurrency.getCurrencyName(), user);
                             }
                             this.subscriberCurrency.getCrpRelDateRanges().add(crp);
                         }
@@ -272,37 +270,37 @@ public class ChargeRatePlanT extends Nodo{
             }
             else return i;
         }
-        this.revisar();
+        this.revisar(user);
         return chargeRates.size();
     }
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             if(indexs.get(0)==0 && indexs.get(1)<0){
                 if(indexs.get(1)==-1)
-                    index= this.procesar(lista, index);
+                    index= this.procesar(lista, index, user);
                 else if(indexs.get(1)==-2){
                     try{
-                        index= this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).getZoneModel().procesar(lista, index);}
+                        index= this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).getZoneModel().procesar(lista, index, user);}
                     catch(NullPointerException e){
                         this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).setZoneModel(new ZoneModelT(0));
                         this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).setCrpCompositePopModel(null);
-                        index= this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).getZoneModel().procesar(lista, index);
+                        index= this.getSubscriberCurrency().getCrpRelDateRanges().get(indexs.get(2)).getZoneModel().procesar(lista, index, user);
                     }
                 }
                 else if(indexs.get(1)==-3)
-                    index= (this.buscaPop(dir)).procesar(lista, index);
+                    index= (this.buscaPop(dir)).procesar(lista, index, user);
                 else if(indexs.get(1)==-4)
-                    index= (this.buscaPop(dir)).procesar(lista, index);
+                    index= (this.buscaPop(dir)).procesar(lista, index,user);
                 else if(indexs.get(1)==-5)
-                    index= (this.buscaPop(dir)).getPriceTierRanges().get(indexs.get(2)).getCharges().get(indexs.get(3)).procesar(lista, index);
+                    index= (this.buscaPop(dir)).getPriceTierRanges().get(indexs.get(2)).getCharges().get(indexs.get(3)).procesar(lista, index, user);
             }
             else
-            this.subscriberCurrency.procesarI(lista, index, indexs);
+            this.subscriberCurrency.procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -330,7 +328,7 @@ public class ChargeRatePlanT extends Nodo{
             else return this.subscriberCurrency.getCrpRelDateRanges().get(key).getZoneModel().buscaPop(index);
     }
     
-    public void revisar(){
+    public void revisar(String user){
         this.permittedType= ((this.permittedName.equals("Account"))?"CUSTOMER":"PRODUCT");
         if(this.applicableRums.equals("Occurrence")){ this.subscriberCurrency.setApplicableRum(null);
                 this.pricingProfileName="Subscription";
@@ -344,10 +342,10 @@ public class ChargeRatePlanT extends Nodo{
         }
         for(CrpRelDateRangeT rel: this.getSubscriberCurrency().getCrpRelDateRanges()){
             if(rel.getCrpCompositePopModel()!=null){ 
-                rel.getCrpCompositePopModel().getRumCurrency(this.getApplicableRums(), this.getSubscriberCurrency().getCurrencyCode());
+                rel.getCrpCompositePopModel().getRumCurrency(this.getApplicableRums(), this.getSubscriberCurrency().getCurrencyCode(), user);
             }else{
                 for(ResultsT res: rel.getZoneModel().getResults()){
-                    res.getResult().getRumCurrency(this.getApplicableRums(), this.getSubscriberCurrency().getCurrencyCode());
+                    res.getResult().getRumCurrency(this.getApplicableRums(), this.getSubscriberCurrency().getCurrencyCode(), user);
                 }
             }
         }
@@ -358,20 +356,20 @@ public class ChargeRatePlanT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Plan de Tarifa de Cargos: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Plan de Tarifa de Cargos: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Código de impuesto: "+taxCode,FirstPDF.normalFont));
-            preface.add(new Paragraph("Tiempo de impuesto: "+taxTime,FirstPDF.normalFont));
-            preface.add(new Paragraph("RUMs aplicables: "+applicableRums,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre permitido: "+permittedName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Tipo permitido: "+permittedType,FirstPDF.normalFont));
-            preface.add(new Paragraph("Evento: "+eventName,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Nombre: ",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("Código de impuesto: ",taxCode));
+            preface.add(FirstPDF.createDescription("Tiempo de impuesto: ",taxTime));
+            preface.add(FirstPDF.createDescription("RUMs aplicables: ",applicableRums));
+            preface.add(FirstPDF.createDescription("Nombre permitido: ",permittedName));
+            preface.add(FirstPDF.createDescription("Tipo permitido: ",permittedType));
+            preface.add(FirstPDF.createDescription("Evento: ",eventName));
             this.subscriberCurrency.getPDF(preface);
             document.add(preface);
             

@@ -4,6 +4,8 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="control.ControlFunctions"%>
+<%@page import="datos.ListaT"%>
 <%@page import="datos.BalanceElementT"%>
 <%@page import="datos.RoundingRuleT"%>
 <%@page import="java.util.ArrayList"%>
@@ -32,7 +34,11 @@
 <input class="form-control" type="text" id="-roundingMode" placeholder="Rounding Mode" value="<%=rule.getRoundingMode()%>"/>
 </div>
 <div class="form-group row">
-<label for="-processingStage">Processing Stage</label>
-<input class="form-control" type="text" id="-processingStage" placeholder="Processing Stage" value="<%=rule.getProcessingStage()%>"/>
+    <%ArrayList<ListaT> constants = ControlFunctions.LeerConstante("roundingRules");%>
+    <label>Processing Stage<select class="custom-select" id="-processingStage" onclick="checkPriceValidity();">
+        <%for(ListaT constante : constants){%>    
+            <option <%=(rule.getProcessingStage().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+        <%}%>
+    </select></label>
 </div>
 </form>

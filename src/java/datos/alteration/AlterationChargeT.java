@@ -9,6 +9,7 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.pdf.PdfPTable;
 import control.ControlFunctions;
 import control.ControlPath;
+import control.FirstPDF;
 import datos.ListaT;
 import datos.Nodo;
 import datos.ratePlan.PriceValidityT;
@@ -149,16 +150,16 @@ public class AlterationChargeT extends Nodo{
     
     
     @Override
-    public int procesar(ArrayList<String> ratePlan2, int index) {
+    public int procesar(ArrayList<String> ratePlan2, int index, String user) {
         ArrayList<String> ratePlan= (ArrayList<String>)ratePlan2.clone();
         for(int i=index; i<ratePlan.size();i++) {
             if(ratePlan.get(i).matches("(?s)price: (.*)")) this.price= ratePlan.get(i).substring(7);
             else if(ratePlan.get(i).matches("(?s)unitOfMeasure: (.*)")) this.unitOfMeasure= ratePlan.get(i).substring(15);
             else if(ratePlan.get(i).matches("(?s)alterationAppliesTo: (.*)")) this.alterationAppliesTo= ratePlan.get(i).substring(21);
-            else if(ratePlan.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= ratePlan.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode",ratePlan.get(i).substring(23)),"name");}
-            else if(ratePlan.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= ratePlan.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",ratePlan.get(i).substring(20)),"numericCode");}
-            else if(ratePlan.get(i).matches("(?s)glid: (.*)")){ this.glid= ratePlan.get(i).substring(6); this.glidName=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("code",ratePlan.get(i).substring(6)),"name");}
-            else if(ratePlan.get(i).matches("(?s)glidName: (.*)")){ this.glidName= ratePlan.get(i).substring(10); this.glid=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("name",ratePlan.get(i).substring(10)),"code");}
+            else if(ratePlan.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= ratePlan.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("numericCode",ratePlan.get(i).substring(23)),"name");}
+            else if(ratePlan.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= ratePlan.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("name",ratePlan.get(i).substring(20)),"numericCode");}
+            else if(ratePlan.get(i).matches("(?s)glid: (.*)")){ this.glid= ratePlan.get(i).substring(6); this.glidName=ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("code",ratePlan.get(i).substring(6)),"name");}
+            else if(ratePlan.get(i).matches("(?s)glidName: (.*)")){ this.glidName= ratePlan.get(i).substring(10); this.glid=ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("name",ratePlan.get(i).substring(10)),"code");}
             else if(ratePlan.get(i).matches("(?s)incrementStep: (.*)")) this.incrementStep= ratePlan.get(i).substring(15);
             else if(ratePlan.get(i).matches("(?s)priceType: (.*)")) this.priceType= ratePlan.get(i).substring(11);
             else if(ratePlan.get(i).matches("(?s)prorateLastIncrementStep: (.*)")) this.prorateLastIncrementStep= ratePlan.get(i).substring(26);
@@ -178,10 +179,10 @@ public class AlterationChargeT extends Nodo{
                 }
             }
             else if(("priceValidity").contains(ratePlan.get(i))){     
-                PriceValidityT priceValidity = new PriceValidityT(0);
-                i= priceValidity.procesar(ratePlan, i+1);
+                PriceValidityT priceValidityT = new PriceValidityT(0);
+                i= priceValidityT.procesar(ratePlan, i+1, user);
                 i--;
-                this.priceValidity=priceValidity;
+                this.priceValidity=priceValidityT;
             }else return i;
         }
         return ratePlan.size();
@@ -209,9 +210,9 @@ public class AlterationChargeT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -230,10 +231,10 @@ public class AlterationChargeT extends Nodo{
     @Override
     public void getPDF(Element element) {
             PdfPTable table = (PdfPTable) element;
-            table.addCell(priceType);
-            table.addCell(price);
-            table.addCell(balanceElementName);
-            table.addCell(unitOfMeasure);
+            table.addCell(FirstPDF.createTableCell(priceType));
+            table.addCell(FirstPDF.createTableCell(price));
+            table.addCell(FirstPDF.createTableCell(balanceElementName));
+            table.addCell(FirstPDF.createTableCell(unitOfMeasure));
             
     }
     

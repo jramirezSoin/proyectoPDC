@@ -48,18 +48,18 @@ public class TierRangeT extends Nodo{
     }
     
     @Override
-    public int procesar(ArrayList<String> ratePlan2, int index) {
+    public int procesar(ArrayList<String> ratePlan2, int index, String user) {
         ArrayList<String> ratePlan= (ArrayList<String>)ratePlan2.clone();
         for(int i=index; i<ratePlan.size();i++) {
             if(("upperBound").contains(ratePlan.get(i))){     
                 BoundT bound = new BoundT();
-                i= bound.procesar(ratePlan, i+1);
+                i= bound.procesar(ratePlan, i+1,user);
                 i--;
                 this.upperBound=bound;
             }else if(("percentAlteration fixedAlteration").contains(ratePlan.get(i))){     
                 AlterationChargeT charge = new AlterationChargeT();
                 charge.tipo= ratePlan.get(i);
-                i= charge.procesar(ratePlan, i+1);
+                i= charge.procesar(ratePlan, i+1, user);
                 i--;
                 this.charges.add(charge);
             }else return i;
@@ -82,13 +82,13 @@ public class TierRangeT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.charges.get(i).procesarI(lista, index, indexs);
+            this.charges.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -109,7 +109,7 @@ public class TierRangeT extends Nodo{
         try {
             Paragraph preface = (Paragraph) element;
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Límite mayor: "+upperBound.toString(),FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Límite mayor: ",upperBound.toString()));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             FirstPDF.addEmptyLine(preface, 1);

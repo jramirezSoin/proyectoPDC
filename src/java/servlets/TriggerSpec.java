@@ -10,9 +10,9 @@ import control.ControlPath;
 import datos.ExpressionT;
 import datos.ListaT;
 import datos.TriggerSpecT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -57,8 +57,9 @@ public class TriggerSpec extends HttpServlet {
         processRequest(request, response);String id = request.getParameter("id");
         ArrayList<String> triggerSpecs;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            triggerSpecs = XmlParser.Leer2(new File(ControlPath.triggerSpecPath) , ControlPath.triggerSpecPointer);
+            triggerSpecs = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.triggerSpecPath)) , ControlPath.triggerSpecPointer);
             ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(triggerSpecs);
              session.setAttribute("click", ControlPath.triggerSpecClick);           
             session.setAttribute("lista", zoneModelsId);
@@ -68,9 +69,9 @@ public class TriggerSpec extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.triggerSpecPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            triggerSpecs= XmlParser.LeerSeleccionado(new File(ControlPath.triggerSpecPath) , Integer.parseInt(id));
+            triggerSpecs= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.triggerSpecPath)) , Integer.parseInt(id));
             TriggerSpecT triggerSpec = new TriggerSpecT(Integer.parseInt(id));
-            triggerSpec.procesar(triggerSpecs, 1);
+            triggerSpec.procesar(triggerSpecs, 1,user);
             session.setAttribute("principal", triggerSpec);
             session.setAttribute("actual", "triggerSpec");
             session.setAttribute("actualView", ControlPath.triggerSpecView);

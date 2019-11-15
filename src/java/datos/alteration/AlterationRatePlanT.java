@@ -8,13 +8,10 @@ package datos.alteration;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import control.FirstPDF;
 import datos.Nodo;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -94,7 +91,7 @@ public class AlterationRatePlanT extends Nodo{
     }
     
     @Override
-    public int procesar(ArrayList<String> ratePlan2, int index) {
+    public int procesar(ArrayList<String> ratePlan2, int index, String user) {
         ArrayList<String> ratePlan= (ArrayList<String>)ratePlan2.clone();
         for(int i=index; i<ratePlan.size();i++) {
             if(ratePlan.get(i).matches("(?s)name: (.*)")) this.name= ratePlan.get(i).substring(6);
@@ -105,7 +102,7 @@ public class AlterationRatePlanT extends Nodo{
             else if(ratePlan.get(i).matches("(?s)taxCode: (.*)")) this.taxCode= ratePlan.get(i).substring(9);
             else if(("arpDateRange").contains(ratePlan.get(i))){     
                 ArpDateRangeT arpDateRange = new ArpDateRangeT(0);
-                i= arpDateRange.procesar(ratePlan, i+1);
+                i= arpDateRange.procesar(ratePlan, i+1, user);
                 i--;
                 this.arpDateRange=arpDateRange;
             }else return i;
@@ -127,13 +124,13 @@ public class AlterationRatePlanT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.arpDateRange.procesarI(lista, index, indexs);
+            this.arpDateRange.procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -161,15 +158,15 @@ public class AlterationRatePlanT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Plan de Tarifa de Descuento: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Plan de Tarifa de Descuento: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Código de impuesto: "+taxCode,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("nombre: ",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("Código de impuesto: ",taxCode));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);

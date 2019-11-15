@@ -118,7 +118,7 @@
                                                         <td><%=spec.getName().replaceAll("_"," ")%></td>
                                                         <td><%=spec.getDescription().replaceAll("_"," ")%></td>  
                                                         <td><%=spec.getTimeOfDay().replaceAll("_"," ")%></td>  
-                                                        <td><%=spec.getHoliday().replaceAll("_"," ")%></td>
+                                                        <td><%=spec.getHoliday()%></td>
                                                         <td><%=spec.getDaysOfMonth().replaceAll("_"," ")%></td>
                                                     </tr>
                                                     <%if(spec.getDaysOfWeek().size()>0){%>

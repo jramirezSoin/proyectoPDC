@@ -23,7 +23,7 @@ public class PackageT extends Nodo{
     private String name="";
     private String description="";
     private String internalId="";
-    private String pricingProfileName="";
+    private String pricingProfileName="Subscription";
     private String priceListName="Default";
     private boolean billOnPurchase=false;
     private ArrayList<PackageItemT> packageItems;
@@ -136,7 +136,7 @@ public class PackageT extends Nodo{
     }
     
     @Override
-    public int procesar(ArrayList<String> packs2, int index) {
+    public int procesar(ArrayList<String> packs2, int index, String user) {
         ArrayList<String> packs= (ArrayList<String>) packs2.clone();
         int itemCount = 0;
         int itemCount2 = 0;
@@ -153,7 +153,7 @@ public class PackageT extends Nodo{
                 
                 PackageItemT packItem = new PackageItemT(itemCount);
                 itemCount++;
-                i= packItem.procesar(packs, i+1);
+                i= packItem.procesar(packs, i+1,user);
                 i--;
                 this.packageItems.add(packItem);
             }else if(("balanceSpecification").contains(packs.get(i))){ 
@@ -164,7 +164,7 @@ public class PackageT extends Nodo{
                 
                 BalanceSpecT balance = new BalanceSpecT(itemCount2);
                 itemCount2++;
-                i= balance.procesar(packs, i+1);
+                i= balance.procesar(packs, i+1, user);
                 i--;
                 this.balances.add(balance);
             }else return i;
@@ -173,20 +173,20 @@ public class PackageT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             if(indexs.get(0)==1){
                 indexs.remove(0);
                 int i= indexs.get(0);
                 indexs.remove(0);
-                this.packageItems.get(i).procesarI(lista, index, indexs);}
+                this.packageItems.get(i).procesarI(lista, index, indexs, user);}
             else{
                 indexs.remove(0);
                 int i= indexs.get(0);
                 indexs.remove(0);
-                this.balances.get(i).procesarI(lista, index, indexs);}
+                this.balances.get(i).procesarI(lista, index, indexs, user);}
         }
         return index;
     }
@@ -247,20 +247,20 @@ public class PackageT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Paquete: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Paquete: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Factura por compra: "+billOnPurchase,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Nombre: ",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("Factura por compra: ",billOnPurchase+""));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Items",FirstPDF.subFont));
+            preface.add(new Paragraph("Items",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             for(PackageItemT item : this.packageItems){
                 if(item.visibilidad){
@@ -270,7 +270,7 @@ public class PackageT extends Nodo{
             FirstPDF.addEmptyLine(preface, 1);            
             preface.add(line);
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Especificación de Saldo",FirstPDF.subFont));
+            preface.add(new Paragraph("Especificación de Saldo",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             PdfPTable table = new PdfPTable(5);
             float[] columnWidths = new float[]{30f, 10f, 10f, 10f, 10f};

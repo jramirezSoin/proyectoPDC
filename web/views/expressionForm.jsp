@@ -4,13 +4,14 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.User"%>
 <%@page import="control.ControlFunctions"%>
 <%@page import="control.ControlPath"%>
 <%@page import="datos.ListaT"%>
 <%@page import="datos.TriggerSpecT"%>
 <%@page import="datos.ExpressionT"%>
 <%@page import="java.util.ArrayList"%>
-
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <form style="margin: 20px;" id="formulaire">
 <%int index= ((ArrayList<Integer>)request.getSession().getAttribute("index")).get(0);%>
 <% ExpressionT expression = (ExpressionT) request.getSession().getAttribute("add");%>
@@ -55,7 +56,7 @@
 </div>
 <%if(expression.getTipo().equals("balanceTriggerExpression") || expression.getTipo().equals("complexTriggerExpression")){%>
 <div class="form-group row">
-<% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick);%>
+<% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick,user);%>
     <label>Balance Element<select class="custom-select" id="-balanceElementName">
         <option value=""></option>
     <%for(int j=0;j<impactCategories.size();j++){%>
@@ -76,7 +77,7 @@
     <div id="-leftOperand">
         <div id="-balanceExpression">
             <div class="form-group row">
-            <% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick);%>
+            <% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick,user);%>
                 <label>Balance Element<select class="custom-select" id="-balanceElementName">
                     <option value=""></option>
                 <%for(int j=0;j<impactCategories.size();j++){%>

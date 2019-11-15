@@ -5,13 +5,13 @@
  */
 package servlets;
 
-import control.ControlFunctions;
+
 import control.ControlPath;
 import datos.Cambio;
 import datos.Nodo;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,19 +61,20 @@ public class Modificador extends HttpServlet {
             lista.add(XmlParser.convSpecialChar(a));
         ArrayList<Integer> indexs= (ArrayList<Integer>) request.getSession().getAttribute("index");
         Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
+        String user = ((User)request.getSession().getAttribute("user")).getUserPDC();
         if(indexs==null || indexs.size()==0)
-            nodo.procesar(lista, 0);
+            nodo.procesar(lista, 0,user);
         else if(indexs.get(0)>=0)
-            nodo.procesarI(lista,0,indexs);
+            nodo.procesarI(lista,0,indexs,user);
         else if(indexs.get(0)==-3){
             Nodo nodoI = (Nodo) request.getSession().getAttribute("add");
             indexs.remove(0);
-            nodoI.procesar(lista, 0);
+            nodoI.procesar(lista, 0,user);
             nodo.agregar(nodoI, indexs);
         }
         else if(indexs.get(0)==-5){
             Nodo nodoI = (Nodo) request.getSession().getAttribute("add");
-            nodoI.procesar(lista, 0);
+            nodoI.procesar(lista, 0,user);
             indexs.remove(0);
             nodo.modificarMasivo(nodoI, indexs);
         }
@@ -82,11 +83,11 @@ public class Modificador extends HttpServlet {
         String pointer=(String) request.getSession().getAttribute("actualPoint");
         Date date= new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        TxtParser.aniadirCambio(new Cambio("Update", simpleDateFormat.format(new Date()),path.replace(ControlPath.path, "")));
-        XmlParser.Modificar(path, path, nodo.toString(), pointer, nodo.id);
-        ArrayList<String> nodos= XmlParser.LeerSeleccionado(new File(path) , nodo.id);
+        TxtParser.aniadirCambio(new Cambio("Update", simpleDateFormat.format(new Date()),path.replace(ControlPath.path, "")),user);
+        XmlParser.Modificar(ControlPath.getPath(user,path),ControlPath.getPath(user,path), nodo.toString(), pointer, nodo.id);
+        ArrayList<String> nodos= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,path)) , nodo.id);
         nodo.clean();
-        nodo.procesar(nodos, 1);
+        nodo.procesar(nodos, 1,user);
         request.getSession().setAttribute("principal", nodo);
         request.getRequestDispatcher((String) request.getSession().getAttribute("actualView")).forward(request, response);
     }

@@ -7,6 +7,7 @@ package datos;
 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.pdf.PdfPTable;
+import control.FirstPDF;
 import java.util.ArrayList;
 
 /**
@@ -91,7 +92,8 @@ public class RoundingRuleT extends Nodo{
         this.processingStage = processingStage;
     }
     
-    public int procesar(ArrayList<String> zoneModels, int index) {
+    @Override
+    public int procesar(ArrayList<String> zoneModels, int index, String user) {
         
         
         for(int i=index; i<zoneModels.size();i++) {
@@ -122,9 +124,9 @@ public class RoundingRuleT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -140,12 +142,12 @@ public class RoundingRuleT extends Nodo{
     }
     
     public void getPDF(Element element){
-        ((PdfPTable)element).addCell(this.processingStage);
-        ((PdfPTable)element).addCell(this.roundingMode);
-        ((PdfPTable)element).addCell(this.precision);
-        ((PdfPTable)element).addCell(this.toleranceMin);
-        ((PdfPTable)element).addCell(this.toleranceMax);
-        ((PdfPTable)element).addCell(this.tolerancePercentage);
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.processingStage));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.roundingMode));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.precision));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.toleranceMin));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.toleranceMax));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.tolerancePercentage));
     }
     
     

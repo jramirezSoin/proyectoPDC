@@ -82,14 +82,12 @@ public class SSHConnector {
         }
     }
     
-    public final void getXml(String file){
+    public final void getXml(String file, String user){
         
         try {
             ChannelSftp sftpChannel = (ChannelSftp) session.openChannel("sftp");
             sftpChannel.connect();
-            System.out.println(ControlPath.pinDirectory+file);
-            System.out.println(ControlPath.path + file);
-            sftpChannel.get(ControlPath.pinDirectory+file, ControlPath.path + file);
+            sftpChannel.get(ControlPath.pinDirectory+file, ControlPath.path+user+"/"+ file);
             sftpChannel.exit();
         } catch (JSchException ex) {
             Logger.getLogger(SSHConnector.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,13 +98,13 @@ public class SSHConnector {
     }
     
     
-    public final void putXml(String file){
+    public final void putXml(String file,String user){
         
         try {
             ChannelSftp sftpChannel = (ChannelSftp) session.openChannel("sftp");
             sftpChannel.connect();
             
-            sftpChannel.put(ControlPath.path + file, ControlPath.pinDirectory+ file);
+            sftpChannel.put(ControlPath.path+user+"/"+ file, ControlPath.pinDirectory+ file);
             sftpChannel.exit();
         } catch (JSchException ex) {
             Logger.getLogger(SSHConnector.class.getName()).log(Level.SEVERE, null, ex);

@@ -23,7 +23,7 @@ public class BundledT extends Nodo{
     private String name="";
     private String description="";
     private String internalId="";
-    private String pricingProfileName="";
+    private String pricingProfileName="Product Offering";
     private String priceListName="Default";
     private String timeRange="";
     private String productSpecName="";
@@ -163,7 +163,7 @@ public class BundledT extends Nodo{
     
     
     @Override
-    public int procesar(ArrayList<String> zoneModels, int index) {
+    public int procesar(ArrayList<String> zoneModels, int index, String user) {
         int itemCount = 0;
         for(int i=index; i<zoneModels.size();i++) {
             
@@ -186,7 +186,7 @@ public class BundledT extends Nodo{
                 
                 BundledItemT zoneItem = new BundledItemT(itemCount);
                 itemCount++;
-                i= zoneItem.procesar(zoneModels, i+1);
+                i= zoneItem.procesar(zoneModels, i+1, user);
                 i--;
                 this.bundledItems.add(zoneItem);
             }else return i;
@@ -196,13 +196,13 @@ public class BundledT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.bundledItems.get(i).procesarI(lista, index, indexs);
+            this.bundledItems.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -250,27 +250,27 @@ public class BundledT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Lote: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Lote: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Rango: "+timeRange,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Nombre: ",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("Rango: ",timeRange));
             if(!productSpecName.equals(""))
-            preface.add(new Paragraph("Producto: "+productSpecName,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Producto: ",productSpecName));
             else
-            preface.add(new Paragraph("Cliente: "+customerSpecName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Factura por compra: "+billOnPurchase,FirstPDF.normalFont));
-            preface.add(new Paragraph("Personalizar: "+customize,FirstPDF.normalFont));
-            preface.add(new Paragraph("Elementos de grupo de saldo: "+groupBalanceElements,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Cliente: ",customerSpecName));
+            preface.add(FirstPDF.createDescription("Factura por compra: ",billOnPurchase+""));
+            preface.add(FirstPDF.createDescription("Personalizar: ",customize));
+            preface.add(FirstPDF.createDescription("Elementos de grupo de saldo: ",groupBalanceElements+""));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Ofertas",FirstPDF.subFont));
+            preface.add(new Paragraph("Ofertas",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             PdfPTable table = new PdfPTable(2);
             table.setWidthPercentage(100);

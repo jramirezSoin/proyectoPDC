@@ -62,7 +62,7 @@ public class AlterationConfigurationT extends Nodo{
     }
     
     @Override
-    public int procesar(ArrayList<String> ratePlan2, int index) {
+    public int procesar(ArrayList<String> ratePlan2, int index, String user) {
         ArrayList<String> ratePlan= (ArrayList<String>)ratePlan2.clone();
         for(int i=index; i<ratePlan.size();i++) {
             if(ratePlan.get(i).matches("(?s)triggerSpecName: (.*)")) this.triggerSpecName= ratePlan.get(i).substring(17);
@@ -70,7 +70,7 @@ public class AlterationConfigurationT extends Nodo{
             else if(ratePlan.get(i).matches("(?s)chargeSelectorSpecName: (.*)")) this.chargeSelectorSpecName= ratePlan.get(i).substring(24);
             else if(("arpCompositePopModel").contains(ratePlan.get(i))){     
                 ArpCompositePopModelT arpCompositePopModel = new ArpCompositePopModelT(0);
-                i= arpCompositePopModel.procesar(ratePlan, i+1);
+                i= arpCompositePopModel.procesar(ratePlan, i+1, user);
                 i--;
                 this.arpCompositePopModel=arpCompositePopModel;
             }else return i;
@@ -89,13 +89,13 @@ public class AlterationConfigurationT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.arpCompositePopModel.procesarI(lista, index, indexs);
+            this.arpCompositePopModel.procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -115,10 +115,10 @@ public class AlterationConfigurationT extends Nodo{
     public void getPDF(Element element) {
             Paragraph preface = (Paragraph) element;
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Configuración "+this.id, FirstPDF.titleFont));
+            preface.add(new Paragraph("Configuración "+this.id, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Disparador: "+triggerSpecName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Filtro: "+chargeSelectorSpecName,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Disparador: ",triggerSpecName));
+            preface.add(FirstPDF.createDescription("Filtro: ",chargeSelectorSpecName));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);

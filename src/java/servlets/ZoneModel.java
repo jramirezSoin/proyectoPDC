@@ -8,11 +8,11 @@ package servlets;
 import control.ControlFunctions;
 import control.ControlPath;
 import datos.ListaT;
+import datos.User;
 import datos.ZoneItemT;
 import datos.ZoneModelT;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -57,8 +57,9 @@ public class ZoneModel extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> zoneModels;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            zoneModels = XmlParser.Leer2(new File(ControlPath.zoneModelsPath) , ControlPath.zoneModelsPointer);
+            zoneModels = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.zoneModelsPath)) , ControlPath.zoneModelsPointer);
             ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(zoneModels);
              session.setAttribute("click", ControlPath.zoneModelsClick);           
             session.setAttribute("lista", zoneModelsId);
@@ -68,9 +69,9 @@ public class ZoneModel extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.zoneModelsPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            zoneModels= XmlParser.LeerSeleccionado(new File(ControlPath.zoneModelsPath) , Integer.parseInt(id));
+            zoneModels= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.zoneModelsPath)) , Integer.parseInt(id));
             ZoneModelT zoneModel = new ZoneModelT(Integer.parseInt(id));
-            zoneModel.procesar(zoneModels, 1);
+            zoneModel.procesar(zoneModels, 1, user);
             session.setAttribute("principal", zoneModel);
             session.setAttribute("actual", "zoneModel");
             session.setAttribute("actualView", ControlPath.zoneModelsView);

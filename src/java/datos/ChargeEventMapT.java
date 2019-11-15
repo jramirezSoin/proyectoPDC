@@ -7,6 +7,7 @@ package datos;
 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.pdf.PdfPTable;
+import control.FirstPDF;
 import java.util.ArrayList;
 
 /**
@@ -23,7 +24,7 @@ public class ChargeEventMapT extends Nodo{
     private String prorateFirst="PRORATE_CHARGE";
     private String prorateLast="PRORATE_CHARGE";
     private String rum="";
-    private int minQuantity= 0;
+    private int minQuantity= 1;
     private String rolloverRatePlanName= "";
     
     public ChargeEventMapT(){
@@ -151,7 +152,8 @@ public class ChargeEventMapT extends Nodo{
         s+"</chargeEventMap>";
     }
     
-    public int procesar(ArrayList<String> charges, int index) {
+    @Override
+    public int procesar(ArrayList<String> charges, int index, String user) {
         
         
         for(int i=index; i<charges.size();i++) {
@@ -180,9 +182,9 @@ public class ChargeEventMapT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -204,14 +206,15 @@ public class ChargeEventMapT extends Nodo{
     }
     
     public void getPDF(Element element){
-        ((PdfPTable)element).addCell(this.eventName);
-        ((PdfPTable)element).addCell(this.chargeRatePlanName);
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.eventName));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.chargeRatePlanName));
     }
 
     private void validaRollover() {
         if(this.eventName.equals("EventBillingCycleRolloverMonthly") && !this.chargeRatePlanName.equals("")){
             this.rolloverRatePlanName= this.chargeRatePlanName;
             this.chargeRatePlanName="";
+            this.rum="Occurrence";
         }
     }
     

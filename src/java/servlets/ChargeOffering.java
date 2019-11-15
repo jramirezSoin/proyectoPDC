@@ -10,9 +10,9 @@ import control.ControlPath;
 import datos.ListaT;
 import datos.ChargeEventMapT;
 import datos.ChargeOfferingT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,8 +58,9 @@ public class ChargeOffering extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> chargeOffering;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            chargeOffering = XmlParser.Leer2(new File(ControlPath.chargeOfferingPath) , ControlPath.chargeOfferingPointer);
+            chargeOffering = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.chargeOfferingPath)) , ControlPath.chargeOfferingPointer);
             ArrayList<ListaT> chargeOfferingId = ControlFunctions.ListS2ListT(chargeOffering);
              session.setAttribute("click", ControlPath.chargeOfferingClick);           
             session.setAttribute("lista", chargeOfferingId);
@@ -69,9 +70,9 @@ public class ChargeOffering extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.chargeOfferingPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            chargeOffering= XmlParser.LeerSeleccionado(new File(ControlPath.chargeOfferingPath) , Integer.parseInt(id));
+            chargeOffering= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.chargeOfferingPath)) , Integer.parseInt(id));
             ChargeOfferingT chargeOfferingId = new ChargeOfferingT(Integer.parseInt(id));
-            chargeOfferingId.procesar(chargeOffering, 1);
+            chargeOfferingId.procesar(chargeOffering, 1, user);
             session.setAttribute("principal", chargeOfferingId);
             session.setAttribute("actual", "chargeOffer");
             session.setAttribute("actualView", ControlPath.chargeOfferingView);

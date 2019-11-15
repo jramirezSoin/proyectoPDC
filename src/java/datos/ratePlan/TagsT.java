@@ -48,7 +48,7 @@ public class TagsT extends Nodo{
     }
 
     @Override
-    public int procesar(ArrayList<String> chargeRates2, int index) {
+    public int procesar(ArrayList<String> chargeRates2, int index, String user) {
         ArrayList<String> chargeRates=  (ArrayList<String>)chargeRates2.clone();
         for(int i=index; i<chargeRates.size();i++) {
             if(chargeRates.get(i).matches("(?s)name: (.*)")) this.name= chargeRates.get(i).substring(6);
@@ -59,7 +59,7 @@ public class TagsT extends Nodo{
             }
             else if(chargeRates.get(i).matches("(?s)crpCompositePopModel")){
                 CrpCompositePopModelT crpCompositePopModelado = new CrpCompositePopModelT(0);
-                i= crpCompositePopModelado.procesar(chargeRates, i+1);
+                i= crpCompositePopModelado.procesar(chargeRates, i+1, user);
                 i--;
                 this.setCrpCompositePopModel(crpCompositePopModelado);
             }else return i;
@@ -69,9 +69,9 @@ public class TagsT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -91,7 +91,7 @@ public class TagsT extends Nodo{
     @Override
     public void getPDF(Element element) {
             Paragraph preface = (Paragraph) element;
-            preface.add(new Paragraph("Tag: "+name,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Tag: ",name));
             FirstPDF.addEmptyLine(preface, 1);
             this.crpCompositePopModel.getPDF(preface);
     }

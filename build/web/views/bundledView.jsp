@@ -10,6 +10,7 @@
 <%@page import="datos.BundledItemT"%>
 <%@page import="datos.BundledT"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <% BundledT bundled = (BundledT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
     <div class="row align-items-center">
@@ -95,7 +96,7 @@
                                                 <input type="checkbox" class="custom-control-input" id="customCheck-<%=item.getId()%>">
                                                 <label class="custom-control-label" for="customCheck-<%=item.getId()%>"></label>
                                             </div></td>
-                                        <td><a href="#" onclick="hacerClick(this,'<%=s%>','<%=ControlFunctions.Buscar(ControlPath.chargeOfferingClick, buscar, "id")%>')"><%= (item.getChargeOfferingName().equals(""))?item.getAlterationOfferingName().replaceAll("_", " "):item.getChargeOfferingName().replaceAll("_", " ")%></a></td>
+                                        <td><a href="#" onclick="hacerClick(this,'<%=s%>','<%=ControlFunctions.Buscar(ControlPath.chargeOfferingClick,user, buscar, "id")%>')"><%= (item.getChargeOfferingName().equals(""))?item.getAlterationOfferingName().replaceAll("_", " "):item.getChargeOfferingName().replaceAll("_", " ")%></a></td>
                                         <td><%= item.getStatus()%></td>
                                         <td><%= item.getStatusCode()%></td>
                                         <td><%= item.getQuantity()%></td>

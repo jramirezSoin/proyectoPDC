@@ -38,7 +38,7 @@
         <!-- sidebar menu area start -->
         <div class="sidebar-menu">
             <div class="sidebar-header">
-                <div class="logo">
+                <div onclick="window.location.href='/'" class="logo">
                     <h2 class="main-title">Oracle PDC System</h2>
                 </div>
             </div>

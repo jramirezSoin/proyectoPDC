@@ -9,6 +9,7 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.pdf.PdfPTable;
 import control.ControlFunctions;
 import control.ControlPath;
+import control.FirstPDF;
 import java.util.ArrayList;
 
 /**
@@ -110,7 +111,8 @@ public class BalanceSpecT extends Nodo{
         s+"</balanceElementSpecification>";
     }
     
-    public int procesar(ArrayList<String> balances2, int index) {
+    @Override
+    public int procesar(ArrayList<String> balances2, int index, String user) {
         ArrayList<String> balances = (ArrayList<String>) balances2.clone();
         
         for(int i=index; i<balances.size();i++) {
@@ -127,8 +129,8 @@ public class BalanceSpecT extends Nodo{
             else if(balances.get(i).matches("(?s)floor: (.*)")) this.floor= balances.get(i).substring(7);
             else if(balances.get(i).matches("(?s)ceiling: (.*)")) this.ceil= balances.get(i).substring(9);
             else if(balances.get(i).matches("(?s)consumptionRule: (.*)")) this.consumptionRule= balances.get(i).substring(17);
-            else if(balances.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= balances.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode",balances.get(i).substring(23)),"name");}
-            else if(balances.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= balances.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",balances.get(i).substring(20)),"numericCode");}
+            else if(balances.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= balances.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("numericCode",balances.get(i).substring(23)),"name");}
+            else if(balances.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= balances.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("name",balances.get(i).substring(20)),"numericCode");}
             else if(("balanceCreditProfile thresholdLevel").contains(balances.get(i))){}
             else return i;
         }
@@ -136,9 +138,9 @@ public class BalanceSpecT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -154,11 +156,11 @@ public class BalanceSpecT extends Nodo{
     }
     
     public void getPDF(Element element){
-        ((PdfPTable)element).addCell(this.balanceElementName);
-        ((PdfPTable)element).addCell(this.ceil);
-        ((PdfPTable)element).addCell(this.floor);
-        ((PdfPTable)element).addCell(this.threshold1);
-        ((PdfPTable)element).addCell(this.threshold2);
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.balanceElementName));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.ceil));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.floor));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.threshold1));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.threshold2));
     }
     
     

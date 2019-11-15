@@ -5,7 +5,6 @@
  */
 package xml;
 
-import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
 import control.ControlPath;
 import datos.ListaT;
 import java.io.BufferedWriter;
@@ -20,7 +19,6 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -154,7 +152,6 @@ public class XmlParser {
     
     public static void Modificar(String archivoViejo, String archivoNuevo, String contenido, String tag, int id){
         try {
-            System.out.println(contenido);
             contenido = contenido.replaceAll("[ \t]+<.+></.+>\n", "");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -218,7 +215,6 @@ public class XmlParser {
     }
     public static void Agregar(String archivoViejo, String archivoNuevo, String contenido, String tag){
         try {
-            System.out.println(contenido);
             contenido = contenido.replaceAll("[ \t]+<.+></.+>\n", "");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();

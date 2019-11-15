@@ -7,6 +7,7 @@ package datos;
 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.pdf.PdfPTable;
+import control.FirstPDF;
 import java.util.ArrayList;
 
 /**
@@ -174,7 +175,8 @@ public class BundledItemT extends Nodo{
                "            <mode>"+lista.valor+"</mode>\n";
     }
     
-    public int procesar(ArrayList<String> zoneModels, int index) {
+    @Override
+    public int procesar(ArrayList<String> zoneModels, int index, String user) {
         
         
         for(int i=index; i<zoneModels.size();i++) {
@@ -283,9 +285,9 @@ public class BundledItemT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -308,11 +310,11 @@ public class BundledItemT extends Nodo{
     
     public void getPDF(Element element){
         if(chargeOfferingName.equals("")){
-        ((PdfPTable)element).addCell(this.alterationOfferingName);
-        ((PdfPTable)element).addCell("Descuento");}
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.alterationOfferingName));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell("Descuento"));}
         else{
-        ((PdfPTable)element).addCell(this.chargeOfferingName);
-        ((PdfPTable)element).addCell("Cargo");}
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell(this.chargeOfferingName));
+        ((PdfPTable)element).addCell(FirstPDF.createTableCell("Cargo"));}
     }
     
     

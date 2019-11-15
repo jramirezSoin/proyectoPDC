@@ -102,8 +102,8 @@ public class TriggerSpecT extends Nodo{
         this.expressions = expressions;
     }
     
-        @Override
-    public int procesar(ArrayList<String> triggerSpecs2, int index) {
+    @Override
+    public int procesar(ArrayList<String> triggerSpecs2, int index, String user) {
         ArrayList<String> triggerSpecs= (ArrayList<String>)triggerSpecs2.clone();
         int itemCount = 0;
         for(int i=index; i<triggerSpecs.size();i++) {
@@ -116,7 +116,7 @@ public class TriggerSpecT extends Nodo{
             else if(("chargeTriggerExpression complexTriggerExpression quantityTriggerExpression balanceTriggerExpression").contains(triggerSpecs.get(i))){     
                 ExpressionT expression = new ExpressionT(itemCount,triggerSpecs.get(i));
                 itemCount++;
-                i= expression.procesar(triggerSpecs, i+1);
+                i= expression.procesar(triggerSpecs, i+1, user);
                 i--;
                 this.expressions.add(expression);
             }else return i;
@@ -141,13 +141,13 @@ public class TriggerSpecT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.expressions.get(i).procesarI(lista, index, indexs);
+            this.expressions.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -185,16 +185,16 @@ public class TriggerSpecT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Trigger: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Trigger: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("nombre: ",name));
+            preface.add(FirstPDF.createDescription("descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Expresiones",FirstPDF.subFont));
+            preface.add(new Paragraph("Expresiones",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             for(ExpressionT item : this.expressions){
                 if(item.visibilidad){

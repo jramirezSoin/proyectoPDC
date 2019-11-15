@@ -13,15 +13,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.Map;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
-import javax.xml.ws.Service;
 import pricinggateway.PricingGateway;
 import pricinggateway.PricingGatewayPortType;
 

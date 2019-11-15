@@ -51,13 +51,13 @@
                     </div>
                     <div class="login-form-body">
                         <div class="form-gp">
-                            <label for="user">User</label>
-                            <input type="text" name="user" id="user">
+                            <label for="user"></label>
+                            <input type="text" placeholder="User" name="user" id="user">
                             <i class="ti-user"></i>
                         </div>
                         <div class="form-gp">
-                            <label for="password">Password</label>
-                            <input type="password" name="password" id="password">
+                            <label for="password"></label>
+                            <input type="password" placeholder="Password" name="password" id="password">
                             <i class="ti-lock"></i>
                         </div>
                         <div class="submit-btn-area">

@@ -120,7 +120,7 @@ public class ZoneModelT extends Nodo{
     }
 
     @Override
-    public int procesar(ArrayList<String> zoneModels, int index) {
+    public int procesar(ArrayList<String> zoneModels, int index, String user) {
         int itemCount = 0;
         for(int i=index; i<zoneModels.size();i++) {
             
@@ -133,7 +133,7 @@ public class ZoneModelT extends Nodo{
                 
                 ZoneItemT zoneItem = new ZoneItemT(itemCount);
                 itemCount++;
-                i= zoneItem.procesar(zoneModels, i+1);
+                i= zoneItem.procesar(zoneModels, i+1, user);
                 i--;
                 this.zoneItems.add(zoneItem);
             }else return i;
@@ -143,13 +143,13 @@ public class ZoneModelT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs,String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.zoneItems.get(i).procesarI(lista, index, indexs);
+            this.zoneItems.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -195,20 +195,20 @@ public class ZoneModelT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Zone Model: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Zone Model: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Obsoleto: "+obsolete,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("nombre",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("Obsoleto: ",obsolete+""));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Items",FirstPDF.subFont));
+            preface.add(new Paragraph("Items",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             PdfPTable table = new PdfPTable(4);
             float[] columnWidths = new float[]{30f, 10f, 10f, 20f};

@@ -8,12 +8,11 @@ package servlets;
 import control.ControlFunctions;
 import control.ControlPath;
 import datos.ListaT;
+import datos.User;
 import datos.alteration.AlterationConfigurationT;
 import datos.alteration.AlterationRatePlanT;
-import datos.alteration.ArpCompositePopModelT;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -59,15 +58,16 @@ public class AlterationRatePlan extends HttpServlet {
         processRequest(request, response);
         String id = request.getParameter("id");
         String dir = request.getParameter("path");
-        ArrayList<String> ChargeRate;
+        ArrayList<String> AlterationRate;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
             if(dir==null){
-            ChargeRate = XmlParser.Leer2(new File(ControlPath.alterationRatePath) , ControlPath.alterationRatePointer);
-            ArrayList<ListaT> ChargeRateId = ControlFunctions.ListS2ListT(ChargeRate);
+            AlterationRate = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.alterationRatePath)) , ControlPath.alterationRatePointer);
+            ArrayList<ListaT> AlterationRateId = ControlFunctions.ListS2ListT(AlterationRate);
              session.setAttribute("click", ControlPath.alterationRateClick);           
-            session.setAttribute("lista", ChargeRateId);
-            session.setAttribute("titulo", "Charge Rate");
+            session.setAttribute("lista", AlterationRateId);
+            session.setAttribute("titulo", "Alteration Rate");
             session.setAttribute("actual", "lista");
             session.setAttribute("actualPath", ControlPath.alterationRatePath);
             session.setAttribute("actualPoint", ControlPath.alterationRatePointer);
@@ -78,10 +78,10 @@ public class AlterationRatePlan extends HttpServlet {
                 request.getRequestDispatcher(ControlPath.arpCompositeView).forward(request, response);
             }
         }else{
-                ChargeRate= XmlParser.LeerSeleccionado(new File(ControlPath.alterationRatePath) , Integer.parseInt(id));
-                AlterationRatePlanT ChargeRateId = new AlterationRatePlanT(Integer.parseInt(id));
-                ChargeRateId.procesar(ChargeRate, 1);
-                session.setAttribute("principal", ChargeRateId);
+                AlterationRate= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.alterationRatePath)) , Integer.parseInt(id));
+                AlterationRatePlanT AlterationRateId = new AlterationRatePlanT(Integer.parseInt(id));
+                AlterationRateId.procesar(AlterationRate, 1, user);
+                session.setAttribute("principal", AlterationRateId);
                 session.setAttribute("actual", "alterationRate");
                 session.setAttribute("actualView", ControlPath.alterationRateView);
                 request.getRequestDispatcher(ControlPath.alterationRateView).forward(request, response);  
@@ -100,6 +100,53 @@ public class AlterationRatePlan extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String id = request.getParameter("id");
+        
+        if(id==null || id.equals("-1")){
+            request.getSession().setAttribute("add",null);
+            request.getSession().setAttribute("index",null);
+            request.getRequestDispatcher(ControlPath.alterationRateForm).forward(request, response);}
+        else if(id.equals("-2")){
+            AlterationRatePlanT alterationRateT= new AlterationRatePlanT(0);
+            request.getSession().setAttribute("index",null);
+            request.getSession().setAttribute("add", alterationRateT);
+            request.getSession().setAttribute("addView",ControlPath.alterationRateView);
+            request.getRequestDispatcher(ControlPath.alterationRateForm).forward(request, response);
+        }
+        else {
+            ArrayList<Integer> index= new ArrayList<>();
+            String[] arrOfStr = id.split(",");
+            for (String a : arrOfStr){
+                 index.add(Integer.parseInt(a));}
+            if(index.get(0)>=0){
+                request.getSession().setAttribute("add",null);
+                request.getSession().setAttribute("index", index);
+                if(index.get(1)==-1)
+                    request.getRequestDispatcher(ControlPath.arpCompositeForm).forward(request, response);
+                else if(index.get(1)==-2)
+                    request.getRequestDispatcher(ControlPath.boundForm).forward(request, response);
+                else if(index.get(1)==-3)
+                    request.getRequestDispatcher(ControlPath.alterationForm).forward(request, response);
+            }
+            else if(index.get(0)==-3){
+                AlterationRatePlanT alterationRate = (AlterationRatePlanT) request.getSession().getAttribute("principal");
+                AlterationConfigurationT alterationConfigurationT = new AlterationConfigurationT(alterationRate.getArpDateRange().getAlterationConfigurations().size());
+                request.getSession().setAttribute("index", index);
+                request.getSession().setAttribute("add", alterationConfigurationT);
+                request.getSession().setAttribute("addView",ControlPath.alterationRateView);
+                request.getRequestDispatcher(ControlPath.arpCompositeForm).forward(request, response);
+            }else if(index.get(0)==-4){
+                request.getSession().setAttribute("del", index);
+            }else if(index.get(0)==-6){
+                request.getSession().setAttribute("del", index);
+            }else if(index.get(0)==-5){
+                AlterationConfigurationT crpRelDateT = new AlterationConfigurationT(0);
+                crpRelDateT.masivo();
+                request.getSession().setAttribute("index", index);
+                request.getSession().setAttribute("add", crpRelDateT);
+                request.getRequestDispatcher(ControlPath.arpCompositeForm).forward(request, response);
+            }
+        }
     }
 
     /**

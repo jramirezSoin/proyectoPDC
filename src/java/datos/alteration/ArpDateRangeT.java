@@ -58,14 +58,14 @@ public class ArpDateRangeT extends Nodo{
     }
     
     @Override
-    public int procesar(ArrayList<String> ratePlan2, int index) {
+    public int procesar(ArrayList<String> ratePlan2, int index, String user) {
         ArrayList<String> ratePlan= (ArrayList<String>)ratePlan2.clone();
         for(int i=index; i<ratePlan.size();i++) {
             if(ratePlan.get(i).matches("(?s)startDate: (.*)")) this.startDate= ratePlan.get(i).substring(11);
             else if(ratePlan.get(i).matches("(?s)endDate: (.*)")) this.endDate= ratePlan.get(i).substring(9);
             else if(("alterationConfiguration").contains(ratePlan.get(i))){     
                 AlterationConfigurationT alterationConfiguration = new AlterationConfigurationT(alterationConfigurations.size());
-                i= alterationConfiguration.procesar(ratePlan, i+1);
+                i= alterationConfiguration.procesar(ratePlan, i+1, user);
                 i--;
                 this.alterationConfigurations.add(alterationConfiguration);
             }else return i;
@@ -87,13 +87,13 @@ public class ArpDateRangeT extends Nodo{
     }
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.getAlterationConfigurations().get(i).procesarI(lista, index, indexs);
+            this.getAlterationConfigurations().get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -114,8 +114,8 @@ public class ArpDateRangeT extends Nodo{
         try {
             Paragraph preface = (Paragraph) element;
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("fecha inicio: "+ControlFunctions.getParseDate(startDate),FirstPDF.normalFont));
-            preface.add(new Paragraph("fecha fin: "+ControlFunctions.getParseDate(endDate),FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("fecha inicio: ",ControlFunctions.getParseDate(startDate)));
+            preface.add(FirstPDF.createDescription("fecha fin: ",ControlFunctions.getParseDate(endDate)));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);

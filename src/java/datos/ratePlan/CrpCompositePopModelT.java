@@ -193,7 +193,7 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
     }
 
     @Override
-    public int procesar(ArrayList<String> crp, int index) {
+    public int procesar(ArrayList<String> crp, int index, String user) {
         int itemCount = 0;
         boolean popModel = false;
         boolean priceTier = false;
@@ -218,10 +218,10 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
                 this.rumTierExpression = crp.get(i).substring(19);
             } else if (crp.get(i).matches("(?s)balanceElementNumCode: (.*)") && balanceTierExpression) {
                 this.balanceElementNumCode = crp.get(i).substring(23);
-                this.balanceElementName = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode", crp.get(i).substring(23)), "name");
+                this.balanceElementName = ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("numericCode", crp.get(i).substring(23)), "name");
             } else if (crp.get(i).matches("(?s)balanceElementName: (.*)")) {
                 this.balanceElementName = crp.get(i).substring(20);
-                this.balanceElementNumCode = ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name", crp.get(i).substring(20)), "numericCode");
+                this.balanceElementNumCode = ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("name", crp.get(i).substring(20)), "numericCode");
             } else if (crp.get(i).matches("(?s)rumName: (.*)") && priceTier) {
                 this.rumName = crp.get(i).substring(9);
             } else if (crp.get(i).matches("(?s)enforceCreditLimit: (.*)") && priceTier) {
@@ -241,12 +241,12 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
                 }
                 resul.setTipo(crp.get(i));
                 itemCount++;
-                i = resul.procesar(crp, i + 1);
+                i = resul.procesar(crp, i + 1, user);
                 i--;
                 this.priceTierRanges.add(resul);
             } else if (crp.get(i).matches("(?s)priceTierValidityPeriod") && priceTier) {
                 PriceTierValidityPeriodT resul = new PriceTierValidityPeriodT(priceTierValidityPeriods.size());
-                i = resul.procesar(crp, i + 1);
+                i = resul.procesar(crp, i + 1, user);
                 i--;
                 this.priceTierValidityPeriods.add(resul);
             } else if (crp.get(i).matches("(?s)priceTierPeriods")) {
@@ -291,16 +291,16 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
     }
 
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if (indexs.size() == 0) {
-            index = this.procesar(lista, index);
+            index = this.procesar(lista, index, user);
         } else {
             int i = indexs.get(0);
             indexs.remove(0);
             if (indexs.get(0) == 1) {
-                this.priceTierValidityPeriods.get(i).procesarI(lista, index, indexs);
+                this.priceTierValidityPeriods.get(i).procesarI(lista, index, indexs, user);
             } else {
-                this.priceTierRanges.get(i).procesarI(lista, index, indexs);
+                this.priceTierRanges.get(i).procesarI(lista, index, indexs, user);
             }
         }
         return index;
@@ -324,12 +324,12 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
     }
 
     @Override
-    public void getRumCurrency(String rum, String currency) {
+    public void getRumCurrency(String rum, String currency, String user) {
         this.rumName = rum;
         this.currencyCode = currency;
         for(PriceTierRangeT tier: this.priceTierRanges){
             for(ChargeT charge: tier.getCharges()){
-                charge.getRumCurrency(rum,currency);
+                charge.getRumCurrency(rum,currency, user);
             }
         }
     }
@@ -349,10 +349,10 @@ public class CrpCompositePopModelT extends Nodo implements ResultI {
     @Override
     public void getPDF(Element element) {
             Paragraph preface = (Paragraph) element;
-            preface.add(new Paragraph("Límite menor: "+lowerBound,FirstPDF.normalFont));
-            preface.add(new Paragraph("Saldo en: "+balanceElementName,FirstPDF.normalFont));
-            preface.add(new Paragraph("RUM: "+rumName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Moneda: "+currencyCode,FirstPDF.normalFont));              
+            preface.add(FirstPDF.createDescription("Límite menor: ",lowerBound));
+            preface.add(FirstPDF.createDescription("Saldo en: ",balanceElementName));
+            preface.add(FirstPDF.createDescription("RUM: ",rumName));
+            preface.add(FirstPDF.createDescription("Moneda: ",currencyCode));              
             FirstPDF.addEmptyLine(preface, 1);
             if(this.priceTierValidityPeriods!=null && this.priceTierValidityPeriods.size()>0){
                 for(PriceTierValidityPeriodT period: this.priceTierValidityPeriods){

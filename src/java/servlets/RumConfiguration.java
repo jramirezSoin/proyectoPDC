@@ -9,9 +9,9 @@ import control.ControlFunctions;
 import control.ControlPath;
 import datos.ListaT;
 import datos.RumT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -56,8 +56,9 @@ public class RumConfiguration extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> rums;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            rums = XmlParser.Leer2(new File(ControlPath.rumConfigPath) , ControlPath.rumConfigPointer);
+            rums = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.rumConfigPath)) , ControlPath.rumConfigPointer);
             ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(rums);
              session.setAttribute("click", ControlPath.rumConfigClick);           
             session.setAttribute("lista", zoneModelsId);
@@ -67,9 +68,9 @@ public class RumConfiguration extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.rumConfigPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            rums= XmlParser.LeerSeleccionado(new File(ControlPath.rumConfigPath) , Integer.parseInt(id));
+            rums= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.rumConfigPath)) , Integer.parseInt(id));
             RumT rumConfig = new RumT(Integer.parseInt(id));
-            rumConfig.procesar(rums, 1);
+            rumConfig.procesar(rums, 1,user);
             session.setAttribute("principal", rumConfig);
             session.setAttribute("actual", "rumConfig");
             session.setAttribute("actualView", ControlPath.rumConfigView);

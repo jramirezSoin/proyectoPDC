@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class RolloverT extends Nodo{
     private String name="";
     private String internalId="";
-    private String pricingProfileName="";
+    private String pricingProfileName="Subscription";
     private String priceListName="Default";
     private String startDate="";
     private String endDate="";
@@ -176,7 +176,7 @@ public class RolloverT extends Nodo{
     
     
     @Override
-    public int procesar(ArrayList<String> rollovers, int index) {
+    public int procesar(ArrayList<String> rollovers, int index, String user) {
         ArrayList<String> rollovers2= (ArrayList<String>)rollovers.clone();
         for(int i=index; i<rollovers2.size();i++) { 
            if(rollovers2.get(i).matches("(?s)name: (.*)")) this.name= rollovers2.get(i).substring(6);
@@ -185,14 +185,14 @@ public class RolloverT extends Nodo{
            else if(rollovers2.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= rollovers2.get(i).substring(20);
            else if(rollovers2.get(i).matches("(?s)startDate: (.*)")) this.startDate= rollovers2.get(i).substring(11);
            else if(rollovers2.get(i).matches("(?s)endDate: (.*)")) this.endDate= rollovers2.get(i).substring(9);
-           else if(rollovers2.get(i).matches("(?s)glid: (.*)")){ this.glid= rollovers2.get(i).substring(6); this.glidName=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("code",rollovers2.get(i).substring(6)),"name");}
-           else if(rollovers2.get(i).matches("(?s)glidName: (.*)")){ this.glidName= rollovers2.get(i).substring(10); this.glid=ControlFunctions.Buscar(ControlPath.glidClick, new ListaT("name",rollovers2.get(i).substring(10)),"code");}
+           else if(rollovers2.get(i).matches("(?s)glid: (.*)")){ this.glid= rollovers2.get(i).substring(6); this.glidName=ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("code",rollovers2.get(i).substring(6)),"name");}
+           else if(rollovers2.get(i).matches("(?s)glidName: (.*)")){ this.glidName= rollovers2.get(i).substring(10); this.glid=ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("name",rollovers2.get(i).substring(10)),"code");}
            else if(rollovers2.get(i).matches("(?s)unitOfMeasure: (.*)")) this.unitOfMeasure= rollovers2.get(i).substring(15);
            else if(rollovers2.get(i).matches("(?s)rolloverUnits: (.*)")) this.rolloverUnits= rollovers2.get(i).substring(15);
            else if(rollovers2.get(i).matches("(?s)rolloverMaxUnits: (.*)")) this.rolloverMaxUnits= rollovers2.get(i).substring(18);
            else if(rollovers2.get(i).matches("(?s)rolloverCount: (.*)")) this.rolloverCount= rollovers2.get(i).substring(15);
-           else if(rollovers2.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= rollovers2.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("numericCode",rollovers2.get(i).substring(23)),"name");}
-           else if(rollovers2.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= rollovers2.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick, new ListaT("name",rollovers2.get(i).substring(20)),"numericCode");}
+           else if(rollovers2.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= rollovers2.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("numericCode",rollovers2.get(i).substring(23)),"name");}
+           else if(rollovers2.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= rollovers2.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("name",rollovers2.get(i).substring(20)),"numericCode");}
            else if(("dateRange rolloverPopModel rolloverCharge").contains(rollovers2.get(i))){
                 
            }
@@ -203,9 +203,9 @@ public class RolloverT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index,user);
         return index;
     }
     
@@ -225,23 +225,23 @@ public class RolloverT extends Nodo{
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Rollover: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Rollover: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Perfil de precio: "+pricingProfileName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Fecha de inicio: "+ControlFunctions.getParseDate(startDate),FirstPDF.normalFont));
-            preface.add(new Paragraph("Fecha de fin: "+ControlFunctions.getParseDate(endDate),FirstPDF.normalFont));
-            preface.add(new Paragraph("GL/ID: "+glid,FirstPDF.normalFont));
-            preface.add(new Paragraph("GL/ID Descripción: "+glidName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Unidad de medida: "+unitOfMeasure,FirstPDF.normalFont));
-            preface.add(new Paragraph("Saldo en: "+balanceElementName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Unidades de traspaso: "+rolloverUnits,FirstPDF.normalFont));
-            preface.add(new Paragraph("Máximo de unidades de traspaso: "+rolloverMaxUnits,FirstPDF.normalFont));
-            preface.add(new Paragraph("Contador de traspaso: "+rolloverCount,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("nombre: ",name));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Perfil de precio: ",pricingProfileName));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("Fecha de inicio: ",ControlFunctions.getParseDate(startDate)));
+            preface.add(FirstPDF.createDescription("Fecha de fin: ",ControlFunctions.getParseDate(endDate)));
+            preface.add(FirstPDF.createDescription("GL/ID: ",glid));
+            preface.add(FirstPDF.createDescription("GL/ID Descripción: ",glidName));
+            preface.add(FirstPDF.createDescription("Unidad de medida: ",unitOfMeasure));
+            preface.add(FirstPDF.createDescription("Saldo en: ",balanceElementName));
+            preface.add(FirstPDF.createDescription("Unidades de traspaso: ",rolloverUnits));
+            preface.add(FirstPDF.createDescription("Máximo de unidades de traspaso: ",rolloverMaxUnits));
+            preface.add(FirstPDF.createDescription("Contador de traspaso: ",rolloverCount));
             document.add(preface);
             
         } catch (DocumentException ex) {

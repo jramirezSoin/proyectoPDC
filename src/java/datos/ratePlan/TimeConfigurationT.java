@@ -56,7 +56,7 @@ public class TimeConfigurationT extends Nodo implements ResultI{
     }
 
     @Override
-    public int procesar(ArrayList<String> generics, int index) {
+    public int procesar(ArrayList<String> generics, int index, String user) {
         int itemCount = 0;
         for(int i=index; i<generics.size();i++) {
             if(generics.get(i).matches("(?s)timeModelName: (.*)")) this.timeModelName= generics.get(i).substring(15);
@@ -64,7 +64,7 @@ public class TimeConfigurationT extends Nodo implements ResultI{
                 
                 TagsT resul = new TagsT(tags.size());
                 itemCount++;
-                i= resul.procesar(generics, i+1);
+                i= resul.procesar(generics, i+1, user);
                 i--;
                 this.tags.add(resul);
             }else if(generics.get(i).matches("(?s)resultsGen")){
@@ -93,13 +93,13 @@ public class TimeConfigurationT extends Nodo implements ResultI{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.tags.get(i).procesarI(lista, index, indexs);
+            this.tags.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -119,16 +119,16 @@ public class TimeConfigurationT extends Nodo implements ResultI{
     }
 
     @Override
-    public void getRumCurrency(String rum, String currency) {
+    public void getRumCurrency(String rum, String currency, String user) {
         for(TagsT crp : this.getTags()){
-            crp.getCrpCompositePopModel().getRumCurrency(rum,currency);
+            crp.getCrpCompositePopModel().getRumCurrency(rum,currency, user);
         }
     }
     
     @Override
     public void getPDF(Element element) {
             Paragraph preface = (Paragraph) element;
-            preface.add(new Paragraph("Time Model: "+timeModelName,FirstPDF.subFont));
+            preface.add(new Paragraph("Time Model: "+timeModelName,FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             for(TagsT result: this.tags){
                 result.getPDF(preface);

@@ -4,11 +4,13 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.User"%>
 <%@page import="control.ControlFunctions"%>
 <%@page import="control.ControlPath"%>
 <%@page import="datos.ListaT"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="datos.RolloverT"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <% RolloverT rollover = (RolloverT) request.getSession().getAttribute("add");%>
 <% if(rollover==null){rollover = (RolloverT) request.getSession().getAttribute("principal");}%>
 <form style="margin: 20px;" id="formulaire">
@@ -32,7 +34,7 @@
 <div id="-rolloverPopModel">
     <div id="-rolloverCharge">
 <div class="form-group row">
-<% ArrayList<ListaT> glids = ControlFunctions.getLista((String)ControlPath.glidClick);%>
+<% ArrayList<ListaT> glids = ControlFunctions.getLista((String)ControlPath.glidClick,user);%>
     <label>GL/Id<select class="custom-select" id="-glidName">
     <%for(int j=0;j<glids.size();j++){%>
     <option <%=(glids.get(j).valor.equals(rollover.getGlidName()))?"selected":""%> value="<%=glids.get(j).valor%>"><%=glids.get(j).valor%></option>
@@ -40,11 +42,15 @@
     </select></label>
 </div>
 <div class="form-group row">
-<label for="-unitOfMeasure">Unit of Measure</label>
-<input class="form-control" type="text" id="-unitOfMeasure" placeholder="Unit of Measure" value="<%=rollover.getUnitOfMeasure()%>"/>
+    <%ArrayList<ListaT> constants = ControlFunctions.LeerConstante("unitOfMeasure");%>
+    <label>Unit of Measure<select class="custom-select" id="-unitOfMeasure" onclick="checkPriceValidity();">
+        <%for(ListaT constante : constants){%>    
+            <option <%=(rollover.getUnitOfMeasure().equals(constante.unit)?"selected":"")%> value="<%=constante.unit%>"><%=constante.valor%></option>
+        <%}%>
+    </select></label>
 </div>
 <div class="form-group row">
-<% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick);%>
+<% ArrayList<ListaT> impactCategories = ControlFunctions.getLista((String)ControlPath.balanceElementClick,user);%>
     <label>Balance Element<select class="custom-select" id="-balanceElementName">
     <%for(int j=0;j<impactCategories.size();j++){%>
     <option <%=(impactCategories.get(j).valor.equals(rollover.getBalanceElementName()))?"selected":""%> value="<%=impactCategories.get(j).valor%>"><%=impactCategories.get(j).valor%></option>

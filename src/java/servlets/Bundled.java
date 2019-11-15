@@ -10,9 +10,9 @@ import control.ControlPath;
 import datos.BundledItemT;
 import datos.BundledT;
 import datos.ListaT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -59,8 +59,9 @@ public class Bundled extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> bundled;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            bundled = XmlParser.Leer2(new File(ControlPath.bundledPath) , ControlPath.bundledPointer);
+            bundled = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.bundledPath)) , ControlPath.bundledPointer);
             ArrayList<ListaT> bundledId = ControlFunctions.ListS2ListT(bundled);
              session.setAttribute("click", ControlPath.bundledClick);           
             session.setAttribute("lista", bundledId);
@@ -70,9 +71,9 @@ public class Bundled extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.bundledPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            bundled= XmlParser.LeerSeleccionado(new File(ControlPath.bundledPath) , Integer.parseInt(id));
+            bundled= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.bundledPath)) , Integer.parseInt(id));
             BundledT zoneModel = new BundledT(Integer.parseInt(id));
-            zoneModel.procesar(bundled, 1);
+            zoneModel.procesar(bundled, 1,user);
             session.setAttribute("principal", zoneModel);
             session.setAttribute("actual", "bundled");
             session.setAttribute("actualView", ControlPath.bundledView);

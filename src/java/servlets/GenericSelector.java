@@ -10,9 +10,9 @@ import control.ControlPath;
 import datos.ListaT;
 import datos.RuleT;
 import datos.GenericSelectorT;
+import datos.User;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,8 +58,9 @@ public class GenericSelector extends HttpServlet {
         String id = request.getParameter("id");
         ArrayList<String> genericSelectors;
         HttpSession session = request.getSession();
+        String user = ((User)session.getAttribute("user")).getUserPDC();
         if(id==null){
-            genericSelectors = XmlParser.Leer2(new File(ControlPath.genericSelectorPath) , ControlPath.genericSelectorPointer);
+            genericSelectors = XmlParser.Leer2(new File(ControlPath.getPath(user,ControlPath.genericSelectorPath)) , ControlPath.genericSelectorPointer);
             ArrayList<ListaT> genericSelectorsId = ControlFunctions.ListS2ListT(genericSelectors);
              session.setAttribute("click", ControlPath.genericSelectorClick);           
             session.setAttribute("lista", genericSelectorsId);
@@ -69,9 +70,9 @@ public class GenericSelector extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.genericSelectorPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            genericSelectors= XmlParser.LeerSeleccionado(new File(ControlPath.genericSelectorPath) , Integer.parseInt(id));
+            genericSelectors= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.genericSelectorPath)) , Integer.parseInt(id));
             GenericSelectorT genericSelector = new GenericSelectorT(Integer.parseInt(id));
-            genericSelector.procesar(genericSelectors, 1);
+            genericSelector.procesar(genericSelectors, 1, user);
             session.setAttribute("principal", genericSelector);
             session.setAttribute("actual", "genericSelector");
             session.setAttribute("actualView", ControlPath.genericSelectorView);

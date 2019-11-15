@@ -115,7 +115,7 @@ public class HolidayT extends Nodo {
     
 
     @Override
-    public int procesar(ArrayList<String> impactCategories, int index) {
+    public int procesar(ArrayList<String> impactCategories, int index, String user) {
         int itemCount = 0;
         for(int i=index; i<impactCategories.size();i++) {
             
@@ -128,7 +128,7 @@ public class HolidayT extends Nodo {
                 
                 HolidayItemT holidayItem = new HolidayItemT(itemCount);
                 itemCount++;
-                i= holidayItem.procesar(impactCategories, i+1);
+                i= holidayItem.procesar(impactCategories, i+1,user);
                 i--;
                 this.holidayItems.add(holidayItem);
             }else return i;
@@ -138,13 +138,13 @@ public class HolidayT extends Nodo {
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index,user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.holidayItems.get(i).procesarI(lista, index, indexs);
+            this.holidayItems.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -188,20 +188,20 @@ public class HolidayT extends Nodo {
         try {
             Paragraph preface = new Paragraph();
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Holiday Calendar: "+this.name, FirstPDF.titleFont));
+            preface.add(new Paragraph("Holiday Calendar: "+this.name, FirstPDF.h1));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Descripción",FirstPDF.subFont));
+            preface.add(new Paragraph("Descripción",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("nombre: "+name,FirstPDF.normalFont));
-            preface.add(new Paragraph("Descripción: "+description,FirstPDF.normalFont));
-            preface.add(new Paragraph("ID: "+internalId,FirstPDF.normalFont));
-            preface.add(new Paragraph("Nombre de lista de precio: "+priceListName,FirstPDF.normalFont));
-            preface.add(new Paragraph("Obsoleto: "+obsolete,FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("nombre: ",name));
+            preface.add(FirstPDF.createDescription("Descripción: ",description));
+            preface.add(FirstPDF.createDescription("ID: ",internalId));
+            preface.add(FirstPDF.createDescription("Nombre de lista de precio: ",priceListName));
+            preface.add(FirstPDF.createDescription("Obsoleto: ",obsolete+""));
             FirstPDF.addEmptyLine(preface, 1);
             LineSeparator line = new LineSeparator();              
             preface.add(line);
             FirstPDF.addEmptyLine(preface, 1);
-            preface.add(new Paragraph("Festividades",FirstPDF.subFont));
+            preface.add(new Paragraph("Festividades",FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             PdfPTable table = new PdfPTable(4);
             float[] columnWidths = new float[]{30f, 10f, 20f, 20f};

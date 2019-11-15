@@ -3,6 +3,7 @@
     Created on : Sep 24, 2019, 11:48:16 AM
     Author     : Joseph Ramírez
 --%>
+<%@page import="datos.User"%>
 <%-- 
     Document   : chargeSelectorSpecForm
     Created on : Aug 13, 2019, 11:30:01 AM
@@ -14,6 +15,7 @@
 <%@page import="datos.ListaT"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="datos.ChargeSelectorSpecT"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <% ChargeSelectorSpecT chargeSelectorSpec = (ChargeSelectorSpecT) request.getSession().getAttribute("add");%>
 <% if(chargeSelectorSpec==null){chargeSelectorSpec = (ChargeSelectorSpecT) request.getSession().getAttribute("principal");}%>
 <form style="margin: 20px;" id="formulaire">
@@ -42,7 +44,7 @@
 
 
 <div class="form-group row" id='-Nglids'>
-<% ArrayList<ListaT> glids = ControlFunctions.getLista((String)ControlPath.glidClick);%>
+<% ArrayList<ListaT> glids = ControlFunctions.getLista((String)ControlPath.glidClick,user);%>
     <label>GL/Id</label>
     <select class="custom-select" onchange="tagSelect(this,'nt')" id="glidName">
     <%for(ListaT glid: glids){%>
@@ -57,7 +59,7 @@
 </div>
 
 <div class="form-group row" id='-Nbalances'>
-    <%glids = ControlFunctions.getListaBalance("currency");%>
+    <%glids = ControlFunctions.getListaBalance("currency",user);%>
     <label>Balance</label>
     <select class="custom-select" onchange="tagSelect(this,'nt')" id="balanceElementName">
     <%for(ListaT glid: glids){%>
@@ -72,7 +74,7 @@
 </div>
 
 <div class="form-group row" id='-Ntimes'>
-    <%glids = ControlFunctions.getLista(ControlPath.timeModelsClick,"timeModelTag","tagName",true);%>
+    <%glids = ControlFunctions.getLista(ControlPath.timeModelsClick,user,"timeModelTag","tagName",true);%>
     <label>Time Model Tags</label>
     <select class="custom-select" onchange="tagSelect(this,'nt')" id="balanceElementName">
     <%for(ListaT glid: glids){%>

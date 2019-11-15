@@ -56,7 +56,7 @@ public class GenericSelectorT extends Nodo implements ResultI{
     }
 
     @Override
-    public int procesar(ArrayList<String> generics, int index) {
+    public int procesar(ArrayList<String> generics, int index, String user) {
         int itemCount = 0;
         boolean resultsGen= false;
         for(int i=index; i<generics.size();i++) {
@@ -66,7 +66,7 @@ public class GenericSelectorT extends Nodo implements ResultI{
                 if(i+2<generics.size() && generics.get(i+2).matches("(?s)timeConfiguration")) return i;
                 ResultsT resul = new ResultsT(results.size());
                 itemCount++;
-                i= resul.procesar(generics, i+1);
+                i= resul.procesar(generics, i+1, user);
                 i--;
                 this.results.add(resul);
             }else if(generics.get(i).matches("(?s)resultsGen")){
@@ -101,13 +101,13 @@ public class GenericSelectorT extends Nodo implements ResultI{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.results.get(i).procesarI(lista, index, indexs);
+            this.results.get(i).procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -127,16 +127,16 @@ public class GenericSelectorT extends Nodo implements ResultI{
     }
 
     @Override
-    public void getRumCurrency(String rum, String currency) {
+    public void getRumCurrency(String rum, String currency, String user) {
         for(ResultsT crp : this.getResults()){
-            ((CrpCompositePopModelT)crp.getResult()).getRumCurrency(rum,currency);
+            ((CrpCompositePopModelT)crp.getResult()).getRumCurrency(rum,currency,user);
         }
     }
     
     @Override
     public void getPDF(Element element) {
             Paragraph preface = (Paragraph) element;
-            preface.add(new Paragraph("Generic Selector: "+genericSelectorName,FirstPDF.subFont));
+            preface.add(new Paragraph("Generic Selector: "+genericSelectorName,FirstPDF.h2));
             FirstPDF.addEmptyLine(preface, 1);
             for(ResultsT result: this.results){
                 result.getPDF(preface);

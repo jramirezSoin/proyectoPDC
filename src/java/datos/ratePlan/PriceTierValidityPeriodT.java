@@ -59,7 +59,7 @@ public class PriceTierValidityPeriodT extends Nodo{
     }
 
     @Override
-    public int procesar(ArrayList<String> applicable, int index) {
+    public int procesar(ArrayList<String> applicable, int index, String user) {
         for(int i=index; i<applicable.size();i++) {
             if(applicable.get(i).matches("(?s)lowerBound: (.*)")) this.lowerBound= applicable.get(i).substring(12);
             else if(applicable.get(i).matches("(?s)validFrom: (.*)")) this.validFrom= applicable.get(i).substring(11);
@@ -70,9 +70,9 @@ public class PriceTierValidityPeriodT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -96,8 +96,8 @@ public class PriceTierValidityPeriodT extends Nodo{
     public void getPDF(Element element) {
         try {
             Paragraph preface = (Paragraph) element;
-            preface.add(new Paragraph("Límite mínimo: "+lowerBound,FirstPDF.normalFont));
-            preface.add(new Paragraph("válido desde: "+ControlFunctions.getParseDate(validFrom),FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Límite mínimo: ",lowerBound));
+            preface.add(FirstPDF.createDescription("válido desde: ",ControlFunctions.getParseDate(validFrom)));
             FirstPDF.addEmptyLine(preface, 1);
         } catch (ParseException ex) {
             Logger.getLogger(PriceTierValidityPeriodT.class.getName()).log(Level.SEVERE, null, ex);

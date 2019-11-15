@@ -5,6 +5,7 @@
  */
 package control;
 
+import datos.AlterationOfferingT;
 import datos.BalanceElementT;
 import datos.BundledT;
 import datos.ChargeOfferingT;
@@ -21,17 +22,10 @@ import datos.TriggerSpecT;
 import datos.ZoneModelT;
 import datos.alteration.AlterationRatePlanT;
 import datos.ratePlan.ChargeRatePlanT;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Locale;
-import java.util.Map;
 import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -134,6 +128,7 @@ public class ControlPath {
     public static String alterationOfferingView = "";
     public static String alterationOfferingForm = "";
     public static String alterationOfferingClick = "";
+    public static String alterationEventForm = "";
 
     public static String holidayPointer = "";
     public static String holidayView = "";
@@ -163,6 +158,17 @@ public class ControlPath {
     public static String uscMapView = "";
     public static String uscMapForm = "";
     public static String uscMapClick = "";
+    
+    public static String alterationRatePath= "";
+    public static String alterationRatePointer= "";
+    public static String alterationRateClick= "";
+    public static String alterationRateView= "";
+    public static String alterationRateForm= "";
+    public static String arpCompositeView="";
+    
+    public static String alterationSelectorClick= "";
+    public static String alterationSelectorPointer= "";
+    public static String alterationSelectorPath= "";
 
     public static String chargeSelectorSpecPointer = "";
     public static String chargeSelectorSpecClick = "";
@@ -182,19 +188,16 @@ public class ControlPath {
     public static String changes= "";
     public static String users="C:/Users/Joseph Ramírez/Documents/EXPORT_PDC/users.txt";
     public static String mainView= "";
+    
     public static String pinDirectory= "";
     public static String pinImportExport= "";
-    public static String pinPwdPDC= "";
-    public static String pinPwdUser= "";
-    public static String pinUser= "";
     public static String pinPort= "";
     public static String pinHost= "";
-    public static String alterationRatePath= "";
-    public static String alterationRatePointer= "";
-    public static String alterationRateClick= "";
-    public static String alterationRateView= "";
-    private static String alterationRateForm= "";
-    public static String arpCompositeView;
+    public static String arpCompositeForm="";
+    public static String boundForm="";
+    public static String alterationForm="";
+    
+    
     
     public static void LoadParameters(){
         FileInputStream fis = null;
@@ -205,36 +208,34 @@ public class ControlPath {
                 
                 pinDirectory = properties.getString("pinDirectory");
                 pinImportExport = properties.getString("pinImportExport");
-                //pinPwdPDC= properties.getString("pinPwdPDC");
-                //pinPwdUser= properties.getString("pinPwdUser");
-                //pinUser= properties.getString("pinUser");
                 pinPort= properties.getString("pinPort");
                 pinHost= properties.getString("pinHost");
-                path = properties.getString("path").trim()+pinUser+"/";
-                zoneModelsPath = path + properties.getString("zoneModelsPath").trim();
-                impactCategoriesPath = path + properties.getString("impactCategoriesPath").trim();
-                triggerSpecPath = path + properties.getString("triggerSpecPath").trim();
-                balanceElementPath = path + properties.getString("balanceElementPath").trim();
-                rumConfigPath = path + properties.getString("rumConfigPath").trim();
-                rolloverPath = path + properties.getString("rolloverPath").trim();
-                timeModelsPath = path + properties.getString("timeModelsPath").trim();
-                bundledPath = path + properties.getString("bundledPath").trim();
-                packagePath = path + properties.getString("packagePath").trim();
-                attributeSpecMapPath = path + properties.getString("attributeSpecMapPath").trim();
-                chargeOfferingPath = path + properties.getString("chargeOfferingPath").trim();
-                holidayPath = path + properties.getString("holidayPath").trim();
-                alterationOfferingPath = path + properties.getString("alterationOfferingPath").trim();
-                eventAttributeSpecPath = path + properties.getString("eventAttributeSpecPath").trim();
-                chargeRatePath = path + properties.getString("chargeRatePath").trim();
-                alterationRatePath = path + properties.getString("alterationRatePath").trim();
-                uscMapPath = path + properties.getString("uscMapPath").trim();
-                chargeSelectorSpecPath = path + properties.getString("chargeSelectorSpecPath").trim();
-                genericSelectorPath = path + properties.getString("genericSelectorPath").trim();
-                customRulePath = path + properties.getString("customRulePath").trim();
-                changes = path + properties.getString("changes").trim();
+                path = properties.getString("path").trim();
+                zoneModelsPath =  properties.getString("zoneModelsPath").trim();
+                impactCategoriesPath =  properties.getString("impactCategoriesPath").trim();
+                triggerSpecPath =  properties.getString("triggerSpecPath").trim();
+                balanceElementPath =  properties.getString("balanceElementPath").trim();
+                rumConfigPath =  properties.getString("rumConfigPath").trim();
+                rolloverPath =  properties.getString("rolloverPath").trim();
+                timeModelsPath =  properties.getString("timeModelsPath").trim();
+                bundledPath =  properties.getString("bundledPath").trim();
+                packagePath =  properties.getString("packagePath").trim();
+                attributeSpecMapPath =  properties.getString("attributeSpecMapPath").trim();
+                chargeOfferingPath =  properties.getString("chargeOfferingPath").trim();
+                holidayPath =  properties.getString("holidayPath").trim();
+                alterationOfferingPath =  properties.getString("alterationOfferingPath").trim();
+                eventAttributeSpecPath =  properties.getString("eventAttributeSpecPath").trim();
+                chargeRatePath =  properties.getString("chargeRatePath").trim();
+                alterationRatePath = properties.getString("alterationRatePath").trim();
+                alterationSelectorPath = properties.getString("alterationSelectorPath").trim();
+                uscMapPath =  properties.getString("uscMapPath").trim();
+                chargeSelectorSpecPath =  properties.getString("chargeSelectorSpecPath").trim();
+                genericSelectorPath =  properties.getString("genericSelectorPath").trim();
+                customRulePath =  properties.getString("customRulePath").trim();
+                glidPath =  properties.getString("glidPath").trim();
+                changes =  properties.getString("changes").trim();
                 
-                constants = path.replace(pinUser+"/", "") + properties.getString("constants").trim();
-                glidPath = path.replace(pinUser+"/", "") + properties.getString("glidPath").trim();
+                constants = path + properties.getString("constants").trim();
                 
                 zoneModelsPointer= properties.getString("zoneModelsPointer");
                 zoneModelsView= properties.getString("zoneModelsView");
@@ -306,6 +307,7 @@ public class ControlPath {
                 alterationOfferingView= properties.getString("alterationOfferingView");
                 alterationOfferingForm= properties.getString("alterationOfferingForm");
                 alterationOfferingClick= properties.getString("alterationOfferingClick");
+                alterationEventForm= properties.getString("alterationEventForm");
 
                 holidayPointer= properties.getString("holidayPointer");
                 holidayView= properties.getString("holidayView");
@@ -332,6 +334,12 @@ public class ControlPath {
                 alterationRateForm= properties.getString("alterationRateForm");
                 alterationRateClick= properties.getString("alterationRateClick");
                 arpCompositeView= properties.getString("arpCompositeView");
+                arpCompositeForm=properties.getString("arpCompositeForm");
+                boundForm=properties.getString("boundForm");
+                alterationForm=properties.getString("alterationForm");
+                
+                alterationSelectorClick= properties.getString("alterationSelectorClick");
+                alterationSelectorPointer= properties.getString("alterationSelectorPointer");
                 
 
                 glidClick= properties.getString("glidClick");
@@ -386,8 +394,13 @@ public class ControlPath {
         else if(path.equals(chargeSelectorSpecPath)){return new ChargeSelectorSpecT(item);}
         else if(path.equals(genericSelectorPath)){return new GenericSelectorT(item);}
         else if(path.equals(alterationRatePath)){return new AlterationRatePlanT(item);}
+        else if(path.equals(alterationOfferingPath)){return new AlterationOfferingT(item);}
         
         else return null;
+    }
+    
+    public static String getPath(String user, String nodo){
+        return path+user+"/"+nodo;
     }
 
 }

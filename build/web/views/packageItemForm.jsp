@@ -4,12 +4,14 @@
     Author     : Joseph Ramírez
 --%>
 
+<%@page import="datos.User"%>
 <%@page import="control.ControlFunctions"%>
 <%@page import="control.ControlPath"%>
 <%@page import="datos.ListaT"%>
 <%@page import="datos.PackageT"%>
 <%@page import="datos.PackageItemT"%>
 <%@page import="java.util.ArrayList"%>
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <%int index= ((ArrayList<Integer>)request.getSession().getAttribute("index")).get(1);%>
 <% PackageItemT packageItem = (PackageItemT) request.getSession().getAttribute("add");%>
 <%if(packageItem==null){packageItem = ((PackageT)request.getSession().getAttribute("principal")).getPackageItems().get(index);%>
@@ -19,7 +21,7 @@
     <%ArrayList<ListaT> filtro= new ArrayList<>(); 
     if(packageItem.getSpecName().equals("ProductPackage"))filtro.add(new ListaT("productSpecName",packageItem.getProductSpecName()));
     else filtro.add(new ListaT("customerSpecName","Account"));%>    
-<% ArrayList<ListaT> bundles = ControlFunctions.getListaFiltro((String)ControlPath.bundledClick, filtro);%>
+<% ArrayList<ListaT> bundles = ControlFunctions.getListaFiltro((String)ControlPath.bundledClick,user, filtro);%>
     <label>Bundles<select class="custom-select" id="bundles">
     <%for(int j=0;j<bundles.size();j++){%>
     <option value="<%=bundles.get(j).valor%>"><%=bundles.get(j).valor%></option>
@@ -82,7 +84,7 @@
     </script> 
 <%}else{ ArrayList<PackageItemT> packs = ((PackageT)request.getSession().getAttribute("principal")).getPackageItems();%>
 <form style="margin: 20px;" id="formulaire">
-<% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick);%>
+<% ArrayList<ListaT> products = ControlFunctions.getLista((String)ControlPath.attributeSpecMapClick,user);%>
     <div class="form-group row">
     <label>Aplicable to<select class="custom-select" id="-name">
             <%for(int j=0;j<products.size();j++){%>

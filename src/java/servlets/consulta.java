@@ -7,8 +7,8 @@ package servlets;
 
 import control.ControlFunctions;
 import datos.ListaT;
+import datos.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -81,15 +81,16 @@ public class consulta extends HttpServlet {
     private String getRespuesta(HttpServletRequest request) {
         String funcion= request.getParameter("funcion");
         String tipo= request.getParameter("tipo");
+        String user = ((User)request.getSession().getAttribute("user")).getUserPDC();
         ArrayList<ListaT> response= new ArrayList<>();
         switch(funcion){
-            case "getLista": response= ControlFunctions.getLista(tipo); break;
+            case "getLista": response= ControlFunctions.getLista(tipo,user); break;
             case "getListaFiltroDeep":
                 ArrayList<ListaT> filtro= getFiltro(request.getParameter("filtro"));
                 String buscar= request.getParameter("buscar");
                 String conjunto=request.getParameter("conjunto");
                 if(conjunto==null || conjunto.equals("")) conjunto="false";
-                response= ControlFunctions.getListaFiltroDeep(tipo, filtro, buscar,Boolean.valueOf(conjunto));
+                response= ControlFunctions.getListaFiltroDeep(tipo,user, filtro, buscar,Boolean.valueOf(conjunto));
                 break;
         }
         String compara=request.getParameter("compara");

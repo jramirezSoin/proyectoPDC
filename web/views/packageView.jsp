@@ -10,7 +10,7 @@
 <%@page import="datos.PackageItemT"%>
 <%@page import="datos.BalanceSpecT"%>
 <%@page import="datos.PackageT"%>
-
+<%String user= ((User)request.getSession().getAttribute("user")).getUserPDC();%>
 <% PackageT pack = (PackageT) request.getSession().getAttribute("principal");%>
 <div class="page-title-area">
     <div class="row align-items-center">
@@ -143,7 +143,7 @@
                                         <%for(ListaT t: item.getBundleProductOffering()){%>
                                         <% ListaT buscar= new ListaT("name",t.valor);%>
                                         <tr>
-                                            <td><a href="#" style="color: #fff;" onclick="hacerClick(this,'/bundled',<%=ControlFunctions.Buscar(ControlPath.bundledClick, buscar, "id")%>)"><%=t.valor%></a></td>
+                                            <td><a href="#" style="color: #fff;" onclick="hacerClick(this,'/bundled',<%=ControlFunctions.Buscar(ControlPath.bundledClick,user, buscar, "id")%>)"><%=t.valor%></a></td>
                                             <td><%=t.unit%></td>
                                         </tr>
                                         <%}%>

@@ -45,6 +45,7 @@ public class ResultsT extends Nodo{
     
     @Override
     public String toString(String s) {
+        if(result==null) return "";
         String names="";
         for(String i: name) names+= s+"\t<name>"+i+"</name>\n";
         return 
@@ -57,7 +58,7 @@ public class ResultsT extends Nodo{
     }
 
     @Override
-    public int procesar(ArrayList<String> chargeRates2, int index) {
+    public int procesar(ArrayList<String> chargeRates2, int index, String user) {
         ArrayList<String> chargeRates=  (ArrayList<String>)chargeRates2.clone();
         boolean modified= false;
         for(int i=index; i<chargeRates.size();i++) {
@@ -72,12 +73,12 @@ public class ResultsT extends Nodo{
                     resultado = (GenericSelectorT)this.getResult();
                 else
                     resultado = new GenericSelectorT(0);
-                i= resultado.procesar(chargeRates, i+1);
+                i= resultado.procesar(chargeRates, i+1, user);
                 i--;
                 this.setResult(resultado);
             }else if(chargeRates.get(i).matches("(?s)crpCompositePopModel")){
                 CrpCompositePopModelT resultado = new CrpCompositePopModelT(0);
-                i= resultado.procesar(chargeRates, i+1);
+                i= resultado.procesar(chargeRates, i+1, user);
                 i--;
                 this.setResult(resultado);
             }else if(chargeRates.get(i).matches("(?s)timeConfiguration")){
@@ -86,7 +87,7 @@ public class ResultsT extends Nodo{
                     resultado = (TimeConfigurationT)this.getResult();
                 else
                     resultado = new TimeConfigurationT(0);
-                i= resultado.procesar(chargeRates, i+1);
+                i= resultado.procesar(chargeRates, i+1, user);
                 i--;
                 this.setResult(resultado);
             }else return i;
@@ -96,9 +97,9 @@ public class ResultsT extends Nodo{
     
     
     @Override
-    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs) {
+    public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
         if(indexs.size()==0)
-            index= this.procesar(lista, index);
+            index= this.procesar(lista, index, user);
         return index;
     }
     
@@ -132,7 +133,7 @@ public class ResultsT extends Nodo{
             Paragraph preface = (Paragraph) element;
             String nombres="";
             for(String t: name) nombres+=", "+t;
-            preface.add(new Paragraph("Resultado: "+nombres.substring(2),FirstPDF.normalFont));
+            preface.add(FirstPDF.createDescription("Resultado: ",nombres.substring(2)));
             FirstPDF.addEmptyLine(preface, 1);
             this.result.getPDF(preface);
     }
