@@ -72,7 +72,7 @@ public class Package extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.packagePointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            packages= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.packagePath)) , Integer.parseInt(id));
+            packages= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.packagePath)),ControlPath.packagePointer , Integer.parseInt(id));
             PackageT packageId = new PackageT(Integer.parseInt(id));
             packageId.procesar(packages, 1,user);
             session.setAttribute("principal", packageId);

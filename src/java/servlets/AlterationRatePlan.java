@@ -78,7 +78,7 @@ public class AlterationRatePlan extends HttpServlet {
                 request.getRequestDispatcher(ControlPath.arpCompositeView).forward(request, response);
             }
         }else{
-                AlterationRate= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.alterationRatePath)) , Integer.parseInt(id));
+                AlterationRate= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.alterationRatePath)),ControlPath.alterationRatePointer , Integer.parseInt(id));
                 AlterationRatePlanT AlterationRateId = new AlterationRatePlanT(Integer.parseInt(id));
                 AlterationRateId.procesar(AlterationRate, 1, user);
                 session.setAttribute("principal", AlterationRateId);

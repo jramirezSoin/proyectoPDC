@@ -19,6 +19,7 @@
             <div class="btn-group mb-xl-3" role="group" aria-label="Basic example">
                 <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#addModal" onclick="agregar('<%=request.getSession().getAttribute("click")%>', '-2');">Add</button>
                 <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#pdfModal" onclick="getPDFSelects();">Download PDF</button>
+                <button type="button" class="btn btn-xs btn-primary bg1" onclick="hacerlist(refreshPath,refreshTipo)">Refresh</button>
             </div>
         </div>    
         <br>

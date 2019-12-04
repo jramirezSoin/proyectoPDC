@@ -69,7 +69,7 @@ public class ImpactCategory extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.impactCategoriesPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            impactCategories= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.impactCategoriesPath)) , Integer.parseInt(id));
+            impactCategories= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.impactCategoriesPath)),ControlPath.impactCategoriesPointer , Integer.parseInt(id));
             ImpactCategoryT impactCategory = new ImpactCategoryT(Integer.parseInt(id));
             impactCategory.procesar(impactCategories, 1, user);
             session.setAttribute("principal", impactCategory);

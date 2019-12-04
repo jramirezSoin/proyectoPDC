@@ -124,7 +124,8 @@ public class ZoneModelT extends Nodo{
         int itemCount = 0;
         for(int i=index; i<zoneModels.size();i++) {
             
-            if(zoneModels.get(i).matches("(?s)name: (.*)")) this.name= zoneModels.get(i).substring(6);
+            if(zoneModels.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = zoneModels.get(i).substring(12).equals("new")?1:Integer.parseInt(zoneModels.get(i).substring(12));
+            else if(zoneModels.get(i).matches("(?s)name: (.*)")) this.name= zoneModels.get(i).substring(6);
             else if(zoneModels.get(i).matches("(?s)description: (.*)")) this.description= zoneModels.get(i).substring(13);
             else if(zoneModels.get(i).matches("(?s)internalId: (.*)")) this.internalId= zoneModels.get(i).substring(12);
             else if(zoneModels.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= zoneModels.get(i).substring(15);

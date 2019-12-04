@@ -143,7 +143,8 @@ public class PackageT extends Nodo{
         boolean balanceB=false;
         for(int i=index; i<packs.size();i++) {
             
-            if(packs.get(i).matches("(?s)name: (.*)")) this.name= packs.get(i).substring(6);
+            if(packs.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = packs.get(i).substring(12).equals("new")?1:Integer.parseInt(packs.get(i).substring(12));
+            else if(packs.get(i).matches("(?s)name: (.*)")) this.name= packs.get(i).substring(6);
             else if(packs.get(i).matches("(?s)description: (.*)")) this.description= packs.get(i).substring(13);
             else if(packs.get(i).matches("(?s)internalId: (.*)")) this.internalId= packs.get(i).substring(12);
             else if(packs.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= packs.get(i).substring(15);

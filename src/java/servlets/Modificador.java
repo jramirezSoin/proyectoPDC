@@ -81,11 +81,9 @@ public class Modificador extends HttpServlet {
         request.getSession().setAttribute("principal", nodo);
         String path=(String) request.getSession().getAttribute("actualPath");
         String pointer=(String) request.getSession().getAttribute("actualPoint");
-        Date date= new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        TxtParser.aniadirCambio(new Cambio("Update", simpleDateFormat.format(new Date()),path.replace(ControlPath.path, "")),user);
-        XmlParser.Modificar(ControlPath.getPath(user,path),ControlPath.getPath(user,path), nodo.toString(), pointer, nodo.id);
-        ArrayList<String> nodos= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,path)) , nodo.id);
+        TxtParser.aniadirCambio(new Cambio("Update", 0,path.replace(ControlPath.path, "")),user,ControlPath.changes);
+        XmlParser.Modificar(ControlPath.getPath(user,path),ControlPath.getPath(user,path), nodo.toString(),nodo.iceUpdaterCount, pointer, nodo.id);
+        ArrayList<String> nodos= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,path)),pointer , nodo.id);
         nodo.clean();
         nodo.procesar(nodos, 1,user);
         request.getSession().setAttribute("principal", nodo);

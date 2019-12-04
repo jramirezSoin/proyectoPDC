@@ -79,7 +79,7 @@ public class OtroChargeRate extends HttpServlet {
                 request.getRequestDispatcher(ControlPath.crpCompositeView).forward(request, response);
             }
         }else{
-                ChargeRate= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.chargeRatePath)) , Integer.parseInt(id));
+                ChargeRate= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.chargeRatePath)),ControlPath.chargeRatePointer , Integer.parseInt(id));
                 ChargeRatePlanT ChargeRateId = new ChargeRatePlanT(Integer.parseInt(id));
                 ChargeRateId.procesar(ChargeRate, 1, user);
                 session.setAttribute("principal", ChargeRateId);

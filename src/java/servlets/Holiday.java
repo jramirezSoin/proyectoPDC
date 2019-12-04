@@ -70,7 +70,7 @@ public class Holiday extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.holidayPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            holidays= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.holidayPath)) , Integer.parseInt(id));
+            holidays= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.holidayPath)),ControlPath.holidayPointer , Integer.parseInt(id));
             HolidayT holiday = new HolidayT(Integer.parseInt(id));
             holiday.procesar(holidays, 1, user);
             session.setAttribute("principal", holiday);

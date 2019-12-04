@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import xml.TxtParser;
+import xml.XmlParser;
 
 /**
  *
@@ -60,7 +61,7 @@ public class ImportExport extends HttpServlet {
         ArrayList<ListaT> seleccionados= new ArrayList<>();
         ArrayList<ListaT> constants = ControlFunctions.LeerConstante("files");
         ArrayList<Cambio> cambios = TxtParser.leerCambios(usuario.getUserPDC());
-        if(files!=null && !files.equals("")){
+        if(files!=null && !files.equals("") && tipo!=null && !tipo.equals("error")){
             files= files.substring(1);
             String[] filesS = files.split(",");
             for(String s: filesS){
@@ -70,30 +71,52 @@ public class ImportExport extends HttpServlet {
         ArrayList<ListaT> reporte = new ArrayList<>();
         if(tipo.equals("export")){
             boolean estado= true;
+            String exportado = request.getParameter("exportado");
+            if(exportado==null) exportado="";
             for(ListaT l: seleccionados){
-                estado= ImportExportClient.exportPricing(l.valor, l.unit, usuario.getUserPDC(), usuario.getPwdPDC(), usuario.getPwdPDCIE());
+                estado= ImportExportClient.exportPricing(l.valor, l.unit, usuario.getUserPDC(), usuario.getPwdPDC(), usuario.getPwdPDCIE(),exportado);
                 if(estado==false){reporte.add(new ListaT("error","ERROR EXPORTING,"+l.valor+"\n"));}
                 else{
-                    reporte.add(new ListaT("success","SUCCESSFUL EXPORTING,"+l.valor+"\n"));
-                    ControlFunctions.CambioContieneElimina(cambios,l.valor);
+                    reporte.add(new ListaT("success","SUCCESSFUL EXPORTING,"+l.valor+" "+(!exportado.equals("")?"["+exportado+"]":"")+"\n"));
+                    if(!exportado.equals("")){
+                        int cont= XmlParser.agregarExports(l.valor,l.unit,usuario.getUserPDC());
+                        ControlFunctions.CambioContieneElimina(cambios,l.valor,cont);
+                    }else{
+                        ControlFunctions.CambioContieneElimina(cambios,l.valor,-1);
+                    }
                 }
             }
         }else if(tipo.equals("import")){
             boolean estado= true;
             for(ListaT l: seleccionados){
+                int cont = XmlParser.getUpdates(l.valor,l.unit,usuario.getUser());
+                if(cont!=0){
                 estado= ImportExportClient.importPricing(l.valor, l.unit, usuario.getUserPDC(), usuario.getPwdPDC(), usuario.getPwdPDCIE());
                 if(estado==false){reporte.add(new ListaT("error","ERROR IMPORTING,"+l.valor+"\n"));}
                 else{
                     reporte.add(new ListaT("success","SUCCESSFUL IMPORTING,"+l.valor+"\n"));
-                    ControlFunctions.CambioContieneElimina(cambios,l.valor);
+                    ControlFunctions.CambioContieneElimina(cambios,l.valor, -1);
+                    XmlParser.deleteIceUpdater(l.valor,l.unit,usuario.getUser());
+                }}
+                else{
+                    reporte.add(new ListaT("info","DOESN'T EXIST CHANGES IN,"+l.valor+"\n"));
                 }
             }
         }
+        if(tipo!=null && !tipo.equals("error")){
         HttpSession session = request.getSession();
-        TxtParser.aniadirCambios(cambios,usuario.getUserPDC());
+        TxtParser.aniadirCambios(cambios,usuario.getUserPDC(),ControlPath.changes);
         session.setAttribute("cambios", cambios);
+        for(ListaT rpt :  reporte){
+            TxtParser.aniadirCambio(new Cambio(rpt.unit,0,rpt.valor), usuario.getUser(), "bitacora.log");
+        }
         session.setAttribute("errores", reporte);
-        request.getRequestDispatcher(ControlPath.mainView).forward(request, response);
+        request.getRequestDispatcher(ControlPath.mainView).forward(request, response);}
+        else if(tipo!=null && tipo.equals("error")){
+        HttpSession session = request.getSession();
+        session.setAttribute("log", TxtParser.readFile(files,usuario.getUser()));
+        request.getRequestDispatcher(ControlPath.errorMessage).forward(request, response);
+        }
     }
 
     /**

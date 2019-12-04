@@ -70,7 +70,7 @@ public class ChargeOffering extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.chargeOfferingPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            chargeOffering= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.chargeOfferingPath)) , Integer.parseInt(id));
+            chargeOffering= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.chargeOfferingPath)),ControlPath.chargeOfferingPointer , Integer.parseInt(id));
             ChargeOfferingT chargeOfferingId = new ChargeOfferingT(Integer.parseInt(id));
             chargeOfferingId.procesar(chargeOffering, 1, user);
             session.setAttribute("principal", chargeOfferingId);

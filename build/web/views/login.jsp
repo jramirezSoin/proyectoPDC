@@ -45,7 +45,7 @@
             <div class="login-box ptb--100">
                 <form action="/" method="POST">
                     <div class="login-form-head">
-                        <h2 class="main-title">Oracle PDC System</h2>
+                        <h2 class="main-title">PDC System</h2>
                         <p>Hello there, Sign in and start managing your
                             Pricing Design Center </p>
                     </div>

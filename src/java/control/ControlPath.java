@@ -196,6 +196,7 @@ public class ControlPath {
     public static String arpCompositeForm="";
     public static String boundForm="";
     public static String alterationForm="";
+    public static String errorMessage="";
     
     
     
@@ -367,6 +368,7 @@ public class ControlPath {
                 customRulePointer = properties.getString("customRulePointer");
                 
                 mainView= properties.getString("mainView");
+                errorMessage= properties.getString("errorMessage");
                 
             } finally {
                 fis.close();

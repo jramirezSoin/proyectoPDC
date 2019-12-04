@@ -71,7 +71,7 @@ public class Bundled extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.bundledPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            bundled= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.bundledPath)) , Integer.parseInt(id));
+            bundled= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.bundledPath)),ControlPath.bundledPointer , Integer.parseInt(id));
             BundledT zoneModel = new BundledT(Integer.parseInt(id));
             zoneModel.procesar(bundled, 1,user);
             session.setAttribute("principal", zoneModel);

@@ -148,7 +148,8 @@ public class RumT extends Nodo{
     public int procesar(ArrayList<String> rums, int index, String user) {
         for(int i=index; i<rums.size();i++) {
             
-            if(rums.get(i).matches("(?s)name: (.*)")) this.name= rums.get(i).substring(6);
+            if(rums.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = rums.get(i).substring(12).equals("new")?1:Integer.parseInt(rums.get(i).substring(12));
+            else if(rums.get(i).matches("(?s)name: (.*)")) this.name= rums.get(i).substring(6);
             else if(rums.get(i).matches("(?s)description: (.*)")) this.description= rums.get(i).substring(13);
             else if(rums.get(i).matches("(?s)internalId: (.*)")) this.internalId= rums.get(i).substring(12);
             else if(rums.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= rums.get(i).substring(15);

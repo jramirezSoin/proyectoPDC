@@ -94,7 +94,8 @@ public class AlterationRatePlanT extends Nodo{
     public int procesar(ArrayList<String> ratePlan2, int index, String user) {
         ArrayList<String> ratePlan= (ArrayList<String>)ratePlan2.clone();
         for(int i=index; i<ratePlan.size();i++) {
-            if(ratePlan.get(i).matches("(?s)name: (.*)")) this.name= ratePlan.get(i).substring(6);
+            if(ratePlan.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = ratePlan.get(i).substring(12).equals("new")?1:Integer.parseInt(ratePlan.get(i).substring(12));
+            else if(ratePlan.get(i).matches("(?s)name: (.*)")) this.name= ratePlan.get(i).substring(6);
             else if(ratePlan.get(i).matches("(?s)description: (.*)")) this.description= ratePlan.get(i).substring(13);
             else if(ratePlan.get(i).matches("(?s)internalId: (.*)")) this.internalId= ratePlan.get(i).substring(12);
             else if(ratePlan.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= ratePlan.get(i).substring(15);

@@ -192,7 +192,8 @@ public class ChargeSelectorSpecT extends Nodo {
     public int procesar(ArrayList<String> chargeSelectors2, int index, String user) {
         ArrayList<String> chargeSelectors = (ArrayList<String>) chargeSelectors2.clone();
         for (int i = index; i < chargeSelectors.size(); i++) {
-            if (chargeSelectors.get(i).matches("(?s)name: (.*)")) {
+            if(chargeSelectors.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = chargeSelectors.get(i).substring(12).equals("new")?1:Integer.parseInt(chargeSelectors.get(i).substring(12));
+            else if (chargeSelectors.get(i).matches("(?s)name: (.*)")) {
                 this.name = chargeSelectors.get(i).substring(6);
             } else if (chargeSelectors.get(i).matches("(?s)internalId: (.*)")) {
                 this.internalId = chargeSelectors.get(i).substring(12);

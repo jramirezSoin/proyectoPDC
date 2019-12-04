@@ -248,13 +248,17 @@ public class ControlFunctions {
         return false;
     }
     
-    public static ArrayList<Cambio> CambioContieneElimina(ArrayList<Cambio> cambios, String valor){
+    public static ArrayList<Cambio> CambioContieneElimina(ArrayList<Cambio> cambios, String valor, int cont){
         if(cambios!=null){
         for(int i=0; i<cambios.size(); i++){
             Cambio cambio= cambios.get(i);
             if(cambio.getArchivo().matches("(.*)"+valor+"(.*)")){
-                cambios.remove(i);
-                i--;
+                if(cont==-1  || cont==cambio.getCantidad()){
+                    cambios.remove(i);
+                    i--;}else{
+                    cambio.setCantidad(cambio.getCantidad()-cont);
+                }
+                
             }
         }
         }

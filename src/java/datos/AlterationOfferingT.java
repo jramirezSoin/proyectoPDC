@@ -194,7 +194,8 @@ public class AlterationOfferingT extends Nodo{
         int itemCount = 0;
         for(int i=index; i<alterationOfferings.size();i++) {
             
-            if(alterationOfferings.get(i).matches("(?s)name: (.*)")) this.name= alterationOfferings.get(i).substring(6);
+            if(alterationOfferings.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = alterationOfferings.get(i).substring(12).equals("new")?1:Integer.parseInt(alterationOfferings.get(i).substring(12));
+            else if(alterationOfferings.get(i).matches("(?s)name: (.*)")) this.name= alterationOfferings.get(i).substring(6);
             else if(alterationOfferings.get(i).matches("(?s)description: (.*)")) this.description= alterationOfferings.get(i).substring(13);
             else if(alterationOfferings.get(i).matches("(?s)internalId: (.*)")) this.internalId= alterationOfferings.get(i).substring(12);
             else if(alterationOfferings.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= alterationOfferings.get(i).substring(15);

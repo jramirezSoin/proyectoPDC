@@ -38,7 +38,6 @@ public class ZoneModel extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -69,7 +68,7 @@ public class ZoneModel extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.zoneModelsPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            zoneModels= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.zoneModelsPath)) , Integer.parseInt(id));
+            zoneModels= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.zoneModelsPath)),ControlPath.zoneModelsPointer , Integer.parseInt(id));
             ZoneModelT zoneModel = new ZoneModelT(Integer.parseInt(id));
             zoneModel.procesar(zoneModels, 1, user);
             session.setAttribute("principal", zoneModel);

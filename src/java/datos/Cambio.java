@@ -11,16 +11,16 @@ package datos;
  */
 public class Cambio implements java.io.Serializable{
     private String cambio="";
-    private String fecha="";
+    private int cantidad=0;
     private String archivo="";   
 
     public Cambio() {
     }
 
-    public Cambio(String cambio, String fecha, String archivo) {
+    public Cambio(String cambio, int cantidad, String archivo) {
         this.cambio=cambio;
         this.archivo=archivo;
-        this.fecha=fecha;
+        this.cantidad=cantidad;
     }
     
     public String getCambio() {
@@ -31,12 +31,12 @@ public class Cambio implements java.io.Serializable{
         this.cambio = cambio;
     }
 
-    public String getFecha() {
-        return fecha;
+    public int getCantidad() {
+        return cantidad;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     public String getArchivo() {

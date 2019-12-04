@@ -68,7 +68,7 @@ public class Rollover extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.rolloverPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            rollovers= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.rolloverPath)) , Integer.parseInt(id));
+            rollovers= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.rolloverPath)),ControlPath.rolloverPointer , Integer.parseInt(id));
             RolloverT rollover = new RolloverT(Integer.parseInt(id));
             rollover.procesar(rollovers, 1, user);
             session.setAttribute("principal", rollover);

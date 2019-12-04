@@ -70,7 +70,7 @@ public class BalanceElement extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.balanceElementPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            balances= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.balanceElementPath)) , Integer.parseInt(id));
+            balances= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.balanceElementPath)), ControlPath.balanceElementPointer , Integer.parseInt(id));
             BalanceElementT balance = new BalanceElementT(Integer.parseInt(id));
             balance.procesar(balances, 1, user);
             session.setAttribute("principal", balance);

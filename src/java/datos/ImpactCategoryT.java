@@ -123,7 +123,8 @@ public class ImpactCategoryT extends Nodo{
     public int procesar(ArrayList<String> impactCategories, int index, String user) {
         for(int i=index; i<impactCategories.size();i++) {
             
-            if(impactCategories.get(i).matches("(?s)name: (.*)")){ this.name= impactCategories.get(i).substring(6); this.result= impactCategories.get(i).substring(6);}
+            if(impactCategories.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = impactCategories.get(i).substring(12).equals("new")?1:Integer.parseInt(impactCategories.get(i).substring(12));
+            else if(impactCategories.get(i).matches("(?s)name: (.*)")){ this.name= impactCategories.get(i).substring(6); this.result= impactCategories.get(i).substring(6);}
             else if(impactCategories.get(i).matches("(?s)description: (.*)")) this.description= impactCategories.get(i).substring(13);
             else if(impactCategories.get(i).matches("(?s)internalId: (.*)")) this.internalId= impactCategories.get(i).substring(12);
             else if(impactCategories.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= impactCategories.get(i).substring(15);

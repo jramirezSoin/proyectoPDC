@@ -69,7 +69,7 @@ public class TimeModel extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.timeModelsPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            timeModels= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.timeModelsPath)) , Integer.parseInt(id));
+            timeModels= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.timeModelsPath)),ControlPath.timeModelsPointer , Integer.parseInt(id));
             TimeModelT timeModel = new TimeModelT(Integer.parseInt(id));
             timeModel.procesar(timeModels, 1,user);
             session.setAttribute("principal", timeModel);

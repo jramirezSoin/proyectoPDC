@@ -79,11 +79,14 @@ public class ChargeRate extends HttpServlet {
                 request.getRequestDispatcher(ControlPath.crpCompositeView).forward(request, response);
             }
         }else{
-                ChargeRate= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.chargeRatePath)) , Integer.parseInt(id));
+                ChargeRate= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.chargeRatePath)),ControlPath.chargeRatePointer , Integer.parseInt(id));
                 ChargeRatePlanT ChargeRateId = new ChargeRatePlanT(Integer.parseInt(id));
                 ChargeRateId.procesar(ChargeRate, 1, user);
                 session.setAttribute("principal", ChargeRateId);
                 session.setAttribute("actual", "chargeRate");
+                session.setAttribute("titulo", "Charge Rate");
+                session.setAttribute("actualPath", ControlPath.chargeRatePath);
+                session.setAttribute("actualPoint", ControlPath.chargeRatePointer);
                 session.setAttribute("actualView", ControlPath.chargeRateView);
                 request.getRequestDispatcher(ControlPath.chargeRateView).forward(request, response);  
         }

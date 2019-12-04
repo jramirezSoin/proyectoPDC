@@ -108,9 +108,9 @@ public class DownloadPdf extends HttpServlet {
             }
         }else if(calidad.equals("Detallado")){
             if(cantidad.equals("Todos"))
-                FirstPDF.crearListaDPDF(name, nodo, (String)request.getSession().getAttribute("actualPath"),user);
+                FirstPDF.crearListaDPDF(name, nodo, (String)request.getSession().getAttribute("actualPath"),user,(String)request.getSession().getAttribute("actualPoint"));
             else if(cantidad.equals("Seleccionados")){
-                FirstPDF.crearListaDPDF(name, nodo, checks, (String)request.getSession().getAttribute("actualPath"),user);
+                FirstPDF.crearListaDPDF(name, nodo, checks, (String)request.getSession().getAttribute("actualPath"),user,(String)request.getSession().getAttribute("actualPoint"));
             }
         }
         File file = new File(ControlPath.path+user+"/PDF/"+name);

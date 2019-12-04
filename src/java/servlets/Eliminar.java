@@ -64,7 +64,7 @@ public class Eliminar extends HttpServlet {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         if(index==null || (index.size()==1 && index.get(0)==-4)){
             Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
-            TxtParser.aniadirCambio(new Cambio("Delete", simpleDateFormat.format(new Date()),path.replace(ControlPath.path, "")),user);
+            //TxtParser.aniadirCambio(new Cambio("Delete", simpleDateFormat.format(new Date()),path.replace(ControlPath.path, "")),user);
             XmlParser.Eliminar(ControlPath.getPath(user,path), ControlPath.getPath(user,path), pointer, nodo.id);
             request.getSession().setAttribute("principal",null);
             ArrayList<String> impactCategories = XmlParser.Leer2(new File(ControlPath.getPath(user,path)) , pointer);
@@ -76,16 +76,16 @@ public class Eliminar extends HttpServlet {
                 Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
                 index.remove(0);
                 nodo.eliminar(index);
-                TxtParser.aniadirCambio(new Cambio("Update", simpleDateFormat.format(new Date()),path.replace(ControlPath.path, "")),user);
-                XmlParser.Modificar(ControlPath.getPath(user,path),ControlPath.getPath(user,path), nodo.toString(), pointer, nodo.id);
-                ArrayList<String> nodos= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,path)) , nodo.id);
+                XmlParser.Modificar(ControlPath.getPath(user,path),ControlPath.getPath(user,path), nodo.toString(),nodo.iceUpdaterCount, pointer, nodo.id);
+                TxtParser.aniadirCambio(new Cambio("Update", 0,path.replace(ControlPath.path, "")),user,ControlPath.changes);
+                ArrayList<String> nodos= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,path)),pointer , nodo.id);
                 nodo.clean();
                 nodo.procesar(nodos, 1, user);
                 request.getSession().setAttribute("principal", nodo);
                 request.getRequestDispatcher((String) request.getSession().getAttribute("actualView")).forward(request, response);}
             else if(index.get(0)==-6){
                 index.remove(0);
-                TxtParser.aniadirCambio(new Cambio("Delete", simpleDateFormat.format(new Date()),path.replace(ControlPath.path, "")),user);
+                //TxtParser.aniadirCambio(new Cambio("Delete", simpleDateFormat.format(new Date()),path.replace(ControlPath.path, "")),user);
                 XmlParser.EliminarMasivo(path, path, pointer, index);
                 ArrayList<String> impactCategories = XmlParser.Leer2(new File(ControlPath.getPath(user,path)) , pointer);
                 ArrayList<ListaT> lista = ControlFunctions.ListS2ListT(impactCategories);             

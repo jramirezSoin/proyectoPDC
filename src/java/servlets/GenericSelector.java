@@ -70,7 +70,7 @@ public class GenericSelector extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.genericSelectorPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            genericSelectors= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.genericSelectorPath)) , Integer.parseInt(id));
+            genericSelectors= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.genericSelectorPath)),ControlPath.genericSelectorPointer , Integer.parseInt(id));
             GenericSelectorT genericSelector = new GenericSelectorT(Integer.parseInt(id));
             genericSelector.procesar(genericSelectors, 1, user);
             session.setAttribute("principal", genericSelector);

@@ -204,7 +204,8 @@ public class ChargeOfferingT extends Nodo{
         int itemCount = 0;
         for(int i=index; i<chargeOfferings.size();i++) {
             
-            if(chargeOfferings.get(i).matches("(?s)name: (.*)")) this.name= chargeOfferings.get(i).substring(6);
+            if(chargeOfferings.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = chargeOfferings.get(i).substring(12).equals("new")?1:Integer.parseInt(chargeOfferings.get(i).substring(12));
+            else if(chargeOfferings.get(i).matches("(?s)name: (.*)")) this.name= chargeOfferings.get(i).substring(6);
             else if(chargeOfferings.get(i).matches("(?s)description: (.*)")) this.description= chargeOfferings.get(i).substring(13);
             else if(chargeOfferings.get(i).matches("(?s)internalId: (.*)")) this.internalId= chargeOfferings.get(i).substring(12);
             else if(chargeOfferings.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= chargeOfferings.get(i).substring(15);

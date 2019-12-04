@@ -179,7 +179,8 @@ public class RolloverT extends Nodo{
     public int procesar(ArrayList<String> rollovers, int index, String user) {
         ArrayList<String> rollovers2= (ArrayList<String>)rollovers.clone();
         for(int i=index; i<rollovers2.size();i++) { 
-           if(rollovers2.get(i).matches("(?s)name: (.*)")) this.name= rollovers2.get(i).substring(6);
+           if(rollovers2.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = rollovers2.get(i).substring(12).equals("new")?1:Integer.parseInt(rollovers2.get(i).substring(12));
+           else if(rollovers2.get(i).matches("(?s)name: (.*)")) this.name= rollovers2.get(i).substring(6);
            else if(rollovers2.get(i).matches("(?s)internalId: (.*)")) this.internalId= rollovers2.get(i).substring(12);
            else if(rollovers2.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= rollovers2.get(i).substring(15);
            else if(rollovers2.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= rollovers2.get(i).substring(20);

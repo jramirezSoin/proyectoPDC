@@ -163,35 +163,36 @@ public class BundledT extends Nodo{
     
     
     @Override
-    public int procesar(ArrayList<String> zoneModels, int index, String user) {
+    public int procesar(ArrayList<String> bundles, int index, String user) {
         int itemCount = 0;
-        for(int i=index; i<zoneModels.size();i++) {
+        for(int i=index; i<bundles.size();i++) {
             
-            if(zoneModels.get(i).matches("(?s)name: (.*)")) this.name= zoneModels.get(i).substring(6);
-            else if(zoneModels.get(i).matches("(?s)description: (.*)")) this.description= zoneModels.get(i).substring(13);
-            else if(zoneModels.get(i).matches("(?s)internalId: (.*)")) this.internalId= zoneModels.get(i).substring(12);
-            else if(zoneModels.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= zoneModels.get(i).substring(15);
-            else if(zoneModels.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= zoneModels.get(i).substring(20);
-            else if(zoneModels.get(i).matches("(?s)timeRange: (.*)")) this.timeRange= zoneModels.get(i).substring(11);
-            else if(zoneModels.get(i).matches("(?s)productSpecName: (.*)")) this.productSpecName= zoneModels.get(i).substring(17);
-            else if(zoneModels.get(i).matches("(?s)customerSpecName: (.*)")) this.customerSpecName= zoneModels.get(i).substring(18);
-            else if(zoneModels.get(i).matches("(?s)billOnPurchase: (.*)")) this.billOnPurchase= Boolean.valueOf(zoneModels.get(i).substring(16));
-            else if(zoneModels.get(i).matches("(?s)customize: (.*)")) this.customize= zoneModels.get(i).substring(11);
-            else if(zoneModels.get(i).matches("(?s)groupBalanceElements: (.*)")) this.groupBalanceElements= Boolean.valueOf(zoneModels.get(i).substring(22));
-            else if(zoneModels.get(i).matches("(?s)aplicable: (.*)")){
-                if(zoneModels.get(i).substring(11).equals("Account")){this.customerSpecName="Account"; this.productSpecName="";}
-                else{this.productSpecName=zoneModels.get(i).substring(11); this.customerSpecName="";}
+            if(bundles.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = bundles.get(i).substring(12).equals("new")?1:Integer.parseInt(bundles.get(i).substring(12));
+            else if(bundles.get(i).matches("(?s)name: (.*)")) this.name= bundles.get(i).substring(6);
+            else if(bundles.get(i).matches("(?s)description: (.*)")) this.description= bundles.get(i).substring(13);
+            else if(bundles.get(i).matches("(?s)internalId: (.*)")) this.internalId= bundles.get(i).substring(12);
+            else if(bundles.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= bundles.get(i).substring(15);
+            else if(bundles.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= bundles.get(i).substring(20);
+            else if(bundles.get(i).matches("(?s)timeRange: (.*)")) this.timeRange= bundles.get(i).substring(11);
+            else if(bundles.get(i).matches("(?s)productSpecName: (.*)")) this.productSpecName= bundles.get(i).substring(17);
+            else if(bundles.get(i).matches("(?s)customerSpecName: (.*)")) this.customerSpecName= bundles.get(i).substring(18);
+            else if(bundles.get(i).matches("(?s)billOnPurchase: (.*)")) this.billOnPurchase= Boolean.valueOf(bundles.get(i).substring(16));
+            else if(bundles.get(i).matches("(?s)customize: (.*)")) this.customize= bundles.get(i).substring(11);
+            else if(bundles.get(i).matches("(?s)groupBalanceElements: (.*)")) this.groupBalanceElements= Boolean.valueOf(bundles.get(i).substring(22));
+            else if(bundles.get(i).matches("(?s)aplicable: (.*)")){
+                if(bundles.get(i).substring(11).equals("Account")){this.customerSpecName="Account"; this.productSpecName="";}
+                else{this.productSpecName=bundles.get(i).substring(11); this.customerSpecName="";}
             }
-            else if(zoneModels.get(i).matches("(?s)bundledProductOfferingItem")){ 
+            else if(bundles.get(i).matches("(?s)bundledProductOfferingItem")){ 
                 
                 BundledItemT zoneItem = new BundledItemT(itemCount);
                 itemCount++;
-                i= zoneItem.procesar(zoneModels, i+1, user);
+                i= zoneItem.procesar(bundles, i+1, user);
                 i--;
                 this.bundledItems.add(zoneItem);
             }else return i;
         }
-        return zoneModels.size();
+        return bundles.size();
     }
     
     

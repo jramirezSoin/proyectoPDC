@@ -69,7 +69,7 @@ public class Guardar extends HttpServlet {
         request.getSession().setAttribute("add", null);
         String path=(String) request.getSession().getAttribute("actualPath");
         String pointer=(String) request.getSession().getAttribute("actualPoint");
-        TxtParser.aniadirCambio(new Cambio("Add", (new Date()).toString(),path.replace(ControlPath.path, "")),user);
+        TxtParser.aniadirCambio(new Cambio("Add", 0,path.replace(ControlPath.path, "")),user,ControlPath.changes);
         XmlParser.Agregar(ControlPath.getPath(user,path), ControlPath.getPath(user,path), nodo.toString(), pointer);
         ArrayList<String> impactCategories = XmlParser.Leer2(new File(ControlPath.getPath(user,path)) , pointer);
         ArrayList<ListaT> zoneModelsId = ControlFunctions.ListS2ListT(impactCategories);             

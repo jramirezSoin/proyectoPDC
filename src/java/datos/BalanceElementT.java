@@ -213,7 +213,8 @@ public class BalanceElementT extends Nodo{
         int itemCount = 0;
         for(int i=index; i<balances.size();i++) {
             
-            if(balances.get(i).matches("(?s)name: (.*)")) this.name= balances.get(i).substring(6);
+            if(balances.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = balances.get(i).substring(12).equals("new")?1:Integer.parseInt(balances.get(i).substring(12));
+            else if(balances.get(i).matches("(?s)name: (.*)")) this.name= balances.get(i).substring(6);
             else if(balances.get(i).matches("(?s)description: (.*)")) this.description= balances.get(i).substring(13);
             else if(balances.get(i).matches("(?s)internalId: (.*)")) this.internalId= balances.get(i).substring(12);
             else if(balances.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= balances.get(i).substring(15);

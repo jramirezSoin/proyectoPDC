@@ -5,6 +5,7 @@
  */
 package xml;
 
+import com.sun.org.apache.xml.internal.serializer.OutputPropertiesFactory;
 import control.ControlPath;
 import datos.ListaT;
 import java.io.BufferedWriter;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -42,9 +44,7 @@ import org.xml.sax.SAXException;
  */
 public class XmlParser {
     
-    private static ArrayList<String> lista = new ArrayList<>();
-    
-    public static void mainRSeleccionado(Node node, int level){
+    public static void mainRSeleccionado(Node node, int level,ArrayList<String> lista){
         if (node.getNodeType() == Node.ELEMENT_NODE) {
                   Element eElement = (Element) node;
                   if(eElement.hasChildNodes()) {
@@ -53,7 +53,7 @@ public class XmlParser {
                        lista.add(((Element)nl).getNodeName());
                     for(int j=0; j<nl.getLength(); j++) {
                       Node nd = nl.item(j);
-                      mainRSeleccionado(nd, level+1);
+                      mainRSeleccionado(nd, level+1, lista);
                       }}
                   else{
                      Element eElement2 = (Element) nl;
@@ -116,6 +116,7 @@ public class XmlParser {
     
     public static ArrayList<String> Leer2(File file, String indicador, String valor, boolean conjunto){
         try {
+            ArrayList<String> lista = new ArrayList<String>();
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
@@ -134,29 +135,34 @@ public class XmlParser {
         }
     }
     
-    public static ArrayList<String> LeerSeleccionado(File file, int index){
+    public static ArrayList<String> LeerSeleccionado(File file,String indicador, int index){
         try {
-            lista.clear();
+            ArrayList<String> lista = new ArrayList<String>();
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
-            NodeList nList = doc.getChildNodes().item(0).getChildNodes();
+            NodeList nList = doc.getElementsByTagName(indicador);
             Node node = nList.item(index);
-            mainRSeleccionado(node, 0);
+            mainRSeleccionado(node, 0,lista);
+            if(node.hasAttributes() && node.getAttributes().getNamedItem("iceUpdater")!=null){
+                lista.add(1,"iceUpdater: "+node.getAttributes().getNamedItem("iceUpdater").getNodeValue());
+            }
             return (ArrayList<String>)lista.clone();
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
             return null;
         }
     }
     
-    public static void Modificar(String archivoViejo, String archivoNuevo, String contenido, String tag, int id){
+    public static void Modificar(String archivoViejo, String archivoNuevo, String contenido,int updater, String tag, int id){
         try {
             contenido = contenido.replaceAll("[ \t]+<.+></.+>\n", "");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc1 = db.parse(new ByteArrayInputStream(contenido.getBytes("UTF-8")));
             Node element = doc1.getElementsByTagName(tag).item(0);
+            updater++;
+            ((Element)element).setAttribute("iceUpdater", updater+"");
             // 1. cargar el XML original
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -220,6 +226,7 @@ public class XmlParser {
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc1 = db.parse(new ByteArrayInputStream(contenido.getBytes("UTF-8")));
             Node element = doc1.getElementsByTagName(tag).item(0);
+            ((Element)element).setAttribute("iceUpdater", "new");
             // 1. cargar el XML original
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -300,7 +307,7 @@ public class XmlParser {
             Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName(indicador);
-            lista.clear();
+            ArrayList<String> lista = new ArrayList<String>();
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
                 int cont=0;
@@ -333,7 +340,7 @@ public class XmlParser {
             Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName(indicador);
-            lista.clear();
+            ArrayList<String> lista = new ArrayList<String>();
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
                 int cont=0;
@@ -376,7 +383,7 @@ public class XmlParser {
             Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName(indicador);
-            lista.clear();
+            ArrayList<String> lista = new ArrayList<String>();
             ListaT prueba= new ListaT();
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
@@ -502,8 +509,115 @@ public class XmlParser {
             }
             return constants;
         } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
-            System.out.println("Error"+ e.getLocalizedMessage());
             return null;
+        }
+    }
+    
+    public static int getUpdates(String path, String tipo, String user){
+        try {
+            File file = new File(ControlPath.path+user+"/"+path+"_"+tipo+".xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            Document doc2 = db.newDocument();
+            doc2.setXmlStandalone(true);
+            String inicial, namespace;
+            namespace="http://xmlns.oracle.com/communications/platform/model/pricing";
+            inicial="pdc:PricingObjectsJXB"; 
+            if(tipo.equals("config")){
+            namespace="http://xmlns.oracle.com/communications/platform/model/Config";
+            inicial="cim:ConfigObjects";
+            }else if(tipo.equals("metadata")){
+            namespace="http://xmlns.oracle.com/communications/platform/model/Metadata";    
+            inicial="mtd:MetadataObjects"; 
+            }
+            Element ePdc = doc2.createElementNS(namespace,inicial);
+            doc2.appendChild(ePdc);
+            int cont=0;
+            NodeList nList = doc.getChildNodes().item(0).getChildNodes();
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node node = nList.item(i);
+                if(node.hasAttributes() && node.getAttributes().getNamedItem("iceUpdater")!=null){
+                    Node node2 = doc2.importNode(node, true);
+                    NamedNodeMap attributes = node2.getAttributes();
+                    attributes.removeNamedItem("iceUpdater");
+                    attributes = node.getAttributes();
+                    attributes.removeNamedItem("iceUpdater");
+                    ePdc.appendChild(node2);
+                    cont++;
+                }
+            }
+            if(cont!=0){
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, "3");
+            DOMSource source = new DOMSource(doc2);
+            StreamResult result = new StreamResult(new File(ControlPath.path+user+"/"+path+"_"+tipo+"2.xml"));
+            transformer.transform(source, result);}
+            return cont;
+            
+        } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
+            System.out.println(e.getLocalizedMessage());
+        } catch (TransformerConfigurationException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    
+    public static void deleteIceUpdater(String path, String tipo, String user){
+        try {
+            File file = new File(ControlPath.path+user+"/"+path+"_"+tipo+".xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            Document doc2 = db.newDocument();
+            doc2.setXmlStandalone(true);
+            String inicial, namespace;
+            namespace="http://xmlns.oracle.com/communications/platform/model/pricing";
+            inicial="pdc:PricingObjectsJXB"; 
+            if(tipo.equals("config")){
+            namespace="http://xmlns.oracle.com/communications/platform/model/Config";
+            inicial="cim:ConfigObjects";
+            }else if(tipo.equals("metadata")){
+            namespace="http://xmlns.oracle.com/communications/platform/model/Metadata";    
+            inicial="mtd:MetadataObjects"; 
+            }
+            Element ePdc = doc2.createElementNS(namespace,inicial);
+            doc2.appendChild(ePdc);
+            NodeList nList = doc.getChildNodes().item(0).getChildNodes();
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node node = nList.item(i);
+                Node node2 = doc2.importNode(node, true);
+                if(node2.hasAttributes() && node2.getAttributes().getNamedItem("iceUpdater")!=null){
+                    NamedNodeMap attributes = node2.getAttributes();
+                    attributes.removeNamedItem("iceUpdater");
+                }
+                ePdc.appendChild(node2);
+            }
+            
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputPropertiesFactory.S_KEY_INDENT_AMOUNT, "3");
+            DOMSource source = new DOMSource(doc2);
+            StreamResult result = new StreamResult(new File(ControlPath.path+user+"/"+path+"_"+tipo+".xml"));
+            transformer.transform(source, result);
+            
+        } catch(IOException | ParserConfigurationException | DOMException | SAXException e) {
+            System.out.println(e.getLocalizedMessage());
+        } catch (TransformerConfigurationException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -516,6 +630,65 @@ public class XmlParser {
             return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><mtd:MetadataObjects xmlns:mtd=\"http://xmlns.oracle.com/communications/platform/model/Metadata\"></mtd:MetadataObjects>";
         else
             return "";
+    }
+
+    public static int agregarExports(String file, String tipo, String usuario) {
+        String archivo = ControlPath.path+usuario+"/"+file+"_"+tipo+".xml";
+        String archivo2 = ControlPath.path+usuario+"/"+file+"2_"+tipo+".xml";
+        int cont = 0;
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            
+            Document doc = builder.parse(new File(archivo));
+            Document doc2 = builder.parse(new File(archivo2));
+            //doc.getChildNodes().item(0).getChildNodes();
+            NodeList items = doc.getChildNodes().item(0).getChildNodes();
+            NodeList items2 = doc2.getChildNodes().item(0).getChildNodes();
+            boolean estado=false;
+            for(int i=0; i<items2.getLength(); i++){
+                Element ni = (Element)items2.item(i);
+                estado=false;
+                String name= ni.getElementsByTagName("name").item(0).getTextContent();
+                for(int j=0; j<items.getLength(); j++){
+                    Element nj = (Element)items.item(j);
+                    if(nj.getElementsByTagName("name").item(0).getTextContent().equals(name)){
+                        if(nj.hasAttribute("iceUpdater")){
+                            cont+= nj.getAttribute("iceUpdater").equals("new")?0:Integer.parseInt(nj.getAttribute("iceUpdater"));
+                        }
+                        ni = (Element)doc.importNode(ni, true);
+                        items.item(j).getParentNode().replaceChild(ni, nj);
+                        estado= true;
+                        break;
+                    }
+                }
+                if(!estado){
+                    ni = (Element)doc.importNode(ni, true);
+                    items.item(0).getParentNode().appendChild(ni);
+                }
+                estado=false;
+            }
+            
+            // 3. Exportar nuevamente el XML
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            Result output = new StreamResult(new File(archivo));
+            Source input = new DOMSource(doc);
+            transformer.transform(input, output);
+        } catch (SAXException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerConfigurationException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(XmlParser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cont;
     }
     
 }

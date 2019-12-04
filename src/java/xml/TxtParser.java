@@ -13,6 +13,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -32,7 +35,7 @@ public class TxtParser {
                 delimitar.useDelimiter("\\s*,\\s*");
                 Cambio cambio = new Cambio();
                 cambio.setCambio(delimitar.next());
-                cambio.setFecha(delimitar.next());
+                cambio.setCantidad(Integer.parseInt(delimitar.next()));
                 cambio.setArchivo(delimitar.next());
                 cambios.add(cambio);
             }
@@ -45,38 +48,32 @@ public class TxtParser {
         return cambios;
     }
 
-    public static void aniadirCambio(Cambio cambio, String user) {
-        FileWriter flwriter = null;
-        try {
-            flwriter = new FileWriter(ControlPath.path+user+"/"+ControlPath.changes, true);
-            BufferedWriter bfwriter = new BufferedWriter(flwriter);
-            bfwriter.write(cambio.getCambio()+","+cambio.getFecha()+","+cambio.getArchivo()+"\n");
-            bfwriter.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (flwriter != null) {
-                try {
-                    flwriter.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    public static void aniadirCambio(Cambio cambio, String user, String location) {
+        ArrayList<Cambio> cambios = leerCambios(user);
+        boolean estado=false;
+        for(Cambio c: cambios){
+            if(c.getArchivo().equals(cambio.getArchivo())){
+                c.setCantidad(c.getCantidad()+1);
+                estado=true;
             }
         }
+        if(!estado){
+            cambios.add(cambio);
+        }
+        aniadirCambios(cambios,false,user,location);
     }
     
-    public static void aniadirCambios(ArrayList<Cambio> cambios, String user) {
-        aniadirCambios(cambios,false, user);
+    public static void aniadirCambios(ArrayList<Cambio> cambios, String user, String location) {
+        aniadirCambios(cambios,false, user, location);
     }
     
-    public static void aniadirCambios(ArrayList<Cambio> cambios, boolean sobreescribe, String user) {
+    public static void aniadirCambios(ArrayList<Cambio> cambios, boolean sobreescribe, String user, String location) {
         FileWriter flwriter = null;
         try {
-            flwriter = new FileWriter(ControlPath.path+user+"/"+ControlPath.changes, sobreescribe);
+            flwriter = new FileWriter(ControlPath.path+user+"/"+location, sobreescribe);
             BufferedWriter bfwriter = new BufferedWriter(flwriter);
             for(Cambio cambio: cambios)
-                bfwriter.write(cambio.getCambio()+","+cambio.getFecha()+","+cambio.getArchivo()+"\n");
+                bfwriter.write(cambio.getCambio()+","+cambio.getCantidad()+","+cambio.getArchivo()+"\n");
             bfwriter.close();
 
         } catch (IOException e) {
@@ -110,5 +107,10 @@ public class TxtParser {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public static String readFile(final String path, final String user) throws IOException {
+        final byte[] encoded = Files.readAllBytes(Paths.get(ControlPath.path + user + "/" + path + "_LOG.log", new String[0]));
+        return new String(encoded, StandardCharsets.US_ASCII);
     }
 }

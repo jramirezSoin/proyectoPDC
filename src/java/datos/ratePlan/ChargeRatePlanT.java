@@ -188,6 +188,7 @@ public class ChargeRatePlanT extends Nodo{
         return 
         "<chargeRatePlan xmlns:pdc=\"http://xmlns.oracle.com/communications/platform/model/pricing\">\n"+
         "\t<name>"+name+"</name>\n"+
+        ((description.equals(""))?"":"\t<description>"+description+"</description>\n")+                
         "\t<internalId>"+internalId+"</internalId>\n"+
         "\t<pricingProfileName>"+pricingProfileName+"</pricingProfileName>\n"+
         "\t<priceListName>"+priceListName+"</priceListName>\n"+
@@ -203,7 +204,6 @@ public class ChargeRatePlanT extends Nodo{
         "\t<cycleFeeFlag>"+cycleFeeFlag+"</cycleFeeFlag>\n"+
         "\t<billOffset>"+billOffset+"</billOffset>\n"+
         subscriberCurrency.toString("\t")+"\n"+
-        ((description.equals(""))?"":"\t<description>"+description+"</description>\n")+        
         "</chargeRatePlan>";
     }
 
@@ -212,7 +212,8 @@ public class ChargeRatePlanT extends Nodo{
         ArrayList<String> chargeRates=  (ArrayList<String>)chargeRates2.clone();
         for(int i=index; i<chargeRates.size();i++) {
             
-            if(chargeRates.get(i).matches("(?s)name: (.*)")) this.name= chargeRates.get(i).substring(6);
+            if(chargeRates.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = chargeRates.get(i).substring(12).equals("new")?1:Integer.parseInt(chargeRates.get(i).substring(12));
+            else if(chargeRates.get(i).matches("(?s)name: (.*)")) this.name= chargeRates.get(i).substring(6);
             else if(chargeRates.get(i).matches("(?s)internalId: (.*)")) this.internalId= chargeRates.get(i).substring(12);
             else if(chargeRates.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= chargeRates.get(i).substring(20);
             else if(chargeRates.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= chargeRates.get(i).substring(15);

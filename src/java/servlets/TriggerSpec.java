@@ -69,7 +69,7 @@ public class TriggerSpec extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.triggerSpecPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            triggerSpecs= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.triggerSpecPath)) , Integer.parseInt(id));
+            triggerSpecs= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.triggerSpecPath)),ControlPath.triggerSpecPointer , Integer.parseInt(id));
             TriggerSpecT triggerSpec = new TriggerSpecT(Integer.parseInt(id));
             triggerSpec.procesar(triggerSpecs, 1,user);
             session.setAttribute("principal", triggerSpec);

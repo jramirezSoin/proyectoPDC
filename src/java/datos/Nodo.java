@@ -17,6 +17,7 @@ public class Nodo implements Cloneable{
     public boolean visibilidad= true;
     public int id;
     public boolean masivo=false;
+    public int iceUpdaterCount = 0;
     
     public int getId(){
         return id;

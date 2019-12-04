@@ -68,7 +68,7 @@ public class RumConfiguration extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.rumConfigPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            rums= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.rumConfigPath)) , Integer.parseInt(id));
+            rums= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.rumConfigPath)),ControlPath.rumConfigPointer , Integer.parseInt(id));
             RumT rumConfig = new RumT(Integer.parseInt(id));
             rumConfig.procesar(rums, 1,user);
             session.setAttribute("principal", rumConfig);

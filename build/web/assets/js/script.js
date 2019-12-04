@@ -1,3 +1,6 @@
+var refreshPath='';
+var refreshTipo='';
+
 function limpiar(){
     $('#ModalBody').html("");
     $('#exampleModalLabel').html("");
@@ -46,10 +49,13 @@ function eliminar(path, id){
 }
 
 function hacerlist(path, tipo){
+
        $.get(path,function(responseText) {
         $('#Lista').html(responseText);
         $('.offset-area').addClass('show_hide');
         $('.settings-btn').addClass('active');
+            refreshPath = path;
+            refreshTipo = tipo;
         });
       }
 
@@ -207,7 +213,8 @@ function cargaMain(){
 
 function exportar(){
     $("#alertaIE").show();
-    $.get("/importexport",{tipo: "export", files: getChecks("listFileChecks")},function(responseText) {
+    var exportar = $("#exports").val();
+    $.get("/importexport",{tipo: "export", files: getChecks("listFileChecks"), exportado:exportar},function(responseText) {
             $('#Principal').html(responseText);
         });
 }
@@ -222,4 +229,11 @@ function importar(){
 function getPDFSelects(){
     var checks=getChecks("listChecks");
     $("#pdfChecks").val(checks);
+}
+
+function verError(error){
+    $("#errorModalLabel").html(error.replace("/_/g"," "));
+    $.get("/importexport",{tipo: "error", files: error},function(responseText) {
+            $('#errorModalBody').html(responseText);
+        });
 }

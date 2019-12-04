@@ -107,8 +107,8 @@ public class TriggerSpecT extends Nodo{
         ArrayList<String> triggerSpecs= (ArrayList<String>)triggerSpecs2.clone();
         int itemCount = 0;
         for(int i=index; i<triggerSpecs.size();i++) {
-            
-            if(triggerSpecs.get(i).matches("(?s)name: (.*)")) this.name= triggerSpecs.get(i).substring(6);
+            if(triggerSpecs.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = triggerSpecs.get(i).substring(12).equals("new")?1:Integer.parseInt(triggerSpecs.get(i).substring(12));
+            else if(triggerSpecs.get(i).matches("(?s)name: (.*)")) this.name= triggerSpecs.get(i).substring(6);
             else if(triggerSpecs.get(i).matches("(?s)description: (.*)")) this.description= triggerSpecs.get(i).substring(13);
             else if(triggerSpecs.get(i).matches("(?s)internalId: (.*)")) this.internalId= triggerSpecs.get(i).substring(12);
             else if(triggerSpecs.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= triggerSpecs.get(i).substring(15);

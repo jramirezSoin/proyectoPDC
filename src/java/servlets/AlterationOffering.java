@@ -71,7 +71,7 @@ public class AlterationOffering extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.alterationOfferingPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            alterationOffering= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.alterationOfferingPath)) , Integer.parseInt(id));
+            alterationOffering= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.alterationOfferingPath)),ControlPath.alterationOfferingPointer , Integer.parseInt(id));
             AlterationOfferingT alterationOfferingId = new AlterationOfferingT(Integer.parseInt(id));
             alterationOfferingId.procesar(alterationOffering, 1, user);
             session.setAttribute("principal", alterationOfferingId);

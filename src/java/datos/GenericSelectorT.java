@@ -196,7 +196,8 @@ public class GenericSelectorT extends Nodo{
         ArrayList<ModelDataT> models = new ArrayList<>();
         for(int i=index; i<generics.size();i++) {
             
-            if(generics.get(i).matches("(?s)name: (.*)")) this.name= generics.get(i).substring(6);
+            if(generics.get(i).matches("(?s)iceUpdater: (.*)")) this.iceUpdaterCount = generics.get(i).substring(12).equals("new")?1:Integer.parseInt(generics.get(i).substring(12));
+            else if(generics.get(i).matches("(?s)name: (.*)")) this.name= generics.get(i).substring(6);
             else if(generics.get(i).matches("(?s)description: (.*)")) this.description= generics.get(i).substring(13);
             else if(generics.get(i).matches("(?s)internalId: (.*)")) this.internalId= generics.get(i).substring(12);
             else if(generics.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= generics.get(i).substring(15);
@@ -377,7 +378,6 @@ public class GenericSelectorT extends Nodo{
                 m.setTipo(((model.getKind().equals("1"))?(model.getOperator().equals("REGEX")?"Implicito":"Explicito"):"Custom"));
                 }
                 else{
-                System.out.println("Borra "+ model.getName());
                 modelDatas.remove(model.getName());
                 }
             }else{
@@ -393,13 +393,8 @@ public class GenericSelectorT extends Nodo{
             Set<String> values= rule.getModels().keySet();
             for(int i=0; i<models.size();i++){
                 ModelDataT model = models.get(i);
-                System.out.println(model.getName());
-                System.out.println(model.getKind());
-                System.out.println(model.getOperator());
-                System.out.println(model.getDefaultValue());
                 ListaT t= rule.getModels().get(model.getName());
                 if(t!=null){
-                    System.out.println("Yes");
                     if(!model.getKind().equals("3")){
                     t.id= Integer.parseInt(model.getKind());
                     if(!t.unit.equals(model.getOperator())){
@@ -408,7 +403,6 @@ public class GenericSelectorT extends Nodo{
                     }
                     }
                     else{
-                        System.out.println("Borra "+ model.getName());
                         rule.getModels().remove(model.getName());
                     }
                 }else{

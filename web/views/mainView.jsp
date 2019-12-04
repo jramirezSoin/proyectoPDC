@@ -29,10 +29,12 @@
                 <div class="card mt-5">
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-5">
-                            <h4 class="header-title mb-0"></h4>
-                            <div class="btn-group mb-xl-3" role="group" aria-label="Basic example"> 
-                                <button type="button" class="btn btn-xs btn-primary bg1" onclick="importar();">Import</button>
-                                <button type="button" class="btn btn-xs btn-primary bg1" onclick="exportar()">Export</button>
+                            <dl class="row">
+                                <input class="form-control-sm" type="text" id="exports" value=""/>
+                            </dl>
+                            <div class="btn-group-sm mb-xl-3" role="group" aria-label="Basic example"> 
+                                <button type="button" class="btn btn-sm btn-primary bg1" onclick="importar();">Import</button>
+                                <button type="button" class="btn btn-sm btn-primary bg1" onclick="exportar()">Export</button>
                             </div>
                         </div>
                         <div>
@@ -48,6 +50,14 @@
                                     </thead>
                                     <tbody>
                                 <%int cont=0;%>
+                                        <tr>
+                                            <td><div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="allchecks" onclick="selectAll()">
+                                                <label class="custom-control-label" for="allchecks"></label>
+                                            </div></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
                                 <%for(ListaT constante: constants){%>
                                         <tr>
                                             <td><div class="custom-control custom-checkbox">
@@ -82,7 +92,7 @@
                                 for(ListaT error : errores){
                                     if(error.unit.equals("error")){
                                 %>
-                                <div class="alert alert-danger" role="alert">
+                                <div class="alert alert-danger" role="alert" data-toggle="modal" data-target="#errorModal" onclick="verError('<%=error.valor.split(",")[1].replaceAll("\n","")%>');" >
                                     <strong><%=error.valor.split(",")[0]%>: </strong> <%=error.valor.split(",")[1]%>
                                 </div>
                                 <%}else if(error.unit.equals("info")){%>
@@ -110,8 +120,8 @@
                                     <table class="table text-center">
                                         <thead class="text-uppercase">
                                         <tr>
-                                            <th>Change</th>
-                                            <th>Date</th>
+                                            <th>Last Change</th>
+                                            <th>Quantity</th>
                                             <th>File</th>
                                         </tr>
                                     </thead>
@@ -119,7 +129,7 @@
                                         <% for(Cambio cambio: cambios){%>
                                             <tr>
                                             <td><%= cambio.getCambio()%></td>
-                                            <td><%= cambio.getFecha()%></td>
+                                            <td><%= cambio.getCantidad()+""%></td>
                                             <td><%= cambio.getArchivo()%></td>
                                             </tr>
                                         <%}%>
@@ -134,4 +144,9 @@
             </div>    
         </div>                                                               
 </div>
+                        
+<script>
+    function 
+
+</script>                        
 

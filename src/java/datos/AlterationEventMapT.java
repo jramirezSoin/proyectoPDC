@@ -170,7 +170,7 @@ public class AlterationEventMapT extends Nodo{
             else if(alterations.get(i).matches("(?s)notValidAtStartNotValidAtEnd: (.*)")) this.notValidAtStartNotValidAtEnd= alterations.get(i).substring(30);
             else if(alterations.get(i).matches("(?s)snowball: (.*)")) this.snowball= Boolean.valueOf(alterations.get(i).substring(10));
             else if(alterations.get(i).matches("(?s)alterationRatePlanInfo")){i++; this.targetEngine= alterations.get(i).substring(14);}
-            else if(alterations.get(i).matches("(?s)alterationRatePlanSelectorInfo")){i++; this.targetEngine= alterations.get(i).substring(32);}
+            else if(alterations.get(i).matches("(?s)alterationRatePlanSelectorInfo")){ i++;this.targetEngine= alterations.get(i).substring(14);}
             else{ validaRollover(); return i;}
         }
         validaRollover();

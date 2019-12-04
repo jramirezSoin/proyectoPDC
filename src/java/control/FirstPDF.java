@@ -11,6 +11,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -23,6 +24,7 @@ import datos.Nodo;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,6 +55,11 @@ public class FirstPDF {
             Document document = new Document(PageSize.A4, 50, 50, 50, 50);
             PdfWriter.getInstance(document, new FileOutputStream(ControlPath.path+user+"/PDF/"+filename));
             document.open();
+            Image image1 = Image.getInstance(new URL("https://proyectos.soin.net/cfmx/plantillas/Proyectos/images/logo_soin.png"));
+            image1.setAlignment(Element.ALIGN_RIGHT);
+            image1.scaleAbsolute(75, 50);
+            //Add to document
+            document.add(image1);
             document.add(new Paragraph("Reporte de Objetos PDC", FirstPDF.h1));
             document.add(new Paragraph(" "));
             LineSeparator line = new LineSeparator();
@@ -187,7 +194,7 @@ public class FirstPDF {
             }      
     }
 
-    public static void crearListaDPDF(String name, ArrayList<ListaT> nodo, ArrayList<Integer> checks, String path, String user) {
+    public static void crearListaDPDF(String name, ArrayList<ListaT> nodo, ArrayList<Integer> checks, String path, String user, String pointer) {
         try{
             Document document = new Document(PageSize.A4, 50, 50, 50, 50);
             PdfWriter.getInstance(document, new FileOutputStream(ControlPath.path+user+"/PDF/"+name));
@@ -197,7 +204,7 @@ public class FirstPDF {
             LineSeparator line = new LineSeparator();
             document.add(line);
             for(int item : checks){
-                ArrayList<String> lis= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,path)) , item);
+                ArrayList<String> lis= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,path)),pointer , item);
                 Nodo node= ControlPath.getNodo(path, item);
                 node.procesar(lis, 1, user);
                 node.getPDF(document);
@@ -212,7 +219,7 @@ public class FirstPDF {
             } 
     }
 
-    public static void crearListaDPDF(String name, ArrayList<ListaT> nodo, String path, String user) {
+    public static void crearListaDPDF(String name, ArrayList<ListaT> nodo, String path, String user, String pointer) {
         try{
             Document document = new Document(PageSize.A4, 50, 50, 50, 50);
             PdfWriter.getInstance(document, new FileOutputStream(ControlPath.path+user+"/PDF/"+name));
@@ -223,7 +230,7 @@ public class FirstPDF {
             line.setLineColor(AZUL);
             document.add(line);
             for(ListaT item : nodo){
-                ArrayList<String> lis= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,path)) , item.id);
+                ArrayList<String> lis= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,path)),pointer , item.id);
                 Nodo node= ControlPath.getNodo(path, item.id);
                 node.procesar(lis, 1, user);
                 node.getPDF(document);

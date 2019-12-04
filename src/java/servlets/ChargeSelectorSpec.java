@@ -69,7 +69,7 @@ public class ChargeSelectorSpec extends HttpServlet {
             session.setAttribute("actualPoint", ControlPath.chargeSelectorSpecPointer);
             request.getRequestDispatcher(ControlPath.listView).forward(request, response);
         }else{
-            chargeSelectorSpecs= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.chargeSelectorSpecPath)) , Integer.parseInt(id));
+            chargeSelectorSpecs= XmlParser.LeerSeleccionado(new File(ControlPath.getPath(user,ControlPath.chargeSelectorSpecPath)),ControlPath.chargeSelectorSpecPointer , Integer.parseInt(id));
             ChargeSelectorSpecT chargeSelectorSpec = new ChargeSelectorSpecT(Integer.parseInt(id));
             chargeSelectorSpec.procesar(chargeSelectorSpecs, 1,user);
             session.setAttribute("principal", chargeSelectorSpec);

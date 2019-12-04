@@ -92,7 +92,7 @@ public class ArpCompositePopModelT extends Nodo{
                     tierBasis.unit=ratePlan.get(i);
                     i++;
                     if(ratePlan.get(i).matches("(?s)useTierComponent: (.*)")){tierBasis.valor= ratePlan.get(i).substring(18);}
-                    if(ratePlan.get(i+1).matches("(?s)preRated: (.*)")){}
+                    if(ratePlan.get(i+1).matches("(?s)preRated: (.*)")){i++;}
                 }
                 else if(ratePlan.get(i).matches("(?s)numberTierExpression")){
                     tierBasis.unit=ratePlan.get(i);
