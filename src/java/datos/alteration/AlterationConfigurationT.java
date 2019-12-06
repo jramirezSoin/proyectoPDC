@@ -20,7 +20,7 @@ public class AlterationConfigurationT extends Nodo{
     private String applicableChargeAndQuantity = "";
     private String triggerSpecName = "";
     private String chargeSelectorSpecName = "";
-    private ArpCompositePopModelT arpCompositePopModel = new ArpCompositePopModelT();
+    private ArpCompositePopModelT arpCompositePopModel;
 
     public AlterationConfigurationT() {
     }
@@ -68,11 +68,11 @@ public class AlterationConfigurationT extends Nodo{
             if(ratePlan.get(i).matches("(?s)triggerSpecName: (.*)")) this.triggerSpecName= ratePlan.get(i).substring(17);
             else if(ratePlan.get(i).matches("(?s)applicableChargeAndQuantity: (.*)")) this.applicableChargeAndQuantity= ratePlan.get(i).substring(29);
             else if(ratePlan.get(i).matches("(?s)chargeSelectorSpecName: (.*)")) this.chargeSelectorSpecName= ratePlan.get(i).substring(24);
-            else if(("arpCompositePopModel").contains(ratePlan.get(i))){     
-                ArpCompositePopModelT arpCompositePopModel = new ArpCompositePopModelT(0);
+            else if(("arpCompositePopModel").contains(ratePlan.get(i))){
+                if(arpCompositePopModel==null)
+                    arpCompositePopModel = new ArpCompositePopModelT(0);
                 i= arpCompositePopModel.procesar(ratePlan, i+1, user);
                 i--;
-                this.arpCompositePopModel=arpCompositePopModel;
             }else return i;
         }
         return ratePlan.size();

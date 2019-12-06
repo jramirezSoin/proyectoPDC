@@ -21,16 +21,16 @@ import java.util.ArrayList;
  */
 public class AlterationChargeT extends Nodo{
     
-    public String tipo = "";
-    private String price = "";
+    public String tipo = "fixedAlteration";
+    private String price = "0.0";
     private String unitOfMeasure = "";
     private String balanceElementNumCode = "";
     private String balanceElementName = "";
-    private String alterationAppliesTo = "";
+    private String alterationAppliesTo = "USER";
     private ListaT alterationBasedOn = new ListaT("","");
-    private String priceType = "";
-    private String incrementStep = "";
-    private String prorateLastIncrementStep = "";
+    private String priceType = "CONSUMPTION";
+    private String incrementStep = "1";
+    private String prorateLastIncrementStep = "true";
     private String glid = "";
     private String glidName = "";
     private PriceValidityT priceValidity;
@@ -152,6 +152,7 @@ public class AlterationChargeT extends Nodo{
     @Override
     public int procesar(ArrayList<String> ratePlan2, int index, String user) {
         ArrayList<String> ratePlan= (ArrayList<String>)ratePlan2.clone();
+        System.out.println(ratePlan2);
         for(int i=index; i<ratePlan.size();i++) {
             if(ratePlan.get(i).matches("(?s)price: (.*)")) this.price= ratePlan.get(i).substring(7);
             else if(ratePlan.get(i).matches("(?s)unitOfMeasure: (.*)")) this.unitOfMeasure= ratePlan.get(i).substring(15);
@@ -159,7 +160,7 @@ public class AlterationChargeT extends Nodo{
             else if(ratePlan.get(i).matches("(?s)balanceElementNumCode: (.*)")){ this.balanceElementNumCode= ratePlan.get(i).substring(23); this.balanceElementName=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("numericCode",ratePlan.get(i).substring(23)),"name");}
             else if(ratePlan.get(i).matches("(?s)balanceElementName: (.*)")){ this.balanceElementName= ratePlan.get(i).substring(20); this.balanceElementNumCode=ControlFunctions.Buscar(ControlPath.balanceElementClick,user, new ListaT("name",ratePlan.get(i).substring(20)),"numericCode");}
             else if(ratePlan.get(i).matches("(?s)glid: (.*)")){ this.glid= ratePlan.get(i).substring(6); this.glidName=ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("code",ratePlan.get(i).substring(6)),"name");}
-            else if(ratePlan.get(i).matches("(?s)glidName: (.*)")){ this.glidName= ratePlan.get(i).substring(10); this.glid=ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("name",ratePlan.get(i).substring(10)),"code");}
+            else if(ratePlan.get(i).matches("(?s)glidName: (.*)")){ this.glidName= ratePlan.get(i).substring(10); if(!glidName.equals(""))this.glid=ControlFunctions.Buscar(ControlPath.glidClick,user, new ListaT("name",ratePlan.get(i).substring(10)),"code"); else glid="";}
             else if(ratePlan.get(i).matches("(?s)incrementStep: (.*)")) this.incrementStep= ratePlan.get(i).substring(15);
             else if(ratePlan.get(i).matches("(?s)priceType: (.*)")) this.priceType= ratePlan.get(i).substring(11);
             else if(ratePlan.get(i).matches("(?s)prorateLastIncrementStep: (.*)")) this.prorateLastIncrementStep= ratePlan.get(i).substring(26);

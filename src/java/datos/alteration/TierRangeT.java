@@ -57,7 +57,7 @@ public class TierRangeT extends Nodo{
                 i--;
                 this.upperBound=bound;
             }else if(("percentAlteration fixedAlteration").contains(ratePlan.get(i))){     
-                AlterationChargeT charge = new AlterationChargeT();
+                AlterationChargeT charge = new AlterationChargeT(charges.size());
                 charge.tipo= ratePlan.get(i);
                 i= charge.procesar(ratePlan, i+1, user);
                 i--;
@@ -127,6 +127,13 @@ public class TierRangeT extends Nodo{
         } catch (DocumentException ex) {
             Logger.getLogger(TierRangeT.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    void addCharge() {
+        if(this.charges.size()==0)
+            this.charges.add(new AlterationChargeT(this.charges.size()));
+        else
+            this.charges.add(this.charges.get(this.charges.size()-1));
     }
     
     

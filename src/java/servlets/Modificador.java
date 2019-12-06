@@ -60,6 +60,7 @@ public class Modificador extends HttpServlet {
         for (String a : arrOfStr) 
             lista.add(XmlParser.convSpecialChar(a));
         ArrayList<Integer> indexs= (ArrayList<Integer>) request.getSession().getAttribute("index");
+        System.out.println(indexs);
         Nodo nodo = (Nodo) request.getSession().getAttribute("principal");
         String user = ((User)request.getSession().getAttribute("user")).getUserPDC();
         if(indexs==null || indexs.size()==0)

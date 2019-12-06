@@ -66,6 +66,9 @@
             <div class="card mt-5">
                 <div class="card-body">
                     <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                                <a class="nav-link" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/alterationRatePlan','Alteration Rate Plan','-3');">+</a>
+                        </li>
                         <%for(AlterationConfigurationT configurations: alterationRate.getArpDateRange().getAlterationConfigurations()){%>
                             <li class="nav-item">
                                 <a class="nav-link <%=((configurations.getId()==0)?"active":"")%>" onclick="composite('/alterationRatePlan','arpComposite-0','<%=configurations.getId()%>'); changeNav(this);" href="#arpComposite-0">Rule <%=configurations.getId()%></a>

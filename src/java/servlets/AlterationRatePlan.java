@@ -11,6 +11,7 @@ import datos.ListaT;
 import datos.User;
 import datos.alteration.AlterationConfigurationT;
 import datos.alteration.AlterationRatePlanT;
+import datos.alteration.ArpDateRangeT;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -101,13 +102,13 @@ public class AlterationRatePlan extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         String id = request.getParameter("id");
-        
         if(id==null || id.equals("-1")){
             request.getSession().setAttribute("add",null);
             request.getSession().setAttribute("index",null);
             request.getRequestDispatcher(ControlPath.alterationRateForm).forward(request, response);}
         else if(id.equals("-2")){
             AlterationRatePlanT alterationRateT= new AlterationRatePlanT(0);
+            alterationRateT.setArpDateRange(new ArpDateRangeT(0));
             request.getSession().setAttribute("index",null);
             request.getSession().setAttribute("add", alterationRateT);
             request.getSession().setAttribute("addView",ControlPath.alterationRateView);
@@ -127,6 +128,9 @@ public class AlterationRatePlan extends HttpServlet {
                     request.getRequestDispatcher(ControlPath.boundForm).forward(request, response);
                 else if(index.get(1)==-3)
                     request.getRequestDispatcher(ControlPath.alterationForm).forward(request, response);
+                else if(index.get(1)==-4){
+                    request.getRequestDispatcher(ControlPath.chargeAddForm).forward(request, response);    
+                }    
             }
             else if(index.get(0)==-3){
                 AlterationRatePlanT alterationRate = (AlterationRatePlanT) request.getSession().getAttribute("principal");

@@ -197,6 +197,7 @@ public class ControlPath {
     public static String boundForm="";
     public static String alterationForm="";
     public static String errorMessage="";
+    public static String chargeAddForm="";
     
     
     
@@ -336,6 +337,7 @@ public class ControlPath {
                 alterationRateClick= properties.getString("alterationRateClick");
                 arpCompositeView= properties.getString("arpCompositeView");
                 arpCompositeForm=properties.getString("arpCompositeForm");
+                chargeAddForm=properties.getString("chargeAddForm"); 
                 boundForm=properties.getString("boundForm");
                 alterationForm=properties.getString("alterationForm");
                 

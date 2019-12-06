@@ -69,6 +69,9 @@
                                     <dt class="col-sm-5">Balance Element Num Code</dt><dd class="col-sm-7"><%= result.getUpperBound().getRightOperand().valor%></dd>
                             </dl>
                         <%}%>
+                        <div class="btn-group mb-xl-3" role="group" aria-label="Basic example"> 
+                            <button type="button" class="btn btn-xs btn-primary bg1" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/alterationRatePlan','Charge','<%=conf.id%>,-4,<%=result.getId()%>');">Add</button>
+                        </div>
                     </div>
                     <div id="daccordion-<%=rel.getId()%>-<%=result.getId()%>" class="collapse show" data-parent="#daccordion1">
                     <div class="card-body">
@@ -94,7 +97,7 @@
                                 <td><%=res.getUnitOfMeasure()%></td>
                                 <td><%=res.getBalanceElementName()%></td>
                                 <td><%=res.getGlidName()%></td>
-                                <td><button tabindex="0" type="button" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/alterationRatePlan','Periods','0,-3,<%=result.getId()%>,<%=res.getId()%>');" class="btn btn-rounded btn-light btn-sm"><i class="ti-pencil"></i></button></td>
+                                <td><button tabindex="0" type="button" data-toggle="modal" data-target="#exampleModal" onclick="modificar('/alterationRatePlan','Periods','<%=conf.id%>,-3,<%=result.getId()%>,<%=res.getId()%>');" class="btn btn-rounded btn-light btn-sm"><i class="ti-pencil"></i></button></td>
                                 <%if(res.getPriceValidity()!=null){%>
                                 <td><button tabindex="0" type="button" class="btn btn-rounded btn-light btn-sm" data-popover-content="#res-<%=res.getId()%>" data-toggle="popover" title data-placement="right" aria-describedby="popover300430"><i class="ti-eye"></i></button></td>
                                 <td id="res-<%=res.getId()%>" style="display: none;">

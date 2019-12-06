@@ -81,6 +81,11 @@ public class ArpCompositePopModelT extends Nodo{
             else if(("alterationPopModel").contains(ratePlan.get(i))){alterationPopModel=true;}
             else if(("priceTier").contains(ratePlan.get(i)) && alterationPopModel){priceTier=true;}
             else if(ratePlan.get(i).matches("(?s)distributionMethod: (.*)") && priceTier) this.distributionMethod= ratePlan.get(i).substring(20);
+            else if(ratePlan.get(i).matches("(?s)tierBasis: (.*)") && priceTier){
+                tierBasis.unit=ratePlan.get(i).substring(11);
+                i++;
+                tierBasis.valor= ratePlan.get(i).substring(7);
+            }
             else if(ratePlan.get(i).matches("(?s)tierBasis") && priceTier){
                 i++;
                 if(ratePlan.get(i).matches("(?s)quantityTierExpression")){
@@ -146,7 +151,7 @@ public class ArpCompositePopModelT extends Nodo{
                 s+"\t\t\t</lowerBound>\n" +
                 priceTiers+
                 s+"\t\t</priceTier>\n"+
-                s+"\t<alterationPopModel>\n"+
+                s+"\t</alterationPopModel>\n"+
                 s+"</arpCompositePopModel>";
     }
     

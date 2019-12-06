@@ -24,7 +24,7 @@ public class AlterationRatePlanT extends Nodo{
     private String pricingProfileName = "";
     private String priceListName = "";
     private String taxCode="";
-    private ArpDateRangeT arpDateRange = new ArpDateRangeT();
+    private ArpDateRangeT arpDateRange;
     private String dir= "";
 
     public AlterationRatePlanT() {
@@ -32,6 +32,11 @@ public class AlterationRatePlanT extends Nodo{
     
     public AlterationRatePlanT(int id) {
         this.id=id;
+    }
+    
+    @Override
+    public void clean(){
+        arpDateRange=null;
     }
 
     public String getName() {
@@ -101,11 +106,11 @@ public class AlterationRatePlanT extends Nodo{
             else if(ratePlan.get(i).matches("(?s)priceListName: (.*)")) this.priceListName= ratePlan.get(i).substring(15);
             else if(ratePlan.get(i).matches("(?s)pricingProfileName: (.*)")) this.pricingProfileName= ratePlan.get(i).substring(20);
             else if(ratePlan.get(i).matches("(?s)taxCode: (.*)")) this.taxCode= ratePlan.get(i).substring(9);
-            else if(("arpDateRange").contains(ratePlan.get(i))){     
-                ArpDateRangeT arpDateRange = new ArpDateRangeT(0);
+            else if(("arpDateRange").contains(ratePlan.get(i))){
+                if(this.arpDateRange==null)
+                    arpDateRange = new ArpDateRangeT(0);
                 i= arpDateRange.procesar(ratePlan, i+1, user);
                 i--;
-                this.arpDateRange=arpDateRange;
             }else return i;
         }
         return ratePlan.size();
@@ -126,12 +131,22 @@ public class AlterationRatePlanT extends Nodo{
     
     @Override
     public int procesarI(ArrayList<String> lista, int index, ArrayList<Integer> indexs, String user) {
+        System.out.println(indexs);
         if(indexs.size()==0)
             index= this.procesar(lista, index, user);
         else{
             int i= indexs.get(0);
             indexs.remove(0);
-            this.arpDateRange.procesarI(lista, index, indexs, user);
+            if(indexs.get(0)==-1){
+                this.arpDateRange.getAlterationConfigurations().get(i).procesar(lista, index, user);
+            }else if(indexs.get(0)==-3){
+                this.arpDateRange.getAlterationConfigurations().get(i).getArpCompositePopModel().getTierRange().get(indexs.get(1)).getCharges().get(indexs.get(2)).procesar(lista, index, user);
+            }else if(indexs.get(0)==-4){
+                System.out.println("Entra");
+                this.arpDateRange.getAlterationConfigurations().get(i).getArpCompositePopModel().getTierRange().get(indexs.get(1)).addCharge();
+            }
+            else
+                this.arpDateRange.procesarI(lista, index, indexs, user);
         }
         return index;
     }
@@ -146,11 +161,18 @@ public class AlterationRatePlanT extends Nodo{
             return false;
         }
     }
+    
+    @Override
+    public void agregar(Nodo nodo, ArrayList<Integer> index) {
+        this.arpDateRange.getAlterationConfigurations().add((AlterationConfigurationT) nodo);
+    }
 
     public AlterationConfigurationT buscaPop(String dir) {
         this.dir=dir;
         int key = Integer.parseInt(dir);
-        return this.getArpDateRange().getAlterationConfigurations().get(key);
+        if(key<this.getArpDateRange().getAlterationConfigurations().size())
+            return this.getArpDateRange().getAlterationConfigurations().get(key);
+        else return null;
             
     }
     
